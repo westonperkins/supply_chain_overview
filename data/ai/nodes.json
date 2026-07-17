@@ -1,0 +1,800 @@
+[
+  {
+    "id": "mineral:gallium",
+    "type": "mineral",
+    "name": "Gallium",
+    "aliases": ["Ga", "GaAs", "GaN"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "semiconductor_input",
+    "description": "GaAs/GaN wafers, RF chips, power electronics. Byproduct of bauxite and zinc; irreplaceable in defense/RF/power apps.",
+    "static": {
+      "scale": {"value": {"value": 760, "unit": "t/yr"}, "confidence": "hard", "source_note": "USGS ~760 t/yr total, ~320 t/yr refined."},
+      "substitutability": {"value": 0.1, "confidence": "estimate", "source_note": "No effective substitute for GaAs/GaN in many defense apps."},
+      "lead_time_years": {"value": 5.0, "confidence": "estimate", "source_note": "Years to stand up primary production; no US base today."},
+      "bottleneck_type": "concentration",
+      "notes": "USGS estimated a full cessation of Chinese gallium exports could cut US GDP by ~$3.1B. China banned gallium exports to the US in Dec 2024."
+    }
+  },
+  {
+    "id": "mineral:indium",
+    "type": "mineral",
+    "name": "Indium",
+    "aliases": ["In", "ITO"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "semiconductor_input",
+    "description": "ITO for displays/touchscreens; some semiconductor use. Byproduct of zinc smelting; supply capped by zinc capacity.",
+    "static": {
+      "scale": {"value": {"value": 990, "unit": "t/yr"}, "confidence": "hard", "source_note": "USGS ~990 t/yr refined; Asia-Pacific ~70% of total."},
+      "substitutability": {"value": 0.5, "confidence": "estimate", "source_note": "Moderate — recycling is significant for Korea/Japan."},
+      "lead_time_years": {"value": 2.0, "confidence": "estimate"},
+      "bottleneck_type": "concentration",
+      "notes": "Capped by zinc production volumes; cannot scale on demand. Reserves spread across Canada, China, US, Peru, Russia."
+    }
+  },
+  {
+    "id": "mineral:neodymium",
+    "type": "mineral",
+    "name": "Neodymium",
+    "aliases": ["Nd", "NdFeB", "Nd-Pr"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "magnet_input",
+    "description": "NdFeB permanent magnets for cooling fans, drives, storage. Light-REE magnet pair with praseodymium.",
+    "static": {
+      "scale": {"value": {"value": 390000, "unit": "t/yr"}, "confidence": "estimate", "source_note": "Global REE production 2025; magnet-REEs a subset."},
+      "substitutability": {"value": 0.35, "confidence": "estimate", "source_note": "Low-moderate — some emerging alternatives, MP Materials + Lynas + Serra Verde diversifying supply."},
+      "lead_time_years": {"value": 4.0, "confidence": "estimate"},
+      "bottleneck_type": "concentration",
+      "notes": "China deliberately excluded Nd/Pr from Apr 2025 controls — reserving leverage for harder-to-source elements. Magnet-REE demand projected to triple by 2035."
+    }
+  },
+  {
+    "id": "mineral:dysprosium",
+    "type": "mineral",
+    "name": "Dysprosium",
+    "aliases": ["Dy", "Dy-Tb"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "magnet_input",
+    "description": "Heavy REE; high-temperature stability additive in NdFeB magnets. THE chokepoint of the magnet-REE set. Raw supply hostage to Myanmar civil conflict.",
+    "static": {
+      "scale": {"value": {"value": 100, "unit": "t/yr"}, "confidence": "estimate", "source_note": "Subset of heavy-REE separation; genuinely scarce."},
+      "substitutability": {"value": 0.05, "confidence": "hard", "source_note": "None at scale — paper explicitly identifies as the highest-criticality AI mineral."},
+      "lead_time_years": {"value": 6.0, "confidence": "estimate", "source_note": "Long — new heavy-REE separation capacity requires years."},
+      "bottleneck_type": "concentration",
+      "notes": "Kachin Independence Army seized mining towns Chipwi/Pangwa in Oct 2024. China restricted 7 heavy REEs incl. Dy on Apr 4, 2025; carmakers globally cut/halted production within weeks. Only non-China commercial milestone: Lynas Malaysia."
+    }
+  },
+  {
+    "id": "mineral:copper",
+    "type": "mineral",
+    "name": "Copper",
+    "aliases": ["Cu"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "circuitry_input",
+    "description": "Circuitry, interconnects, heat exchange, and the entire power-delivery layer for data centers. Diversified mining, China-heavy refining.",
+    "static": {
+      "scale": {"value": {"value": 23000000, "unit": "t/yr"}, "confidence": "hard", "source_note": "~23 Mt/yr mined; projected ~43 Mt/yr by 2035 (+24%)."},
+      "substitutability": {"value": 0.2, "confidence": "estimate", "source_note": "Low — aluminum substitutes some uses; recycling covers 20–35% of refined supply."},
+      "lead_time_years": {"value": 17.0, "confidence": "estimate", "source_note": "~17 years discovery-to-production, some estimates to 25. The longest lead time in the set."},
+      "bottleneck_type": "volume_demand",
+      "notes": "NOT a concentration problem per paper — a volume/demand story. Structural deficit potentially >6 Mt/yr by early 2030s. COMEX broke $6/lb for the first time in Jan 2026."
+    }
+  },
+
+  {
+    "id": "product:hbm",
+    "type": "product",
+    "name": "High Bandwidth Memory (HBM)",
+    "aliases": ["HBM3", "HBM3e", "HBM4"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "memory_product",
+    "description": "Stacked memory sitting next to AI accelerators — co-equal bottleneck with the GPU per the paper. Sold out through 2026 across all three suppliers.",
+    "static": {
+      "scale": {"value": {"value": 35000000000, "unit": "USD"}, "confidence": "estimate", "source_note": "TAM ~$35B (2025) → ~$100B by 2028 (~40% CAGR)."},
+      "substitutability": {"value": 0.05, "confidence": "hard", "source_note": "No substitute at scale for HBM in AI accelerators."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "New memory fabs + qualification. Sold out through 2026."},
+      "bottleneck_type": "concentration",
+      "notes": "Korea-heavy supplier base (SK Hynix + Samsung) distinct from the Taiwan foundry choke. Micron redirecting from consumer to data center caused a consumer-memory shortage."
+    }
+  },
+  {
+    "id": "product:cowos_packaging",
+    "type": "product",
+    "name": "CoWoS Advanced Packaging",
+    "aliases": ["CoWoS", "chip-on-wafer-on-substrate"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "packaging_product",
+    "description": "TSMC's advanced-packaging process that combines logic + HBM on a silicon interposer. Its capacity is a separate bottleneck from wafer fab and has repeatedly gated GPU output — a leading indicator of GPU supply.",
+    "static": {
+      "substitutability": {"value": 0.1, "confidence": "estimate", "source_note": "Samsung has an alternative but yields lag significantly."},
+      "lead_time_years": {"value": 2.5, "confidence": "estimate"},
+      "bottleneck_type": "concentration",
+      "notes": "Distinct from wafer fabrication capacity, but likewise concentrated at TSMC."
+    }
+  },
+  {
+    "id": "product:ndfeb_magnets",
+    "type": "product",
+    "name": "NdFeB Permanent Magnets",
+    "aliases": ["neodymium magnets"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "magnet_product",
+    "description": "The finished magnets in cooling fans, hard drives, and precision servos. Nd for the base magnet, Dy for high-temperature stability.",
+    "static": {
+      "scale": {"value": {"value": 70000000000, "unit": "USD"}, "confidence": "estimate", "source_note": "Nd-Pr + Dy-Tb magnet pairs projected to grow ~7× to ~$70B by 2040."},
+      "substitutability": {"value": 0.2, "confidence": "estimate", "source_note": "Low-moderate — some ferrite alternatives but with performance penalty."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate"},
+      "bottleneck_type": "concentration",
+      "notes": "Manufacturing itself is China-concentrated even where mining/refining is diversifying."
+    }
+  },
+  {
+    "id": "product:rf_power_semis",
+    "type": "product",
+    "name": "RF & Power Semiconductors",
+    "aliases": ["GaAs RF", "GaN power", "RF chips"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "component_product",
+    "description": "Discrete RF/power components based on GaAs/GaN. The transitive path from gallium into networking, optical, and power-delivery hardware — the actual downstream of gallium in the AI chain, since GPUs are CMOS.",
+    "static": {
+      "substitutability": {"value": 0.25, "confidence": "estimate", "source_note": "Some silicon-carbide alternatives for power; RF harder to substitute."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate"},
+      "bottleneck_type": "concentration",
+      "notes": "Intermediate node — added specifically so gallium's downstream exposure emerges through a real supply path instead of being hardcoded."
+    }
+  },
+
+  {
+    "id": "country_region:china",
+    "type": "country_region",
+    "name": "China",
+    "aliases": ["PRC", "People's Republic of China"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "description": "Dominant across gallium (~99%), heavy-REE separation (~99%), light-REE mining (~60%), indium refining (~60%), copper refining (~47%). Uses export controls as policy lever.",
+    "static": {"notes": "Banned gallium exports to the US Dec 2024; restricted 7 heavy REEs incl. dysprosium Apr 4 2025."}
+  },
+  {
+    "id": "country_region:taiwan",
+    "type": "country_region",
+    "name": "Taiwan",
+    "aliases": ["ROC", "Republic of China"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": 23.6978, "lng": 120.9605},
+    "description": "Home of TSMC. Single point of failure for ~90% of leading-edge (3nm/2nm) capacity. The quantified Taiwan risk.",
+    "static": {"notes": "Jan 2026 US–Taiwan deal added TSMC US fabs as a partial hedge."}
+  },
+  {
+    "id": "country_region:usa",
+    "type": "country_region",
+    "name": "United States",
+    "aliases": ["US", "USA", "United States of America"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "description": "Home of most chip designers, all named data centers, most equipment (ex-ASML), MP Materials REE mining, growing merchant power / utility consolidation."
+  },
+  {
+    "id": "country_region:netherlands",
+    "type": "country_region",
+    "name": "Netherlands",
+    "aliases": ["NL"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": 52.1326, "lng": 5.2913},
+    "description": "Home of ASML — the single most irreplaceable link in the chip chain (~90% lithography, sole EUV maker)."
+  },
+  {
+    "id": "country_region:south_korea",
+    "type": "country_region",
+    "name": "South Korea",
+    "aliases": ["Korea", "ROK", "Republic of Korea"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": 35.9078, "lng": 127.7669},
+    "description": "Home of SK Hynix and Samsung. The Korea-heavy HBM supplier base — distinct from the Taiwan foundry choke."
+  },
+  {
+    "id": "country_region:japan",
+    "type": "country_region",
+    "name": "Japan",
+    "aliases": ["JP"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": 36.2048, "lng": 138.2529},
+    "description": "Home of Tokyo Electron; secondary indium refiner; small gallium producer. Recycling-heavy for indium."
+  },
+  {
+    "id": "country_region:myanmar",
+    "type": "country_region",
+    "name": "Myanmar",
+    "aliases": ["Burma"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": 21.9162, "lng": 95.9560},
+    "description": "Upstream feeder into Chinese REE refining. Raw supply hostage to civil conflict — the fragile upstream to dysprosium and neodymium."
+  },
+  {
+    "id": "country_region:kachin",
+    "type": "country_region",
+    "name": "Kachin State",
+    "aliases": ["Kachin", "Chipwi", "Pangwa", "Kachin Independence Army", "KIA"],
+    "domains": ["ai"],
+    "sub_category": "sub_region",
+    "coordinates": {"lat": 26.7083, "lng": 97.5000},
+    "description": "Ionic-clay heavy-REE deposits that feed Chinese refineries. The Kachin Independence Army seized mining towns Chipwi and Pangwa in October 2024 — the paper's canonical 'the news says Kachin, the impact is dysprosium' example.",
+    "static": {"notes": "Event feeds will name the towns and the KIA — not 'dysprosium'."}
+  },
+  {
+    "id": "country_region:malaysia",
+    "type": "country_region",
+    "name": "Malaysia",
+    "aliases": ["MY"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": 4.2105, "lng": 101.9758},
+    "description": "Site of Lynas's REE separation plant — the only non-China commercial-scale heavy-REE separation milestone."
+  },
+  {
+    "id": "country_region:australia",
+    "type": "country_region",
+    "name": "Australia",
+    "aliases": ["AU"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": -25.2744, "lng": 133.7751},
+    "description": "Home of Lynas — one of the few large REE producers outside China."
+  },
+  {
+    "id": "country_region:brazil",
+    "type": "country_region",
+    "name": "Brazil",
+    "aliases": ["BR"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": -14.2350, "lng": -51.9253},
+    "description": "Emerging light-REE producer via Serra Verde. Small share today; matters for diversification trajectory."
+  },
+  {
+    "id": "country_region:chile",
+    "type": "country_region",
+    "name": "Chile",
+    "aliases": ["CL"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": -35.6751, "lng": -71.5430},
+    "description": "#1 copper producer at ~25% of world output."
+  },
+  {
+    "id": "country_region:drc",
+    "type": "country_region",
+    "name": "Democratic Republic of the Congo",
+    "aliases": ["DRC", "Congo", "Congo-Kinshasa"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": -4.0383, "lng": 21.7587},
+    "description": "#2 copper producer."
+  },
+  {
+    "id": "country_region:peru",
+    "type": "country_region",
+    "name": "Peru",
+    "aliases": ["PE"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": -9.1900, "lng": -75.0152},
+    "description": "#3 copper producer."
+  },
+  {
+    "id": "country_region:canada",
+    "type": "country_region",
+    "name": "Canada",
+    "aliases": ["CA"],
+    "domains": ["ai"],
+    "sub_category": "country",
+    "coordinates": {"lat": 56.1304, "lng": -106.3468},
+    "description": "Secondary gallium refiner; indium refiner; large indium reserves."
+  },
+
+  {
+    "id": "company:nvidia",
+    "type": "company",
+    "name": "NVIDIA",
+    "aliases": ["NVDA"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "chip_designer_fabless",
+    "description": "GPUs; dominant in AI training/inference. CUDA software moat. ~90% of HBM from SK Hynix.",
+    "static": {
+      "financial_cushion": {"value": 0.75, "confidence": "inference", "source_note": "Strong FCF and cash pile, but heavy customer + supplier concentration. Placeholder — retune when we have real distributions."},
+      "notes": "Market cap ~$5.0T (June 2026). CUDA lock-in is the real moat."
+    },
+    "dynamic": {"market_cap": 5.0e12}
+  },
+  {
+    "id": "company:broadcom",
+    "type": "company",
+    "name": "Broadcom",
+    "aliases": ["AVGO"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "chip_designer_fabless",
+    "description": "Custom AI silicon (ASICs) for hyperscalers + networking. Q3 AI-chip guidance misses now move the whole sector.",
+    "static": {"financial_cushion": {"value": 0.75, "confidence": "inference", "source_note": "Large, diversified across networking + ASIC design services."}},
+    "dynamic": {"market_cap": 2.0e12}
+  },
+  {
+    "id": "company:amd",
+    "type": "company",
+    "name": "AMD",
+    "aliases": ["Advanced Micro Devices"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "chip_designer_fabless",
+    "description": "GPUs (Instinct MI-series) + CPUs; second-largest AI-GPU maker, distant #2 to NVIDIA. Cross-exposure to PC/smartphone cycles.",
+    "static": {"financial_cushion": {"value": 0.55, "confidence": "inference"}},
+    "dynamic": {"market_cap": 7.6e11}
+  },
+  {
+    "id": "company:tsmc",
+    "type": "company",
+    "name": "TSMC",
+    "aliases": ["Taiwan Semiconductor", "TSM"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "foundry",
+    "description": "~90% share at 3nm/2nm; ~60-70% of the overall foundry market. Advanced nodes (≤7nm) ~74% of wafer revenue. Raising sub-5nm prices 5-10% in 2026 — customers have no alternative.",
+    "static": {
+      "substitutability": {"value": 0.05, "confidence": "estimate", "source_note": "Paper: 'no second source at comparable yield and volume until at least 2027'; ~90% share at 3nm/2nm."},
+      "lead_time_years": {"value": 4.0, "confidence": "estimate", "source_note": "Paper reference table: 'New leading-edge fab 3–5 years, >$20B (now often $30B+).'"},
+      "financial_cushion": {"value": 0.80, "confidence": "inference", "source_note": "Great margins, cash-rich, but capex ~$38B/yr and Taiwan concentration."},
+      "notes": "Agreed to major US investment (~$165-250B) under Jan 2026 US-Taiwan deal."
+    },
+    "dynamic": {"market_cap": 2.0e12}
+  },
+  {
+    "id": "company:samsung",
+    "type": "company",
+    "name": "Samsung Electronics",
+    "aliases": ["Samsung", "Samsung Foundry", "Samsung Memory"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "diversified_semi",
+    "description": "Both a foundry (~8-12% share, 3nm yields stuck at 30-40%) and an HBM supplier (~17-22% share, recovering after qualification delays).",
+    "static": {
+      "substitutability": {"value": 0.30, "confidence": "estimate", "source_note": "Paper: Samsung foundry is an alternative but '3nm yields stuck at 30-40%'; memory unit is one of three HBM suppliers with mutual substitution possible."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "Paper reference table: 'HBM capacity + qualification: long; sold out through 2026.'"},
+      "financial_cushion": {"value": 0.70, "confidence": "inference", "source_note": "Huge diversified conglomerate; foundry unit struggling but memory + consumer businesses cushion."}
+    }
+  },
+  {
+    "id": "company:intel",
+    "type": "company",
+    "name": "Intel",
+    "aliases": ["INTC"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "idm_foundry",
+    "description": "Integrated device manufacturer; foundry ambitions ride on the 18A node (not at industry-standard yield until ~2027). Foundry unit deeply unprofitable.",
+    "static": {"financial_cushion": {"value": 0.35, "confidence": "inference", "source_note": "Foundry unit losing money; PC market cross-exposure. Lower cushion despite balance-sheet size."}},
+    "dynamic": {"market_cap": 4.98e11}
+  },
+  {
+    "id": "company:sk_hynix",
+    "type": "company",
+    "name": "SK Hynix",
+    "aliases": ["Hynix"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "memory_hbm",
+    "description": "~57-62% of HBM (2025). NVIDIA's primary supplier (~90% of NVIDIA's HBM).",
+    "static": {
+      "substitutability": {"value": 0.35, "confidence": "estimate", "source_note": "Paper: three HBM suppliers exist, but SK Hynix is NVIDIA's primary at ~90% single-source dependence — substitution takes qualification cycles."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "Paper reference table: 'HBM capacity + qualification: long; sold out through 2026.'"},
+      "financial_cushion": {"value": 0.50, "confidence": "inference", "source_note": "Tight mutual dependence with NVIDIA — customer concentration risk works both ways."}
+    }
+  },
+  {
+    "id": "company:micron",
+    "type": "company",
+    "name": "Micron",
+    "aliases": ["MU"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "memory_hbm",
+    "description": "~21% HBM share; US-based. Redirecting output from consumer memory to AI data centers.",
+    "static": {
+      "substitutability": {"value": 0.40, "confidence": "estimate", "source_note": "Paper: three HBM suppliers exist with Micron at ~21% share; mutual substitution possible with qualification delays."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "Paper reference table: 'HBM capacity + qualification: long; sold out through 2026.'"},
+      "financial_cushion": {"value": 0.55, "confidence": "inference"}
+    },
+    "dynamic": {"market_cap": 8.53e11}
+  },
+  {
+    "id": "company:asml",
+    "type": "company",
+    "name": "ASML",
+    "aliases": ["ASML Holding"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "semi_equipment",
+    "description": "EUV lithography monopoly — ~90% of lithography market, sole EUV maker. Backlog ~$45B, sold out into 2027. The single most irreplaceable link in the chain.",
+    "static": {
+      "substitutability": {"value": 0.02, "confidence": "estimate", "source_note": "Paper: 'the only EUV maker' — no working competitor at any node."},
+      "lead_time_years": {"value": 5.0, "confidence": "estimate", "source_note": "Paper: 'sold out into 2027' + no alternative EUV supplier exists to be scaled up."},
+      "financial_cushion": {"value": 0.85, "confidence": "inference", "source_note": "Near-monopoly with multi-year backlog. Export-control exposure but demand utterly saturated."},
+      "notes": "US/Netherlands/China export-control flashpoint."
+    },
+    "dynamic": {"market_cap": 6.5e11}
+  },
+  {
+    "id": "company:applied_materials",
+    "type": "company",
+    "name": "Applied Materials",
+    "aliases": ["AMAT"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "semi_equipment",
+    "description": "Touches more fab steps than anyone — deposition, etch, implant.",
+    "static": {
+      "substitutability": {"value": 0.30, "confidence": "estimate", "source_note": "Paper: 'touches more fab steps than anyone' — spans deposition/etch/implant with limited direct competitors per step."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "Paper: 'Entire equipment chain sold out into 2027.'"},
+      "financial_cushion": {"value": 0.70, "confidence": "inference"}
+    },
+    "dynamic": {"market_cap": 4.88e11}
+  },
+  {
+    "id": "company:lam_research",
+    "type": "company",
+    "name": "Lam Research",
+    "aliases": ["LRCX"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "semi_equipment",
+    "description": "Etch and deposition — physically builds the 3D stacks HBM requires. Higher exposure to memory-supercycle than most equipment peers.",
+    "static": {
+      "substitutability": {"value": 0.30, "confidence": "estimate", "source_note": "Paper: 'physically builds the 3D stacks HBM requires' — specialized etch/deposition capability."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "Paper: 'Entire equipment chain sold out into 2027.'"},
+      "financial_cushion": {"value": 0.65, "confidence": "inference"}
+    }
+  },
+  {
+    "id": "company:kla",
+    "type": "company",
+    "name": "KLA",
+    "aliases": ["KLAC"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "semi_equipment",
+    "description": "Inspection and metrology across the fab.",
+    "static": {
+      "substitutability": {"value": 0.35, "confidence": "estimate", "source_note": "Paper: inspection/metrology role — narrower than deposition/etch, but still a specialized niche with few alternatives at leading-edge."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "Paper: 'Entire equipment chain sold out into 2027.'"},
+      "financial_cushion": {"value": 0.70, "confidence": "inference"}
+    }
+  },
+  {
+    "id": "company:tokyo_electron",
+    "type": "company",
+    "name": "Tokyo Electron",
+    "aliases": ["TEL"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "semi_equipment",
+    "description": "Coating, etch, cleaning. Japan-based; secondary export-control exposure.",
+    "static": {
+      "substitutability": {"value": 0.35, "confidence": "estimate", "source_note": "Paper: coating/etch/cleaning tools; overlapping role with Applied Materials + Lam gives some substitution but Japan-heavy production is its own export-control axis."},
+      "lead_time_years": {"value": 3.0, "confidence": "estimate", "source_note": "Paper: 'Entire equipment chain sold out into 2027.'"},
+      "financial_cushion": {"value": 0.65, "confidence": "inference"}
+    }
+  },
+  {
+    "id": "company:marvell",
+    "type": "company",
+    "name": "Marvell",
+    "aliases": ["MRVL"],
+    "domains": ["ai"],
+    "layer": "chips",
+    "sub_category": "chip_designer_fabless",
+    "description": "Custom silicon #2 to Broadcom; key co-design partner for hyperscaler ASICs (Amazon Trainium collab).",
+    "static": {"financial_cushion": {"value": 0.55, "confidence": "inference"}}
+  },
+  {
+    "id": "company:google",
+    "type": "company",
+    "name": "Google (Alphabet)",
+    "aliases": ["Alphabet", "GOOGL", "GOOG"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "hyperscaler",
+    "description": "Google TPU custom silicon (designed with Broadcom); Google Cloud hyperscale data centers.",
+    "static": {"financial_cushion": {"value": 0.90, "confidence": "inference", "source_note": "Giant balance sheet; diversified revenue."}}
+  },
+  {
+    "id": "company:amazon",
+    "type": "company",
+    "name": "Amazon",
+    "aliases": ["AMZN", "AWS"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "hyperscaler",
+    "description": "AWS hyperscale data centers; Trainium/Inferentia custom silicon (Marvell co-design).",
+    "static": {"financial_cushion": {"value": 0.90, "confidence": "inference"}}
+  },
+  {
+    "id": "company:microsoft",
+    "type": "company",
+    "name": "Microsoft",
+    "aliases": ["MSFT", "Azure"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "hyperscaler",
+    "description": "Azure hyperscale data centers; Maia custom silicon. $15B UAE investment + restarting Three Mile Island via Constellation PPA.",
+    "static": {"financial_cushion": {"value": 0.90, "confidence": "inference"}}
+  },
+  {
+    "id": "company:meta",
+    "type": "company",
+    "name": "Meta",
+    "aliases": ["META", "Facebook"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "hyperscaler",
+    "description": "Data centers for own AI + advertising; MTIA custom silicon. $10B Louisiana build chasing power-rich siting.",
+    "static": {"financial_cushion": {"value": 0.85, "confidence": "inference"}}
+  },
+  {
+    "id": "company:xai",
+    "type": "company",
+    "name": "xAI",
+    "aliases": ["x.AI"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "ai_lab",
+    "description": "Operator of the Colossus data center in Memphis (2 GW, 555k GPUs, plans for 1M+).",
+    "static": {"financial_cushion": {"value": 0.60, "confidence": "inference", "source_note": "Private; capital-heavy but well-funded."}}
+  },
+  {
+    "id": "company:openai",
+    "type": "company",
+    "name": "OpenAI",
+    "aliases": [],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "ai_lab",
+    "description": "Operator of the Stargate program (~$100B) — Abilene TX plus MI, WI, WY, NM, GA, OH, PA.",
+    "static": {"financial_cushion": {"value": 0.60, "confidence": "inference", "source_note": "Private; Microsoft backing."}}
+  },
+  {
+    "id": "company:constellation_energy",
+    "type": "company",
+    "name": "Constellation Energy",
+    "aliases": ["CEG"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "merchant_power",
+    "description": "Largest US merchant power; ~60 GW including the biggest US nuclear fleet. Restarting Three Mile Island Unit 1 (~2028); bought Calpine (~$16B).",
+    "static": {"financial_cushion": {"value": 0.55, "confidence": "inference", "source_note": "Locked-in revenue through 2028, but capex-heavy."}},
+    "dynamic": {"market_cap": 8.9e10}
+  },
+  {
+    "id": "company:vistra",
+    "type": "company",
+    "name": "Vistra",
+    "aliases": ["VST"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "merchant_power",
+    "description": "~45 GW across gas, nuclear, coal, solar, storage.",
+    "static": {"financial_cushion": {"value": 0.55, "confidence": "inference"}},
+    "dynamic": {"market_cap": 5.0e10}
+  },
+  {
+    "id": "company:talen_energy",
+    "type": "company",
+    "name": "Talen Energy",
+    "aliases": ["TLN"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "merchant_power",
+    "description": "~13 GW; anchored by Susquehanna nuclear.",
+    "static": {"financial_cushion": {"value": 0.35, "confidence": "inference", "source_note": "Smaller player; more exposed."}}
+  },
+  {
+    "id": "company:nextera_energy",
+    "type": "company",
+    "name": "NextEra Energy",
+    "aliases": ["NEE"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "regulated_utility",
+    "description": "Largest US utility; Florida Power & Light + huge renewables/storage. ~21 GW data center pipeline, ~33 GW renewables backlog. Acquiring Dominion (~$67B).",
+    "static": {"financial_cushion": {"value": 0.70, "confidence": "inference"}}
+  },
+  {
+    "id": "company:duke_energy",
+    "type": "company",
+    "name": "Duke Energy",
+    "aliases": ["DUK"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "regulated_utility",
+    "description": "Southeast regulated utility; AI demand far above historic pace.",
+    "static": {"financial_cushion": {"value": 0.65, "confidence": "inference"}}
+  },
+  {
+    "id": "company:siemens_energy",
+    "type": "company",
+    "name": "Siemens Energy",
+    "aliases": [],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "grid_equipment",
+    "description": "Transformers AND gas turbines, both with multi-year backlogs. The physical chokepoint behind power.",
+    "static": {
+      "substitutability": {"value": 0.40, "confidence": "estimate", "source_note": "Paper lists three companies in the same role (Siemens Energy, GE Vernova, Hitachi Energy) — mutual substitution possible in principle but all three carry the same multi-year backlog."},
+      "lead_time_years": {"value": 5.0, "confidence": "estimate", "source_note": "Paper reference table: 'Grid transformer: ~5-year backlog.'"},
+      "financial_cushion": {"value": 0.65, "confidence": "inference"}
+    }
+  },
+  {
+    "id": "company:ge_vernova",
+    "type": "company",
+    "name": "GE Vernova",
+    "aliases": ["GEV"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "grid_equipment",
+    "description": "Transformers, gas turbines, wind — multi-year backlogs.",
+    "static": {
+      "substitutability": {"value": 0.40, "confidence": "estimate", "source_note": "Paper lists three companies in the same role — mutual substitution possible in principle, but all carry the same multi-year backlog."},
+      "lead_time_years": {"value": 5.0, "confidence": "estimate", "source_note": "Paper reference table: 'Grid transformer: ~5-year backlog.'"},
+      "financial_cushion": {"value": 0.65, "confidence": "inference"}
+    }
+  },
+  {
+    "id": "company:quanta_services",
+    "type": "company",
+    "name": "Quanta Services",
+    "aliases": ["PWR"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "grid_equipment",
+    "description": "Grid construction — the pipeline that connects new generation to new load.",
+    "static": {"financial_cushion": {"value": 0.55, "confidence": "inference"}}
+  },
+  {
+    "id": "company:vertiv",
+    "type": "company",
+    "name": "Vertiv",
+    "aliases": ["VRT"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "cooling",
+    "description": "Cooling leader; liquid + immersion cooling. Water consumption is a real local-political constraint.",
+    "static": {
+      "substitutability": {"value": 0.55, "confidence": "estimate", "source_note": "Paper calls Vertiv 'leader' but does not imply monopoly — cooling market has multiple players and liquid/immersion is a fast-growing category with several credible alternatives."},
+      "lead_time_years": {"value": 2.0, "confidence": "estimate", "source_note": "Paper: 'electrical equipment lead times 2+ years' as calibration; cooling is less specialized than lithography or transformers."},
+      "financial_cushion": {"value": 0.55, "confidence": "inference"}
+    }
+  },
+  {
+    "id": "company:mp_materials",
+    "type": "company",
+    "name": "MP Materials",
+    "aliases": ["MP"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "rare_earth_producer",
+    "description": "Owner-operator of Mountain Pass — the only US light-REE mine at scale, including neodymium.",
+    "static": {"financial_cushion": {"value": 0.30, "confidence": "inference", "source_note": "Strategic small US player; single-asset exposure."}}
+  },
+  {
+    "id": "company:lynas",
+    "type": "company",
+    "name": "Lynas Rare Earths",
+    "aliases": ["Lynas"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "rare_earth_producer",
+    "description": "Australian REE producer; operates the Malaysia separation plant — the only non-China commercial-scale heavy-REE separation milestone.",
+    "static": {"financial_cushion": {"value": 0.35, "confidence": "inference"}}
+  },
+
+  {
+    "id": "facility:mountain_pass",
+    "type": "facility",
+    "name": "Mountain Pass Mine",
+    "aliases": ["Mountain Pass"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "mine",
+    "coordinates": {"lat": 35.4772, "lng": -115.5300},
+    "description": "The only rare-earth mine at scale in the United States. Light-REE focus including neodymium."
+  },
+  {
+    "id": "facility:serra_verde",
+    "type": "facility",
+    "name": "Serra Verde",
+    "aliases": ["Serra Verde Mine"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "mine",
+    "coordinates": {"lat": -16.3667, "lng": -47.4333},
+    "description": "Brazilian light-REE mine — emerging supply diversification."
+  },
+  {
+    "id": "facility:lynas_malaysia",
+    "type": "facility",
+    "name": "Lynas Malaysia Plant",
+    "aliases": ["Lynas Malaysia", "Gebeng"],
+    "domains": ["ai"],
+    "layer": "materials",
+    "sub_category": "refinery_separation",
+    "coordinates": {"lat": 3.9700, "lng": 103.4200},
+    "description": "The only non-China commercial-scale heavy-REE separation site."
+  },
+  {
+    "id": "facility:colossus",
+    "type": "facility",
+    "name": "Colossus",
+    "aliases": ["xAI Colossus", "Memphis Colossus"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "data_center",
+    "coordinates": {"lat": 35.1495, "lng": -90.0490},
+    "description": "xAI's Memphis, TN data center — 2 GW, 555,000 GPUs today, plans for 1M+; ~$18B invested."
+  },
+  {
+    "id": "facility:stargate_abilene",
+    "type": "facility",
+    "name": "Stargate (Abilene)",
+    "aliases": ["Stargate", "OpenAI Abilene"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "data_center",
+    "coordinates": {"lat": 32.4487, "lng": -99.7331},
+    "description": "OpenAI's flagship Stargate site — anchor of a ~$100B multi-state program (also MI, WI, WY, NM, GA, OH, PA)."
+  },
+  {
+    "id": "facility:vantage_frontier",
+    "type": "facility",
+    "name": "Vantage Frontier",
+    "aliases": [],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "data_center",
+    "coordinates": {"lat": 32.7767, "lng": -96.7970},
+    "description": "Texas mega-campus, ~$25B+."
+  },
+  {
+    "id": "facility:the_citadel",
+    "type": "facility",
+    "name": "The Citadel",
+    "aliases": ["Switch Citadel"],
+    "domains": ["ai"],
+    "layer": "data_centers",
+    "sub_category": "data_center",
+    "coordinates": {"lat": 39.5296, "lng": -119.8138},
+    "description": "Switch's Nevada campus — 650 MW, renewable-powered."
+  },
+  {
+    "id": "facility:three_mile_island",
+    "type": "facility",
+    "name": "Three Mile Island Unit 1",
+    "aliases": ["Three Mile Island", "TMI"],
+    "domains": ["ai"],
+    "layer": "power",
+    "sub_category": "power_plant",
+    "coordinates": {"lat": 40.1533, "lng": -76.7247},
+    "description": "Nuclear reactor being restarted (~2028) by Constellation to serve a Microsoft PPA. The canonical AI-driven nuclear restart."
+  }
+]

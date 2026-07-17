@@ -1,0 +1,5 @@
+# Which domain slices the terminal currently exposes.
+# Adding "robotics" or "aerospace" here should be a data-load change,
+# not a code change — the core is domain-agnostic.
+active_domains:
+  - ai

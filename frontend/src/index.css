@@ -1,0 +1,818 @@
+:root {
+  --bg: #0b0d10;
+  --panel: #14181d;
+  --panel-2: #1a1f26;
+  --border: #232a33;
+  --text: #e6eaf0;
+  --muted: #8a94a3;
+  --accent: #4fc3f7;
+  --critical: #ff5252;
+  --high: #ff9800;
+  --moderate: #ffca28;
+  --none: #4caf50;
+  --supply: #7f8894;   /* neutral gray for pure-supply-source nodes */
+  --edge-weak:  rgba(140, 160, 180, 0.35);
+  --edge-med:   rgba(180, 200, 220, 0.55);
+  --edge-strong: rgba(220, 235, 250, 0.85);
+  --edge-supply-muted: rgba(130, 145, 165, 0.25);
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+}
+
+.app-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app-header h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.app-header .subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  font-family: var(--mono);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr 380px;
+  overflow: hidden;
+}
+
+.pane {
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 16px;
+}
+.pane:last-child { border-right: none; }
+.pane h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0.8px;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+/* Filter block above the node list */
+.filter-block {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.filter-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+  width: 40px;
+  flex-shrink: 0;
+}
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.filter-chip {
+  padding: 3px 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  font-family: var(--mono);
+  cursor: pointer;
+  text-transform: lowercase;
+  letter-spacing: 0.3px;
+  transition: all 0.12s;
+}
+.filter-chip:hover { border-color: var(--accent); color: var(--text); }
+.filter-chip.active {
+  background: var(--panel-2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.filter-chip.tier-chip { text-transform: uppercase; font-weight: 600; }
+.filter-chip.tier-chip.tier-critical.active { border-color: var(--critical); color: var(--critical); background: rgba(255,82,82,0.10); }
+.filter-chip.tier-chip.tier-high.active     { border-color: var(--high);     color: var(--high);     background: rgba(255,152,0,0.10); }
+.filter-chip.tier-chip.tier-moderate.active { border-color: var(--moderate); color: var(--moderate); background: rgba(255,202,40,0.10); }
+.filter-chip.tier-chip.tier-none.active     { border-color: var(--none);     color: var(--none);     background: rgba(76,175,80,0.10); }
+
+.filter-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--muted);
+}
+.filter-clear {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+.filter-clear:hover { color: var(--accent); border-color: var(--accent); }
+
+/* Node list */
+.node-row {
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  border: 1px solid transparent;
+  background: var(--panel);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.node-row:hover { border-color: var(--border); }
+.node-row.selected { border-color: var(--accent); background: var(--panel-2); }
+.node-row .name { font-weight: 500; }
+.node-row .meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.tier {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.tier.critical { background: rgba(255,82,82,0.15); color: var(--critical); }
+.tier.high     { background: rgba(255,152,0,0.15); color: var(--high); }
+.tier.moderate { background: rgba(255,202,40,0.15); color: var(--moderate); }
+.tier.none     { background: rgba(76,175,80,0.15); color: var(--none); }
+
+/* Detail pane */
+.detail-header { margin-bottom: 20px; }
+.detail-header h3 { margin: 0 0 4px 0; font-size: 18px; }
+.detail-header .id { font-family: var(--mono); color: var(--muted); font-size: 11px; }
+
+.split-block {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 14px;
+  background: var(--panel);
+}
+.split-block .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+.split-block .label.static  { color: #9ecfff; }
+.split-block .label.dynamic { color: #b0d97e; }
+
+.kv {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 6px 12px;
+  font-size: 13px;
+}
+.kv .k { color: var(--muted); }
+.kv .v { font-family: var(--mono); word-break: break-word; }
+.kv .v .conf {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 6px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+}
+
+.note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Event feed */
+.event-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: var(--panel);
+}
+.event-card .headline {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.event-card .meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.event-card .severity {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.event-card .tags span {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--panel-2);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  margin-right: 4px;
+  border: 1px solid var(--border);
+}
+
+.cascade-path {
+  margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+.cascade-hop {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 0;
+  display: flex;
+  gap: 8px;
+}
+.cascade-hop .hop {
+  color: var(--muted);
+  width: 40px;
+}
+.cascade-hop .sev {
+  color: var(--accent);
+  min-width: 70px;
+}
+
+.disclaimer {
+  padding: 10px 14px;
+  background: var(--panel-2);
+  color: var(--muted);
+  font-size: 11px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-style: italic;
+}
+
+.error {
+  padding: 20px;
+  color: var(--critical);
+  font-family: var(--mono);
+}
+
+/* ============================================================ *
+ *  View toggle in the app header                                *
+ * ============================================================ */
+
+.app-view-toggle {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.app-view-toggle button {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+}
+.app-view-toggle button:hover { color: var(--text); }
+.app-view-toggle button.active {
+  background: var(--panel-2);
+  color: var(--accent);
+}
+
+/* ============================================================ *
+ *  Level 0 — Glance view                                        *
+ * ============================================================ */
+
+.glance-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--bg);
+}
+
+.glance-header {
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.glance-header-title {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+}
+
+.glance-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.glance-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.tier-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.tier-dot.critical { background: var(--critical); }
+.tier-dot.high     { background: var(--high); }
+.tier-dot.moderate { background: var(--moderate); }
+.tier-dot.none     { background: var(--none); }
+.tier-dot.supply {
+  background: transparent;
+  border: 1px dashed var(--supply);
+}
+.glance-legend-supply { padding-left: 8px; border-left: 1px solid var(--border); }
+.glance-legend-edge { padding-left: 8px; border-left: 1px solid var(--border); }
+.edge-sample {
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--edge-weak), var(--edge-strong));
+}
+
+/* Legacy layer labels (unused by full render; kept for possible slice replay) */
+.glance-layer-labels {
+  position: relative;
+  height: 26px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.glance-flow-wrap {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+.glance-flow-wrap .react-flow { background: var(--bg); }
+.glance-flow-wrap .react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+}
+.glance-flow-wrap .react-flow__controls {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.glance-flow-wrap .react-flow__controls-button {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  width: 26px;
+  height: 26px;
+}
+.glance-flow-wrap .react-flow__controls-button:hover { background: var(--panel-2); }
+.glance-flow-wrap .react-flow__edge-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  fill: var(--muted);
+}
+
+/* ---------- Chokepoint node (tier-colored) --------------- */
+
+.glance-node {
+  min-width: 200px;
+  max-width: 220px;
+  padding: 9px 12px;
+  border: 2px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+.glance-node:hover { transform: translateY(-1px); }
+
+/* --- Shape channel (border-radius / border style by node type) --- */
+.glance-node.type-company  { border-radius: 4px; }
+.glance-node.type-mineral  { border-radius: 26px; }
+.glance-node.type-product  { border-radius: 4px 22px 4px 22px; }
+.glance-node.type-facility { border-radius: 4px; border-style: solid; border-width: 2px; }
+.glance-node.type-facility::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  width: 12px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px 2px 0 0;
+}
+
+/* --- Color channel (border color / glow by tier) --- */
+.glance-node.tier-critical {
+  border-color: var(--critical);
+  box-shadow: 0 0 14px rgba(255, 82, 82, 0.30);
+}
+.glance-node.tier-critical:hover { box-shadow: 0 0 20px rgba(255, 82, 82, 0.55); }
+.glance-node.tier-high     { border-color: var(--high); }
+.glance-node.tier-high:hover { box-shadow: 0 0 12px rgba(255, 152, 0, 0.35); }
+.glance-node.tier-moderate { border-color: var(--moderate); }
+.glance-node.tier-moderate:hover { box-shadow: 0 0 10px rgba(255, 202, 40, 0.30); }
+.glance-node.tier-none     { border-color: var(--border); }
+
+.glance-node-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.glance-node-icon {
+  font-size: 11px;
+  opacity: 0.7;
+}
+.glance-node-name {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.2;
+  flex: 1;
+}
+.glance-node-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  gap: 6px;
+}
+.glance-node-cat {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 130px;
+}
+.glance-tier {
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-weight: 600;
+}
+.glance-tier.tier-critical { background: rgba(255,82,82,0.15); color: var(--critical); }
+.glance-tier.tier-high     { background: rgba(255,152,0,0.15); color: var(--high); }
+.glance-tier.tier-moderate { background: rgba(255,202,40,0.15); color: var(--moderate); }
+.glance-tier.tier-none     { background: rgba(76,175,80,0.15); color: var(--none); }
+
+.glance-node-badge {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.glance-node-badge-flag { font-size: 14px; line-height: 1; }
+.glance-node-badge-name { letter-spacing: 0.3px; }
+
+/* ---------- Country node (supply source, distinct visual class) --------- */
+
+.glance-country-node {
+  width: 200px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px dashed var(--supply);
+  background: var(--panel-2);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.glance-country-flag { font-size: 18px; line-height: 1; }
+.glance-country-name {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================ *
+ *  Summary node (collapsed meta-layer)                          *
+ * ============================================================ */
+
+.glance-summary {
+  min-width: 180px;
+  padding: 14px 16px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  background: var(--panel);
+  text-align: center;
+}
+.glance-summary.tier-critical { border-color: var(--critical); box-shadow: 0 0 16px rgba(255,82,82,0.35); }
+.glance-summary.tier-high     { border-color: var(--high);     box-shadow: 0 0 12px rgba(255,152,0,0.30); }
+.glance-summary.tier-moderate { border-color: var(--moderate); }
+.glance-summary.tier-none     { border-color: var(--border);   }
+.glance-summary-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.glance-summary-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.glance-summary-histogram {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+.glance-summary-bucket {
+  display: inline-block;
+  min-width: 20px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+.glance-summary-bucket.critical { background: rgba(255,82,82,0.20); color: var(--critical); }
+.glance-summary-bucket.high     { background: rgba(255,152,0,0.20); color: var(--high); }
+.glance-summary-bucket.moderate { background: rgba(255,202,40,0.20); color: var(--moderate); }
+.glance-summary-bucket.none     { background: rgba(76,175,80,0.15);  color: var(--none); }
+
+/* ============================================================ *
+ *  Layer controls (collapse toggles)                            *
+ * ============================================================ */
+
+.glance-layer-controls {
+  display: flex;
+  gap: 6px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.layer-toggle:hover { background: var(--panel); border-color: var(--accent); }
+.layer-toggle.is-collapsed {
+  background: transparent;
+  color: var(--muted);
+  border-style: dashed;
+}
+.layer-toggle-icon {
+  font-family: var(--mono);
+  font-size: 12px;
+  opacity: 0.7;
+}
+.layer-toggle-label {
+  letter-spacing: 0.3px;
+}
+
+/* Sub-column label — rendered as a React Flow node so it pans/zooms with
+ * the flow content. No absolute positioning here; React Flow places it. */
+.glance-column-label-node {
+  padding: 6px 0 6px 8px;
+  color: var(--muted);
+  line-height: 1.2;
+  cursor: default;
+  user-select: none;
+}
+.glance-column-label-node.is-first-of-meta {
+  border-left: 2px solid var(--accent);
+}
+.glance-column-label-meta {
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+.glance-column-label-sub {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Legacy — no longer rendered but kept in case a future view reuses it */
+.glance-column-labels {
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.glance-column-label {
+  position: absolute;
+  top: 4px;
+  text-align: left;
+  padding-left: 6px;
+  /* width is set inline so the Sources column label can span its 2-wide grid */
+}
+.glance-column-label.is-first-of-meta {
+  border-left: 2px solid var(--accent);
+}
+.glance-column-meta {
+  font-size: 9px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.glance-column-sub {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Legend — extend for shape channel */
+.glance-legend-shapes {
+  padding-left: 10px;
+  border-left: 1px solid var(--border);
+  display: inline-flex;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.shape-sample {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* Hover hint next to layer controls */
+.glance-hover-hint {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: italic;
+  align-self: center;
+}
+
+/* Hover-highlight — actively highlight the whole trail, don't just dim
+ * the rest. Trail nodes get an accent border + glow; the hovered node gets
+ * a stronger version + slight scale; non-trail fades to near-transparent.
+ *
+ * Node classes come from useHoverState (context) in each custom node
+ * component, so the flow node array stays identity-stable across hovers.
+ * Edge classes are applied imperatively (React Flow renders edges itself). */
+
+/* --- non-trail dim --- */
+.glance-node.is-dimmed,
+.glance-country-node.is-dimmed,
+.glance-summary.is-dimmed {
+  opacity: 0.12;
+  transition: opacity 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* --- trail nodes: connected but not hovered --- */
+.glance-node.is-trail,
+.glance-summary.is-trail {
+  box-shadow:
+    0 0 0 2px var(--accent),
+    0 0 12px rgba(79, 195, 247, 0.45);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.glance-country-node.is-trail {
+  border-color: var(--accent);
+  border-style: solid;
+  box-shadow: 0 0 10px rgba(79, 195, 247, 0.35);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+/* --- hovered node: full emphasis --- */
+.glance-node.is-focused,
+.glance-summary.is-focused {
+  box-shadow:
+    0 0 0 3px var(--accent),
+    0 0 24px rgba(79, 195, 247, 0.6);
+  transform: scale(1.04);
+  z-index: 30;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.glance-country-node.is-focused {
+  border-color: var(--accent);
+  border-style: solid;
+  box-shadow: 0 0 18px rgba(79, 195, 247, 0.55);
+  transform: scale(1.04);
+  z-index: 30;
+}
+
+/* Smooth back-transitions when hover clears */
+.glance-node,
+.glance-country-node,
+.glance-summary {
+  transition: box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+/* --- edges --- use !important because React Flow sets opacity via inline
+ * SVG style, and we need class-based hover styling to win. */
+.react-flow__edge.is-dimmed-edge .react-flow__edge-path,
+.react-flow__edge.is-dimmed-edge .react-flow__edge-interaction {
+  opacity: 0.04 !important;
+  transition: opacity 0.15s;
+}
+.react-flow__edge.is-lit-edge .react-flow__edge-path {
+  opacity: 1 !important;
+  stroke: var(--accent) !important;
+  stroke-width: 3 !important;
+  stroke-dasharray: 8 4 !important;
+  animation: edge-flow 1.1s linear infinite;
+  transition: stroke-width 0.15s;
+}
+@keyframes edge-flow {
+  from { stroke-dashoffset: 12; }
+  to   { stroke-dashoffset: 0;  }
+}
