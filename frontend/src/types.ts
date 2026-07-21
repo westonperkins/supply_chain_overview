@@ -55,7 +55,9 @@ export interface Edge {
   source_id: string;
   target_id: string;
   type: string;
-  weight: number;
+  input_share: number;               // preferred — source's share of target's supply
+  output_share?: number | null;      // optional — target's share of source's output
+  weight: number;                    // legacy alias for input_share; backend still serialises it
   domains: string[];
   static: { notes?: string | null; confidence?: Confidence; source_note?: string | null };
 }

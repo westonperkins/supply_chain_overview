@@ -54,6 +54,14 @@ concentration:
       # a listed stage isn't a valid supply edge type, config load
       # raises immediately rather than silently no-op'ing.
       stages: null
+      # `normalize` decides whether shares are divided by their sum before
+      # squaring. When true (legacy), a bucket summing to 0.08 reads as
+      # HHI 1.00 — incompleteness disappears. When false, HHI = sum of
+      # squared raw shares, so an incomplete bucket is dampened in exact
+      # proportion to its shortfall. See
+      # `docs/edge_weight_semantics_report.md` for the audit and
+      # trade-offs. Default true so this flag alone changes no scores.
+      normalize: true
       combine: max            # max | weighted_sum
       weights:                # used only when combine = weighted_sum
         mines: 1.0

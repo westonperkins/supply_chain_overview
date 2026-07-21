@@ -69,6 +69,18 @@ class ScoringConfig:
         return list(stages) if stages else None
 
     @property
+    def inbound_per_stage_normalize(self) -> bool:
+        """When true (legacy), per-stage HHI divides each share by the
+        stage's sum before squaring, so a bucket summing to 0.08 reads
+        as 1.00 — incompleteness disappears. When false, HHI is the sum
+        of squared raw shares, so incomplete buckets self-report."""
+        return bool(
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("normalize", True)
+        )
+
+    @property
     def inbound_per_stage_combine(self) -> str:
         return (
             self.raw["concentration"]["inbound"]

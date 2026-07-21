@@ -1,0 +1,41 @@
+cascade:
+  decay_per_hop: 0.6
+  financial_cushion_proxy: static.financial_cushion
+  max_hops: 6
+chokepoint_thresholds:
+  critical: 0.225
+  high: 0.13
+  moderate: 0.05
+concentration:
+  combine:
+    inbound_weight: 1.0
+    method: max
+    outbound_weight: 1.0
+  inbound:
+    method: per_stage
+    per_stage:
+      combine: max
+      normalize: true
+      stages: null
+      weights:
+        component_of: 1.0
+        input_to: 1.0
+        mines: 1.0
+        refines: 1.0
+        supplies: 1.0
+  outbound:
+    decay_per_hop: 0.7
+    max_hops: 6
+    min_influence: 1e-6
+formula: concentration * (1 - substitutability) * lead_time
+lead_time:
+  normalization: log10_1p
+rating:
+  thresholds:
+    bearish_below: -0.33
+    bullish_above: 0.33
+version: 1
+weights:
+  concentration: 1.0
+  lead_time: 1.0
+  substitutability: 1.0

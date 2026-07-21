@@ -12,18 +12,32 @@ from .config import ScoringConfig
 # Inbound concentration — HHI                                                 #
 # --------------------------------------------------------------------------- #
 
-def compute_hhi(shares: dict[str, float]) -> float:
-    """Herfindahl-Hirschman Index, normalized to [0, 1]."""
+def compute_hhi(shares: dict[str, float], normalize: bool = True) -> float:
+    """Herfindahl-Hirschman Index.
+
+    When `normalize=True` (legacy behaviour), shares are divided by their
+    sum before squaring, so a bucket summing to 0.08 reads as HHI 1.00 —
+    incompleteness is discarded.
+
+    When `normalize=False`, HHI is the sum of squared RAW shares. An
+    incomplete bucket is dampened in exact proportion to its shortfall;
+    no tuning parameter, no threshold. If the shares sum above 1.0 (i.e.
+    the edge-type semantics are not "target's input share"), HHI can
+    exceed 1.0 — that value is left un-clamped so the semantic mismatch
+    surfaces rather than being hidden. See the audit in
+    `docs/edge_weight_semantics_report.md`.
+    """
     if not shares:
         return 0.0
-    total = sum(shares.values())
-    if total <= 0:
-        return 0.0
-    normed = [v / total for v in shares.values()]
-    return sum(v * v for v in normed)
+    if normalize:
+        total = sum(shares.values())
+        if total <= 0:
+            return 0.0
+        return sum((v / total) ** 2 for v in shares.values())
+    return sum(v * v for v in shares.values())
 
 
-def hhi_from_derived_shares(derived: Optional[dict]) -> float:
+def hhi_from_derived_shares(derived: Optional[dict], normalize: bool = True) -> float:
     """Legacy blended HHI — kept so before/after is inspectable on the node
     as `combined_hhi`. NOT the inbound_hhi used in scoring anymore.
 
@@ -38,10 +52,10 @@ def hhi_from_derived_shares(derived: Optional[dict]) -> float:
         for src, weight in sources.items():
             if weight > combined.get(src, 0.0):
                 combined[src] = weight
-    return compute_hhi(combined)
+    return compute_hhi(combined, normalize=normalize)
 
 
-def per_stage_hhi(derived: Optional[dict], stage: str) -> Optional[float]:
+def per_stage_hhi(derived: Optional[dict], stage: str, normalize: bool = True) -> Optional[float]:
     """HHI of one stage in isolation. Returns None when the stage has no
     edges on this node (so we can distinguish 'not applicable' from 'zero')."""
     if not derived:
@@ -49,10 +63,10 @@ def per_stage_hhi(derived: Optional[dict], stage: str) -> Optional[float]:
     stage_shares = derived.get(stage)
     if not stage_shares:
         return None
-    return compute_hhi(stage_shares)
+    return compute_hhi(stage_shares, normalize=normalize)
 
 
-def compute_stage_hhis(derived: Optional[dict]) -> dict[str, float]:
+def compute_stage_hhis(derived: Optional[dict], normalize: bool = True) -> dict[str, float]:
     """Compute per-stage HHIs for every edge type in SUPPLY_EDGE_TYPES that
     has edges present in `derived`. Returns {} when nothing applies.
 
@@ -67,7 +81,7 @@ def compute_stage_hhis(derived: Optional[dict]) -> dict[str, float]:
     for stage_name, shares in derived.items():
         if stage_name not in valid or not shares:
             continue
-        out[stage_name] = compute_hhi(shares)
+        out[stage_name] = compute_hhi(shares, normalize=normalize)
     return out
 
 
@@ -264,13 +278,14 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
 
     outbound_map = compute_outbound_criticality_map(graph, config)
     configured_stages = config.inbound_per_stage_stages  # None → use all
+    normalize = config.inbound_per_stage_normalize
 
     for node in graph.nodes.values():
         derived = node.dynamic.derived_shares
 
         # Single source of truth: per-stage HHIs across every SUPPLY_EDGE_TYPES
         # edge type with edges present. Never hardcoded.
-        stage_hhis = compute_stage_hhis(derived)
+        stage_hhis = compute_stage_hhis(derived, normalize=normalize)
         node.dynamic.stage_hhis = stage_hhis or None
 
         # Convenience accessors — read from stage_hhis, do not recompute.
@@ -279,7 +294,7 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
         node.dynamic.supplied_by_hhi = stage_hhis.get("supplies")
 
         # Legacy blended value — kept purely for inspection / diffing.
-        node.dynamic.combined_hhi = hhi_from_derived_shares(derived)
+        node.dynamic.combined_hhi = hhi_from_derived_shares(derived, normalize=normalize)
 
         # Combine present per-stage HHIs into inbound_hhi. When the yaml
         # opts out via an explicit stages list, honour it; otherwise use

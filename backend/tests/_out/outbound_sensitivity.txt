@@ -1,0 +1,10 @@
+Removing the single highest-outbound node (TSMC, id=company:tsmc, score=1.000) and renormalizing changes:
+
+  5 node(s) shift tier.
+
+Changed:
+  mineral:copper                            high → critical 
+  company:tsmc                          critical → moderate 
+  company:constellation_energy              none → moderate 
+  company:mp_materials                      none → moderate 
+  company:lynas                             none → moderate 

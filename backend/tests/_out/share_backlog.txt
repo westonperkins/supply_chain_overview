@@ -1,0 +1,44 @@
+share-completeness backlog — 42 bucket(s) below 0.95
+severity    sum edges  node                                   stage         
+FAIL      0.080     1  TSMC                                   input_to      
+FAIL      0.080     1  SK Hynix                               input_to      
+FAIL      0.080     1  Micron                                 input_to      
+FAIL      0.080     1  Colossus                               input_to      
+FAIL      0.080     1  Stargate (Abilene)                     input_to      
+FAIL      0.080     1  Vantage Frontier                       input_to      
+FAIL      0.080     1  The Citadel                            input_to      
+FAIL      0.090     2  Samsung Electronics                    input_to      
+FAIL      0.120     1  Amazon                                 input_to      
+FAIL      0.120     1  Microsoft                              input_to      
+FAIL      0.120     1  Meta                                   input_to      
+FAIL      0.300     2  Google (Alphabet)                      input_to      
+FAIL      0.300     2  Constellation Energy                   supplies      
+FAIL      0.300     1  Quanta Services                        input_to      
+FAIL      0.400     3  Broadcom                               input_to      
+FAIL      0.430     2  AMD                                    input_to      
+FAIL      0.450     2  GE Vernova                             input_to      
+FAIL      0.500     2  NVIDIA                                 input_to      
+FAIL      0.500     2  Siemens Energy                         input_to      
+FAIL      0.530     3  Vertiv                                 input_to      
+FAIL      0.600     5  Samsung Electronics                    supplies      
+FAIL      0.600     3  Google (Alphabet)                      supplies      
+FAIL      0.600     3  Amazon                                 supplies      
+FAIL      0.600     3  Duke Energy                            supplies      
+FAIL      0.650     5  Copper                                 mines         
+FAIL      0.650     3  Micron                                 supplies      
+FAIL      0.650     6  Stargate (Abilene)                     supplies      
+FAIL      0.650     5  Vantage Frontier                       supplies      
+FAIL      0.700     3  Intel                                  supplies      
+FAIL      0.700     3  Microsoft                              supplies      
+FAIL      0.700     3  Meta                                   supplies      
+FAIL      0.700     7  Colossus                               supplies      
+FAIL      0.710     5  TSMC                                   supplies      
+FAIL      0.750     4  Indium                                 mines         
+FAIL      0.750     3  NextEra Energy                         supplies      
+FAIL      0.750     4  The Citadel                            supplies      
+FAIL      0.800     2  xAI                                    supplies      
+FAIL      0.800     2  OpenAI                                 supplies      
+warn      0.800     2  NdFeB Permanent Magnets                input_to      
+warn      0.900     4  Gallium                                refines       
+warn      0.900     1  RF & Power Semiconductors              input_to      
+warn      0.930     4  Indium                                 refines       
