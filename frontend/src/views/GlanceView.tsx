@@ -127,7 +127,9 @@ function computeReachable(
 const LABEL_Y = -68;
 
 function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
-  const [collapsed, setCollapsed] = useState<Set<MetaLayerId>>(new Set(["chips"]));
+  // All meta-layers expanded on load. User can collapse individually via the
+  // header toggles when they want to focus on a slice.
+  const [collapsed, setCollapsed] = useState<Set<MetaLayerId>>(new Set());
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const rf = useReactFlow();
   const flowWrapRef = useRef<HTMLDivElement>(null);
