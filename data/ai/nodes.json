@@ -81,7 +81,8 @@
       "substitutability": {"value": 0.2, "confidence": "estimate", "source_note": "Low — aluminum substitutes some uses; recycling covers 20–35% of refined supply."},
       "lead_time_years": {"value": 17.0, "confidence": "estimate", "source_note": "~17 years discovery-to-production, some estimates to 25. The longest lead time in the set."},
       "bottleneck_type": "volume_demand",
-      "notes": "NOT a concentration problem per paper — a volume/demand story. Structural deficit potentially >6 Mt/yr by early 2030s. COMEX broke $6/lb for the first time in Jan 2026."
+      "notes": "NOT a concentration problem per paper — a volume/demand story. Structural deficit potentially >6 Mt/yr by early 2030s. COMEX broke $6/lb for the first time in Jan 2026.",
+      "modeling_caveat": "Per-stage HHI split is now done. Mining reads diversified (mined_by_hhi ~0.25 across Chile, DRC, Peru, China, US); refining reads as a monopoly (refined_by_hhi 1.0) because China is the only refiner modelled — an under-modelling artefact, not the paper's ~47% figure. Copper's real paper story is volume plus a 17–25 year mine lead time, i.e. a scale/demand constraint the model has no axis for; concentration is absorbing risk it cannot represent."
     }
   },
 
@@ -560,7 +561,10 @@
     "layer": "data_centers",
     "sub_category": "ai_lab",
     "description": "Operator of the Colossus data center in Memphis (2 GW, 555k GPUs, plans for 1M+).",
-    "static": {"financial_cushion": {"value": 0.60, "confidence": "inference", "source_note": "Private; capital-heavy but well-funded."}}
+    "static": {
+      "financial_cushion": {"value": 0.60, "confidence": "inference", "source_note": "Private; capital-heavy but well-funded."},
+      "modeling_caveat": "Inbound HHI reads high because NVIDIA is the only modelled input. Real inputs include power, cooling, land and skilled labour — xAI is less single-sourced than the number implies."
+    }
   },
   {
     "id": "company:openai",
@@ -571,7 +575,10 @@
     "layer": "data_centers",
     "sub_category": "ai_lab",
     "description": "Operator of the Stargate program (~$100B) — Abilene TX plus MI, WI, WY, NM, GA, OH, PA.",
-    "static": {"financial_cushion": {"value": 0.60, "confidence": "inference", "source_note": "Private; Microsoft backing."}}
+    "static": {
+      "financial_cushion": {"value": 0.60, "confidence": "inference", "source_note": "Private; Microsoft backing."},
+      "modeling_caveat": "Inbound HHI reads high because NVIDIA is the only modelled input. Real inputs include power, cooling, land and skilled labour — OpenAI is less single-sourced than the number implies."
+    }
   },
   {
     "id": "company:constellation_energy",
@@ -669,7 +676,10 @@
     "layer": "power",
     "sub_category": "grid_equipment",
     "description": "Grid construction — the pipeline that connects new generation to new load.",
-    "static": {"financial_cushion": {"value": 0.55, "confidence": "inference"}}
+    "static": {
+      "financial_cushion": {"value": 0.55, "confidence": "inference"},
+      "modeling_caveat": "Inbound HHI reads 1.0 because copper is the only modelled input. Real inputs include steel, transformers, labour and permits — Quanta is not single-sourced to the degree the number suggests."
+    }
   },
   {
     "id": "company:vertiv",

@@ -1,10 +1,15 @@
 from fastapi import APIRouter, HTTPException
 
 from ..graph import SupplyChainGraph
+from ..narration import NarrationBuilder, NarrationConfig
 from ..scoring import ScoringConfig, propagate_event
 
 
-def build_router(graph: SupplyChainGraph, config: ScoringConfig) -> APIRouter:
+def build_router(
+    graph: SupplyChainGraph,
+    config: ScoringConfig,
+    narration: NarrationBuilder,
+) -> APIRouter:
     router = APIRouter()
 
     @router.get("/health")
@@ -68,5 +73,12 @@ def build_router(graph: SupplyChainGraph, config: ScoringConfig) -> APIRouter:
     @router.get("/config/scoring")
     def scoring_config():
         return config.raw
+
+    @router.get("/nodes/{node_id}/narration")
+    def node_narration(node_id: str):
+        try:
+            return narration.build(node_id)
+        except KeyError:
+            raise HTTPException(status_code=404, detail=f"unknown node: {node_id}")
 
     return router

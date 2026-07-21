@@ -16,6 +16,10 @@ class StaticFields(BaseModel):
     bottleneck_type: Optional[BottleneckType] = None
     financial_cushion: Optional[SourcedValue] = None  # value.value in [0, 1], companies only
     notes: Optional[str] = None
+    # Optional per-node caveat rendered by the narration layer. Populate only
+    # when a specific score is known to be misleading due to under-modelling
+    # or a scoring artefact — otherwise leave null.
+    modeling_caveat: Optional[str] = None
 
 
 class DynamicFields(BaseModel):
@@ -28,7 +32,13 @@ class DynamicFields(BaseModel):
     market_share: Optional[float] = None
 
     # Derived and cached — never hand-asserted.
-    inbound_hhi: Optional[float] = None               # HHI on incoming supplier shares
+    # Per-stage HHIs — None when the corresponding stage has no edges here.
+    mined_by_hhi: Optional[float] = None
+    refined_by_hhi: Optional[float] = None
+    supplied_by_hhi: Optional[float] = None
+    # Legacy blended HHI — kept for inspection / before-after diffing.
+    combined_hhi: Optional[float] = None
+    inbound_hhi: Optional[float] = None               # combine of per-stage per scoring.yaml (default max)
     outbound_criticality: Optional[float] = None      # normalized [0,1] — captures ASML/TSMC-style upstream chokepoints
     concentration: Optional[float] = None             # combined value used in severity formula
     current_severity: Optional[float] = None

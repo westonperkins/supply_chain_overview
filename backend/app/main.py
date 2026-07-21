@@ -5,12 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .api.routes import build_router
 from .graph import SupplyChainGraph
+from .narration import NarrationBuilder, NarrationConfig
 from .scoring import ScoringConfig, propagate_event, refresh_all_derived
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = REPO_ROOT / "data"
 CONFIG_PATH = REPO_ROOT / "config" / "scoring.yaml"
+NARRATION_CONFIG_PATH = REPO_ROOT / "config" / "narration.yaml"
 
 
 def create_app() -> FastAPI:
@@ -34,7 +36,10 @@ def create_app() -> FastAPI:
     for event in graph.events.values():
         propagate_event(event, graph, config)
 
-    app.include_router(build_router(graph, config))
+    narration_config = NarrationConfig.load(NARRATION_CONFIG_PATH)
+    narration = NarrationBuilder(narration_config, graph)
+
+    app.include_router(build_router(graph, config, narration))
     return app
 
 

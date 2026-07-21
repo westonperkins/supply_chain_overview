@@ -1,0 +1,143 @@
+# Narration configuration — this file is the ONLY place panel wording lives.
+# Code assembles; this file decides phrasing. Never build sentences in Python.
+version: 1
+
+# --------------------------------------------------------------------------- #
+# Word-scales                                                                  #
+# --------------------------------------------------------------------------- #
+
+scales:
+  # Which axis won the concentration max() determines which list is used.
+  # Ordered high → low; first entry whose min <= value wins.
+  concentration_inbound:
+    - {min: 0.85, phrase: "one source controls almost all supply"}
+    - {min: 0.50, phrase: "supply is dominated by a single source"}
+    - {min: 0.25, phrase: "supply is concentrated among a few sources"}
+    - {min: 0.15, phrase: "supply is moderately spread"}
+    - {min: 0.00, phrase: "supply is broadly diversified"}
+
+  concentration_outbound:
+    - {min: 0.70, phrase: "almost everything downstream runs through it"}
+    - {min: 0.40, phrase: "a large share of the chain depends on it"}
+    - {min: 0.15, phrase: "several downstream nodes depend on it"}
+    - {min: 0.00, phrase: "little downstream depends on it"}
+
+  substitutability:   # 0 = no substitute, 1 = perfect substitute
+    - {min: 0.70, phrase: "it is readily substitutable"}
+    - {min: 0.40, phrase: "workable substitutes exist"}
+    - {min: 0.20, phrase: "limited substitutes exist"}
+    - {min: 0.05, phrase: "substitutes are marginal"}
+    - {min: 0.00, phrase: "there is no working substitute"}
+
+  lead_time_years:
+    - {min: 10.0, phrase: "replacing it would take over a decade"}
+    - {min: 5.0,  phrase: "replacing it would take five to ten years"}
+    - {min: 3.0,  phrase: "replacing it would take three to five years"}
+    - {min: 1.0,  phrase: "replacing it would take one to three years"}
+    - {min: 0.0,  phrase: "replacing it would take under a year"}
+
+# --------------------------------------------------------------------------- #
+# Edge-type sentence templates                                                 #
+# --------------------------------------------------------------------------- #
+# Shares render largest-first, top 3, then "and others".
+# mines and refines ALWAYS produce separate sentences, even when the same
+# country appears in both. That distinction is the paper's.
+
+edges:
+  mines:
+    upstream:   "Mined in {sources_with_shares}."
+    downstream: "Feeds {targets}."
+  refines:
+    upstream:   "Refined into usable form by {sources_with_shares}."
+    downstream: "Refines {targets}."
+  supplies:
+    upstream:   "Supplied by {sources_with_shares}."
+    downstream: "Supplies {targets}."
+  input_to:
+    upstream:   "Uses {sources_with_shares} as input."
+    downstream: "Feeds {targets}."
+  component_of:
+    upstream:   "Built from {sources_with_shares}."
+    downstream: "Is a component of {targets}."
+  depends_on:
+    upstream:   "Depends on {sources}."
+    downstream: "{targets} depend on it."
+  located_in:
+    upstream:   "Located in {source}."
+    downstream: "Hosts {targets}."
+  operates:
+    upstream:   "Operated by {source}."
+    downstream: "Operates {targets}."
+
+chain:
+  max_hops: 3
+  joiner: ", which supply "
+  truncation: "…and onward to {terminal_layer}."
+
+# --------------------------------------------------------------------------- #
+# Section titles by node type                                                  #
+# --------------------------------------------------------------------------- #
+
+sections:
+  default:
+    where_from: "Where it comes from"
+    what_feeds: "What it feeds"
+    why_scores: "Why it scores {tier}"
+    if_broke:   "If it broke"
+    caveats:    "Caveats"
+  company:
+    where_from: "What it buys"
+    what_feeds: "What it supplies"
+  product:
+    where_from: "What it's made from"
+    what_feeds: "What it goes into"
+  facility:
+    where_from: "Operator and location"
+    what_feeds: "What it produces"
+  country:
+    where_from: null          # omitted entirely
+    what_feeds: "What it supplies"
+    why_scores: "Why it matters"
+
+tier_words:
+  critical: "critical"
+  high:     "high"
+  moderate: "moderate"
+  none:     "low"             # title becomes "Why it scores low"
+
+# --------------------------------------------------------------------------- #
+# Confidence hedging                                                           #
+# --------------------------------------------------------------------------- #
+
+confidence_hedges:
+  measured:  ""               # no hedge
+  hard:      ""               # alias for measured (schema uses "hard")
+  estimate:  "roughly "
+  inference: "on the order of "
+
+# --------------------------------------------------------------------------- #
+# Constraints                                                                  #
+# --------------------------------------------------------------------------- #
+
+limits:
+  max_sentences_per_section: 2
+  share_decimal_places: 1
+
+disclaimers:
+  company_rating: >-
+    Company ratings are analytical signals derived from supply-chain structure.
+    Not investment advice.
+
+# --------------------------------------------------------------------------- #
+# Acronym glossary — single source of truth, shared with the paper             #
+# --------------------------------------------------------------------------- #
+
+acronyms:
+  HBM:   "High Bandwidth Memory"
+  CoWoS: "Chip on Wafer on Substrate"
+  NdFeB: "Neodymium Iron Boron"
+  PPA:   "Power Purchase Agreement"
+  HHI:   "Herfindahl-Hirschman Index"
+  EUV:   "Extreme Ultraviolet"
+  IDM:   "Integrated Device Manufacturer"
+  RF:    "Radio Frequency"
