@@ -582,7 +582,7 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Samsung uses less EUV than TSMC; paper \u00a72B: Samsung 3nm yields stuck at 30-40%."
+      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. ASML share is lower than for TSMC because Samsung uses less EUV at this stage (paper \u00a72B: '3nm yields stuck at 30-40%')."
     },
     "input_share": 0.2,
     "output_share": null
@@ -640,7 +640,7 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Samsung's memory business raises AMAT's share vs TSMC."
+      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Memory manufacturing raises AMAT's share vs a pure logic fab."
     },
     "input_share": 0.12,
     "output_share": null
@@ -720,7 +720,7 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Same rationale \u2014 3D memory raises LRCX's share."
+      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Memory's 3D stack requirements raise LRCX's share vs a pure logic fab."
     },
     "input_share": 0.12,
     "output_share": null
@@ -744,7 +744,7 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab."
+      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Inspection/metrology slice."
     },
     "input_share": 0.06,
     "output_share": null
@@ -790,7 +790,7 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab."
+      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Coating/etch/cleaning slice."
     },
     "input_share": 0.1,
     "output_share": null
@@ -813,9 +813,9 @@
     "type": "supplies",
     "static": {
       "confidence": "hard",
-      "source_note": "Effectively sole leading-edge foundry."
+      "source_note": "Effectively sole leading-edge foundry. | Reduced from 0.99 to 0.94 in the cleanup pass to accommodate the new SK Hynix \u2192 NVIDIA supplies edge added per paper \u00a75 (mutual TSMC + SK Hynix reliance). Bucket total held at 1.00."
     },
-    "input_share": 0.99,
+    "input_share": 0.94,
     "output_share": null
   },
   {
@@ -907,10 +907,10 @@
     "type": "input_to",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72C names HBM a co-equal bottleneck with the GPU. Paper does not quantify HBM's fraction of NVIDIA's BOM; industry-informed estimate: HBM ~25\u201335% of AI-GPU cost. NOTE \u2014 customer-concentration judgment (paper \u00a75: SK Hynix ~90% NVIDIA-reliant) has been relocated to output_share on this edge, per the two-field schema. | output_share: Paper \u00a75 (Financial Interdependencies): 'SK Hynix ~90% reliant on NVIDIA for HBM.' Applied to HBM \u2192 NVIDIA as the closest existing edge in the two-hop path SK Hynix \u2192 HBM \u2192 NVIDIA."
+      "source_note": "Paper \u00a72C names HBM a co-equal bottleneck with the GPU. Paper does not quantify HBM's fraction of NVIDIA's BOM; industry-informed estimate: HBM ~25\u201335% of AI-GPU cost. NOTE \u2014 customer-concentration judgment (paper \u00a75: SK Hynix ~90% NVIDIA-reliant) has been relocated to output_share on this edge, per the two-field schema."
     },
     "input_share": 0.3,
-    "output_share": 0.9
+    "output_share": null
   },
   {
     "id": "e:hbm-input-amd",
@@ -1878,5 +1878,19 @@
     "type": "located_in",
     "input_share": 1.0,
     "output_share": null
+  },
+  {
+    "id": "e:sk_hynix-supplies-nvidia",
+    "source_id": "company:sk_hynix",
+    "target_id": "company:nvidia",
+    "type": "supplies",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a75 identifies NVIDIA as reliant on TSMC + SK Hynix. The paper does not quantify SK Hynix's share of NVIDIA's overall supplies bucket; input_share is an industry-informed estimate reflecting SK Hynix's role as NVIDIA's dominant HBM supplier (HBM itself is separately modelled via the HBM product node). Bucket deliberately incomplete.",
+      "output_share_confidence": "hard",
+      "output_share_source_note": "Paper \u00a75 (Financial Interdependencies): 'SK Hynix ~90% reliant on NVIDIA for HBM.' This is the paper's own figure on the paper's own edge \u2014 the previous placement on e:hbm-input-nvidia asserted the ratio for the aggregate HBM product, which overstated the paper (Micron and Samsung sell elsewhere)."
+    },
+    "input_share": 0.05,
+    "output_share": 0.9
   }
 ]

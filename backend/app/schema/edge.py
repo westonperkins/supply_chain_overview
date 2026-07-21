@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field, computed_field
+from pydantic import BaseModel, Field, computed_field, model_validator
 
 from .enums import Confidence, EdgeType
 
@@ -10,6 +10,12 @@ class EdgeStatic(BaseModel):
     since_year: Optional[int] = None
     confidence: Confidence = Confidence.ESTIMATE
     source_note: Optional[str] = None
+    # Provenance for `output_share` lives on its own two fields — a single
+    # source_note that concatenated input+output justifications was hiding
+    # the fact that output_share can be authored differently (different
+    # source, different confidence) from input_share on the same edge.
+    output_share_confidence: Optional[Confidence] = None
+    output_share_source_note: Optional[str] = None
 
 
 class EdgeDynamic(BaseModel):
@@ -49,6 +55,24 @@ class Edge(BaseModel):
 
     static: EdgeStatic = Field(default_factory=EdgeStatic)
     dynamic: EdgeDynamic = Field(default_factory=EdgeDynamic)
+
+    @model_validator(mode="after")
+    def _output_share_needs_provenance(self) -> "Edge":
+        """When `output_share` is set, both provenance fields must be too.
+        Guards against the previous defect where output_share silently
+        borrowed input_share's source_note."""
+        if self.output_share is not None:
+            if self.static.output_share_confidence is None:
+                raise ValueError(
+                    f"Edge {self.id}: output_share is set but "
+                    "static.output_share_confidence is not."
+                )
+            if not self.static.output_share_source_note:
+                raise ValueError(
+                    f"Edge {self.id}: output_share is set but "
+                    "static.output_share_source_note is not."
+                )
+        return self
 
     def effective_input_share(self) -> float:
         """Prefer dynamic override when observed; fall back to static."""

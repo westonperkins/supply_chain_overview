@@ -59,7 +59,13 @@ export interface Edge {
   output_share?: number | null;      // optional — target's share of source's output
   weight: number;                    // legacy alias for input_share; backend still serialises it
   domains: string[];
-  static: { notes?: string | null; confidence?: Confidence; source_note?: string | null };
+  static: {
+    notes?: string | null;
+    confidence?: Confidence;
+    source_note?: string | null;
+    output_share_confidence?: Confidence | null;
+    output_share_source_note?: string | null;
+  };
 }
 
 export interface EntityMatch {
