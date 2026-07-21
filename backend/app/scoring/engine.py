@@ -52,6 +52,25 @@ def per_stage_hhi(derived: Optional[dict], stage: str) -> Optional[float]:
     return compute_hhi(stage_shares)
 
 
+def compute_stage_hhis(derived: Optional[dict]) -> dict[str, float]:
+    """Compute per-stage HHIs for every edge type in SUPPLY_EDGE_TYPES that
+    has edges present in `derived`. Returns {} when nothing applies.
+
+    This is deliberately data-driven: the stage set is not hardcoded, so
+    adding a new SUPPLY_EDGE_TYPES member automatically flows through. The
+    previous defect (hardcoded three-stage triple in Python that yaml
+    couldn't override) cannot recur under this shape."""
+    if not derived:
+        return {}
+    valid = {t.value for t in SUPPLY_EDGE_TYPES}
+    out: dict[str, float] = {}
+    for stage_name, shares in derived.items():
+        if stage_name not in valid or not shares:
+            continue
+        out[stage_name] = compute_hhi(shares)
+    return out
+
+
 def combine_per_stage(values: dict[str, float], config: ScoringConfig) -> float:
     """Combines the present per-stage HHIs according to config.
 
@@ -230,9 +249,13 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
 
     Order matters:
       1. derived_shares  (from edges)
-      2. per-stage HHIs (mined_by_hhi, refined_by_hhi, supplied_by_hhi) and
-         combined_hhi (legacy blended value, kept for inspection)
-      3. inbound_hhi     (combine of per-stage values per config; default max)
+      2. stage_hhis  (per-stage HHI for every edge type present in
+         SUPPLY_EDGE_TYPES — not a hardcoded set), plus convenience
+         accessors mined_by_hhi / refined_by_hhi / supplied_by_hhi and
+         the legacy blended combined_hhi
+      3. inbound_hhi     (combine of stage_hhis values per config;
+         default = max over all present stages; optional stages
+         restriction in yaml opts OUT of edge types)
       4. outbound_criticality  (walk downstream, then normalize by graph max)
       5. concentration   (combine inbound + outbound per config)
       6. current_severity, chokepoint_tier  (from concentration + static axes)
@@ -240,28 +263,33 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
     graph.refresh_derived_shares()
 
     outbound_map = compute_outbound_criticality_map(graph, config)
-    stage_names = config.inbound_per_stage_stages
+    configured_stages = config.inbound_per_stage_stages  # None → use all
 
     for node in graph.nodes.values():
         derived = node.dynamic.derived_shares
 
-        # Per-stage HHIs — None when the stage has no edges on this node.
-        node.dynamic.mined_by_hhi    = per_stage_hhi(derived, "mines")
-        node.dynamic.refined_by_hhi  = per_stage_hhi(derived, "refines")
-        node.dynamic.supplied_by_hhi = per_stage_hhi(derived, "supplies")
+        # Single source of truth: per-stage HHIs across every SUPPLY_EDGE_TYPES
+        # edge type with edges present. Never hardcoded.
+        stage_hhis = compute_stage_hhis(derived)
+        node.dynamic.stage_hhis = stage_hhis or None
+
+        # Convenience accessors — read from stage_hhis, do not recompute.
+        node.dynamic.mined_by_hhi    = stage_hhis.get("mines")
+        node.dynamic.refined_by_hhi  = stage_hhis.get("refines")
+        node.dynamic.supplied_by_hhi = stage_hhis.get("supplies")
 
         # Legacy blended value — kept purely for inspection / diffing.
         node.dynamic.combined_hhi = hhi_from_derived_shares(derived)
 
-        # Combine present per-stage HHIs into inbound_hhi per config.
-        stage_values = {
-            "mines":    node.dynamic.mined_by_hhi,
-            "refines":  node.dynamic.refined_by_hhi,
-            "supplies": node.dynamic.supplied_by_hhi,
-        }
-        present = {
-            s: v for s, v in stage_values.items() if s in stage_names and v is not None
-        }
+        # Combine present per-stage HHIs into inbound_hhi. When the yaml
+        # opts out via an explicit stages list, honour it; otherwise use
+        # everything present. This is the fix for the previous defect,
+        # where the code hardcoded {mines, refines, supplies} in Python
+        # so listing more in yaml silently did nothing.
+        if configured_stages is None:
+            present = stage_hhis
+        else:
+            present = {s: v for s, v in stage_hhis.items() if s in configured_stages}
         inbound = combine_per_stage(present, config)
 
         outbound = outbound_map.get(node.id, 0.0)

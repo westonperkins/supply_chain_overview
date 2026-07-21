@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import yaml
 
@@ -14,7 +14,33 @@ class ScoringConfig:
     @classmethod
     def load(cls, path: Path) -> "ScoringConfig":
         with path.open() as f:
-            return cls(yaml.safe_load(f))
+            cfg = cls(yaml.safe_load(f))
+        cfg._validate()
+        return cfg
+
+    def _validate(self) -> None:
+        """Fail loudly at load if config references an edge type that isn't a
+        supply edge — the whole point of listing stages is deliberate opt-out,
+        so a typo or renamed edge type must surface immediately, not silently
+        no-op the way the previous defect did."""
+        # Import here to avoid a circular dep at module load.
+        from ..schema.enums import SUPPLY_EDGE_TYPES
+
+        stages = (
+            self.raw.get("concentration", {})
+            .get("inbound", {})
+            .get("per_stage", {})
+            .get("stages")
+        )
+        if stages is None:
+            return
+        valid = {t.value for t in SUPPLY_EDGE_TYPES}
+        unknown = [s for s in stages if s not in valid]
+        if unknown:
+            raise ValueError(
+                f"scoring.yaml: concentration.inbound.per_stage.stages contains "
+                f"unknown edge types {unknown}. Valid options: {sorted(valid)}."
+            )
 
     @property
     def formula(self) -> str:
@@ -31,12 +57,16 @@ class ScoringConfig:
     # ---------------- Per-stage inbound HHI ---------------- #
 
     @property
-    def inbound_per_stage_stages(self) -> list[str]:
-        return list(
+    def inbound_per_stage_stages(self) -> Optional[list[str]]:
+        """Optional restriction — when None, use every stage in
+        SUPPLY_EDGE_TYPES that has edges present on the node. Listing stages
+        here is an opt-OUT of edge types, not the default set."""
+        stages = (
             self.raw["concentration"]["inbound"]
             .get("per_stage", {})
-            .get("stages", ["mines", "refines", "supplies"])
+            .get("stages")
         )
+        return list(stages) if stages else None
 
     @property
     def inbound_per_stage_combine(self) -> str:

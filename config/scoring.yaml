@@ -40,18 +40,27 @@ concentration:
   # absorbing risk it cannot represent. Adding a scale axis is out of scope
   # for the per-stage fix and is left as an open item.
   inbound:
-    # Per-stage HHI: compute mined_by_hhi / refined_by_hhi / supplied_by_hhi
-    # independently, then combine via `combine`. `max` preserves the intent
-    # — a mineral is fragile if EITHER stage is concentrated. Averaging
-    # reintroduces the dilution the per-stage split exists to remove.
+    # Per-stage HHI: compute HHI for every edge type with edges present on
+    # the node (mines, refines, supplies, input_to, component_of), then
+    # combine via `combine`. `max` preserves the intent — a node is fragile
+    # if ANY inbound stage is concentrated. Averaging reintroduces the
+    # dilution the per-stage split exists to remove.
     method: per_stage
     per_stage:
-      stages: [mines, refines, supplies]
+      # `stages` is OPTIONAL. When null (or absent), every edge type in
+      # SUPPLY_EDGE_TYPES that has edges present is used — this is the
+      # correct default. Listing stages here opts OUT of edge types
+      # deliberately (e.g. to model input_to as background context). If
+      # a listed stage isn't a valid supply edge type, config load
+      # raises immediately rather than silently no-op'ing.
+      stages: null
       combine: max            # max | weighted_sum
       weights:                # used only when combine = weighted_sum
         mines: 1.0
         refines: 1.0
         supplies: 1.0
+        input_to: 1.0
+        component_of: 1.0
   outbound:
     decay_per_hop: 0.7         # geometric decay per hop of downstream walk
     max_hops: 6

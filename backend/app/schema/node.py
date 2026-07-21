@@ -32,7 +32,15 @@ class DynamicFields(BaseModel):
     market_share: Optional[float] = None
 
     # Derived and cached — never hand-asserted.
-    # Per-stage HHIs — None when the corresponding stage has no edges here.
+    # Per-stage HHIs: stage name → HHI, for every edge type in
+    # SUPPLY_EDGE_TYPES that has edges present on this node.
+    # This is the single source of truth for per-stage concentration;
+    # the mined_by_hhi / refined_by_hhi / supplied_by_hhi fields below
+    # are convenience accessors that read from this dict.
+    stage_hhis: Optional[dict[str, float]] = None
+    # Convenience per-stage HHIs — None when the corresponding stage
+    # has no edges here. Populated from stage_hhis; nothing downstream
+    # reads them for computation, only for display / narration.
     mined_by_hhi: Optional[float] = None
     refined_by_hhi: Optional[float] = None
     supplied_by_hhi: Optional[float] = None

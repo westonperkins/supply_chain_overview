@@ -82,7 +82,7 @@
       "lead_time_years": {"value": 17.0, "confidence": "estimate", "source_note": "~17 years discovery-to-production, some estimates to 25. The longest lead time in the set."},
       "bottleneck_type": "volume_demand",
       "notes": "NOT a concentration problem per paper — a volume/demand story. Structural deficit potentially >6 Mt/yr by early 2030s. COMEX broke $6/lb for the first time in Jan 2026.",
-      "modeling_caveat": "Per-stage HHI split is now done. Mining reads diversified (mined_by_hhi ~0.25 across Chile, DRC, Peru, China, US); refining reads as a monopoly (refined_by_hhi 1.0) because China is the only refiner modelled — an under-modelling artefact, not the paper's ~47% figure. Copper's real paper story is volume plus a 17–25 year mine lead time, i.e. a scale/demand constraint the model has no axis for; concentration is absorbing risk it cannot represent."
+      "modeling_caveat": "Per-stage HHI split done and refiner edges now modelled across the paper's named copper countries (China ~47% from paper; Chile, DRC, Peru and US distributing the ex-China share proxied from mining prominence, since the paper does not detail ex-China refining). Refining HHI reads roughly 0.29 as a result. The remaining exposure the model does not represent is the scale axis — the paper's copper story is a ~23 Mt/yr volume against a 17–25 year mine lead time, i.e. a scale/demand constraint, not a concentration one. Concentration is no longer absorbing that risk."
     }
   },
 
