@@ -24,9 +24,13 @@ def compute_hhi(shares: dict[str, float]) -> float:
 
 
 def hhi_from_derived_shares(derived: Optional[dict]) -> float:
-    """Combine share buckets across edge types into a single supply-share map,
-    then compute HHI. Uses the strongest bucket per source to avoid double
-    counting a supplier that both mines AND refines a mineral."""
+    """Legacy blended HHI — kept so before/after is inspectable on the node
+    as `combined_hhi`. NOT the inbound_hhi used in scoring anymore.
+
+    Merges every stage into one supplier map via strongest-bucket-per-source,
+    which dilutes the mining signal for minerals whose mining and refining
+    have different concentration profiles (see per_stage_hhi below).
+    """
     if not derived:
         return 0.0
     combined: dict[str, float] = {}
@@ -35,6 +39,40 @@ def hhi_from_derived_shares(derived: Optional[dict]) -> float:
             if weight > combined.get(src, 0.0):
                 combined[src] = weight
     return compute_hhi(combined)
+
+
+def per_stage_hhi(derived: Optional[dict], stage: str) -> Optional[float]:
+    """HHI of one stage in isolation. Returns None when the stage has no
+    edges on this node (so we can distinguish 'not applicable' from 'zero')."""
+    if not derived:
+        return None
+    stage_shares = derived.get(stage)
+    if not stage_shares:
+        return None
+    return compute_hhi(stage_shares)
+
+
+def combine_per_stage(values: dict[str, float], config: ScoringConfig) -> float:
+    """Combines the present per-stage HHIs according to config.
+
+    Default 'max' preserves the intent of the per-stage split: a mineral is
+    fragile if EITHER stage is concentrated. Averaging reintroduces the
+    dilution this fix exists to remove."""
+    if not values:
+        return 0.0
+    method = config.inbound_per_stage_combine
+    if method == "max":
+        return max(values.values())
+    if method == "weighted_sum":
+        weights = config.inbound_per_stage_weights
+        total_w = 0.0
+        total_v = 0.0
+        for stage, v in values.items():
+            w = weights.get(stage, 1.0)
+            total_v += v * w
+            total_w += w
+        return (total_v / total_w) if total_w > 0 else 0.0
+    raise ValueError(f"unknown per_stage combine method: {method}")
 
 
 # --------------------------------------------------------------------------- #
@@ -192,17 +230,40 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
 
     Order matters:
       1. derived_shares  (from edges)
-      2. inbound_hhi     (from derived_shares)
-      3. outbound_criticality  (walk downstream, then normalize by graph max)
-      4. concentration   (combine inbound + outbound per config)
-      5. current_severity, chokepoint_tier  (from concentration + static axes)
+      2. per-stage HHIs (mined_by_hhi, refined_by_hhi, supplied_by_hhi) and
+         combined_hhi (legacy blended value, kept for inspection)
+      3. inbound_hhi     (combine of per-stage values per config; default max)
+      4. outbound_criticality  (walk downstream, then normalize by graph max)
+      5. concentration   (combine inbound + outbound per config)
+      6. current_severity, chokepoint_tier  (from concentration + static axes)
     """
     graph.refresh_derived_shares()
 
     outbound_map = compute_outbound_criticality_map(graph, config)
+    stage_names = config.inbound_per_stage_stages
 
     for node in graph.nodes.values():
-        inbound = hhi_from_derived_shares(node.dynamic.derived_shares)
+        derived = node.dynamic.derived_shares
+
+        # Per-stage HHIs — None when the stage has no edges on this node.
+        node.dynamic.mined_by_hhi    = per_stage_hhi(derived, "mines")
+        node.dynamic.refined_by_hhi  = per_stage_hhi(derived, "refines")
+        node.dynamic.supplied_by_hhi = per_stage_hhi(derived, "supplies")
+
+        # Legacy blended value — kept purely for inspection / diffing.
+        node.dynamic.combined_hhi = hhi_from_derived_shares(derived)
+
+        # Combine present per-stage HHIs into inbound_hhi per config.
+        stage_values = {
+            "mines":    node.dynamic.mined_by_hhi,
+            "refines":  node.dynamic.refined_by_hhi,
+            "supplies": node.dynamic.supplied_by_hhi,
+        }
+        present = {
+            s: v for s, v in stage_values.items() if s in stage_names and v is not None
+        }
+        inbound = combine_per_stage(present, config)
+
         outbound = outbound_map.get(node.id, 0.0)
         concentration = combine_concentration(inbound, outbound, config)
 

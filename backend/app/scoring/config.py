@@ -28,6 +28,32 @@ class ScoringConfig:
     def concentration_inbound_method(self) -> str:
         return self.raw["concentration"]["inbound"]["method"]
 
+    # ---------------- Per-stage inbound HHI ---------------- #
+
+    @property
+    def inbound_per_stage_stages(self) -> list[str]:
+        return list(
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("stages", ["mines", "refines", "supplies"])
+        )
+
+    @property
+    def inbound_per_stage_combine(self) -> str:
+        return (
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("combine", "max")
+        )
+
+    @property
+    def inbound_per_stage_weights(self) -> dict[str, float]:
+        return dict(
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("weights", {})
+        )
+
     @property
     def concentration_outbound_decay(self) -> float:
         return float(self.raw["concentration"]["outbound"]["decay_per_hop"])

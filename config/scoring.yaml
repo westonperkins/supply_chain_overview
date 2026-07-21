@@ -24,15 +24,6 @@ concentration:
   #                     normalized to graph max. Captures "dangerously
   #                     depended-upon" (ASML, TSMC, HBM, CoWoS).
   #
-  # TODO — per-stage HHI for minerals.
-  # The current inbound HHI blends mines + refines into one supplier map,
-  # which pulls copper up to ~0.30 despite the paper saying copper is a
-  # volume/demand story (mining is diversified — Chile 25%, DRC 13%, Peru 11%
-  # — but Chinese refining ~47% is what dominates the combined score).
-  # Fix: compute HHI per stage (mined_by_hhi, refined_by_hhi) as separate
-  # values on the node so scoring can weight them differently or take the
-  # max. Deferred until after the UI push — non-trivial schema change.
-  #
   # TODO — thin-graph artifacts on nodes with only one modeled input.
   # Quanta Services HHI = 1.0 because copper is the only in-edge we model.
   # xAI / OpenAI HHI = 0.78 because NVIDIA is the only in-edge we model.
@@ -40,8 +31,27 @@ concentration:
   # Quanta needs steel/transformers/labor, xAI/OpenAI need power/cooling/etc.
   # Not fixable via config — it's a data-completeness issue. Fix later by
   # adding the missing input edges (steel supply, power supply, cooling).
+  #
+  # NOTE — scale-axis gap (surfaced by per-stage HHI).
+  # Per-stage HHI correctly captures gallium's mining monopoly (~0.97) while
+  # leaving copper's refining concentration reading ~0.25. Copper's real
+  # paper story is volume + 17–25yr mine lead time, i.e. a scale/demand
+  # constraint the current model has no axis for. Concentration is
+  # absorbing risk it cannot represent. Adding a scale axis is out of scope
+  # for the per-stage fix and is left as an open item.
   inbound:
-    method: hhi                # sum of squared supplier shares
+    # Per-stage HHI: compute mined_by_hhi / refined_by_hhi / supplied_by_hhi
+    # independently, then combine via `combine`. `max` preserves the intent
+    # — a mineral is fragile if EITHER stage is concentrated. Averaging
+    # reintroduces the dilution the per-stage split exists to remove.
+    method: per_stage
+    per_stage:
+      stages: [mines, refines, supplies]
+      combine: max            # max | weighted_sum
+      weights:                # used only when combine = weighted_sum
+        mines: 1.0
+        refines: 1.0
+        supplies: 1.0
   outbound:
     decay_per_hop: 0.7         # geometric decay per hop of downstream walk
     max_hops: 6
