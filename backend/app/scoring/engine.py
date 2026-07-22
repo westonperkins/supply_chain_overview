@@ -219,7 +219,17 @@ def compute_outbound_criticality_map(
     graph: SupplyChainGraph, config: ScoringConfig,
     walk_counter: Optional[dict] = None,
 ) -> dict[str, float]:
-    """Compute normalized [0, 1] outbound criticality for every node."""
+    """Compute normalized [0, 1] outbound criticality for every node.
+
+    Normalization mode from config:
+      `graph_max` — legacy: divide by the current graph's max raw outbound.
+                    Relative; every node's normalized score depends on
+                    every other node's raw value.
+      `fixed`     — divide by a committed constant. Scores are comparable
+                    across runs and graph edits. Clamped to 1.0 so a
+                    future node exceeding the reference saturates rather
+                    than breaks the [0, 1] contract.
+    """
     decay = config.concentration_outbound_decay
     max_hops = config.concentration_outbound_max_hops
     min_influence = config.concentration_outbound_min_influence
@@ -233,10 +243,18 @@ def compute_outbound_criticality_map(
         )
         for node_id in graph.nodes
     }
-    max_raw = max(raw.values()) if raw else 0.0
-    if max_raw <= 0.0:
+    mode = config.outbound_normalization_mode
+    if mode == "fixed":
+        ref = config.outbound_fixed_reference
+        # First-run / unset — fall back to graph max so the derivation
+        # step (`report --derive-fixed-reference`) can capture a value.
+        if ref is None or ref <= 0.0:
+            ref = max(raw.values()) if raw else 0.0
+    else:  # graph_max
+        ref = max(raw.values()) if raw else 0.0
+    if ref <= 0.0:
         return {k: 0.0 for k in raw}
-    return {k: v / max_raw for k, v in raw.items()}
+    return {k: min(1.0, v / ref) for k, v in raw.items()}
 
 
 # --------------------------------------------------------------------------- #
@@ -294,12 +312,13 @@ def compute_severity(
 
 def compute_baseline_severity(node: Node, config: ScoringConfig) -> float:
     """Uses the node's cached concentration (inbound+outbound combined).
-    Called after refresh_all_derived has populated node.dynamic.concentration."""
+    Called after refresh_all_derived has populated node.dynamic.concentration.
+    Missing axes are resolved via axes_for_severity — see its docstring
+    for `neutral` vs `suppress` semantics."""
     conc = node.dynamic.concentration or 0.0
-    sub = _sourced_number(node.static.substitutability, default=0.5)
-    lt_raw = _sourced_number(node.static.lead_time_years, default=1.0)
-    lt = normalize_lead_time(lt_raw, config.lead_time_normalization)
-    return compute_severity(conc, sub, lt, config)
+    sub, lt_norm, missing = axes_for_severity(node, config)
+    node.dynamic.scored_on_default_axes = missing or None
+    return compute_severity(conc, sub, lt_norm, config)
 
 
 def _sourced_number(sv, default: float) -> float:
@@ -309,6 +328,76 @@ def _sourced_number(sv, default: float) -> float:
         return float(sv.value)
     except (TypeError, ValueError):
         return default
+
+
+def _axis_or_none(sv) -> Optional[float]:
+    """Returns the axis value if present, else None (rather than a
+    silent default). Callers decide how to handle absence based on
+    config.missing_axes_mode."""
+    if sv is None or sv.value is None:
+        return None
+    try:
+        return float(sv.value)
+    except (TypeError, ValueError):
+        return None
+
+
+# Anchor lead-time for `neutral` missing-axes mode: 25 years happens to
+# normalize to 1.0 under the current log10_1p transform (log10(26)/log10(26)),
+# which is the identity element of the multiplicative formula. If the
+# normalization transform ever changes, this constant must move with it.
+NEUTRAL_LEAD_TIME_ANCHOR_YEARS = 25.0
+
+
+def axes_for_severity(
+    node: Node,
+    config: ScoringConfig,
+    sub_delta: float = 0.0,
+    lt_delta: float = 0.0,
+) -> tuple[float, float, list[str]]:
+    """Compute (substitutability_value, normalized_lead_time, missing_axes)
+    for use in the severity formula, respecting config.missing_axes_mode.
+
+    Under `neutral`, a missing axis contributes 1.0 to the multiplicative
+    product (i.e. sub=0.0 → (1-sub)=1.0; lt normalized=1.0). Under
+    `suppress` (legacy), missing axes use legacy_substitutability=0.5 and
+    legacy_lead_time_years=1.0 → 0.5 × 0.213 = 0.107 severity multiplier.
+
+    Callers pass event-driven deltas via sub_delta / lt_delta; those are
+    applied on top of the missing-axis anchor when the axis is absent.
+    Both engine.compute_baseline_severity and cascade._event_severity_at_source
+    go through this helper — they must not diverge.
+    """
+    mode = config.missing_axes_mode
+    sub_raw = _axis_or_none(node.static.substitutability)
+    lt_raw = _axis_or_none(node.static.lead_time_years)
+
+    missing: list[str] = []
+    if sub_raw is None:
+        missing.append("substitutability")
+    if lt_raw is None:
+        missing.append("lead_time_years")
+
+    # Substitutability
+    if sub_raw is not None:
+        sub_base = sub_raw
+    elif mode == "suppress":
+        sub_base = config.missing_axes_legacy_substitutability
+    else:  # neutral
+        sub_base = 0.0
+    sub_used = max(0.0, min(1.0, sub_base + sub_delta))
+
+    # Lead time (raw years) → normalized
+    if lt_raw is not None:
+        lt_base_years = lt_raw
+    elif mode == "suppress":
+        lt_base_years = config.missing_axes_legacy_lead_time_years
+    else:  # neutral — anchor at 25y so the neutral term is exactly 1.0
+        lt_base_years = NEUTRAL_LEAD_TIME_ANCHOR_YEARS
+    lt_years = max(0.0, lt_base_years + lt_delta)
+    lt_norm = normalize_lead_time(lt_years, config.lead_time_normalization)
+
+    return sub_used, lt_norm, missing
 
 
 # --------------------------------------------------------------------------- #

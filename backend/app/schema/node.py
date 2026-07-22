@@ -66,6 +66,12 @@ class DynamicFields(BaseModel):
     # has no reliable inbound signal rather than a silent fallback.
     single_supplier_stages: Optional[list[str]] = None
     all_stages_single_supplier: bool = False
+    # Axes that were absent when this node was scored — the engine
+    # substituted its missing-axes-mode default (neutral: 1.0 term;
+    # suppress: legacy legacy_substitutability / legacy_lead_time_years).
+    # Names the axes ("substitutability" and/or "lead_time_years").
+    # See docs/scoring_correctness_fixes_spec.md §1.
+    scored_on_default_axes: Optional[list[str]] = None
     # Legacy blended HHI — kept for inspection / before-after diffing.
     combined_hhi: Optional[float] = None
     inbound_hhi: Optional[float] = None               # combine of per-stage per scoring.yaml (default max)

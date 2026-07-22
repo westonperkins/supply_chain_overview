@@ -13,6 +13,7 @@ from .config import ScoringConfig
 from .engine import (
     _outbound_share_for,
     _sourced_number,
+    axes_for_severity,
     compute_severity,
     normalize_lead_time,
 )
@@ -31,18 +32,19 @@ def _cushion(node: Node) -> float:
 
 def _event_severity_at_source(node: Node, axes: AxesImpact, config: ScoringConfig) -> float:
     """Severity at the directly-hit node, combining its cached baseline
-    concentration (inbound + outbound combined) with the event-specific deltas."""
+    concentration (inbound + outbound combined) with the event-specific deltas.
+
+    Uses the same missing-axis handling as compute_baseline_severity via
+    axes_for_severity. Cascade and engine must not diverge — the shared
+    helper is enforced by test_cascade_engine_axis_parity."""
     conc_base = node.dynamic.concentration or 0.0
     conc = max(0.0, min(1.0, conc_base + axes.concentration_delta))
-
-    sub_base = _sourced_number(node.static.substitutability, default=0.5)
-    sub = max(0.0, min(1.0, sub_base + axes.substitutability_delta))
-
-    lt_years = max(0.0, _sourced_number(node.static.lead_time_years, default=1.0)
-                        + axes.lead_time_delta)
-    lt = normalize_lead_time(lt_years, config.lead_time_normalization)
-
-    return compute_severity(conc, sub, lt, config)
+    sub, lt_norm, _ = axes_for_severity(
+        node, config,
+        sub_delta=axes.substitutability_delta,
+        lt_delta=axes.lead_time_delta,
+    )
+    return compute_severity(conc, sub, lt_norm, config)
 
 
 def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig) -> Event:

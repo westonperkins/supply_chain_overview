@@ -173,6 +173,49 @@ class ScoringConfig:
         ))
 
     @property
+    def outbound_normalization_mode(self) -> str:
+        """`fixed` (constant reference, comparable across runs) or
+        `graph_max` (relative to current graph, legacy)."""
+        return (
+            self.raw["concentration"]["outbound"]
+            .get("normalization", {})
+            .get("mode", "fixed")
+        )
+
+    @property
+    def outbound_fixed_reference(self):
+        """Constant used to normalize raw outbound when mode=fixed.
+        Returns None when unset; the caller falls back to graph max
+        (the initial derivation state)."""
+        val = (
+            self.raw["concentration"]["outbound"]
+            .get("normalization", {})
+            .get("fixed_reference")
+        )
+        return None if val is None else float(val)
+
+    @property
+    def missing_axes_mode(self) -> str:
+        """`neutral` (missing term contributes 1.0 to severity) or
+        `suppress` (legacy: use legacy_substitutability / legacy_lead_time_years,
+        which multiplies out to a 0.107 suppressor)."""
+        return self.raw.get("missing_static_axes", {}).get("mode", "neutral")
+
+    @property
+    def missing_axes_legacy_substitutability(self) -> float:
+        return float(
+            self.raw.get("missing_static_axes", {})
+            .get("legacy_substitutability", 0.5)
+        )
+
+    @property
+    def missing_axes_legacy_lead_time_years(self) -> float:
+        return float(
+            self.raw.get("missing_static_axes", {})
+            .get("legacy_lead_time_years", 1.0)
+        )
+
+    @property
     def concentration_combine_method(self) -> str:
         return self.raw["concentration"]["combine"]["method"]
 
