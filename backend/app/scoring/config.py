@@ -196,10 +196,19 @@ class ScoringConfig:
 
     @property
     def missing_axes_mode(self) -> str:
-        """`neutral` (missing term contributes 1.0 to severity) or
-        `suppress` (legacy: use legacy_substitutability / legacy_lead_time_years,
-        which multiplies out to a 0.107 suppressor)."""
-        return self.raw.get("missing_static_axes", {}).get("mode", "neutral")
+        """`unscored` (default: refuse to score, severity=None + tier=UNSCORED),
+        `neutral` (missing term contributes 1.0), or `suppress` (legacy:
+        legacy_substitutability=0.5 / legacy_lead_time_years=1.0, which
+        multiplies out to a 0.107 severity suppressor).
+
+        Default is `unscored`. `neutral` was the previous default but was
+        rejected in the honesty-fixes pass — it read absence as maximum
+        danger and put NVIDIA at severity 0.980 above dysprosium's 0.545.
+        Any config omitting this key gets `unscored`, so a future
+        `robotics.yaml` copy-pasted without this block cannot silently
+        inherit the rejected reading. Enforced by
+        test_config_default_missing_axes_mode_is_unscored."""
+        return self.raw.get("missing_static_axes", {}).get("mode", "unscored")
 
     @property
     def missing_axes_legacy_substitutability(self) -> float:

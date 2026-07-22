@@ -148,3 +148,21 @@ def test_legacy_modes_are_reachable():
     g = _score(cfg)
     tiered = sum(1 for n in g.nodes.values() if n.dynamic.chokepoint_tier)
     assert tiered == len(g.nodes)
+
+
+def test_config_default_missing_axes_mode_is_unscored():
+    """A config that OMITS `missing_static_axes.mode` must resolve to
+    `unscored`, not to a silent copy of the rejected `neutral` reading.
+    Any future domain yaml (robotics.yaml, aerospace.yaml) copy-pasted
+    without this block would otherwise inherit whatever the code default
+    happens to be — guard the correct default at the config-property
+    level. See docs/scoring_honesty_fixes_report.pdf §1."""
+    cfg = ScoringConfig({"missing_static_axes": {}})
+    assert cfg.missing_axes_mode == "unscored", (
+        f"Empty missing_static_axes block resolved to "
+        f"'{cfg.missing_axes_mode}', not 'unscored'"
+    )
+
+    # Also true when the whole block is absent
+    cfg2 = ScoringConfig({})
+    assert cfg2.missing_axes_mode == "unscored"

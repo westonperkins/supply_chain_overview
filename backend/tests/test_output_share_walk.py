@@ -1,11 +1,15 @@
 """Test 14 — Outbound walk reads output_share when populated.
 
 Guards the config-gated switch in outbound criticality and cascade.
-When outbound.share_field is `output_share` (default), an edge with
+The DEFAULT is `input_share` as of the honesty-fixes pass (2.8%
+output_share coverage was ranking KLA above ASML — see
+docs/scoring_honesty_fixes_report.pdf §2). This test still covers
+the `output_share` code path so it does not bit-rot before coverage
+rises. When outbound.share_field is `output_share`, an edge with
 output_share populated must use that value, not input_share. Where
 output_share is null, fallback to input_share applies. Under the
-`input_share` mode, the walk must reproduce the previous behaviour
-exactly, regardless of whether output_share is populated.
+`input_share` mode, the walk uses input_share throughout, regardless
+of whether output_share is populated.
 """
 import sys
 from pathlib import Path
@@ -49,13 +53,15 @@ def test_input_share_mode_ignores_output_share():
 
 
 def test_asml_outbound_drops_when_reading_output_share(graph, config):
-    """Integration check — the pass's headline finding.
+    """Integration check — asserts the sign of the delta.
 
-    Under the default config (outbound.share_field=output_share), ASML's
-    severity is < 0.30. Under input_share it's ~0.54. If this test
-    passes and then fails after a config change, someone flipped the
-    mode. Doesn't assert an exact value — the exact value depends on
-    the four populated output_shares and graph-max normalisation."""
+    Historical: under `output_share`, ASML's severity is ~0.29; under
+    `input_share`, it's ~0.54. The DEFAULT is now `input_share` (see
+    module docstring) but this integration test still forces both
+    modes explicitly so the axis-choice mechanism is covered. If this
+    test starts failing, output_share coverage has probably risen
+    high enough that ASML no longer drops when switching modes — at
+    which point revisit the default in scoring.yaml."""
     from app.graph import SupplyChainGraph
     from app.scoring import (
         ScoringConfig, refresh_all_derived, propagate_event,

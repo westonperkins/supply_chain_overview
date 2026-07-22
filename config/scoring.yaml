@@ -180,17 +180,20 @@ missing_static_axes:
 # (its static axes, no event delta). Tiers are DERIVED from these, not
 # hand-asserted, so the flag can never disagree with the score.
 #
-# Calibrated against the full 63-node AI distribution (2026-07):
-#   critical (≥0.225) catches the paper's five-alarm set — TSMC, ASML,
-#     dysprosium, gallium, HBM, CoWoS — plus RF/Power Semis, which is a
-#     defensible intermediate that inherits gallium's inbound HHI.
-#     Note the boundary is tight: HBM at 0.2288, Siemens Energy at 0.2244
-#     — a 0.004 gap. If HBM's supplier shares shift, re-check.
-#   high (0.13) catches the paper's "high but not critical" cluster:
-#     Siemens Energy, GE Vernova, Copper, NdFeB — structural constraints
-#     without the active-crisis framing of the five-alarm set.
-#   moderate (0.05) catches the memory-makers, semi equipment, hyperscalers,
-#     and AI labs — real supply-chain exposure, not chokepoints.
+# ORIGINAL 2026-07 CALIBRATION IS STALE.
+# The thresholds below were calibrated against a 63-node distribution
+# that (a) predates the stage-level min_suppliers rule, (b) predates
+# the unscored mode, (c) predates the input_share revert, and (d) was
+# authored against a prose reading of the paper's chokepoint set that
+# no longer matches what the model produces. Under the current default
+# scoring config:
+#   HBM lands at `high` (concentration-capped at inbound_hhi 0.44).
+#   RF & Power Semis lands at `none` (single-input_to stage zeroed by
+#     the min_suppliers rule; insufficient outbound to compensate).
+# The threshold-recalibration pass will run against
+# docs/generated/node_inventory.md § C; do not re-anchor these values
+# from prose in the meantime. Both known-miss cases are xfail-marked
+# in backend/tests/test_paper_chokepoints.py with named reasons.
 chokepoint_thresholds:
   critical: 0.225
   high: 0.13
