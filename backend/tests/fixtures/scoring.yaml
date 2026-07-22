@@ -176,29 +176,32 @@ missing_static_axes:
   legacy_substitutability: 0.5
   legacy_lead_time_years: 1.0
 
-# Chokepoint tier thresholds — applied to the node's baseline severity
-# (its static axes, no event delta). Tiers are DERIVED from these, not
-# hand-asserted, so the flag can never disagree with the score.
+# Tier thresholds — DERIVED by
+# `backend/app/scoring/thresholds.py::derive_thresholds` from the shape
+# of the current severity distribution. No boundary value here is
+# hand-written; each is the midpoint of a separating gap between
+# adjacent sorted severities. Regenerate via:
+#     python backend/scripts/generate_inventory.py
+# See docs/generated/threshold_analysis.md for the full derivation
+# (input hash, gap list, median gap, which gap each boundary came from).
 #
-# ORIGINAL 2026-07 CALIBRATION IS STALE.
-# The thresholds below were calibrated against a 63-node distribution
-# that (a) predates the stage-level min_suppliers rule, (b) predates
-# the unscored mode, (c) predates the input_share revert, and (d) was
-# authored against a prose reading of the paper's chokepoint set that
-# no longer matches what the model produces. Under the current default
-# scoring config:
-#   HBM lands at `high` (concentration-capped at inbound_hhi 0.44).
-#   RF & Power Semis lands at `none` (single-input_to stage zeroed by
-#     the min_suppliers rule; insufficient outbound to compensate).
-# The threshold-recalibration pass will run against
-# docs/generated/node_inventory.md § C; do not re-anchor these values
-# from prose in the meantime. Both known-miss cases are xfail-marked
-# in backend/tests/test_paper_chokepoints.py with named reasons.
-chokepoint_thresholds:
-  critical: 0.225
-  high: 0.13
-  moderate: 0.05
-  # anything below moderate → none
+# `separation_factor` is the ONLY tunable — a gap is separating when its
+# size is at least this many times the median adjacent gap. Do NOT tune
+# this to produce a target tier membership; if the derivation cannot
+# find enough separating gaps, unresolved_bands is populated below and
+# nodes in those spans carry dynamic.tier_ambiguous = true.
+thresholds:
+  derivation:
+    separation_factor: 3.0
+  boundaries:
+    critical: 0.5096069216395812
+    high: 0.38657400906316326
+    moderate: 0.2938731858366197
+  # An unresolved band is declared when a required boundary has no
+  # separating gap. Nodes inside the band still tier normally (backward
+  # compatibility) but carry dynamic.tier_ambiguous = true and
+  # dynamic.tier_ambiguous_with = <other tier>.
+  unresolved_bands: []
 
 # Cascade / propagation configuration
 #

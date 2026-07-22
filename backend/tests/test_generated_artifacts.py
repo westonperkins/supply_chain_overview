@@ -64,11 +64,12 @@ def test_severity_diff_matches_committed_file():
 
 def test_severity_snapshot_covers_every_node():
     """Snapshot membership must match graph membership exactly — a
-    missing node in the snapshot would silently drop from the diff."""
+    missing node in the snapshot would silently drop from the diff.
+    Reads under the labelled schema introduced by the H4 fix."""
     g, _ = _score_from_fixtures()
     snapshot = json.loads((GENERATED / "severity_snapshot.json").read_text())
     graph_ids = {n.id for n in g.nodes.values()}
-    snap_ids = set(snapshot.keys())
+    snap_ids = set(snapshot.get("nodes", {}).keys())
     assert graph_ids == snap_ids, (
         f"snapshot / graph membership mismatch. "
         f"only in graph: {graph_ids - snap_ids}; "
@@ -117,7 +118,97 @@ def test_inventory_sections_sum_to_full_graph():
 
 def test_snapshot_severity_returns_all_five_keys_per_node():
     g, _ = _score_from_fixtures()
-    snap = snapshot_severity(g)
+    snap = snapshot_severity(g, captured_at_pass="test")
     required = {"severity", "tier", "concentration", "inbound_hhi", "outbound_criticality"}
-    for nid, entry in snap.items():
+    nodes = snap["nodes"]
+    for nid, entry in nodes.items():
         assert required.issubset(entry.keys()), (nid, entry.keys())
+
+
+def test_snapshot_carries_captured_at_pass_label():
+    """H4 fix: severity_snapshot.json states plainly whether it is a
+    first-run capture or a genuine before/after reference. The label
+    identifies which pass END state the snapshot represents."""
+    committed = json.loads((GENERATED / "severity_snapshot.json").read_text())
+    assert "captured_at_pass" in committed, (
+        "severity_snapshot.json is missing captured_at_pass label. "
+        "Migrate the file to the labelled schema."
+    )
+    assert "nodes" in committed, (
+        "severity_snapshot.json is missing 'nodes' key under the labelled schema."
+    )
+    label = committed["captured_at_pass"]
+    assert isinstance(label, str) and label, (
+        f"captured_at_pass must be a non-empty string; got {label!r}"
+    )
+
+
+def test_fixtures_and_data_are_content_identical():
+    """H1 fix (Pass B): the staleness guards score from fixtures/, but
+    the generator + production run score from data/. If those two roots
+    ever diverge, the guard would pass on a stale artifact. Assert byte
+    identity so drift fails at the source with a message naming the
+    files, not somewhere far downstream via a mysterious diff mismatch.
+    Escalation rule per spec §0: if this ever fails, STOP and report;
+    do not reconcile the two roots inside a hygiene block."""
+    import filecmp
+    data_ai = REPO / "data" / "ai"
+    fx_ai = FIXTURES / "ai"
+    cmp = filecmp.dircmp(data_ai, fx_ai)
+    diffs = list(cmp.diff_files)
+    left_only = list(cmp.left_only)
+    right_only = list(cmp.right_only)
+    assert not diffs and not left_only and not right_only, (
+        f"data/ai and backend/tests/fixtures/ai have drifted. "
+        f"differ: {diffs}; only in data: {left_only}; "
+        f"only in fixtures: {right_only}. "
+        f"Do NOT resolve inside a hygiene block; this is an escalation."
+    )
+    # And scoring.yaml
+    prod = (REPO / "config" / "scoring.yaml").read_text()
+    fx = (FIXTURES / "scoring.yaml").read_text()
+    assert prod == fx, "config/scoring.yaml vs backend/tests/fixtures/scoring.yaml differ"
+
+
+def test_derivation_source_does_not_reference_known_misses():
+    """A8: The derivation logic must NOT reference HBM or RF & Power
+    Semis by name. Recalibration that targets known misses is not
+    recalibration. Scan the derivation source file for the forbidden
+    strings."""
+    src = (REPO / "backend" / "app" / "scoring" / "thresholds.py").read_text()
+    for forbidden in ("hbm", "HBM", "rf_power", "RF & Power", "rf_power_semis"):
+        assert forbidden not in src, (
+            f"backend/app/scoring/thresholds.py references '{forbidden}' — "
+            f"the derivation must not know about known-miss chokepoints. "
+            f"Spec §1.6."
+        )
+
+
+def test_every_section_b_row_names_at_least_one_missing_axis():
+    """H3 fix: the generator refuses to write an empty missing_axes cell
+    (raises ValueError). This test verifies the committed file has no
+    such row via textual inspection — belt AND suspenders."""
+    inventory = (GENERATED / "node_inventory.md").read_text()
+    in_b = False
+    offenders = []
+    for line in inventory.split("\n"):
+        if line.startswith("## B."):
+            in_b = True
+            continue
+        if line.startswith("## C."):
+            in_b = False
+            continue
+        if not in_b or not line.startswith("| "):
+            continue
+        # skip header / separator rows
+        if line.startswith("| id ") or line.startswith("|---"):
+            continue
+        cols = [c.strip() for c in line.strip("|").split("|")]
+        if len(cols) < 3:
+            continue
+        missing = cols[2]
+        if not missing or missing == "—":
+            offenders.append(line)
+    assert not offenders, (
+        f"Section B rows with no named missing axis: {offenders[:5]}"
+    )

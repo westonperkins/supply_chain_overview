@@ -40,22 +40,38 @@ def _write_backlog(rows):
             )
 
 
-@pytest.mark.xfail(reason=(
-    "34 stage buckets currently sum below 0.80 — the share-completeness "
-    "backlog that this test exists to surface. The failures are the "
-    "deliverable: they name the (node, stage) pairs whose input edges "
-    "haven't been fully modelled. Closing the backlog is a data pass "
-    "(populate the missing input edges — e.g. hyperscalers' full input mix, "
-    "facilities' beyond-power inputs, etc.). Test kept live so a NEW "
-    "bucket dropping below 0.80 surfaces immediately; the artefact at "
-    "_out/share_backlog.txt is always regenerated on run."
-))
 def test_no_stage_bucket_sums_below_0_80(graph):
+    """H2 fix (Pass B): blanket xfail replaced with set-equality against
+    the committed pinned known-shortfall set at
+    `backend/tests/pinned/known_bucket_shortfalls.txt`.
+
+    A NEW bucket dropping below 0.80 fails naming the new offender.
+    A FIXED (previously-pinned) shortfall fails as "pinned list stale."
+    The `_out/share_backlog.txt` artefact continues to regenerate every
+    run.
+    """
     rows = collect_share_shortfalls(graph, threshold=0.95)
     _write_backlog(rows)
-    hard = [r for r in rows if r["sum"] < 0.80]
-    assert not hard, (
-        f"{len(hard)} stage bucket(s) sum below 0.80 "
-        f"(see _out/share_backlog.txt for the full list). "
-        f"First offenders: {[(r['node_id'], r['stage'], round(r['sum'], 3)) for r in hard[:5]]}"
+    current = {(r["node_id"], r["stage"]) for r in rows if r["sum"] < 0.80}
+
+    pinned_path = Path(__file__).parent / "pinned" / "known_bucket_shortfalls.txt"
+    pinned = set()
+    for line in pinned_path.read_text().splitlines():
+        if not line or line.startswith("#"):
+            continue
+        node_id, stage, _sum = line.split("\t")
+        pinned.add((node_id, stage))
+
+    new_shortfalls = current - pinned
+    fixed = pinned - current
+    assert not new_shortfalls, (
+        f"NEW stage-bucket shortfall(s): {sorted(new_shortfalls)}. "
+        f"Model the missing edges, or add to "
+        f"backend/tests/pinned/known_bucket_shortfalls.txt only after "
+        f"deciding the shortfall is acceptable."
+    )
+    assert not fixed, (
+        f"pinned known-shortfall list is STALE — these no longer "
+        f"shortfall: {sorted(fixed)}. Remove them from "
+        f"backend/tests/pinned/known_bucket_shortfalls.txt."
     )

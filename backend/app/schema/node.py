@@ -66,6 +66,14 @@ class DynamicFields(BaseModel):
     # has no reliable inbound signal rather than a silent fallback.
     single_supplier_stages: Optional[list[str]] = None
     all_stages_single_supplier: bool = False
+    # True when this node's severity falls inside a threshold-derivation
+    # unresolved band (see docs/generated/threshold_analysis.md). The
+    # tier value itself is still one of the existing enum members;
+    # `tier_ambiguous_with` names the other tier the node could have
+    # been assigned. Both fields are always populated: False + None on
+    # unambiguous nodes, True + [tier_name] inside an unresolved band.
+    tier_ambiguous: bool = False
+    tier_ambiguous_with: Optional[list[str]] = None
     # Axes that were absent when this node was scored. Names the axes
     # ("substitutability" and/or "lead_time_years"). Under the default
     # missing_static_axes.mode: `unscored`, the engine substitutes

@@ -242,7 +242,27 @@ class ScoringConfig:
 
     @property
     def chokepoint_thresholds(self) -> dict[str, float]:
-        return self.raw["chokepoint_thresholds"]
+        """Boundaries used by derive_chokepoint_tier. Reads from the new
+        `thresholds.boundaries` block introduced in Pass B (threshold
+        recalibration). Falls back to the legacy top-level
+        `chokepoint_thresholds` key so any yaml that omits the new block
+        continues to score. See docs/generated/threshold_analysis.md."""
+        new_block = self.raw.get("thresholds", {}).get("boundaries")
+        if new_block:
+            return new_block
+        return self.raw.get("chokepoint_thresholds", {})
+
+    @property
+    def threshold_separation_factor(self) -> float:
+        return float(
+            self.raw.get("thresholds", {})
+            .get("derivation", {})
+            .get("separation_factor", 3.0)
+        )
+
+    @property
+    def threshold_unresolved_bands(self) -> list[dict]:
+        return list(self.raw.get("thresholds", {}).get("unresolved_bands", []) or [])
 
     @property
     def cascade_decay(self) -> float:

@@ -29,6 +29,11 @@ PAPER_CHOKEPOINTS = [
 
 # Per-node xfail reasons — modelling gaps, not test defects. Reviewed
 # each pass; remove the xfail marker when the underlying gap is closed.
+#
+# The two BYTE-IDENTICAL entries (spec §3 A7) are `product:hbm` and
+# `product:rf_power_semis` — introduced by the generated_inventory_hygiene
+# pass and preserved unchanged by Pass B (threshold recalibration).
+# Do not edit their reason strings without a spec change.
 KNOWN_MISS_XFAIL_REASONS = {
     "product:hbm": (
         "HBM concentration is capped at inbound_hhi 0.44 — three memory "
@@ -44,6 +49,41 @@ KNOWN_MISS_XFAIL_REASONS = {
         "single-source stage buckets. Outbound alone (0.082) doesn't lift "
         "severity above moderate. Would move on additional modelled inputs "
         "(indium, substrate) — a data completeness item."
+    ),
+    # ---- Incidental outcomes of Pass B threshold recalibration ----
+    # These three chokepoints have severity above the pre-Pass-B critical
+    # threshold (0.225) but below the derived Pass B critical/high
+    # boundary (0.5096, midpoint of the ASML → gallium separating gap).
+    # Spec §1.6 permits the boundary move to demote them as an incidental
+    # outcome; §5 asks the pass to REPORT these tier changes — see
+    # docs/generated/threshold_analysis.md for the derivation the
+    # boundary comes from. The reasons name only the derivation output,
+    # never the target tier. Test A8 checks no derivation source
+    # references these node names.
+    "company:tsmc": (
+        "Incidental demotion from Pass B: severity 0.4600 sits below the "
+        "derived critical/high boundary at 0.5096 (midpoint of the ASML → "
+        "gallium separating gap). Tiers as `high` under the recalibrated "
+        "thresholds. Not a modelling gap; a distribution-shape outcome. "
+        "Remove this xfail when the derivation places the boundary such "
+        "that this severity clears critical."
+    ),
+    "mineral:gallium": (
+        "Incidental demotion from Pass B: severity 0.4803 sits below the "
+        "derived critical/high boundary at 0.5096 (midpoint of the ASML → "
+        "gallium separating gap). Tiers as `high` under the recalibrated "
+        "thresholds. Not a modelling gap; a distribution-shape outcome. "
+        "Remove this xfail when the derivation places the boundary such "
+        "that this severity clears critical."
+    ),
+    "product:cowos_packaging": (
+        "Incidental demotion from Pass B: severity 0.3132 sits below the "
+        "derived critical/high boundary at 0.5096 AND below the "
+        "high/moderate boundary at 0.3866 (midpoint of the TSMC → CoWoS "
+        "separating gap). Tiers as `moderate` under the recalibrated "
+        "thresholds. Not a modelling gap; a distribution-shape outcome. "
+        "Remove this xfail when the derivation places the boundary such "
+        "that this severity clears critical."
     ),
 }
 

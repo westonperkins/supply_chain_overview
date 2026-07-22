@@ -420,7 +420,13 @@ def derive_chokepoint_tier(
     baseline_severity: Optional[float], config: ScoringConfig,
 ) -> ChokepointTier:
     """None severity → UNSCORED (missing axes; distinct from NONE which
-    is a scored value below the moderate threshold)."""
+    is a scored value below the moderate threshold).
+
+    Boundaries come from config.chokepoint_thresholds, which resolves to
+    the derived thresholds.boundaries block written by Pass B. Not
+    hard-coded here — every value is a function of the committed
+    inventory + separation_factor. See
+    docs/generated/threshold_analysis.md."""
     if baseline_severity is None:
         return ChokepointTier.UNSCORED
     t = config.chokepoint_thresholds
@@ -431,6 +437,23 @@ def derive_chokepoint_tier(
     if baseline_severity >= t["moderate"]:
         return ChokepointTier.MODERATE
     return ChokepointTier.NONE
+
+
+def _compute_tier_ambiguity(
+    severity: Optional[float], config: ScoringConfig,
+) -> tuple[bool, Optional[list[str]]]:
+    """A node is ambiguous when its severity sits inside a threshold-
+    derivation unresolved band (§1.4). tier_ambiguous_with names the
+    OTHER tier the node plausibly belongs to."""
+    if severity is None:
+        return False, None
+    for band in config.threshold_unresolved_bands:
+        lower = float(band.get("lower", 0.0))
+        upper = float(band.get("upper", 1.0))
+        if lower <= severity <= upper:
+            tiers = list(band.get("tiers", []))
+            return True, tiers or None
+    return False, None
 
 
 # --------------------------------------------------------------------------- #
@@ -558,3 +581,6 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
         baseline = compute_baseline_severity(node, config)
         node.dynamic.current_severity = baseline
         node.dynamic.chokepoint_tier = derive_chokepoint_tier(baseline, config)
+        amb, amb_with = _compute_tier_ambiguity(baseline, config)
+        node.dynamic.tier_ambiguous = amb
+        node.dynamic.tier_ambiguous_with = amb_with

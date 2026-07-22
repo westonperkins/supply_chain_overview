@@ -35,17 +35,15 @@ def test_every_node_has_at_least_one_edge(graph):
     assert not isolated, isolated
 
 
-@pytest.mark.xfail(reason=(
-    "Pre-existing modelling issue: mineral targets carry both country-level "
-    "and facility-level rows in the same mines/refines bucket. Structurally "
-    "the sum can exceed 1.0 (e.g. mineral:neodymium mines = 1.17). The right "
-    "fix is a mineral-modelling pass that separates country-share from "
-    "facility-share into distinct buckets or edge subtypes; that's a data "
-    "restructure outside the scoring model. Test kept live so a NEW overshoot "
-    "surfaces immediately."
-))
 def test_no_input_share_bucket_exceeds_one(graph):
-    """No per-target, per-edge-type input_share bucket sums above 1.0.
+    """No per-target, per-edge-type input_share bucket sums above 1.0
+    — asserted against a PINNED known-offender set (H2 fix, Pass B).
+
+    Blanket xfail replaced with set-equality: a new overshoot fails
+    naming the new one; a fixed overshoot fails naming the pinned list
+    as stale. The pinned set lives at
+    `backend/tests/pinned/known_share_offenders.txt` so updating it
+    requires a deliberate reviewable edit.
 
     Scoped to edge types with target-input-share semantics: the members
     of SUPPLY_EDGE_TYPES. `located_in` is deliberately excluded — it's
@@ -56,18 +54,37 @@ def test_no_input_share_bucket_exceeds_one(graph):
     per-category HHI is on — see test_no_per_category_supplies_exceeds_one.
     The aggregate bucket may exceed 1.0 when categories don't compete.
     """
+    from pathlib import Path
     from app.schema.enums import SUPPLY_EDGE_TYPES
+
+    pinned_path = Path(__file__).parent / "pinned" / "known_share_offenders.txt"
+    pinned = set()
+    for line in pinned_path.read_text().splitlines():
+        if not line or line.startswith("#"):
+            continue
+        target, etype, _sum = line.split("\t")
+        pinned.add((target, etype))
+
     share_types = {t.value for t in SUPPLY_EDGE_TYPES} - {"supplies"}
     sums: dict[tuple[str, str], float] = defaultdict(float)
     for e in graph.edges.values():
         if e.type.value not in share_types:
             continue
         sums[(e.target_id, e.type.value)] += e.input_share
-    over = sorted(
-        ((k, v) for k, v in sums.items() if v > 1.0 + 1e-9),
-        key=lambda kv: -kv[1],
+    current = {k for k, v in sums.items() if v > 1.0 + 1e-9}
+
+    new_offenders = current - pinned
+    fixed_offenders = pinned - current
+    assert not new_offenders, (
+        f"NEW input_share bucket overshoot(s): {sorted(new_offenders)}. "
+        f"Add each to backend/tests/pinned/known_share_offenders.txt only "
+        f"after deciding they are acceptable, or fix the underlying data."
     )
-    assert not over, f"{len(over)} bucket(s) exceed 1.0: {over[:5]}"
+    assert not fixed_offenders, (
+        f"pinned known-offender list is STALE — these no longer overshoot: "
+        f"{sorted(fixed_offenders)}. Remove them from "
+        f"backend/tests/pinned/known_share_offenders.txt."
+    )
 
 
 def test_no_per_category_supplies_bucket_exceeds_one(graph):

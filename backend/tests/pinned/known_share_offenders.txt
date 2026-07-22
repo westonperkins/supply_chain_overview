@@ -1,0 +1,8 @@
+# Pinned known-offender set for test_no_input_share_bucket_exceeds_one
+# Format: target_id	edge_type	sum
+# See docs/scoring_honesty_fixes_report.pdf and downstream for context.
+# Adding a new overshoot: test fails naming the new one. Fixing an existing:
+# test fails naming the pinned list as stale. Update deliberately.
+mineral:dysprosium	refines	1.0100000000
+mineral:neodymium	mines	1.1700000000
+mineral:neodymium	refines	1.1000000000

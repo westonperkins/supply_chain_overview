@@ -1,0 +1,38 @@
+# Pinned known-shortfall set for test_no_stage_bucket_sums_below_0_80
+# Format: node_id	stage	sum
+# These are the (node, stage) pairs whose input edges have not been fully
+# modelled. Closing them is a data pass. New shortfalls fail loudly.
+company:amazon	input_to	0.1200000000
+company:amazon	supplies	0.6000000000
+company:amd	input_to	0.4300000000
+company:broadcom	input_to	0.4000000000
+company:constellation_energy	supplies	0.3000000000
+company:duke_energy	supplies	0.6000000000
+company:ge_vernova	input_to	0.4500000000
+company:google	input_to	0.3000000000
+company:google	supplies	0.6000000000
+company:meta	input_to	0.1200000000
+company:meta	supplies	0.7000000000
+company:micron	input_to	0.0800000000
+company:microsoft	input_to	0.1200000000
+company:microsoft	supplies	0.7000000000
+company:nextera_energy	supplies	0.7500000000
+company:nvidia	input_to	0.5000000000
+company:openai	supplies	0.8000000000
+company:quanta_services	input_to	0.3000000000
+company:samsung	input_to	0.0900000000
+company:siemens_energy	input_to	0.5000000000
+company:sk_hynix	input_to	0.0800000000
+company:tsmc	input_to	0.0800000000
+company:vertiv	input_to	0.5300000000
+company:xai	supplies	0.8000000000
+facility:colossus	input_to	0.0800000000
+facility:colossus	supplies	0.7000000000
+facility:stargate_abilene	input_to	0.0800000000
+facility:stargate_abilene	supplies	0.6500000000
+facility:the_citadel	input_to	0.0800000000
+facility:the_citadel	supplies	0.7500000000
+facility:vantage_frontier	input_to	0.0800000000
+facility:vantage_frontier	supplies	0.6500000000
+mineral:copper	mines	0.6500000000
+mineral:indium	mines	0.7500000000
