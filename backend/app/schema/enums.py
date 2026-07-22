@@ -28,6 +28,12 @@ class ChokepointTier(str, Enum):
     HIGH = "high"
     MODERATE = "moderate"
     NONE = "none"
+    # A node the model refuses to score — one or more required static
+    # axes (substitutability, lead_time_years) are absent, so severity
+    # is null. Distinct from `none` (scored but below the moderate
+    # threshold). Enabled by missing_static_axes.mode: unscored — the
+    # default going forward. See docs/scoring_honesty_fixes_spec.md.
+    UNSCORED = "unscored"
 
 
 class EdgeType(str, Enum):

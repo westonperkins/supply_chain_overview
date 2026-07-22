@@ -109,12 +109,19 @@ concentration:
     min_influence: 1e-6        # prune paths below this
     # Which edge field the downstream walk multiplies at each hop.
     # `output_share` is the correct quantity for outbound criticality
-    # ("how much of the supplier's OUTPUT depends on this customer") —
-    # `input_share` is the previous behaviour, kept behind this flag so
-    # before/after comparisons remain reproducible. When output_share is
-    # null on an edge and fallback is enabled, input_share is used.
-    # See docs/outbound_output_share_spec.md.
-    share_field: output_share       # output_share | input_share
+    # ("how much of the supplier's OUTPUT depends on this customer");
+    # `input_share` is what most edges have.
+    #
+    # DEFAULT REVERTED TO input_share in the honesty-fixes pass: only 5
+    # of 194 supply-flow edges carry a real output_share (2.8% coverage).
+    # Mixing populated and fallback edges ranked KLA above ASML because
+    # ASML's own edges carry real output_share (0.40 / 0.20 / 0.15)
+    # while KLA's fall back to input_share (0.90 / 0.85 / 0.80).
+    # Populating real data penalized the node it was populated for.
+    # Uniform on input_share is uniformly imperfect but comparable.
+    # When output_share coverage reaches ~50%+, this default flips back.
+    # See docs/scoring_honesty_fixes_spec.md §2.
+    share_field: input_share        # input_share | output_share
     fallback_to_input_share: true
     # How normalized outbound is computed from raw walk values.
     # See docs/scoring_correctness_fixes_spec.md §2.
@@ -128,13 +135,17 @@ concentration:
     #               Scores are comparable across runs and graph edits.
     #               Values above 1.0 are clamped so [0, 1] holds.
     #
-    # `fixed_reference` was derived from KLA's raw outbound under the
-    # default outbound-on-output_share config as of the correctness-fixes
-    # pass and committed here so it no longer moves. Reasoning + full
-    # top-10 raw-outbound derivation in the report §3.
+    # `fixed_reference` re-derived under the honesty-fixes-pass default
+    # config (share_field: input_share, missing_static_axes: unscored)
+    # and committed here so it no longer moves. See report §3 for full
+    # top-10 raw-outbound table and the identity of the reference node.
     normalization:
       mode: fixed
-      fixed_reference: 1.4779272769922154
+      # Derived from ASML's raw outbound under the honesty-fixes-pass
+      # default config (share_field: input_share, missing_static_axes:
+      # unscored). ASML is #1 at 1.6711 raw; TSMC #2 at 1.535; KLA #3
+      # at 1.524. Full top-15 in report §3.
+      fixed_reference: 1.6711394969476698
   combine:
     # `max` — a node is severe if EITHER axis is high. Averaging would wash
     # ASML out; do not switch to weighted_sum without a reason.
@@ -148,19 +159,20 @@ lead_time:
   normalization: "log10_1p"    # log10(years + 1) / log10(26); ~1.0 at 25 yrs
 
 # How to score a node whose substitutability or lead_time_years is
-# missing (null). See docs/scoring_correctness_fixes_spec.md §1.
+# missing. See docs/scoring_honesty_fixes_spec.md §1.
 #
-#   suppress — legacy: use legacy_substitutability=0.5 and
-#              legacy_lead_time_years=1.0. Result: a missing-axis node
-#              carries a hidden 0.5 × 0.213 = 0.107 severity multiplier,
-#              which invisibly deflates 42 of 66 nodes today.
-#   neutral  — default. A missing term contributes 1.0 to the severity
-#              product. Severity reflects only the axes actually known,
-#              so absence neither inflates nor deflates. Nodes scored
-#              this way have `dynamic.scored_on_default_axes` set to a
-#              list of the missing axis names.
+#   suppress — legacy: sub=0.5, lead=1.0 → 0.107 multiplier. Absence
+#              reads as safety. Silently deflates 42 of 66 nodes.
+#   neutral  — missing term contributes 1.0. Absence reads as maximum
+#              danger. Puts NVIDIA at 0.980 above dysprosium's 0.545.
+#   unscored — default. Refuse to score: severity=null, tier=`unscored`.
+#              Concentration and HHI still compute; only severity is
+#              withheld. The completeness backlog gets a visible entry
+#              per axis-name. In a multiplicative model there is no
+#              neutral constant — every constant is a claim about data
+#              that does not exist. `unscored` refuses the claim.
 missing_static_axes:
-  mode: neutral
+  mode: unscored
   legacy_substitutability: 0.5
   legacy_lead_time_years: 1.0
 
@@ -202,10 +214,9 @@ cascade:
   financial_cushion_proxy: "static.financial_cushion"
   # Traversal depth cap so pathological graphs cannot blow up.
   max_hops: 6
-  # Same share-field flags as outbound above — cascade reads the same
-  # semantic quantity ("how much of the supplier's OUTPUT is at risk
-  # downstream") and inherits the same defaults.
-  share_field: output_share       # output_share | input_share
+  # Same share-field flags as outbound above — see the reasoning there
+  # for why the default is input_share until output_share coverage rises.
+  share_field: input_share        # input_share | output_share
   fallback_to_input_share: true
 
 # Company rating — scalar in [-1, 1] is the source of truth. Labels are

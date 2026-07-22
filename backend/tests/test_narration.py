@@ -49,6 +49,13 @@ def test_tier_word_in_why_title_matches_chokepoint_tier(graph, narration_builder
             if node.dynamic.chokepoint_tier
             else "none"
         )
+        # Narration text for `unscored` is a narration-layer concern
+        # explicitly out of scope for the honesty-fixes pass. Skip these
+        # nodes for the title-word check; their tier value is `unscored`
+        # and no severity word applies. Guarded by
+        # test_no_unscored_node_appears_in_tier_counts elsewhere.
+        if tier == "unscored":
+            continue
         expected_word = tier_words[tier]
         for s in narr["sections"]:
             if s["key"] != "why_scores":

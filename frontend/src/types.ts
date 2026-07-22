@@ -3,7 +3,7 @@
 
 export type NodeType = "mineral" | "company" | "facility" | "country_region" | "product";
 export type Layer = "materials" | "chips" | "power" | "data_centers";
-export type ChokepointTier = "critical" | "high" | "moderate" | "none";
+export type ChokepointTier = "critical" | "high" | "moderate" | "none" | "unscored";
 export type Confidence = "hard" | "estimate" | "inference";
 
 export interface SourcedValue<T = unknown> {

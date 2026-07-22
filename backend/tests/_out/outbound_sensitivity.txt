@@ -1,12 +1,6 @@
-Removing the single highest-outbound node (KLA, id=company:kla, score=1.000) and renormalizing changes:
+Removing the single highest-outbound node (ASML, id=company:asml, score=1.000) and renormalizing changes:
 
-  7 node(s) shift tier.
+  1 node(s) shift tier.
 
 Changed:
-  country_region:myanmar                moderate → none     
-  country_region:malaysia               moderate → none     
-  country_region:australia              moderate → none     
-  country_region:chile                      high → moderate 
-  company:kla                           critical → none     
-  company:vistra                        moderate → none     
-  facility:lynas_malaysia               moderate → none     
+  company:asml                          critical → none     

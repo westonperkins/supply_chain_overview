@@ -310,14 +310,20 @@ def compute_severity(
     return _safe_eval(config.formula, ns)
 
 
-def compute_baseline_severity(node: Node, config: ScoringConfig) -> float:
+def compute_baseline_severity(node: Node, config: ScoringConfig) -> Optional[float]:
     """Uses the node's cached concentration (inbound+outbound combined).
     Called after refresh_all_derived has populated node.dynamic.concentration.
     Missing axes are resolved via axes_for_severity — see its docstring
-    for `neutral` vs `suppress` semantics."""
+    for the three modes.
+
+    Returns None when the node is unscored (missing axes + mode=unscored).
+    Callers set severity None and tier UNSCORED in that case.
+    """
     conc = node.dynamic.concentration or 0.0
     sub, lt_norm, missing = axes_for_severity(node, config)
     node.dynamic.scored_on_default_axes = missing or None
+    if sub is None or lt_norm is None:
+        return None
     return compute_severity(conc, sub, lt_norm, config)
 
 
@@ -354,19 +360,22 @@ def axes_for_severity(
     config: ScoringConfig,
     sub_delta: float = 0.0,
     lt_delta: float = 0.0,
-) -> tuple[float, float, list[str]]:
-    """Compute (substitutability_value, normalized_lead_time, missing_axes)
-    for use in the severity formula, respecting config.missing_axes_mode.
+) -> tuple[Optional[float], Optional[float], list[str]]:
+    """Compute (substitutability_value, normalized_lead_time, missing_axes).
 
-    Under `neutral`, a missing axis contributes 1.0 to the multiplicative
-    product (i.e. sub=0.0 → (1-sub)=1.0; lt normalized=1.0). Under
-    `suppress` (legacy), missing axes use legacy_substitutability=0.5 and
-    legacy_lead_time_years=1.0 → 0.5 × 0.213 = 0.107 severity multiplier.
+    Modes (config.missing_axes_mode):
+      unscored — default. When ANY required axis is missing, returns
+                 (None, None, missing). The caller (compute_baseline_severity
+                 / cascade._event_severity_at_source) must treat that as
+                 "refuse to score" — severity None, tier `unscored`.
+      neutral  — a missing axis contributes 1.0 to the multiplicative
+                 product (sub=0.0 → (1-sub)=1.0; lt_norm=1.0).
+      suppress — legacy: missing axes use legacy_substitutability=0.5 and
+                 legacy_lead_time_years=1.0 → 0.107 severity multiplier.
 
-    Callers pass event-driven deltas via sub_delta / lt_delta; those are
-    applied on top of the missing-axis anchor when the axis is absent.
-    Both engine.compute_baseline_severity and cascade._event_severity_at_source
-    go through this helper — they must not diverge.
+    Both engine.compute_baseline_severity and
+    cascade._event_severity_at_source go through this helper — they must
+    not diverge. See test_cascade_and_engine_use_identical_axis_handling.
     """
     mode = config.missing_axes_mode
     sub_raw = _axis_or_none(node.static.substitutability)
@@ -377,6 +386,9 @@ def axes_for_severity(
         missing.append("substitutability")
     if lt_raw is None:
         missing.append("lead_time_years")
+
+    if missing and mode == "unscored":
+        return None, None, missing
 
     # Substitutability
     if sub_raw is not None:
@@ -404,7 +416,13 @@ def axes_for_severity(
 # Chokepoint tier — derived, cached                                            #
 # --------------------------------------------------------------------------- #
 
-def derive_chokepoint_tier(baseline_severity: float, config: ScoringConfig) -> ChokepointTier:
+def derive_chokepoint_tier(
+    baseline_severity: Optional[float], config: ScoringConfig,
+) -> ChokepointTier:
+    """None severity → UNSCORED (missing axes; distinct from NONE which
+    is a scored value below the moderate threshold)."""
+    if baseline_severity is None:
+        return ChokepointTier.UNSCORED
     t = config.chokepoint_thresholds
     if baseline_severity >= t["critical"]:
         return ChokepointTier.CRITICAL

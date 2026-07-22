@@ -35,8 +35,12 @@ def _event_severity_at_source(node: Node, axes: AxesImpact, config: ScoringConfi
     concentration (inbound + outbound combined) with the event-specific deltas.
 
     Uses the same missing-axis handling as compute_baseline_severity via
-    axes_for_severity. Cascade and engine must not diverge — the shared
-    helper is enforced by test_cascade_engine_axis_parity."""
+    axes_for_severity. When the node is unscored (mode=unscored + axes
+    missing), the event still propagates through the graph using
+    concentration alone — an unscored severity is "we don't know how bad
+    it gets," not "it doesn't get bad." Cascade and engine must not
+    diverge — enforced by test_cascade_and_engine_use_identical_axis_handling.
+    """
     conc_base = node.dynamic.concentration or 0.0
     conc = max(0.0, min(1.0, conc_base + axes.concentration_delta))
     sub, lt_norm, _ = axes_for_severity(
@@ -44,6 +48,11 @@ def _event_severity_at_source(node: Node, axes: AxesImpact, config: ScoringConfi
         sub_delta=axes.substitutability_delta,
         lt_delta=axes.lead_time_delta,
     )
+    if sub is None or lt_norm is None:
+        # Unscored: propagate on concentration alone. Substitutability +
+        # lead-time terms fall to 1.0 for the walk so the event still
+        # reaches downstream, without inventing static-axis values.
+        return compute_severity(conc, 0.0, 1.0, config)
     return compute_severity(conc, sub, lt_norm, config)
 
 

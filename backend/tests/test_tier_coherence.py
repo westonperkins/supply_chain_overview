@@ -21,7 +21,9 @@ _OUT.mkdir(exist_ok=True)
 def test_tier_matches_derive_from_current_severity(graph, config):
     mismatches = []
     for node in graph.nodes.values():
-        expected = derive_chokepoint_tier(node.dynamic.current_severity or 0.0, config).value
+        # None severity → UNSCORED. Do NOT coerce to 0.0 — that would
+        # collapse unscored into `none` and hide the distinction.
+        expected = derive_chokepoint_tier(node.dynamic.current_severity, config).value
         actual = (
             node.dynamic.chokepoint_tier.value if node.dynamic.chokepoint_tier else "none"
         )
