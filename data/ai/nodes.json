@@ -67,7 +67,8 @@
       },
       "lead_time_years": {
         "value": 2.0,
-        "confidence": "estimate"
+        "confidence": "estimate",
+        "source_note": "Industry reading: indium is a byproduct of zinc mining, so scaling doesn't require greenfield mine development. Recycling covers a significant share of Korea/Japan demand. Adding new primary refining capacity ~2 years. Paper does not quantify."
       },
       "bottleneck_type": "concentration",
       "notes": "Capped by zinc production volumes; cannot scale on demand. Reserves spread across Canada, China, US, Peru, Russia."
@@ -104,7 +105,8 @@
       },
       "lead_time_years": {
         "value": 4.0,
-        "confidence": "estimate"
+        "confidence": "estimate",
+        "source_note": "Paper \u00a71B implies multi-year lead time for non-China REE processing capacity. Industry-informed estimate ~4 years for MP Materials / Lynas / Serra Verde-style refining ramps."
       },
       "bottleneck_type": "concentration",
       "notes": "China deliberately excluded Nd/Pr from Apr 2025 controls \u2014 reserving leverage for harder-to-source elements. Magnet-REE demand projected to triple by 2035."
@@ -176,8 +178,8 @@
       },
       "lead_time_years": {
         "value": 17.0,
-        "confidence": "estimate",
-        "source_note": "~17 years discovery-to-production, some estimates to 25. The longest lead time in the set."
+        "confidence": "hard",
+        "source_note": "Paper \u00a73A (reference table): '~17 years discovery-to-production, some estimates to 25.' Direct paper figure; upgraded from `estimate` to `hard`. Value 17.0 unchanged."
       },
       "bottleneck_type": "volume_demand",
       "notes": "NOT a concentration problem per paper \u2014 a volume/demand story. Structural deficit potentially >6 Mt/yr by early 2030s. COMEX broke $6/lb for the first time in Jan 2026.",
@@ -244,7 +246,8 @@
       },
       "lead_time_years": {
         "value": 2.5,
-        "confidence": "estimate"
+        "confidence": "estimate",
+        "source_note": "Paper \u00a72E discusses CoWoS as gating GPU output but does not give a specific lead time. Industry-informed estimate ~2.5 years for a new advanced-packaging line to qualify."
       },
       "bottleneck_type": "concentration",
       "notes": "Distinct from wafer fabrication capacity, but likewise concentrated at TSMC."
@@ -279,7 +282,8 @@
       },
       "lead_time_years": {
         "value": 3.0,
-        "confidence": "estimate"
+        "confidence": "estimate",
+        "source_note": "Industry reading: new NdFeB magnet factory construction + qualification ~3 years. Paper does not quantify separately from the underlying dysprosium and neodymium lead times."
       },
       "bottleneck_type": "concentration",
       "notes": "Manufacturing itself is China-concentrated even where mining/refining is diversifying."
@@ -308,7 +312,8 @@
       },
       "lead_time_years": {
         "value": 3.0,
-        "confidence": "estimate"
+        "confidence": "estimate",
+        "source_note": "Industry reading: new RF/power semi fab qualification ~3 years, gated by upstream gallium supply (see gallium lead_time). Paper \u00a71A discusses the chokepoint but does not quantify recovery time separately."
       },
       "bottleneck_type": "concentration",
       "notes": "Intermediate node \u2014 added specifically so gallium's downstream exposure emerges through a real supply path instead of being hardcoded."
@@ -671,8 +676,8 @@
     "static": {
       "substitutability": {
         "value": 0.05,
-        "confidence": "estimate",
-        "source_note": "Paper: 'no second source at comparable yield and volume until at least 2027'; ~90% share at 3nm/2nm."
+        "confidence": "hard",
+        "source_note": "Paper \u00a72B: 'no second source at comparable yield and volume until at least 2027'; TSMC ~90% share at 3nm/2nm. Direct paper quotes; upgraded from `estimate` to `hard`. Value 0.05 unchanged."
       },
       "lead_time_years": {
         "value": 4.0,
@@ -827,8 +832,8 @@
     "static": {
       "substitutability": {
         "value": 0.02,
-        "confidence": "estimate",
-        "source_note": "Paper: 'the only EUV maker' \u2014 no working competitor at any node."
+        "confidence": "hard",
+        "source_note": "Paper \u00a72D: 'the only EUV maker' \u2014 no working competitor at any node. This is a direct paper claim about ASML's position, not an inference; upgraded from `estimate` to `hard` in the static axes audit. Value 0.02 unchanged."
       },
       "lead_time_years": {
         "value": 5.0,
