@@ -57,6 +57,15 @@ class DynamicFields(BaseModel):
     # so the max combine returned no signal and supplies HHI fell back to
     # the aggregate reading. The narration layer can render this caveat.
     supplies_hhi_fallback_to_aggregate: bool = False
+    # Same rule at the STAGE level (mines / refines / supplies / input_to /
+    # component_of / operates) — a stage bucket with only one modelled
+    # source cannot distinguish a real monopoly from an unmodelled market,
+    # so it does not contribute to inbound_hhi. Recorded here for the
+    # backlog. If EVERY stage on this node is single-supplier, inbound is
+    # 0 and `all_stages_single_supplier` is True — the node explicitly
+    # has no reliable inbound signal rather than a silent fallback.
+    single_supplier_stages: Optional[list[str]] = None
+    all_stages_single_supplier: bool = False
     # Legacy blended HHI — kept for inspection / before-after diffing.
     combined_hhi: Optional[float] = None
     inbound_hhi: Optional[float] = None               # combine of per-stage per scoring.yaml (default max)

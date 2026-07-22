@@ -63,6 +63,17 @@ concentration:
       # trade-offs. Default true so this flag alone changes no scores.
       normalize: true
       combine: max            # max | weighted_sum
+      # Stage-level min_suppliers — same reasoning as the per-category
+      # rule one level down (see supplies.per_category below). A stage
+      # bucket with fewer than N distinct modelled sources reads as
+      # HHI 1.0 under `normalize: true` (a single share normalizes to
+      # itself), which cannot distinguish a real monopoly from data we
+      # simply haven't finished modelling. Excluded from the combine and
+      # surfaced in the completeness backlog. If EVERY stage on a node
+      # is single-supplier, inbound_hhi falls to 0 (no reliable signal)
+      # and the node is flagged on dynamic.all_stages_single_supplier.
+      # See docs/outbound_output_share_spec.md §1.
+      min_suppliers_for_concentration: 2
       weights:                # used only when combine = weighted_sum
         mines: 1.0
         refines: 1.0
@@ -96,6 +107,15 @@ concentration:
     decay_per_hop: 0.7         # geometric decay per hop of downstream walk
     max_hops: 6
     min_influence: 1e-6        # prune paths below this
+    # Which edge field the downstream walk multiplies at each hop.
+    # `output_share` is the correct quantity for outbound criticality
+    # ("how much of the supplier's OUTPUT depends on this customer") —
+    # `input_share` is the previous behaviour, kept behind this flag so
+    # before/after comparisons remain reproducible. When output_share is
+    # null on an edge and fallback is enabled, input_share is used.
+    # See docs/outbound_output_share_spec.md.
+    share_field: output_share       # output_share | input_share
+    fallback_to_input_share: true
   combine:
     # `max` — a node is severe if EITHER axis is high. Averaging would wash
     # ASML out; do not switch to weighted_sum without a reason.
@@ -146,6 +166,11 @@ cascade:
   financial_cushion_proxy: "static.financial_cushion"
   # Traversal depth cap so pathological graphs cannot blow up.
   max_hops: 6
+  # Same share-field flags as outbound above — cascade reads the same
+  # semantic quantity ("how much of the supplier's OUTPUT is at risk
+  # downstream") and inherits the same defaults.
+  share_field: output_share       # output_share | input_share
+  fallback_to_input_share: true
 
 # Company rating — scalar in [-1, 1] is the source of truth. Labels are
 # derived from these thresholds. Retune after seeing real distributions.

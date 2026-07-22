@@ -89,6 +89,16 @@ class ScoringConfig:
         )
 
     @property
+    def stage_min_suppliers_for_concentration(self) -> int:
+        """Minimum distinct sources a stage bucket must have before it
+        contributes to the combine. See yaml comment + spec §1."""
+        return int(
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("min_suppliers_for_concentration", 2)
+        )
+
+    @property
     def inbound_per_stage_weights(self) -> dict[str, float]:
         return dict(
             self.raw["concentration"]["inbound"]
@@ -149,6 +159,20 @@ class ScoringConfig:
         return float(self.raw["concentration"]["outbound"]["min_influence"])
 
     @property
+    def outbound_share_field(self) -> str:
+        """Which edge field the outbound walk multiplies at each hop —
+        `output_share` (correct quantity) or `input_share` (legacy)."""
+        return self.raw["concentration"]["outbound"].get(
+            "share_field", "output_share"
+        )
+
+    @property
+    def outbound_fallback_to_input_share(self) -> bool:
+        return bool(self.raw["concentration"]["outbound"].get(
+            "fallback_to_input_share", True
+        ))
+
+    @property
     def concentration_combine_method(self) -> str:
         return self.raw["concentration"]["combine"]["method"]
 
@@ -175,6 +199,14 @@ class ScoringConfig:
     @property
     def cascade_max_hops(self) -> int:
         return int(self.raw["cascade"].get("max_hops", 6))
+
+    @property
+    def cascade_share_field(self) -> str:
+        return self.raw["cascade"].get("share_field", "output_share")
+
+    @property
+    def cascade_fallback_to_input_share(self) -> bool:
+        return bool(self.raw["cascade"].get("fallback_to_input_share", True))
 
     @property
     def financial_cushion_proxy(self) -> str:

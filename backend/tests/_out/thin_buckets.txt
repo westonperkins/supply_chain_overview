@@ -1,19 +1,19 @@
 thin-bucket census — 14 single-edge bucket(s)
 
 won max  bucket  node                                   stage         
-yes       1.000  AMD                                    supplies      
-yes       1.000  Amazon                                 input_to      
-yes       1.000  Broadcom                               supplies      
-yes       1.000  Colossus                               input_to      
-yes       1.000  Meta                                   input_to      
-yes       1.000  Micron                                 input_to      
-yes       1.000  Microsoft                              input_to      
-yes       1.000  Quanta Services                        input_to      
-yes       1.000  RF & Power Semiconductors              input_to      
-yes       1.000  SK Hynix                               input_to      
-yes       1.000  Stargate (Abilene)                     input_to      
-yes       1.000  TSMC                                   input_to      
-yes       1.000  The Citadel                            input_to      
-yes       1.000  Vantage Frontier                       input_to      
+no        1.000  AMD                                    supplies      
+no        1.000  Amazon                                 input_to      
+no        1.000  Broadcom                               supplies      
+no        1.000  Colossus                               input_to      
+no        1.000  Meta                                   input_to      
+no        1.000  Micron                                 input_to      
+no        1.000  Microsoft                              input_to      
+no        1.000  Quanta Services                        input_to      
+no        1.000  RF & Power Semiconductors              input_to      
+no        1.000  SK Hynix                               input_to      
+no        1.000  Stargate (Abilene)                     input_to      
+no        1.000  TSMC                                   input_to      
+no        1.000  The Citadel                            input_to      
+no        1.000  Vantage Frontier                       input_to      
 
-nodes whose inbound_hhi is decided by a single-edge bucket: 14
+nodes whose inbound_hhi is decided by a single-edge bucket: 0

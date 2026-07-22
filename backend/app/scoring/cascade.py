@@ -11,6 +11,7 @@ from ..schema import (
 )
 from .config import ScoringConfig
 from .engine import (
+    _outbound_share_for,
     _sourced_number,
     compute_severity,
     normalize_lead_time,
@@ -53,6 +54,8 @@ def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig
     """
     decay = config.cascade_decay
     max_hops = config.cascade_max_hops
+    share_field = config.cascade_share_field
+    fallback = config.cascade_fallback_to_input_share
 
     # Best severity seen at each node across all origins/paths, and the path
     # that achieved it (for inspectability).
@@ -87,8 +90,11 @@ def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig
                 if target is None or edge.target_id in visited_on_this_origin:
                     continue
                 cushion = _cushion(target)
-                # Downstream severity = source_severity * decay * edge_weight * (1 - cushion)
-                downstream_sev = sev * decay * edge.effective_weight() * (1.0 - cushion)
+                share = _outbound_share_for(edge, share_field, fallback)
+                if share is None:
+                    continue
+                # Downstream severity = source_severity * decay * share * (1 - cushion)
+                downstream_sev = sev * decay * share * (1.0 - cushion)
                 if downstream_sev <= 1e-6:
                     continue
 

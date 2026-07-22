@@ -1,0 +1,17 @@
+stage-level completeness backlog — 14 single-
+supplier stage bucket(s)
+node                                   stage          sole source                   
+Amazon                                 input_to       product:hbm                   
+AMD                                    supplies       company:tsmc                  
+Broadcom                               supplies       company:tsmc                  
+Meta                                   input_to       product:hbm                   
+Micron                                 input_to       mineral:copper                
+Microsoft                              input_to       product:hbm                   
+Quanta Services                        input_to       mineral:copper                
+SK Hynix                               input_to       mineral:copper                
+TSMC                                   input_to       mineral:copper                
+Colossus                               input_to       product:ndfeb_magnets         
+Stargate (Abilene)                     input_to       product:ndfeb_magnets         
+The Citadel                            input_to       product:ndfeb_magnets         
+Vantage Frontier                       input_to       product:ndfeb_magnets         
+RF & Power Semiconductors              input_to       mineral:gallium               

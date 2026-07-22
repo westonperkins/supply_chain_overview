@@ -4,3 +4,7 @@ __pycache__/
 frontend/node_modules/
 frontend/dist/
 .DS_Store
+
+# Reports (PDF + markdown) are personal-record artefacts, not codebase
+docs/*.pdf
+docs/*.md

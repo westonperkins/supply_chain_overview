@@ -1,6 +1,8 @@
-Removing the single highest-outbound node (ASML, id=company:asml, score=1.000) and renormalizing changes:
+Removing the single highest-outbound node (KLA, id=company:kla, score=1.000) and renormalizing changes:
 
-  1 node(s) shift tier.
+  3 node(s) shift tier.
 
 Changed:
-  company:asml                          critical → none     
+  company:kla                           critical → none     
+  company:mp_materials                  moderate → none     
+  company:lynas                         moderate → none     

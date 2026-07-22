@@ -575,10 +575,12 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D + \u00a72B: ASML is the sole EUV maker and dominant DUV supplier; TSMC's leading-edge lithography is essentially single-sourced. Per-category value reflects share of TSMC's lithography-tool supply, not aggregate spend."
+      "source_note": "Paper \u00a72D + \u00a72B: ASML is the sole EUV maker and dominant DUV supplier; TSMC's leading-edge lithography is essentially single-sourced. Per-category value reflects share of TSMC's lithography-tool supply, not aggregate spend.",
+      "output_share_confidence": "estimate",
+      "output_share_source_note": "Paper \u00a75 discusses ASML's revenue concentration on the leading-edge fab set; specific per-customer figure is industry-informed. TSMC is ASML's largest customer by a wide margin (EUV backlog is dominated by 3nm/2nm ramp). Estimate anchored to ASML's public revenue mix."
     },
     "input_share": 0.99,
-    "output_share": null,
+    "output_share": 0.4,
     "supply_category": "lithography"
   },
   {
@@ -588,10 +590,12 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "ASML is Samsung's sole EUV supplier; slight reduction vs TSMC reflects Samsung's greater share of DUV-only nodes (paper \u00a72B: '3nm yields stuck at 30\u201340%')."
+      "source_note": "ASML is Samsung's sole EUV supplier; slight reduction vs TSMC reflects Samsung's greater share of DUV-only nodes (paper \u00a72B: '3nm yields stuck at 30\u201340%').",
+      "output_share_confidence": "estimate",
+      "output_share_source_note": "Paper \u00a75 (as above) \u2014 Samsung is ASML's #2 EUV buyer, meaningful share but well behind TSMC. Industry-informed estimate."
     },
     "input_share": 0.95,
-    "output_share": null,
+    "output_share": 0.2,
     "supply_category": "lithography"
   },
   {
@@ -601,10 +605,12 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Intel needs EUV for leading-edge nodes (18A, 20A). ASML sole EUV maker. Industry-informed estimate of ASML's share of Intel's lithography-tool supply."
+      "source_note": "Intel needs EUV for leading-edge nodes (18A, 20A). ASML sole EUV maker. Industry-informed estimate of ASML's share of Intel's lithography-tool supply.",
+      "output_share_confidence": "estimate",
+      "output_share_source_note": "Paper \u00a75 \u2014 Intel is ramping EUV for 18A/20A, growing share. Industry-informed estimate; smaller than Samsung today."
     },
     "input_share": 0.95,
-    "output_share": null,
+    "output_share": 0.15,
     "supply_category": "lithography"
   },
   {
@@ -848,10 +854,12 @@
     "type": "supplies",
     "static": {
       "confidence": "hard",
-      "source_note": "Paper \u00a72B: TSMC has ~90% share at 3nm/2nm and is essentially the sole leading-edge foundry NVIDIA's advanced GPUs are fabbed on. Under per-category semantics this is NVIDIA's foundry-wafer supply share \u2014 restored from the cleanup-pass adjustment (TSMC 0.99 \u2192 0.94) which was forced only by cross-category competition."
+      "source_note": "Paper \u00a72B: TSMC has ~90% share at 3nm/2nm and is essentially the sole leading-edge foundry NVIDIA's advanced GPUs are fabbed on. Under per-category semantics this is NVIDIA's foundry-wafer supply share \u2014 restored from the cleanup-pass adjustment (TSMC 0.99 \u2192 0.94) which was forced only by cross-category competition.",
+      "output_share_confidence": "estimate",
+      "output_share_source_note": "Paper \u00a75 discusses TSMC's concentration on AI customers; NVIDIA is a top-3 TSMC customer (well behind Apple's ~25% but ahead of AMD, Broadcom, MediaTek in absolute terms). Industry-informed estimate from public TSMC customer mix."
     },
     "input_share": 0.99,
-    "output_share": null,
+    "output_share": 0.13,
     "supply_category": "foundry_wafers"
   },
   {

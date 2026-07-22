@@ -66,23 +66,28 @@ def per_stage_hhi(derived: Optional[dict], stage: str, normalize: bool = True) -
     return compute_hhi(stage_shares, normalize=normalize)
 
 
-def compute_stage_hhis(derived: Optional[dict], normalize: bool = True) -> dict[str, float]:
+def compute_stage_hhis(
+    derived: Optional[dict], normalize: bool = True,
+) -> tuple[dict[str, float], dict[str, int]]:
     """Compute per-stage HHIs for every edge type in SUPPLY_EDGE_TYPES that
-    has edges present in `derived`. Returns {} when nothing applies.
+    has edges present in `derived`. Returns ({stage: hhi}, {stage: n_sources}).
 
-    This is deliberately data-driven: the stage set is not hardcoded, so
-    adding a new SUPPLY_EDGE_TYPES member automatically flows through. The
-    previous defect (hardcoded three-stage triple in Python that yaml
-    couldn't override) cannot recur under this shape."""
+    Counts let the caller apply a stage-level `min_suppliers` gate — same
+    rule as per-category HHI one level down (see spec §1). A single-source
+    stage under `normalize: true` reads HHI 1.0 by construction, which
+    cannot distinguish a real monopoly from unmodelled data.
+    """
     if not derived:
-        return {}
+        return {}, {}
     valid = {t.value for t in SUPPLY_EDGE_TYPES}
-    out: dict[str, float] = {}
+    hhis: dict[str, float] = {}
+    counts: dict[str, int] = {}
     for stage_name, shares in derived.items():
         if stage_name not in valid or not shares:
             continue
-        out[stage_name] = compute_hhi(shares, normalize=normalize)
-    return out
+        hhis[stage_name] = compute_hhi(shares, normalize=normalize)
+        counts[stage_name] = len(shares)
+    return hhis, counts
 
 
 def compute_supplies_per_category(
@@ -145,15 +150,38 @@ def combine_per_stage(values: dict[str, float], config: ScoringConfig) -> float:
 # the returned scale is [0, 1].
 #
 
+def _outbound_share_for(edge, share_field: str, fallback: bool) -> Optional[float]:
+    """Which quantity to multiply along an outbound walk.
+
+    output_share is "how much of the source's output goes to this target"
+    — the correct quantity for downstream criticality ("how much of the
+    supplier's output depends on this customer"). input_share was the
+    legacy behaviour. See spec §2. Returns None when the edge should be
+    skipped entirely (output_share requested, no fallback, edge null)."""
+    if share_field == "input_share":
+        return edge.effective_weight()
+    # share_field == "output_share"
+    if edge.output_share is not None:
+        return edge.output_share
+    if fallback:
+        return edge.effective_weight()
+    return None
+
+
 def _outbound_criticality_raw(
     node_id: str,
     graph: SupplyChainGraph,
     decay: float,
     max_hops: int,
     min_influence: float,
+    share_field: str = "input_share",
+    fallback: bool = True,
+    walk_counter: Optional[dict] = None,
 ) -> float:
+    """Walks downstream from node_id, multiplying `share_field` on each hop.
+    `walk_counter` (optional) accumulates {"output_share": n, "fallback": n,
+    "skipped": n} for the fallback census in the report layer."""
     best_influence: dict[str, float] = {}
-    # (curr_id, running_weight_product, depth)
     queue: deque[tuple[str, float, int]] = deque([(node_id, 1.0, 0)])
     while queue:
         curr_id, running, depth = queue.popleft()
@@ -162,8 +190,21 @@ def _outbound_criticality_raw(
         for edge in graph.downstream_supply_edges(curr_id):
             target_id = edge.target_id
             if target_id == node_id:
-                continue  # never loop back onto origin
-            new_running = running * edge.effective_weight()
+                continue
+            share = _outbound_share_for(edge, share_field, fallback)
+            if walk_counter is not None:
+                if share_field == "output_share":
+                    if edge.output_share is not None:
+                        walk_counter["output_share"] = walk_counter.get("output_share", 0) + 1
+                    elif fallback:
+                        walk_counter["fallback"] = walk_counter.get("fallback", 0) + 1
+                    else:
+                        walk_counter["skipped"] = walk_counter.get("skipped", 0) + 1
+                else:
+                    walk_counter["input_share"] = walk_counter.get("input_share", 0) + 1
+            if share is None:
+                continue
+            new_running = running * share
             new_depth = depth + 1
             influence = new_running * (decay ** new_depth)
             if influence <= min_influence:
@@ -174,13 +215,22 @@ def _outbound_criticality_raw(
     return math.sqrt(sum(v * v for v in best_influence.values()))
 
 
-def compute_outbound_criticality_map(graph: SupplyChainGraph, config: ScoringConfig) -> dict[str, float]:
+def compute_outbound_criticality_map(
+    graph: SupplyChainGraph, config: ScoringConfig,
+    walk_counter: Optional[dict] = None,
+) -> dict[str, float]:
     """Compute normalized [0, 1] outbound criticality for every node."""
     decay = config.concentration_outbound_decay
     max_hops = config.concentration_outbound_max_hops
     min_influence = config.concentration_outbound_min_influence
+    share_field = config.outbound_share_field
+    fallback = config.outbound_fallback_to_input_share
     raw = {
-        node_id: _outbound_criticality_raw(node_id, graph, decay, max_hops, min_influence)
+        node_id: _outbound_criticality_raw(
+            node_id, graph, decay, max_hops, min_influence,
+            share_field=share_field, fallback=fallback,
+            walk_counter=walk_counter,
+        )
         for node_id in graph.nodes
     }
     max_raw = max(raw.values()) if raw else 0.0
@@ -304,13 +354,14 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
     per_cat_enabled = config.supplies_per_category_enabled
     per_cat_combine = config.supplies_per_category_combine
     min_suppliers = config.supplies_min_suppliers_for_concentration
+    stage_min_suppliers = config.stage_min_suppliers_for_concentration
 
     for node in graph.nodes.values():
         derived = node.dynamic.derived_shares
 
         # Single source of truth: per-stage HHIs across every SUPPLY_EDGE_TYPES
         # edge type with edges present. Never hardcoded.
-        stage_hhis = compute_stage_hhis(derived, normalize=normalize)
+        stage_hhis, stage_counts = compute_stage_hhis(derived, normalize=normalize)
 
         # Per-category split within `supplies` — replaces the aggregate
         # `supplies` HHI with a per-category combine (default max). Same
@@ -358,16 +409,37 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
         # Legacy blended value — kept purely for inspection / diffing.
         node.dynamic.combined_hhi = hhi_from_derived_shares(derived, normalize=normalize)
 
-        # Combine present per-stage HHIs into inbound_hhi. When the yaml
+        # Stage-level min_suppliers gate — a single-source stage bucket
+        # under normalize=true reads HHI 1.0 by construction (a single
+        # share divided by its own sum is 1.0), which cannot distinguish
+        # a real monopoly from unmodelled data. Same rule as per-category
+        # HHI one level down. See spec §1.
+        single_supplier_stages = sorted(
+            s for s, n in stage_counts.items() if n < stage_min_suppliers
+        )
+        gated_stage_hhis = {
+            s: h for s, h in stage_hhis.items()
+            if stage_counts.get(s, 0) >= stage_min_suppliers
+        }
+        # Combine gated per-stage HHIs into inbound_hhi. When the yaml
         # opts out via an explicit stages list, honour it; otherwise use
-        # everything present. This is the fix for the previous defect,
-        # where the code hardcoded {mines, refines, supplies} in Python
-        # so listing more in yaml silently did nothing.
+        # everything present.
         if configured_stages is None:
-            present = stage_hhis
+            present = gated_stage_hhis
         else:
-            present = {s: v for s, v in stage_hhis.items() if s in configured_stages}
-        inbound = combine_per_stage(present, config)
+            present = {s: v for s, v in gated_stage_hhis.items()
+                       if s in configured_stages}
+        # If the node had stage buckets at all but every one is single-
+        # supplier, we do NOT silently fall back to the aggregate — we
+        # report the node as having no reliable inbound signal.
+        node.dynamic.single_supplier_stages = single_supplier_stages or None
+        node.dynamic.all_stages_single_supplier = bool(
+            stage_hhis and not present
+        )
+        if node.dynamic.all_stages_single_supplier:
+            inbound = 0.0
+        else:
+            inbound = combine_per_stage(present, config)
 
         outbound = outbound_map.get(node.id, 0.0)
         concentration = combine_concentration(inbound, outbound, config)
