@@ -108,41 +108,46 @@ def derive_thresholds(
     threshold = separation_factor * med
     separating = [g for g in gaps if g.size >= threshold]
 
-    # Candidate midpoints in descending severity order — the top three
-    # are assigned to critical/high, high/moderate, moderate/none in
-    # descending order per §1.3 step 6.
-    candidates = sorted(separating, key=lambda g: -g.midpoint)
+    # F1 fix — natural-breaks selection.
+    # Select boundary gaps by SIZE (largest first). Pass B selected by
+    # midpoint position, which discarded the second-largest gap in the
+    # distribution because it sat low — an inspection tool ordering, not
+    # a tier one. Tie-break: higher midpoint, then upper_id lex, so
+    # selection is deterministic. Order the SELECTED gaps by midpoint
+    # descending for boundary naming (tiers are monotonic in severity).
+    selected = sorted(
+        separating,
+        key=lambda g: (-g.size, -g.midpoint, g.upper_id),
+    )[:3]
+    selected_by_midpoint = sorted(selected, key=lambda g: -g.midpoint)
 
     boundary_names = ["critical", "high", "moderate"]
     boundaries: dict[str, float] = {}
     boundary_gap: dict[str, Optional[Gap]] = {}
     unresolved: list[UnresolvedBand] = []
 
+    def _tier_pair(name: str) -> list[str]:
+        if name == "critical":
+            return ["critical", "high"]
+        if name == "high":
+            return ["high", "moderate"]
+        return ["moderate", "none"]
+
     for i, name in enumerate(boundary_names):
-        if i < len(candidates):
-            g = candidates[i]
+        if i < len(selected_by_midpoint):
+            g = selected_by_midpoint[i]
             boundaries[name] = g.midpoint
             boundary_gap[name] = g
         else:
             # No separating gap for this boundary — declare unresolved.
-            # Span: from previous boundary (or top of distribution) down
-            # to next known separating gap (or 0.0).
             upper_boundary = boundaries.get(boundary_names[i - 1], scored[0][1])
-            next_sep = candidates[i - 1].midpoint if candidates else 0.0
-            # Adjacent tier pair
-            if name == "critical":
-                pair = ["critical", "high"]
-            elif name == "high":
-                pair = ["high", "moderate"]
-            else:
-                pair = ["moderate", "none"]
             unresolved.append(UnresolvedBand(
                 lower=0.0,
                 upper=upper_boundary,
-                tiers=pair,
+                tiers=_tier_pair(name),
                 reason=(
                     f"no separating gap ≥ {threshold:.5f} for the "
-                    f"{name}/{'high' if name == 'critical' else 'moderate' if name == 'high' else 'none'} boundary"
+                    f"{name}/{_tier_pair(name)[1]} boundary"
                 ),
             ))
             # Set boundary = 0 so any node with positive severity is above it;
@@ -161,6 +166,31 @@ def derive_thresholds(
             )
         prev = boundaries[name]
 
+    # F1.b — partition sanity guard. If the moderate/none boundary sits
+    # above the median scored severity, the bottom partition is
+    # degenerate (`none` would swallow the majority of scored nodes).
+    # Reroute the boundary to the unresolved-band mechanism rather than
+    # ship a degenerate partition. Pure structural check on the boundary
+    # vs the median — does not reference any node by name and is not
+    # tunable to any tier membership. See spec §F1.b.
+    scored_sevs = [s for _, s in scored]
+    median_scored = median(scored_sevs)
+    if boundaries.get("moderate", 0.0) > median_scored:
+        prev_boundary = boundaries.get("high", scored[0][1])
+        unresolved.append(UnresolvedBand(
+            lower=0.0,
+            upper=prev_boundary,
+            tiers=["moderate", "none"],
+            reason=(
+                f"moderate/none boundary {boundaries['moderate']:.5f} sits "
+                f"above the median scored severity {median_scored:.5f} — "
+                f"bottom partition is degenerate (`none` would hold the "
+                f"majority of scored nodes). Rerouted to unresolved band."
+            ),
+        ))
+        boundaries["moderate"] = 0.0
+        boundary_gap["moderate"] = None
+
     return ThresholdDerivation(
         scored=scored, gaps=gaps, median_gap=med,
         separation_factor=separation_factor,
@@ -173,19 +203,23 @@ def derive_thresholds(
 
 def compute_tier_ambiguity(
     severity: float,
+    tier_name: str,
     derivation: ThresholdDerivation,
 ) -> tuple[bool, Optional[list[str]]]:
     """For a scored severity, return (tier_ambiguous, tier_ambiguous_with).
 
     A node is ambiguous when its severity falls inside an unresolved
-    band. `tier_ambiguous_with` names the OTHER tier the node could
-    plausibly belong to; the tier itself is still assigned by the derived
-    boundary so downstream tier enums do not need a new member."""
+    band. `tier_ambiguous_with` names the OTHER tier(s) the node could
+    plausibly belong to — EXCLUDING its own derived tier. The tier
+    itself is still assigned by the derived boundary so downstream tier
+    enums do not need a new member.
+
+    F4 fix (Pass C): returns only the other tier(s), not both, matching
+    the docstring's stated contract. The prior implementation returned
+    `list(band.tiers)` which included the node's own tier — dead-code
+    branch, so uncaught."""
     for band in derivation.unresolved_bands:
         if band.lower <= severity <= band.upper:
-            # The node is ambiguous between the two tiers of the band.
-            # The current tier is derived normally; the AMBIGUOUS_WITH
-            # names the other one.
-            # Pick whichever tier is NOT the derived one (caller resolves).
-            return True, list(band.tiers)
+            others = [t for t in band.tiers if t != tier_name]
+            return True, others or None
     return False, None

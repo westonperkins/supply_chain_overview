@@ -62,18 +62,71 @@ def _load_snapshot_or_first_run(g):
     return snap
 
 
+def _write_boundaries_to_config(derivation):
+    """F3 fix (Pass C): the config boundary block is a RENDERING of the
+    derivation output, never a parallel hand-entry. This rewrites the
+    three float values in place, preserving comments and every other
+    line of scoring.yaml so the diff is minimal and reviewable."""
+    yaml_path = REPO / "config" / "scoring.yaml"
+    text = yaml_path.read_text()
+    lines = text.split("\n")
+
+    out = []
+    inside_boundaries = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("boundaries:"):
+            inside_boundaries = True
+            out.append(line)
+            continue
+        if inside_boundaries:
+            # An unindented (or top-level) sibling ends the block.
+            if line and not line.startswith(" "):
+                inside_boundaries = False
+                out.append(line)
+                continue
+            # Rewrite the three boundary lines with derivation values.
+            for name in ("critical", "high", "moderate"):
+                prefix = f"    {name}:"
+                if stripped.startswith(f"{name}:"):
+                    indent = line[: len(line) - len(line.lstrip())]
+                    out.append(f"{indent}{name}: {derivation.boundaries[name]!r}")
+                    break
+            else:
+                out.append(line)
+                continue
+        else:
+            out.append(line)
+    yaml_path.write_text("\n".join(out))
+
+    # Also mirror to the fixture so H1 identity stays clean.
+    fx = REPO / "backend" / "tests" / "fixtures" / "scoring.yaml"
+    fx.write_text(yaml_path.read_text())
+
+
 def main():
+    # First pass: score to get severities (independent of tier boundaries).
+    g, c = score()
+
+    # Derive from committed severities.
+    severities = [(nid, n.dynamic.current_severity) for nid, n in g.nodes.items()]
+    derivation = derive_thresholds(severities, c.threshold_separation_factor)
+
+    # F3: write derived boundaries into config so config IS the rendering
+    # of the derivation. Then re-score so tiers reflect the freshly
+    # written boundaries.
+    _write_boundaries_to_config(derivation)
     g, c = score()
 
     inventory = build_inventory(g, c)
     (GENERATED / "node_inventory.md").write_text(inventory)
 
-    # Threshold analysis — reads the same graph state.
-    severities = [(nid, n.dynamic.current_severity) for nid, n in g.nodes.items()]
-    derivation = derive_thresholds(severities, c.threshold_separation_factor)
     scored_count = sum(1 for _, s in severities if s is not None)
     unscored_count = len(severities) - scored_count
-    analysis = build_threshold_analysis(derivation, inventory, scored_count, unscored_count)
+    analysis = build_threshold_analysis(
+        derivation, inventory, scored_count, unscored_count,
+        chokepoint_landing=_chokepoint_landing(g),
+    )
     (GENERATED / "threshold_analysis.md").write_text(analysis)
 
     snapshot = _load_snapshot_or_first_run(g)
@@ -85,6 +138,32 @@ def main():
     print(f"  {GENERATED / 'threshold_analysis.md'}")
     print(f"  {GENERATED / 'severity_snapshot.json'} (unchanged unless first run)")
     print(f"  {GENERATED / 'severity_diff.md'}")
+
+
+# F2.b — paper-chokepoint tier-landing table lives in the reporting layer.
+# The seven ids live here (reporting), NOT in the derivation module —
+# A8 still holds: no derivation-path source file references them.
+PAPER_CHOKEPOINT_IDS = [
+    ("company:tsmc", "TSMC"),
+    ("company:asml", "ASML"),
+    ("mineral:gallium", "gallium"),
+    ("mineral:dysprosium", "dysprosium"),
+    ("product:hbm", "HBM"),
+    ("product:cowos_packaging", "CoWoS"),
+    ("product:rf_power_semis", "RF & Power Semis"),
+]
+
+
+def _chokepoint_landing(graph):
+    rows = []
+    for nid, name in PAPER_CHOKEPOINT_IDS:
+        n = graph.nodes.get(nid)
+        if n is None:
+            continue
+        sev = n.dynamic.current_severity
+        tier = n.dynamic.chokepoint_tier.value if n.dynamic.chokepoint_tier else "none"
+        rows.append((name, nid, sev, tier))
+    return rows
 
 
 if __name__ == "__main__":

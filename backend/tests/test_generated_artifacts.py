@@ -170,6 +170,101 @@ def test_fixtures_and_data_are_content_identical():
     assert prod == fx, "config/scoring.yaml vs backend/tests/fixtures/scoring.yaml differ"
 
 
+def test_config_boundaries_equal_derivation():
+    """F3 fix (Pass C): the config boundary block IS the rendering of the
+    derivation output. Load committed config boundaries, freshly derive
+    from the committed inventory, assert equality to full float
+    precision. Mismatch fails naming both values so the fix path is
+    obvious: `python backend/scripts/generate_inventory.py` will rewrite
+    the config from the derivation."""
+    from app.scoring.thresholds import derive_thresholds
+    from app.scoring import ScoringConfig
+
+    snap = json.loads((GENERATED / "severity_snapshot.json").read_text())
+    severities = [(nid, v["severity"]) for nid, v in snap["nodes"].items()]
+
+    cfg = ScoringConfig.load(REPO / "config" / "scoring.yaml")
+    factor = cfg.threshold_separation_factor
+    derivation = derive_thresholds(severities, factor)
+
+    cfg_boundaries = cfg.chokepoint_thresholds
+    for name in ("critical", "high", "moderate"):
+        cfg_v = cfg_boundaries[name]
+        der_v = derivation.boundaries[name]
+        # Exact equality (not tolerance) — same computation, same bits.
+        assert cfg_v == der_v, (
+            f"config boundary '{name}' = {cfg_v!r} differs from freshly "
+            f"derived {der_v!r}. Regenerate: "
+            f"`python backend/scripts/generate_inventory.py`"
+        )
+
+
+def test_moderate_none_boundary_not_above_median():
+    """F1.b guard (Pass C): a partition where moderate/none sits above
+    the median scored severity is degenerate — `none` would swallow the
+    majority of scored nodes. Structural check; does not reference any
+    node by name; not tunable."""
+    import statistics
+    g, c = _score_from_fixtures()
+    scored = [n.dynamic.current_severity for n in g.nodes.values()
+              if n.dynamic.current_severity is not None]
+    median_sev = statistics.median(scored)
+    boundaries = c.chokepoint_thresholds
+    mod_none = boundaries["moderate"]
+    assert mod_none <= median_sev, (
+        f"moderate/none boundary {mod_none:.5f} sits above median scored "
+        f"severity {median_sev:.5f}. Bottom partition would be degenerate. "
+        f"Under the F1.b guard the derivation should have rerouted this "
+        f"boundary to the unresolved-band mechanism; if this assertion "
+        f"fires the guard has been bypassed or disabled."
+    )
+
+
+def test_unresolved_band_ambiguity():
+    """F4 fix (Pass C): compute_tier_ambiguity returns only OTHER tiers
+    (excluding the node's own derived tier), matching its docstring.
+    The unresolved-band branch F1's current data doesn't reach — this
+    exercises it via a synthetic ThresholdDerivation so the honesty
+    mechanism works before it's needed."""
+    from app.scoring.thresholds import (
+        ThresholdDerivation, UnresolvedBand, compute_tier_ambiguity,
+    )
+    scored = [("a", 0.5), ("b", 0.3), ("c", 0.1)]
+    band = UnresolvedBand(
+        lower=0.2, upper=0.4,
+        tiers=["high", "moderate"],
+        reason="synthetic — test only",
+    )
+    d = ThresholdDerivation(
+        scored=scored,
+        gaps=[],
+        median_gap=0.1,
+        separation_factor=3.0,
+        separating_gaps=[],
+        boundaries={"critical": 0.6, "high": 0.4, "moderate": 0.2},
+        boundary_gap={"critical": None, "high": None, "moderate": None},
+        unresolved_bands=[band],
+    )
+
+    # Node b: severity 0.3 falls in [0.2, 0.4]. Under the boundary
+    # map above, 0.3 tiers `moderate` (>= 0.2 but < 0.4). Ambiguous
+    # with `high`, not with itself.
+    amb, others = compute_tier_ambiguity(0.3, "moderate", d)
+    assert amb is True
+    assert others == ["high"], others
+
+    # Same band, viewed from the other side: if the caller decided the
+    # tier is `high`, the ambiguity partner is `moderate`.
+    amb, others = compute_tier_ambiguity(0.3, "high", d)
+    assert amb is True
+    assert others == ["moderate"], others
+
+    # Node c: severity 0.1 is OUTSIDE the band [0.2, 0.4]. Not ambiguous.
+    amb, others = compute_tier_ambiguity(0.1, "none", d)
+    assert amb is False
+    assert others is None
+
+
 def test_derivation_source_does_not_reference_known_misses():
     """A8: The derivation logic must NOT reference HBM or RF & Power
     Semis by name. Recalibration that targets known misses is not

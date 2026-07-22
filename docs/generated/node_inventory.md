@@ -14,18 +14,18 @@ Graph size: 66 nodes total (24 scored, 42 unscored).
 | mineral:gallium | mineral | high | 0.48027135 | 0.970350 | 0.970350 | 0.635859 | 0.380494 | inbound | 0.1000 | estimate | 5.0000 | estimate |
 | company:tsmc | company | high | 0.45996674 | 0.980150 | 0.980150 | 1.534703 | 0.918357 | inbound | 0.0500 | hard | 4.0000 | estimate |
 | product:cowos_packaging | product | moderate | 0.31318146 | 0.905000 | 0.905000 | 0.270922 | 0.162118 | inbound | 0.1000 | estimate | 2.5000 | estimate |
-| company:samsung | company | none | 0.27456635 | 0.921845 | 0.921845 | 0.146828 | 0.087861 | inbound | 0.3000 | estimate | 3.0000 | estimate |
-| company:lam_research | company | none | 0.25817602 | 0.866815 | 0.000000 | 1.448569 | 0.866815 | outbound | 0.3000 | estimate | 3.0000 | estimate |
-| company:kla | company | none | 0.25227386 | 0.912152 | 0.000000 | 1.524334 | 0.912152 | outbound | 0.3500 | estimate | 3.0000 | estimate |
-| company:siemens_energy | company | none | 0.22437575 | 0.680000 | 0.680000 | 0.285318 | 0.170733 | inbound | 0.4000 | estimate | 5.0000 | estimate |
-| mineral:neodymium | mineral | none | 0.22025022 | 0.685950 | 0.685950 | 0.431731 | 0.258346 | inbound | 0.3500 | estimate | 4.0000 | estimate |
-| company:ge_vernova | company | none | 0.21590259 | 0.654321 | 0.654321 | 0.304025 | 0.181927 | inbound | 0.4000 | estimate | 5.0000 | estimate |
-| product:ndfeb_magnets | product | none | 0.21274605 | 0.625000 | 0.625000 | 0.238000 | 0.142418 | inbound | 0.2000 | estimate | 3.0000 | estimate |
-| company:sk_hynix | company | none | 0.21119986 | 0.763640 | 0.763640 | 0.710595 | 0.425216 | inbound | 0.3500 | estimate | 3.0000 | estimate |
-| mineral:copper | mineral | none | 0.20695087 | 0.291600 | 0.291600 | 0.468074 | 0.280093 | inbound | 0.2000 | estimate | 17.0000 | hard |
-| company:micron | company | none | 0.19495371 | 0.763640 | 0.763640 | 0.157605 | 0.094310 | inbound | 0.4000 | estimate | 3.0000 | estimate |
-| company:applied_materials | company | none | 0.19300891 | 0.648019 | 0.000000 | 1.082930 | 0.648019 | outbound | 0.3000 | estimate | 3.0000 | estimate |
-| product:hbm | product | none | 0.17793654 | 0.440200 | 0.440200 | 0.386648 | 0.231368 | inbound | 0.0500 | hard | 3.0000 | estimate |
+| company:samsung | company | moderate | 0.27456635 | 0.921845 | 0.921845 | 0.146828 | 0.087861 | inbound | 0.3000 | estimate | 3.0000 | estimate |
+| company:lam_research | company | moderate | 0.25817602 | 0.866815 | 0.000000 | 1.448569 | 0.866815 | outbound | 0.3000 | estimate | 3.0000 | estimate |
+| company:kla | company | moderate | 0.25227386 | 0.912152 | 0.000000 | 1.524334 | 0.912152 | outbound | 0.3500 | estimate | 3.0000 | estimate |
+| company:siemens_energy | company | moderate | 0.22437575 | 0.680000 | 0.680000 | 0.285318 | 0.170733 | inbound | 0.4000 | estimate | 5.0000 | estimate |
+| mineral:neodymium | mineral | moderate | 0.22025022 | 0.685950 | 0.685950 | 0.431731 | 0.258346 | inbound | 0.3500 | estimate | 4.0000 | estimate |
+| company:ge_vernova | company | moderate | 0.21590259 | 0.654321 | 0.654321 | 0.304025 | 0.181927 | inbound | 0.4000 | estimate | 5.0000 | estimate |
+| product:ndfeb_magnets | product | moderate | 0.21274605 | 0.625000 | 0.625000 | 0.238000 | 0.142418 | inbound | 0.2000 | estimate | 3.0000 | estimate |
+| company:sk_hynix | company | moderate | 0.21119986 | 0.763640 | 0.763640 | 0.710595 | 0.425216 | inbound | 0.3500 | estimate | 3.0000 | estimate |
+| mineral:copper | mineral | moderate | 0.20695087 | 0.291600 | 0.291600 | 0.468074 | 0.280093 | inbound | 0.2000 | estimate | 17.0000 | hard |
+| company:micron | company | moderate | 0.19495371 | 0.763640 | 0.763640 | 0.157605 | 0.094310 | inbound | 0.4000 | estimate | 3.0000 | estimate |
+| company:applied_materials | company | moderate | 0.19300891 | 0.648019 | 0.000000 | 1.082930 | 0.648019 | outbound | 0.3000 | estimate | 3.0000 | estimate |
+| product:hbm | product | moderate | 0.17793654 | 0.440200 | 0.440200 | 0.386648 | 0.231368 | inbound | 0.0500 | hard | 3.0000 | estimate |
 | company:tokyo_electron | company | none | 0.08812002 | 0.318618 | 0.000000 | 0.532454 | 0.318618 | outbound | 0.3500 | estimate | 3.0000 | estimate |
 | mineral:indium | mineral | none | 0.07385999 | 0.438085 | 0.438085 | 0.021225 | 0.012701 | inbound | 0.5000 | estimate | 2.0000 | estimate |
 | company:vertiv | company | none | 0.06422781 | 0.423282 | 0.423282 | 0.344710 | 0.206272 | inbound | 0.5500 | estimate | 2.0000 | estimate |
@@ -101,8 +101,8 @@ Grouped by node type. Each row names which axes are missing.
 |---|---|
 | critical | 2 |
 | high | 2 |
-| moderate | 1 |
-| none | 19 |
+| moderate | 13 |
+| none | 7 |
 | unscored | 42 |
 | **total** | **66** |
 

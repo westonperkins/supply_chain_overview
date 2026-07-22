@@ -28,6 +28,7 @@ def build_threshold_analysis(
     inventory_content: str,
     scored_count: int,
     unscored_count: int,
+    chokepoint_landing: Optional[list[tuple[str, str, Optional[float], str]]] = None,
 ) -> str:
     """Return the docs/generated/threshold_analysis.md contents."""
     lines: list[str] = []
@@ -98,6 +99,20 @@ def build_threshold_analysis(
         )
         lines.append(f"| {name}/{'high' if name == 'critical' else 'moderate' if name == 'high' else 'none'} | {v:.10f} | {src} |")
     lines.append("")
+
+    # -------- F2.b — paper-chokepoint tier-landing table -------- #
+    if chokepoint_landing is not None:
+        lines.append("## Paper-chokepoint tier landing")
+        lines.append("")
+        lines.append("Reporting-only tracking of paper-vs-model spread over time (spec §F2.b). ")
+        lines.append("Not a pass/fail gate — the model test is severity > median scored severity.")
+        lines.append("")
+        lines.append("| chokepoint | id | severity | derived tier |")
+        lines.append("|---|---|---:|---|")
+        for name, nid, sev, tier in chokepoint_landing:
+            sev_str = f"{sev:.10f}" if sev is not None else "—"
+            lines.append(f"| {name} | {nid} | {sev_str} | {tier} |")
+        lines.append("")
 
     # -------- Unresolved bands -------- #
     lines.append("## Unresolved bands")

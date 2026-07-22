@@ -440,19 +440,22 @@ def derive_chokepoint_tier(
 
 
 def _compute_tier_ambiguity(
-    severity: Optional[float], config: ScoringConfig,
+    severity: Optional[float],
+    tier_name: Optional[str],
+    config: ScoringConfig,
 ) -> tuple[bool, Optional[list[str]]]:
     """A node is ambiguous when its severity sits inside a threshold-
     derivation unresolved band (§1.4). tier_ambiguous_with names the
-    OTHER tier the node plausibly belongs to."""
+    OTHER tier(s) the node plausibly belongs to — EXCLUDING its own
+    derived tier. F4 fix (Pass C): matches the thresholds.py contract."""
     if severity is None:
         return False, None
     for band in config.threshold_unresolved_bands:
         lower = float(band.get("lower", 0.0))
         upper = float(band.get("upper", 1.0))
         if lower <= severity <= upper:
-            tiers = list(band.get("tiers", []))
-            return True, tiers or None
+            others = [t for t in band.get("tiers", []) if t != tier_name]
+            return True, others or None
     return False, None
 
 
@@ -580,7 +583,9 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
 
         baseline = compute_baseline_severity(node, config)
         node.dynamic.current_severity = baseline
-        node.dynamic.chokepoint_tier = derive_chokepoint_tier(baseline, config)
-        amb, amb_with = _compute_tier_ambiguity(baseline, config)
+        tier = derive_chokepoint_tier(baseline, config)
+        node.dynamic.chokepoint_tier = tier
+        tier_name = tier.value if tier else None
+        amb, amb_with = _compute_tier_ambiguity(baseline, tier_name, config)
         node.dynamic.tier_ambiguous = amb
         node.dynamic.tier_ambiguous_with = amb_with
