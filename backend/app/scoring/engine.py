@@ -1,10 +1,10 @@
 import math
-from collections import deque
+from collections import defaultdict, deque
 from typing import Optional
 
 from ..graph import SupplyChainGraph
 from ..schema import ChokepointTier, Node
-from ..schema.enums import SUPPLY_EDGE_TYPES
+from ..schema.enums import EdgeType, SUPPLY_EDGE_TYPES
 from .config import ScoringConfig
 
 
@@ -83,6 +83,26 @@ def compute_stage_hhis(derived: Optional[dict], normalize: bool = True) -> dict[
             continue
         out[stage_name] = compute_hhi(shares, normalize=normalize)
     return out
+
+
+def compute_supplies_per_category(
+    graph: SupplyChainGraph,
+    node_id: str,
+    normalize: bool = True,
+) -> dict[str, float]:
+    """Group the target's incoming `supplies` edges by `supply_category`
+    and compute HHI per category. Returns {category: hhi} — no combine
+    step; the caller decides how to fold these into `supplies` stage HHI.
+
+    Edges with no `supply_category` land in a `general` sub-bucket, so
+    behaviour without any category tags is unchanged (one aggregate HHI
+    surfacing as `general`)."""
+    buckets: dict[str, dict[str, float]] = defaultdict(dict)
+    for edge in graph.in_edges(node_id, [EdgeType.SUPPLIES]):
+        cat = edge.supply_category or "general"
+        buckets[cat][edge.source_id] = edge.effective_weight()
+    return {cat: compute_hhi(shares, normalize=normalize)
+            for cat, shares in buckets.items()}
 
 
 def combine_per_stage(values: dict[str, float], config: ScoringConfig) -> float:
@@ -279,6 +299,8 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
     outbound_map = compute_outbound_criticality_map(graph, config)
     configured_stages = config.inbound_per_stage_stages  # None → use all
     normalize = config.inbound_per_stage_normalize
+    per_cat_enabled = config.supplies_per_category_enabled
+    per_cat_combine = config.supplies_per_category_combine
 
     for node in graph.nodes.values():
         derived = node.dynamic.derived_shares
@@ -286,6 +308,23 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
         # Single source of truth: per-stage HHIs across every SUPPLY_EDGE_TYPES
         # edge type with edges present. Never hardcoded.
         stage_hhis = compute_stage_hhis(derived, normalize=normalize)
+
+        # Per-category split within `supplies` — replaces the aggregate
+        # `supplies` HHI with a per-category combine (default max). Same
+        # reasoning as per-stage HHI at the type level: a target is fragile
+        # if ANY single category is single-sourced. See
+        # `docs/per_category_supplies_report.md`.
+        if per_cat_enabled and "supplies" in stage_hhis:
+            per_cat = compute_supplies_per_category(graph, node.id, normalize=normalize)
+            node.dynamic.supplies_per_category_hhi = per_cat or None
+            if per_cat:
+                if per_cat_combine == "max":
+                    stage_hhis["supplies"] = max(per_cat.values())
+                else:  # weighted_sum — equal weight for now
+                    stage_hhis["supplies"] = sum(per_cat.values()) / len(per_cat)
+        else:
+            node.dynamic.supplies_per_category_hhi = None
+
         node.dynamic.stage_hhis = stage_hhis or None
 
         # Convenience accessors — read from stage_hhis, do not recompute.

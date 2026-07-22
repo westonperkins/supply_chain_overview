@@ -1,41 +1,145 @@
-cascade:
-  decay_per_hop: 0.6
-  financial_cushion_proxy: static.financial_cushion
-  max_hops: 6
+# Scoring configuration — this file is the ONLY place the severity formula lives.
+# Edits here take effect on next backend reload. Never bury weights or the
+# formula in code.
+version: 1
+
+# The formula is a plain Python arithmetic expression evaluated with these
+# three variables in scope:
+#   concentration      — HHI in [0, 1] (sum of squared supplier shares)
+#   substitutability   — in [0, 1] (0 = no substitute, 1 = perfect)
+#   lead_time          — normalized lead-time (see lead_time.normalization)
+# All three are also multiplied by their weight before being passed in.
+formula: "concentration * (1 - substitutability) * lead_time"
+
+weights:
+  concentration: 1.0
+  substitutability: 1.0
+  lead_time: 1.0
+
+concentration:
+  # Two independent axes are computed and combined:
+  #   inbound_hhi     — HHI of the node's supplier shares (from in-edges).
+  #                     Captures "dangerously dependent" (gallium, dysprosium).
+  #   outbound_criticality — root-sum-square of downstream max-path-influences,
+  #                     normalized to graph max. Captures "dangerously
+  #                     depended-upon" (ASML, TSMC, HBM, CoWoS).
+  #
+  # TODO — thin-graph artifacts on nodes with only one modeled input.
+  # Quanta Services HHI = 1.0 because copper is the only in-edge we model.
+  # xAI / OpenAI HHI = 0.78 because NVIDIA is the only in-edge we model.
+  # These read as "dangerously single-sourced" but reality is under-modeled:
+  # Quanta needs steel/transformers/labor, xAI/OpenAI need power/cooling/etc.
+  # Not fixable via config — it's a data-completeness issue. Fix later by
+  # adding the missing input edges (steel supply, power supply, cooling).
+  #
+  # NOTE — scale-axis gap (surfaced by per-stage HHI).
+  # Per-stage HHI correctly captures gallium's mining monopoly (~0.97) while
+  # leaving copper's refining concentration reading ~0.25. Copper's real
+  # paper story is volume + 17–25yr mine lead time, i.e. a scale/demand
+  # constraint the current model has no axis for. Concentration is
+  # absorbing risk it cannot represent. Adding a scale axis is out of scope
+  # for the per-stage fix and is left as an open item.
+  inbound:
+    # Per-stage HHI: compute HHI for every edge type with edges present on
+    # the node (mines, refines, supplies, input_to, component_of), then
+    # combine via `combine`. `max` preserves the intent — a node is fragile
+    # if ANY inbound stage is concentrated. Averaging reintroduces the
+    # dilution the per-stage split exists to remove.
+    method: per_stage
+    per_stage:
+      # `stages` is OPTIONAL. When null (or absent), every edge type in
+      # SUPPLY_EDGE_TYPES that has edges present is used — this is the
+      # correct default. Listing stages here opts OUT of edge types
+      # deliberately (e.g. to model input_to as background context). If
+      # a listed stage isn't a valid supply edge type, config load
+      # raises immediately rather than silently no-op'ing.
+      stages: null
+      # `normalize` decides whether shares are divided by their sum before
+      # squaring. When true (legacy), a bucket summing to 0.08 reads as
+      # HHI 1.00 — incompleteness disappears. When false, HHI = sum of
+      # squared raw shares, so an incomplete bucket is dampened in exact
+      # proportion to its shortfall. See
+      # `docs/edge_weight_semantics_report.md` for the audit and
+      # trade-offs. Default true so this flag alone changes no scores.
+      normalize: true
+      combine: max            # max | weighted_sum
+      weights:                # used only when combine = weighted_sum
+        mines: 1.0
+        refines: 1.0
+        supplies: 1.0
+        input_to: 1.0
+        component_of: 1.0
+      # Per-category HHI within the `supplies` stage. Splits a target's
+      # supplies bucket into sub-buckets keyed by Edge.supply_category
+      # (lithography, deposition, etch, inspection, foundry_wafers,
+      # memory, packaging, power_equipment, cooling, power_generation,
+      # gpu_accelerators, ai_asics, general). Same reasoning as per-stage
+      # HHI one level down: a target is fragile if ANY single category is
+      # single-sourced. When disabled, supplies HHI reads the aggregate
+      # bucket (legacy behaviour). Default enabled; the `normalize` flag
+      # from the parent per_stage block applies to each sub-bucket.
+      supplies:
+        per_category:
+          enabled: true
+          combine: max          # max | weighted_sum
+  outbound:
+    decay_per_hop: 0.7         # geometric decay per hop of downstream walk
+    max_hops: 6
+    min_influence: 1e-6        # prune paths below this
+  combine:
+    # `max` — a node is severe if EITHER axis is high. Averaging would wash
+    # ASML out; do not switch to weighted_sum without a reason.
+    method: max                # max | weighted_sum
+    inbound_weight: 1.0        # used only when method = weighted_sum
+    outbound_weight: 1.0
+
+lead_time:
+  # Optional dampener so a 25-year copper mine doesn't dwarf a 3-year fab
+  # by pure magnitude. Set to "identity" to disable.
+  normalization: "log10_1p"    # log10(years + 1) / log10(26); ~1.0 at 25 yrs
+
+# Chokepoint tier thresholds — applied to the node's baseline severity
+# (its static axes, no event delta). Tiers are DERIVED from these, not
+# hand-asserted, so the flag can never disagree with the score.
+#
+# Calibrated against the full 63-node AI distribution (2026-07):
+#   critical (≥0.225) catches the paper's five-alarm set — TSMC, ASML,
+#     dysprosium, gallium, HBM, CoWoS — plus RF/Power Semis, which is a
+#     defensible intermediate that inherits gallium's inbound HHI.
+#     Note the boundary is tight: HBM at 0.2288, Siemens Energy at 0.2244
+#     — a 0.004 gap. If HBM's supplier shares shift, re-check.
+#   high (0.13) catches the paper's "high but not critical" cluster:
+#     Siemens Energy, GE Vernova, Copper, NdFeB — structural constraints
+#     without the active-crisis framing of the five-alarm set.
+#   moderate (0.05) catches the memory-makers, semi equipment, hyperscalers,
+#     and AI labs — real supply-chain exposure, not chokepoints.
 chokepoint_thresholds:
   critical: 0.225
   high: 0.13
   moderate: 0.05
-concentration:
-  combine:
-    inbound_weight: 1.0
-    method: max
-    outbound_weight: 1.0
-  inbound:
-    method: per_stage
-    per_stage:
-      combine: max
-      normalize: true
-      stages: null
-      weights:
-        component_of: 1.0
-        input_to: 1.0
-        mines: 1.0
-        refines: 1.0
-        supplies: 1.0
-  outbound:
-    decay_per_hop: 0.7
-    max_hops: 6
-    min_influence: 1e-6
-formula: concentration * (1 - substitutability) * lead_time
-lead_time:
-  normalization: log10_1p
+  # anything below moderate → none
+
+# Cascade / propagation configuration
+#
+# SCAFFOLD — decay_per_hop is a flat rate for every edge type. Invisible with
+# short paths, but once the graph fills in this will let a critical two-hop
+# dependency score below a trivial one-hop dependency purely on hop count.
+# The right target is edge-type-aware decay — a sole-source `supplies` edge
+# should decay far less than a `substitutes_for` edge — but that requires a
+# distribution of graph paths to calibrate against. Treat this the same way
+# as the severity formula: a heuristic scaffold to be validated, not a law.
+cascade:
+  # Fraction of severity retained per hop, before edge-weight scaling.
+  decay_per_hop: 0.6
+  # Which node field is used as the downstream dampener. v0: manual 0-1 value
+  # per company. Later this can become a composite (cash / debt / diversification).
+  financial_cushion_proxy: "static.financial_cushion"
+  # Traversal depth cap so pathological graphs cannot blow up.
+  max_hops: 6
+
+# Company rating — scalar in [-1, 1] is the source of truth. Labels are
+# derived from these thresholds. Retune after seeing real distributions.
 rating:
   thresholds:
     bearish_below: -0.33
-    bullish_above: 0.33
-version: 1
-weights:
-  concentration: 1.0
-  lead_time: 1.0
-  substitutability: 1.0
+    bullish_above:  0.33

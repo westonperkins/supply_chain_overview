@@ -1,8 +1,6 @@
-Removing the single highest-outbound node (TSMC, id=company:tsmc, score=1.000) and renormalizing changes:
+Removing the single highest-outbound node (ASML, id=company:asml, score=1.000) and renormalizing changes:
 
-  3 node(s) shift tier.
+  1 node(s) shift tier.
 
 Changed:
-  mineral:copper                            high → critical 
-  company:mp_materials                      none → moderate 
-  company:lynas                             none → moderate 
+  company:asml                          critical → none     

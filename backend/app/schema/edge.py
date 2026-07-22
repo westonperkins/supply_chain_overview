@@ -51,6 +51,15 @@ class Edge(BaseModel):
     type: EdgeType
     input_share: float = Field(gt=0.0, le=1.0)
     output_share: Optional[float] = Field(default=None, gt=0.0, le=1.0)
+    # Category of the thing supplied on this edge — the CATEGORY, not the
+    # supplier's identity. Only meaningful when `type == supplies`. Under
+    # per-category HHI (config-gated), the target's `supplies` bucket is
+    # split into sub-buckets by this field before HHI is computed. This
+    # fixes the "one bucket per target" defect where a target's memory,
+    # foundry, and equipment supplies compete for one budget — see
+    # `docs/per_category_supplies_report.md`. Edges with no category fall
+    # into a `general` sub-bucket and behave as they did pre-split.
+    supply_category: Optional[str] = None
     domains: list[str] = Field(default_factory=lambda: ["ai"])
 
     static: EdgeStatic = Field(default_factory=EdgeStatic)

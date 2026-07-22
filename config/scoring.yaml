@@ -69,6 +69,19 @@ concentration:
         supplies: 1.0
         input_to: 1.0
         component_of: 1.0
+      # Per-category HHI within the `supplies` stage. Splits a target's
+      # supplies bucket into sub-buckets keyed by Edge.supply_category
+      # (lithography, deposition, etch, inspection, foundry_wafers,
+      # memory, packaging, power_equipment, cooling, power_generation,
+      # gpu_accelerators, ai_asics, general). Same reasoning as per-stage
+      # HHI one level down: a target is fragile if ANY single category is
+      # single-sourced. When disabled, supplies HHI reads the aggregate
+      # bucket (legacy behaviour). Default enabled; the `normalize` flag
+      # from the parent per_stage block applies to each sub-bucket.
+      supplies:
+        per_category:
+          enabled: true
+          combine: max          # max | weighted_sum
   outbound:
     decay_per_hop: 0.7         # geometric decay per hop of downstream walk
     max_hops: 6

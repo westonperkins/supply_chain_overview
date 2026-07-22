@@ -477,7 +477,8 @@
       "source_note": "SK Hynix ~57-62% HBM share."
     },
     "input_share": 0.6,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "memory"
   },
   {
     "id": "e:micron-supplies-hbm",
@@ -489,7 +490,8 @@
       "source_note": "Micron ~21% HBM share."
     },
     "input_share": 0.21,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "memory"
   },
   {
     "id": "e:samsung-supplies-hbm",
@@ -501,7 +503,8 @@
       "source_note": "Samsung ~17-22% HBM share."
     },
     "input_share": 0.19,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "memory"
   },
   {
     "id": "e:tsmc-supplies-cowos",
@@ -513,7 +516,8 @@
       "source_note": "TSMC dominates advanced packaging."
     },
     "input_share": 0.95,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "packaging"
   },
   {
     "id": "e:samsung-supplies-cowos",
@@ -525,7 +529,8 @@
       "source_note": "Samsung alternative packaging at low share."
     },
     "input_share": 0.05,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "packaging"
   },
   {
     "id": "e:nd-input-ndfeb",
@@ -570,10 +575,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Litho ~40% of tool-spend; ASML captures essentially all."
+      "source_note": "Paper \u00a72D + \u00a72B: ASML is the sole EUV maker and dominant DUV supplier; TSMC's leading-edge lithography is essentially single-sourced. Per-category value reflects share of TSMC's lithography-tool supply, not aggregate spend."
     },
-    "input_share": 0.4,
-    "output_share": null
+    "input_share": 0.99,
+    "output_share": null,
+    "supply_category": "lithography"
   },
   {
     "id": "e:asml-supplies-samsung",
@@ -582,10 +588,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. ASML share is lower than for TSMC because Samsung uses less EUV at this stage (paper \u00a72B: '3nm yields stuck at 30-40%')."
+      "source_note": "ASML is Samsung's sole EUV supplier; slight reduction vs TSMC reflects Samsung's greater share of DUV-only nodes (paper \u00a72B: '3nm yields stuck at 30\u201340%')."
     },
-    "input_share": 0.2,
-    "output_share": null
+    "input_share": 0.95,
+    "output_share": null,
+    "supply_category": "lithography"
   },
   {
     "id": "e:asml-supplies-intel",
@@ -594,10 +601,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Intel 18A ambitions ride on EUV."
+      "source_note": "Intel needs EUV for leading-edge nodes (18A, 20A). ASML sole EUV maker. Industry-informed estimate of ASML's share of Intel's lithography-tool supply."
     },
-    "input_share": 0.25,
-    "output_share": null
+    "input_share": 0.95,
+    "output_share": null,
+    "supply_category": "lithography"
   },
   {
     "id": "e:asml-supplies-sk_hynix",
@@ -605,10 +613,12 @@
     "target_id": "company:sk_hynix",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "SK Hynix uses less EUV than TSMC/Samsung (leading-edge DRAM is starting to; HBM stacks less so). Industry-informed estimate of ASML's share of SK Hynix's lithography-tool supply."
     },
-    "input_share": 0.15,
-    "output_share": null
+    "input_share": 0.55,
+    "output_share": null,
+    "supply_category": "lithography"
   },
   {
     "id": "e:asml-supplies-micron",
@@ -616,10 +626,12 @@
     "target_id": "company:micron",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "Micron uses less EUV than SK Hynix/Samsung; largely DUV. Industry-informed estimate of ASML's share of Micron's lithography-tool supply."
     },
-    "input_share": 0.1,
-    "output_share": null
+    "input_share": 0.5,
+    "output_share": null,
+    "supply_category": "lithography"
   },
   {
     "id": "e:amat-supplies-tsmc",
@@ -628,10 +640,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Deposition/etch/implant multi-category share."
+      "source_note": "Applied Materials is the dominant CVD / thin-film deposition supplier to leading-edge foundries. Value is industry-informed estimate of AMAT's share of TSMC's deposition-tool supply."
     },
-    "input_share": 0.1,
-    "output_share": null
+    "input_share": 0.55,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:amat-supplies-samsung",
@@ -640,10 +653,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Memory manufacturing raises AMAT's share vs a pure logic fab."
+      "source_note": "Memory + foundry mix raises AMAT's deposition share vs pure logic. Industry-informed estimate of AMAT's share of Samsung's deposition-tool supply."
     },
-    "input_share": 0.12,
-    "output_share": null
+    "input_share": 0.6,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:amat-supplies-intel",
@@ -651,10 +665,12 @@
     "target_id": "company:intel",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "AMAT dominant CVD supplier. Industry-informed estimate of AMAT's share of Intel's deposition-tool supply."
     },
-    "input_share": 0.3,
-    "output_share": null
+    "input_share": 0.55,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:amat-supplies-sk_hynix",
@@ -662,10 +678,12 @@
     "target_id": "company:sk_hynix",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "AMAT dominant CVD / thin-film supplier for memory. Industry-informed estimate of AMAT's share of SK Hynix's deposition-tool supply."
     },
-    "input_share": 0.25,
-    "output_share": null
+    "input_share": 0.55,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:amat-supplies-micron",
@@ -673,10 +691,12 @@
     "target_id": "company:micron",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "AMAT dominant CVD supplier for DRAM/NAND production. Industry-informed estimate of AMAT's share of Micron's deposition-tool supply."
     },
-    "input_share": 0.25,
-    "output_share": null
+    "input_share": 0.6,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:lrcx-supplies-tsmc",
@@ -685,10 +705,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Etch + deposition slice; the 3D memory story is more consequential to memory makers than to TSMC's logic mix."
+      "source_note": "Lam Research is the dominant etch supplier to leading-edge foundries. Value is industry-informed estimate of Lam's share of TSMC's etch-tool supply."
     },
-    "input_share": 0.08,
-    "output_share": null
+    "input_share": 0.8,
+    "output_share": null,
+    "supply_category": "etch"
   },
   {
     "id": "e:lrcx-supplies-sk_hynix",
@@ -697,10 +718,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Physically builds the 3D HBM stacks."
+      "source_note": "Lam dominant etch supplier; memory 3D stacks are etch-intensive. Industry-informed estimate of Lam's share of SK Hynix's etch-tool supply."
     },
-    "input_share": 0.3,
-    "output_share": null
+    "input_share": 0.85,
+    "output_share": null,
+    "supply_category": "etch"
   },
   {
     "id": "e:lrcx-supplies-micron",
@@ -708,10 +730,12 @@
     "target_id": "company:micron",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "Lam dominant etch supplier for 3D memory. Industry-informed estimate of Lam's share of Micron's etch-tool supply."
     },
-    "input_share": 0.3,
-    "output_share": null
+    "input_share": 0.85,
+    "output_share": null,
+    "supply_category": "etch"
   },
   {
     "id": "e:lrcx-supplies-samsung",
@@ -720,10 +744,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Memory's 3D stack requirements raise LRCX's share vs a pure logic fab."
+      "source_note": "Memory 3D-stack etch requirements raise Lam's share. Industry-informed estimate of Lam's share of Samsung's etch-tool supply."
     },
-    "input_share": 0.12,
-    "output_share": null
+    "input_share": 0.75,
+    "output_share": null,
+    "supply_category": "etch"
   },
   {
     "id": "e:kla-supplies-tsmc",
@@ -732,10 +757,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Inspection/metrology slice."
+      "source_note": "KLA dominates process-control / inspection tools at leading-edge fabs. Value is industry-informed estimate of KLA's share of TSMC's inspection-tool supply."
     },
-    "input_share": 0.05,
-    "output_share": null
+    "input_share": 0.9,
+    "output_share": null,
+    "supply_category": "inspection"
   },
   {
     "id": "e:kla-supplies-samsung",
@@ -744,10 +770,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Inspection/metrology slice."
+      "source_note": "Memory production requires denser metrology / inspection. Industry-informed estimate of KLA's share of Samsung's inspection-tool supply."
     },
-    "input_share": 0.06,
-    "output_share": null
+    "input_share": 0.8,
+    "output_share": null,
+    "supply_category": "inspection"
   },
   {
     "id": "e:kla-supplies-intel",
@@ -755,10 +782,12 @@
     "target_id": "company:intel",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "KLA dominant metrology / inspection at Intel. Industry-informed estimate."
     },
-    "input_share": 0.15,
-    "output_share": null
+    "input_share": 0.85,
+    "output_share": null,
+    "supply_category": "inspection"
   },
   {
     "id": "e:kla-supplies-sk_hynix",
@@ -766,10 +795,12 @@
     "target_id": "company:sk_hynix",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "KLA metrology / inspection for HBM production. Industry-informed estimate of KLA's share of SK Hynix's inspection-tool supply."
     },
-    "input_share": 0.15,
-    "output_share": null
+    "input_share": 0.75,
+    "output_share": null,
+    "supply_category": "inspection"
   },
   {
     "id": "e:tel-supplies-tsmc",
@@ -778,10 +809,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker (~90% of litho market), and describes AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. The paper does NOT quantify per-supplier share of a foundry's equipment input; specific values below are industry-informed estimates of tool-spend mix at a leading-edge logic fab. Coating/etch/cleaning slice."
+      "source_note": "Tokyo Electron plays a secondary role in deposition / coating at leading-edge foundries (dominant in some specialty steps). Value is industry-informed estimate of TEL's share of TSMC's deposition-tool supply; bucket sums with AMAT."
     },
-    "input_share": 0.08,
-    "output_share": null
+    "input_share": 0.3,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:tel-supplies-samsung",
@@ -790,10 +822,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a72D describes ASML / AMAT / LRCX / KLA / TEL as the equipment stack behind leading-edge fabs. Samsung runs both a foundry business and one of the world's largest memory operations, so its tool-spend mix differs from a pure-logic fab like TSMC's. Paper does not quantify per-supplier share; values are industry-informed estimates of Samsung's mixed logic + memory tool-spend. Coating/etch/cleaning slice."
+      "source_note": "TEL's coating / thin-film role in Samsung's mixed logic + memory operations. Industry-informed estimate; bucket sums with AMAT."
     },
-    "input_share": 0.1,
-    "output_share": null
+    "input_share": 0.35,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:tel-supplies-sk_hynix",
@@ -801,10 +834,12 @@
     "target_id": "company:sk_hynix",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "TEL's secondary deposition/coating role at SK Hynix. Industry-informed estimate; bucket sums with AMAT."
     },
-    "input_share": 0.15,
-    "output_share": null
+    "input_share": 0.35,
+    "output_share": null,
+    "supply_category": "deposition"
   },
   {
     "id": "e:tsmc-supplies-nvidia",
@@ -813,10 +848,11 @@
     "type": "supplies",
     "static": {
       "confidence": "hard",
-      "source_note": "Effectively sole leading-edge foundry. | Reduced from 0.99 to 0.94 in the cleanup pass to accommodate the new SK Hynix \u2192 NVIDIA supplies edge added per paper \u00a75 (mutual TSMC + SK Hynix reliance). Bucket total held at 1.00."
+      "source_note": "Paper \u00a72B: TSMC has ~90% share at 3nm/2nm and is essentially the sole leading-edge foundry NVIDIA's advanced GPUs are fabbed on. Under per-category semantics this is NVIDIA's foundry-wafer supply share \u2014 restored from the cleanup-pass adjustment (TSMC 0.99 \u2192 0.94) which was forced only by cross-category competition."
     },
-    "input_share": 0.94,
-    "output_share": null
+    "input_share": 0.99,
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:tsmc-supplies-broadcom",
@@ -824,10 +860,12 @@
     "target_id": "company:broadcom",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "TSMC is Broadcom's foundry. Value unchanged (0.95)."
     },
     "input_share": 0.95,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:tsmc-supplies-amd",
@@ -835,10 +873,12 @@
     "target_id": "company:amd",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "TSMC is AMD's foundry (7/5/3nm). Value unchanged (0.98) \u2014 under per-category this is AMD's foundry-wafer supply share."
     },
     "input_share": 0.98,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:tsmc-supplies-google",
@@ -850,7 +890,8 @@
       "source_note": "Google TPU wafers via TSMC per paper \u00a72G. Estimate."
     },
     "input_share": 0.3,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:tsmc-supplies-amazon",
@@ -862,7 +903,8 @@
       "source_note": "AWS Trainium wafers are fabbed at TSMC per paper \u00a72G. Paper does not quantify share of Amazon's total chip supply. Estimate."
     },
     "input_share": 0.3,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:tsmc-supplies-microsoft",
@@ -874,7 +916,8 @@
       "source_note": "Microsoft Maia wafers via TSMC per paper \u00a72G. Estimate."
     },
     "input_share": 0.3,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:tsmc-supplies-meta",
@@ -886,7 +929,8 @@
       "source_note": "Meta MTIA wafers via TSMC per paper \u00a72G. Estimate."
     },
     "input_share": 0.3,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:samsung-supplies-nvidia",
@@ -895,10 +939,11 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Marginal foundry alternative \u2014 3nm yields still 30-40%."
+      "source_note": "Samsung's small foundry role in NVIDIA's wafer mix (some prior-generation parts). Value unchanged (0.01) \u2014 paper does not quantify."
     },
     "input_share": 0.01,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "foundry_wafers"
   },
   {
     "id": "e:hbm-input-nvidia",
@@ -1042,7 +1087,8 @@
       "source_note": "Paper \u00a72G: TPU designed with Broadcom. Estimate."
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "ai_asics"
   },
   {
     "id": "e:broadcom-supplies-meta",
@@ -1054,7 +1100,8 @@
       "source_note": "MTIA co-design with Broadcom per paper. Estimate."
     },
     "input_share": 0.15,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "ai_asics"
   },
   {
     "id": "e:marvell-supplies-amazon",
@@ -1066,7 +1113,8 @@
       "source_note": "Paper \u00a72G: 'Amazon Trainium/Inferentia \u2026 mostly designed with Broadcom or Marvell.' Estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "ai_asics"
   },
   {
     "id": "e:nvidia-supplies-xai",
@@ -1078,7 +1126,8 @@
       "source_note": "xAI Colossus is a huge NVIDIA customer."
     },
     "input_share": 0.7,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:nvidia-supplies-openai",
@@ -1089,7 +1138,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.7,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:nvidia-supplies-microsoft",
@@ -1101,7 +1151,8 @@
       "source_note": "Microsoft's large NVIDIA purchases. Estimate."
     },
     "input_share": 0.3,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:nvidia-supplies-meta",
@@ -1113,7 +1164,8 @@
       "source_note": "Meta's substantial external NVIDIA purchases. Estimate."
     },
     "input_share": 0.25,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:nvidia-supplies-google",
@@ -1125,7 +1177,8 @@
       "source_note": "Google Cloud also buys NVIDIA GPUs. Estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:nvidia-supplies-amazon",
@@ -1137,7 +1190,8 @@
       "source_note": "AWS also buys external NVIDIA GPUs. Paper does not quantify. Estimate."
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:amd-supplies-xai",
@@ -1148,7 +1202,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:amd-supplies-openai",
@@ -1159,7 +1214,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "gpu_accelerators"
   },
   {
     "id": "e:copper-input-tsmc",
@@ -1376,7 +1432,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.15,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:siemens-supplies-nextera",
@@ -1387,7 +1444,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:siemens-supplies-duke",
@@ -1398,7 +1456,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:siemens-supplies-colossus",
@@ -1410,7 +1469,8 @@
       "source_note": "Paper \u00a73D: grid equipment critical, multi-year backlog. Estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:siemens-supplies-stargate",
@@ -1422,7 +1482,8 @@
       "source_note": "Paper \u00a73D; estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:siemens-supplies-vantage",
@@ -1434,7 +1495,8 @@
       "source_note": "Paper \u00a73D; estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:siemens-supplies-citadel",
@@ -1445,7 +1507,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.15,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:gev-supplies-constellation",
@@ -1456,7 +1519,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.15,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:gev-supplies-nextera",
@@ -1467,7 +1531,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.25,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:gev-supplies-duke",
@@ -1478,7 +1543,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:gev-supplies-colossus",
@@ -1490,7 +1556,8 @@
       "source_note": "Paper \u00a73D; estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:gev-supplies-stargate",
@@ -1502,7 +1569,8 @@
       "source_note": "Paper \u00a73D; estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:gev-supplies-vantage",
@@ -1514,7 +1582,8 @@
       "source_note": "Paper \u00a73D; estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:gev-supplies-citadel",
@@ -1525,7 +1594,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.15,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:quanta-supplies-nextera",
@@ -1536,7 +1606,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.3,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:quanta-supplies-duke",
@@ -1547,7 +1618,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_equipment"
   },
   {
     "id": "e:constellation-supplies-colossus",
@@ -1559,7 +1631,8 @@
       "source_note": "Local generation PPA share; paper \u00a73A/\u00a74A name Constellation. Estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:constellation-supplies-stargate",
@@ -1571,7 +1644,8 @@
       "source_note": "PPA share; estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:constellation-supplies-microsoft",
@@ -1583,7 +1657,8 @@
       "source_note": "Microsoft's Three Mile Island PPA with Constellation. Paper \u00a73C names the arrangement but does not quantify share. Estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:nextera-supplies-colossus",
@@ -1595,7 +1670,8 @@
       "source_note": "Paper \u00a73B: NextEra largest US utility; estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:nextera-supplies-stargate",
@@ -1607,7 +1683,8 @@
       "source_note": "NextEra pipeline into Texas per paper \u00a73B. Estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:nextera-supplies-vantage",
@@ -1619,7 +1696,8 @@
       "source_note": "Paper \u00a73B: NextEra Texas exposure. Estimate."
     },
     "input_share": 0.15,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:nextera-supplies-citadel",
@@ -1630,7 +1708,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:vistra-supplies-colossus",
@@ -1642,7 +1721,8 @@
       "source_note": "Paper \u00a73A: Vistra ~45 GW. Estimate."
     },
     "input_share": 0.05,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:vistra-supplies-vantage",
@@ -1654,7 +1734,8 @@
       "source_note": "Vistra's Texas gas + nuclear per paper \u00a73A. Estimate."
     },
     "input_share": 0.1,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:talen-supplies-stargate",
@@ -1666,7 +1747,8 @@
       "source_note": "Paper \u00a73A: Talen ~13 GW Susquehanna. Estimate."
     },
     "input_share": 0.05,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:duke-supplies-colossus",
@@ -1678,7 +1760,8 @@
       "source_note": "Southeast utility. Estimate."
     },
     "input_share": 0.05,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "power_generation"
   },
   {
     "id": "e:vertiv-supplies-colossus",
@@ -1690,7 +1773,8 @@
       "source_note": "Paper \u00a74B: 'Vertiv (leader).' Cooling ~15\u201325% of data-centre capex per industry norms. Estimate."
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "cooling"
   },
   {
     "id": "e:vertiv-supplies-stargate",
@@ -1702,7 +1786,8 @@
       "source_note": "Same rationale as Colossus."
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "cooling"
   },
   {
     "id": "e:vertiv-supplies-vantage",
@@ -1714,7 +1799,8 @@
       "source_note": "Same rationale."
     },
     "input_share": 0.2,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "cooling"
   },
   {
     "id": "e:vertiv-supplies-citadel",
@@ -1725,7 +1811,8 @@
       "confidence": "estimate"
     },
     "input_share": 0.35,
-    "output_share": null
+    "output_share": null,
+    "supply_category": "cooling"
   },
   {
     "id": "e:xai-operates-colossus",
@@ -1886,11 +1973,12 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Paper \u00a75 identifies NVIDIA as reliant on TSMC + SK Hynix. The paper does not quantify SK Hynix's share of NVIDIA's overall supplies bucket; input_share is an industry-informed estimate reflecting SK Hynix's role as NVIDIA's dominant HBM supplier (HBM itself is separately modelled via the HBM product node). Bucket deliberately incomplete.",
+      "source_note": "Under per-category semantics, this is SK Hynix's share of NVIDIA's memory supply (NOT of aggregate supplies). SK Hynix is NVIDIA's dominant HBM supplier per paper \u00a75; industry-informed estimate ~60% of NVIDIA's memory. Bucket incomplete: Samsung/Micron memory paths into NVIDIA are not modelled as direct edges.",
       "output_share_confidence": "hard",
       "output_share_source_note": "Paper \u00a75 (Financial Interdependencies): 'SK Hynix ~90% reliant on NVIDIA for HBM.' This is the paper's own figure on the paper's own edge \u2014 the previous placement on e:hbm-input-nvidia asserted the ratio for the aggregate HBM product, which overstated the paper (Micron and Samsung sell elsewhere)."
     },
-    "input_share": 0.05,
-    "output_share": 0.9
+    "input_share": 0.6,
+    "output_share": 0.9,
+    "supply_category": "memory"
   }
 ]

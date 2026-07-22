@@ -44,6 +44,11 @@ class DynamicFields(BaseModel):
     mined_by_hhi: Optional[float] = None
     refined_by_hhi: Optional[float] = None
     supplied_by_hhi: Optional[float] = None
+    # Per-category HHI within the `supplies` stage — {category: hhi}.
+    # Only populated when the config's per-category flag is on and this
+    # node has incoming supplies edges. `supplied_by_hhi` above is the
+    # combined value that flows into inbound_hhi.
+    supplies_per_category_hhi: Optional[dict[str, float]] = None
     # Legacy blended HHI — kept for inspection / before-after diffing.
     combined_hhi: Optional[float] = None
     inbound_hhi: Optional[float] = None               # combine of per-stage per scoring.yaml (default max)

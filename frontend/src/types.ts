@@ -58,6 +58,7 @@ export interface Edge {
   input_share: number;               // preferred — source's share of target's supply
   output_share?: number | null;      // optional — target's share of source's output
   weight: number;                    // legacy alias for input_share; backend still serialises it
+  supply_category?: string | null;   // only meaningful on `supplies` edges — see backend schema
   domains: string[];
   static: {
     notes?: string | null;

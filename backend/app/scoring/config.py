@@ -96,6 +96,32 @@ class ScoringConfig:
             .get("weights", {})
         )
 
+    # ---------------- Per-category supplies HHI ---------------- #
+
+    @property
+    def supplies_per_category_enabled(self) -> bool:
+        """When true (default), the `supplies` stage's HHI is computed by
+        grouping in-edges by `supply_category` first, computing HHI per
+        category, then combining via `supplies_per_category_combine`.
+        When false, `supplies` HHI reads the aggregate bucket."""
+        return bool(
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("supplies", {})
+            .get("per_category", {})
+            .get("enabled", True)
+        )
+
+    @property
+    def supplies_per_category_combine(self) -> str:
+        return (
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("supplies", {})
+            .get("per_category", {})
+            .get("combine", "max")
+        )
+
     @property
     def concentration_outbound_decay(self) -> float:
         return float(self.raw["concentration"]["outbound"]["decay_per_hop"])
