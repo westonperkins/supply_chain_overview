@@ -33,11 +33,11 @@ def test_unscored_default_produces_none_severity_and_unscored_tier():
         sub_missing = n.static.substitutability is None or n.static.substitutability.value is None
         lt_missing = n.static.lead_time_years is None or n.static.lead_time_years.value is None
         if sub_missing or lt_missing:
-            assert n.dynamic.current_severity is None, (
-                f"{n.id}: expected None severity, got {n.dynamic.current_severity}"
+            assert n.dynamic.baseline_severity is None, (
+                f"{n.id}: expected None severity, got {n.dynamic.baseline_severity}"
             )
-            assert n.dynamic.chokepoint_tier == ChokepointTier.UNSCORED, (
-                f"{n.id}: expected UNSCORED tier, got {n.dynamic.chokepoint_tier}"
+            assert n.dynamic.baseline_tier == ChokepointTier.UNSCORED, (
+                f"{n.id}: expected UNSCORED tier, got {n.dynamic.baseline_tier}"
             )
 
 
@@ -47,9 +47,9 @@ def test_no_unscored_node_appears_in_scored_tier_counts():
     scored_tiers = {"critical", "high", "moderate", "none"}
     offenders = []
     for n in g.nodes.values():
-        if n.dynamic.current_severity is not None:
+        if n.dynamic.baseline_severity is not None:
             continue
-        tier = n.dynamic.chokepoint_tier
+        tier = n.dynamic.baseline_tier
         if tier and tier.value in scored_tiers:
             offenders.append((n.id, tier.value))
     assert not offenders, offenders
@@ -60,7 +60,7 @@ def test_concentration_still_computes_for_unscored_nodes():
     continue to compute so the network structure remains inspectable."""
     g = _score_with("unscored")
     for n in g.nodes.values():
-        if n.dynamic.chokepoint_tier != ChokepointTier.UNSCORED:
+        if n.dynamic.baseline_tier != ChokepointTier.UNSCORED:
             continue
         # concentration is the "combine of inbound + outbound"; must not
         # be forced to None because the node is unscored.
@@ -88,20 +88,20 @@ def test_scored_on_default_axes_names_missing_axes():
 
 def test_suppress_mode_still_reachable():
     g = _score_with("suppress")
-    tiered = sum(1 for n in g.nodes.values() if n.dynamic.chokepoint_tier)
+    tiered = sum(1 for n in g.nodes.values() if n.dynamic.baseline_tier)
     assert tiered == len(g.nodes)
     # No node should be UNSCORED under suppress
     unscored = [n.id for n in g.nodes.values()
-                if n.dynamic.chokepoint_tier == ChokepointTier.UNSCORED]
+                if n.dynamic.baseline_tier == ChokepointTier.UNSCORED]
     assert not unscored, unscored
 
 
 def test_neutral_mode_still_reachable():
     g = _score_with("neutral")
-    tiered = sum(1 for n in g.nodes.values() if n.dynamic.chokepoint_tier)
+    tiered = sum(1 for n in g.nodes.values() if n.dynamic.baseline_tier)
     assert tiered == len(g.nodes)
     unscored = [n.id for n in g.nodes.values()
-                if n.dynamic.chokepoint_tier == ChokepointTier.UNSCORED]
+                if n.dynamic.baseline_tier == ChokepointTier.UNSCORED]
     assert not unscored, unscored
 
 

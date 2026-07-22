@@ -212,6 +212,31 @@ thresholds:
 # should decay far less than a `substitutes_for` edge — but that requires a
 # distribution of graph paths to calibrate against. Treat this the same way
 # as the severity formula: a heuristic scaffold to be validated, not a law.
+# Event effects — SCAFFOLD. Pass D introduces the baseline vs current
+# split. current_severity = baseline_severity + event effects; baseline
+# never moves under events (INV-4).
+#
+# Events are severity-INCREASING only in this version. A signed model
+# (new capacity lowering severity) is future work — flagged, not built.
+# combine + magnitude are heuristics to validate, not laws.
+events:
+  # How to combine an event's effect with a node's current_severity.
+  # noisy_or is bounded [0,1], monotonic, and cannot push current below
+  # baseline: new = 1 - (1 - current) * (1 - contribution).
+  combine: noisy_or          # noisy_or | max | add_clamp
+
+  # For a SCORED origin the event's effect at the origin is
+  # baseline_severity × magnitude. For an UNSCORED origin, baseline is
+  # None so downstream propagation is seeded by concentration × magnitude
+  # (the node's concentration IS real; only severity is withheld). The
+  # unscored origin's own current_severity stays None — an event does
+  # not fabricate an axis a node explicitly lacks (§4 cascade neutral
+  # leak fix). Downstream contributions inherit an `origin_scored` flag;
+  # nodes touched by an unscored-origin contribution get
+  # dynamic.current_severity_has_unscored_origin=True. Ranking policy
+  # for scored vs unscored origins is out of scope in this pass.
+  magnitude_source: axes.concentration_delta
+
 cascade:
   # Fraction of severity retained per hop, before edge-weight scaling.
   decay_per_hop: 0.6

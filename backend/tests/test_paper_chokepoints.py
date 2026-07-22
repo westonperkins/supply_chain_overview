@@ -87,8 +87,8 @@ def test_paper_chokepoint_severity_above_median(graph, node_id, name):
     assert node is not None, f"paper chokepoint {node_id} ({name}) not in graph"
 
     scored_sevs = [
-        n.dynamic.current_severity for n in graph.nodes.values()
-        if n.dynamic.current_severity is not None
+        n.dynamic.baseline_severity for n in graph.nodes.values()
+        if n.dynamic.baseline_severity is not None
     ]
     median_sev = statistics.median(scored_sevs)
 

@@ -77,12 +77,12 @@ def build_inventory(graph: SupplyChainGraph, config: ScoringConfig) -> str:
     scored: list[Node] = []
     unscored: list[Node] = []
     for n in graph.nodes.values():
-        if n.dynamic.current_severity is None:
+        if n.dynamic.baseline_severity is None:
             unscored.append(n)
         else:
             scored.append(n)
 
-    scored.sort(key=lambda n: -(n.dynamic.current_severity or 0.0))
+    scored.sort(key=lambda n: -(n.dynamic.baseline_severity or 0.0))
     unscored.sort(key=lambda n: (n.type.value, n.id))
 
     lines: list[str] = []
@@ -126,12 +126,12 @@ def build_inventory(graph: SupplyChainGraph, config: ScoringConfig) -> str:
     }
 
     for n in scored:
-        tier = n.dynamic.chokepoint_tier.value if n.dynamic.chokepoint_tier else "none"
+        tier = n.dynamic.baseline_tier.value if n.dynamic.baseline_tier else "none"
         row = [
             n.id,
             n.type.value,
             tier,
-            _fmt_float(n.dynamic.current_severity, 8),
+            _fmt_float(n.dynamic.baseline_severity, 8),
             _fmt_float(n.dynamic.concentration, 6),
             _fmt_float(n.dynamic.inbound_hhi, 6),
             _fmt_float(raw_outbound.get(n.id), 6),
@@ -183,7 +183,7 @@ def build_inventory(graph: SupplyChainGraph, config: ScoringConfig) -> str:
     tier_order = ["critical", "high", "moderate", "none", "unscored"]
     counts = {t: 0 for t in tier_order}
     for n in graph.nodes.values():
-        tier = n.dynamic.chokepoint_tier.value if n.dynamic.chokepoint_tier else "none"
+        tier = n.dynamic.baseline_tier.value if n.dynamic.baseline_tier else "none"
         counts[tier] = counts.get(tier, 0) + 1
     lines.append("| tier | count |")
     lines.append("|---|---|")
@@ -210,8 +210,8 @@ def snapshot_severity(graph: SupplyChainGraph, captured_at_pass: str) -> dict:
         "captured_at_pass": captured_at_pass,
         "nodes": {
             n.id: {
-                "severity": n.dynamic.current_severity,
-                "tier": n.dynamic.chokepoint_tier.value if n.dynamic.chokepoint_tier else "none",
+                "severity": n.dynamic.baseline_severity,
+                "tier": n.dynamic.baseline_tier.value if n.dynamic.baseline_tier else "none",
                 "concentration": n.dynamic.concentration,
                 "inbound_hhi": n.dynamic.inbound_hhi,
                 "outbound_criticality": n.dynamic.outbound_criticality,
@@ -274,9 +274,9 @@ def build_severity_diff(snapshot: dict, graph: SupplyChainGraph) -> str:
         before = nodes_map[nid]
         node = graph.nodes[nid]
         sev_b = before.get("severity")
-        sev_a = node.dynamic.current_severity
+        sev_a = node.dynamic.baseline_severity
         tier_b = before.get("tier", "—")
-        tier_a = node.dynamic.chokepoint_tier.value if node.dynamic.chokepoint_tier else "none"
+        tier_a = node.dynamic.baseline_tier.value if node.dynamic.baseline_tier else "none"
 
         if sev_b is None and sev_a is None:
             delta_str = "0"

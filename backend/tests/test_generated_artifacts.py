@@ -107,8 +107,8 @@ def test_inventory_sections_sum_to_full_graph():
                 and not line.startswith("|---"):
             b_rows += 1
 
-    scored = sum(1 for n in g.nodes.values() if n.dynamic.current_severity is not None)
-    unscored = sum(1 for n in g.nodes.values() if n.dynamic.current_severity is None)
+    scored = sum(1 for n in g.nodes.values() if n.dynamic.baseline_severity is not None)
+    unscored = sum(1 for n in g.nodes.values() if n.dynamic.baseline_severity is None)
     assert a_rows == scored, f"Section A: {a_rows} rows vs {scored} scored"
     assert b_rows == unscored, f"Section B: {b_rows} rows vs {unscored} unscored"
     assert a_rows + b_rows == len(g.nodes), (
@@ -206,8 +206,8 @@ def test_moderate_none_boundary_not_above_median():
     node by name; not tunable."""
     import statistics
     g, c = _score_from_fixtures()
-    scored = [n.dynamic.current_severity for n in g.nodes.values()
-              if n.dynamic.current_severity is not None]
+    scored = [n.dynamic.baseline_severity for n in g.nodes.values()
+              if n.dynamic.baseline_severity is not None]
     median_sev = statistics.median(scored)
     boundaries = c.chokepoint_thresholds
     mod_none = boundaries["moderate"]

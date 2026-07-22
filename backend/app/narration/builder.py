@@ -170,9 +170,9 @@ class NarrationBuilder:
     # ------------------------------------------------------------------ #
 
     def _tier_value(self, node: Node) -> str:
-        if node.dynamic.chokepoint_tier is None:
+        if node.dynamic.baseline_tier is None:
             return "none"
-        return node.dynamic.chokepoint_tier.value
+        return node.dynamic.baseline_tier.value
 
     def _dominant_axis(self, node: Node) -> str:
         inbound = node.dynamic.inbound_hhi or 0.0
@@ -539,7 +539,7 @@ class NarrationBuilder:
             target = self.graph.nodes.get(rid)
             if target is None:
                 continue
-            tier = target.dynamic.chokepoint_tier
+            tier = target.dynamic.baseline_tier
             if tier is not None and tier.value == "critical":
                 critical += 1
 

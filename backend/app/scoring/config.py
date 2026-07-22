@@ -281,6 +281,22 @@ class ScoringConfig:
         return bool(self.raw["cascade"].get("fallback_to_input_share", True))
 
     @property
+    def events_combine(self) -> str:
+        """How an event's effect combines with current_severity —
+        `noisy_or` (default) | `max` | `add_clamp`. Pass D scaffold."""
+        return self.raw.get("events", {}).get("combine", "noisy_or")
+
+    @property
+    def events_magnitude_source(self) -> str:
+        """Path expression naming where the event's magnitude comes
+        from on the Event record. Default: axes.concentration_delta.
+        Config-gated so a future magnitude field on Event can be
+        adopted by changing the path, not the code."""
+        return self.raw.get("events", {}).get(
+            "magnitude_source", "axes.concentration_delta"
+        )
+
+    @property
     def financial_cushion_proxy(self) -> str:
         return self.raw["cascade"]["financial_cushion_proxy"]
 

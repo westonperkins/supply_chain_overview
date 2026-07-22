@@ -1,5 +1,5 @@
 {
-  "captured_at_pass": "threshold_recalibration",
+  "captured_at_pass": "pass_c_threshold_fixes",
   "nodes": {
     "mineral:gallium": {
       "severity": 0.4802713494238954,
@@ -17,7 +17,7 @@
     },
     "mineral:neodymium": {
       "severity": 0.22025022350781015,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.6859504132231404,
       "inbound_hhi": 0.6859504132231404,
       "outbound_criticality": 0.2583455185037009
@@ -31,14 +31,14 @@
     },
     "mineral:copper": {
       "severity": 0.2069508732517402,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.29159999999999997,
       "inbound_hhi": 0.29159999999999997,
       "outbound_criticality": 0.28009271139055403
     },
     "product:hbm": {
       "severity": 0.17793654427096184,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.4402,
       "inbound_hhi": 0.4402,
       "outbound_criticality": 0.23136771276971466
@@ -52,7 +52,7 @@
     },
     "product:ndfeb_magnets": {
       "severity": 0.21274605355336307,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.6249999999999998,
       "inbound_hhi": 0.6249999999999998,
       "outbound_criticality": 0.14241779362806403
@@ -199,7 +199,7 @@
     },
     "company:samsung": {
       "severity": 0.2745663535758076,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.9218447097234975,
       "inbound_hhi": 0.9218447097234975,
       "outbound_criticality": 0.08786096952781103
@@ -213,14 +213,14 @@
     },
     "company:sk_hynix": {
       "severity": 0.21119985670433936,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.763640149937526,
       "inbound_hhi": 0.763640149937526,
       "outbound_criticality": 0.4252155935001507
     },
     "company:micron": {
       "severity": 0.1949537138809286,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.763640149937526,
       "inbound_hhi": 0.763640149937526,
       "outbound_criticality": 0.09431015321309122
@@ -234,21 +234,21 @@
     },
     "company:applied_materials": {
       "severity": 0.19300890683111616,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.6480190940171229,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.6480190940171229
     },
     "company:lam_research": {
       "severity": 0.2581760214418255,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.8668148753262878,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.8668148753262878
     },
     "company:kla": {
       "severity": 0.25227386026173604,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.9121523635561845,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.9121523635561845
@@ -346,14 +346,14 @@
     },
     "company:siemens_energy": {
       "severity": 0.22437575280963837,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.6800000000000002,
       "inbound_hhi": 0.6800000000000002,
       "outbound_criticality": 0.1707325122849878
     },
     "company:ge_vernova": {
       "severity": 0.21590259438835932,
-      "tier": "none",
+      "tier": "moderate",
       "concentration": 0.654320987654321,
       "inbound_hhi": 0.654320987654321,
       "outbound_criticality": 0.1819268342116367

@@ -109,7 +109,7 @@ def main():
     g, c = score()
 
     # Derive from committed severities.
-    severities = [(nid, n.dynamic.current_severity) for nid, n in g.nodes.items()]
+    severities = [(nid, n.dynamic.baseline_severity) for nid, n in g.nodes.items()]
     derivation = derive_thresholds(severities, c.threshold_separation_factor)
 
     # F3: write derived boundaries into config so config IS the rendering
@@ -160,8 +160,8 @@ def _chokepoint_landing(graph):
         n = graph.nodes.get(nid)
         if n is None:
             continue
-        sev = n.dynamic.current_severity
-        tier = n.dynamic.chokepoint_tier.value if n.dynamic.chokepoint_tier else "none"
+        sev = n.dynamic.baseline_severity
+        tier = n.dynamic.baseline_tier.value if n.dynamic.baseline_tier else "none"
         rows.append((name, nid, sev, tier))
     return rows
 

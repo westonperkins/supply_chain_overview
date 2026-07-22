@@ -100,9 +100,12 @@ def snapshot_derived(graph: SupplyChainGraph) -> dict[str, dict[str, Any]]:
             "inbound_hhi": d.inbound_hhi,
             "outbound_criticality": d.outbound_criticality,
             "concentration": d.concentration,
-            "current_severity": d.current_severity,
+            # Structural (baseline) — the audit trail. current_* is
+            # event-dependent per Pass D and not appropriate for
+            # cross-pass structural regression.
+            "current_severity": d.baseline_severity,
             "chokepoint_tier": (
-                d.chokepoint_tier.value if d.chokepoint_tier else None
+                d.baseline_tier.value if d.baseline_tier else None
             ),
             "derived_shares": deepcopy(d.derived_shares),
         }

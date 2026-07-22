@@ -66,14 +66,13 @@ class DynamicFields(BaseModel):
     # has no reliable inbound signal rather than a silent fallback.
     single_supplier_stages: Optional[list[str]] = None
     all_stages_single_supplier: bool = False
-    # True when this node's severity falls inside a threshold-derivation
-    # unresolved band (see docs/generated/threshold_analysis.md). The
-    # tier value itself is still one of the existing enum members;
-    # `tier_ambiguous_with` names the other tier the node could have
-    # been assigned. Both fields are always populated: False + None on
-    # unambiguous nodes, True + [tier_name] inside an unresolved band.
-    tier_ambiguous: bool = False
+    # Ambiguity carried on BOTH tiers (spec §2). With no active events,
+    # baseline_tier == current_tier and these agree; under events they
+    # can differ if current_severity crosses into an unresolved band.
+    tier_ambiguous: bool = False              # baseline-side
     tier_ambiguous_with: Optional[list[str]] = None
+    current_tier_ambiguous: bool = False      # live-side
+    current_tier_ambiguous_with: Optional[list[str]] = None
     # Axes that were absent when this node was scored. Names the axes
     # ("substitutability" and/or "lead_time_years"). Under the default
     # missing_static_axes.mode: `unscored`, the engine substitutes
@@ -88,8 +87,25 @@ class DynamicFields(BaseModel):
     inbound_hhi: Optional[float] = None               # combine of per-stage per scoring.yaml (default max)
     outbound_criticality: Optional[float] = None      # normalized [0,1] — captures ASML/TSMC-style upstream chokepoints
     concentration: Optional[float] = None             # combined value used in severity formula
+    # STRUCTURAL — recomputed by refresh_all_derived from static axes +
+    # concentration. Never moved by events. Threshold derivation, the
+    # generated inventory, and every structural test read this.
+    baseline_severity: Optional[float] = None
+    baseline_tier: Optional[ChokepointTier] = None
+    # LIVE — initialized to baseline_severity / baseline_tier by
+    # refresh_all_derived; then updated by propagate_event for nodes
+    # touched by an active event. With zero active events, current == baseline
+    # everywhere. Written ONLY by cascade.propagate_event (INV-4).
+    #   current_severity is None iff baseline_severity is None AND no
+    #   scored-origin event has raised it — an unscored node whose
+    #   current stays None is honest: an event does not fabricate a
+    #   severity value from axes the node explicitly lacks.
     current_severity: Optional[float] = None
-    chokepoint_tier: Optional[ChokepointTier] = None
+    current_tier: Optional[ChokepointTier] = None
+    # True if any contribution to this node's current_severity came from
+    # an event whose origin was unscored (no baseline). Attached now for
+    # the news-ingestion pass to gate ranking; this pass only records it.
+    current_severity_has_unscored_origin: bool = False
     derived_shares: Optional[dict] = None             # computed from edges
 
     recent_event_ids: list[str] = Field(default_factory=list)

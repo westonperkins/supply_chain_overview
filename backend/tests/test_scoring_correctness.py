@@ -146,7 +146,7 @@ def test_legacy_modes_are_reachable():
     cfg.raw["missing_static_axes"]["mode"] = "suppress"
     cfg.raw["concentration"]["outbound"]["normalization"]["mode"] = "graph_max"
     g = _score(cfg)
-    tiered = sum(1 for n in g.nodes.values() if n.dynamic.chokepoint_tier)
+    tiered = sum(1 for n in g.nodes.values() if n.dynamic.baseline_tier)
     assert tiered == len(g.nodes)
 
 

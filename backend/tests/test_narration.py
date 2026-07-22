@@ -44,9 +44,12 @@ def test_tier_word_in_why_title_matches_chokepoint_tier(graph, narration_builder
     mismatches = []
     for node in graph.nodes.values():
         narr = narration_builder.build(node.id)
+        # Pass D — narration reads BASELINE tier (structural). "Why it
+        # scores X" is the structural story; live/current tier is a
+        # future narration-pass concern.
         tier = (
-            node.dynamic.chokepoint_tier.value
-            if node.dynamic.chokepoint_tier
+            node.dynamic.baseline_tier.value
+            if node.dynamic.baseline_tier
             else "none"
         )
         # Narration text for `unscored` is a narration-layer concern

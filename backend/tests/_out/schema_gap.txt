@@ -1,17 +1,2 @@
-FINDING — baseline vs current severity.
-
-scoring.yaml specifies chokepoint tier thresholds are applied to
-BASELINE severity — the node's static axes with no event delta.
-The schema today has only one field, `current_severity`, which
-`compute_baseline_severity` writes into. They are the same value
-today, so this test cannot distinguish them.
-
-Once event ingestion applies AxesImpact deltas, current_severity
-will drift with the news, and tiers derived from it will drift
-with the news too. Resolve before wiring live ingestion:
-  - add `baseline_severity` alongside `current_severity` on
-    DynamicFields
-  - `refresh_all_derived` writes baseline
-  - `propagate_event` writes current per-event, without touching
-    tier
-  - tier derived from baseline only
+Pass D closed the baseline vs current severity split.
+This test no longer needs to record the schema gap.

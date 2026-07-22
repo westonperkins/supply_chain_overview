@@ -581,11 +581,24 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
         node.dynamic.outbound_criticality = outbound
         node.dynamic.concentration = concentration
 
+        # Pass D — STRUCTURAL fields. baseline_* is what the graph would
+        # score with zero active events. Events must never move these
+        # (INV-4). current_* is initialized to baseline_* here; cascade
+        # updates current_* only for nodes touched by active events.
         baseline = compute_baseline_severity(node, config)
-        node.dynamic.current_severity = baseline
+        node.dynamic.baseline_severity = baseline
         tier = derive_chokepoint_tier(baseline, config)
-        node.dynamic.chokepoint_tier = tier
+        node.dynamic.baseline_tier = tier
         tier_name = tier.value if tier else None
         amb, amb_with = _compute_tier_ambiguity(baseline, tier_name, config)
         node.dynamic.tier_ambiguous = amb
         node.dynamic.tier_ambiguous_with = amb_with
+
+        # Initialize LIVE fields = baseline. Cascade may overwrite for
+        # affected nodes (§3 step 3). No events → current == baseline
+        # everywhere → T1 passes.
+        node.dynamic.current_severity = baseline
+        node.dynamic.current_tier = tier
+        node.dynamic.current_tier_ambiguous = amb
+        node.dynamic.current_tier_ambiguous_with = amb_with
+        node.dynamic.current_severity_has_unscored_origin = False
