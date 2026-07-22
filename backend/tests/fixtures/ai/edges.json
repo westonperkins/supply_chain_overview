@@ -1980,5 +1980,317 @@
     "input_share": 0.6,
     "output_share": 0.9,
     "supply_category": "memory"
+  },
+  {
+    "id": "e:nikon-supplies-tsmc",
+    "source_id": "company:nikon",
+    "target_id": "company:tsmc",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.005
+  },
+  {
+    "id": "e:canon-supplies-tsmc",
+    "source_id": "company:canon",
+    "target_id": "company:tsmc",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.005
+  },
+  {
+    "id": "e:nikon-supplies-samsung",
+    "source_id": "company:nikon",
+    "target_id": "company:samsung",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:canon-supplies-samsung",
+    "source_id": "company:canon",
+    "target_id": "company:samsung",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.01
+  },
+  {
+    "id": "e:nikon-supplies-sk_hynix",
+    "source_id": "company:nikon",
+    "target_id": "company:sk_hynix",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.1
+  },
+  {
+    "id": "e:canon-supplies-sk_hynix",
+    "source_id": "company:canon",
+    "target_id": "company:sk_hynix",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.02
+  },
+  {
+    "id": "e:nikon-supplies-micron",
+    "source_id": "company:nikon",
+    "target_id": "company:micron",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.15
+  },
+  {
+    "id": "e:canon-supplies-micron",
+    "source_id": "company:canon",
+    "target_id": "company:micron",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:nikon-supplies-intel",
+    "source_id": "company:nikon",
+    "target_id": "company:intel",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:canon-supplies-intel",
+    "source_id": "company:canon",
+    "target_id": "company:intel",
+    "type": "supplies",
+    "supply_category": "lithography",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV. Industry-informed estimate of their share at this fab's lithography-tool supply \u2014 heavier at fabs that lean on DUV (memory, trailing-edge), rounding-scale at leading-edge fabs."
+    },
+    "input_share": 0.01
+  },
+  {
+    "id": "e:tel-supplies-tsmc-etch",
+    "source_id": "company:tokyo_electron",
+    "target_id": "company:tsmc",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.15
+  },
+  {
+    "id": "e:hitachi-supplies-tsmc-etch",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:tsmc",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:tel-supplies-samsung-etch",
+    "source_id": "company:tokyo_electron",
+    "target_id": "company:samsung",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.2
+  },
+  {
+    "id": "e:hitachi-supplies-samsung-etch",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:samsung",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:tel-supplies-sk_hynix-etch",
+    "source_id": "company:tokyo_electron",
+    "target_id": "company:sk_hynix",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.1
+  },
+  {
+    "id": "e:hitachi-supplies-sk_hynix-etch",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:sk_hynix",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:tel-supplies-micron-etch",
+    "source_id": "company:tokyo_electron",
+    "target_id": "company:micron",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.1
+  },
+  {
+    "id": "e:hitachi-supplies-micron-etch",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:micron",
+    "type": "supplies",
+    "supply_category": "etch",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate of TEL's / Hitachi's role in this fab's etch-tool supply \u2014 TEL is a strong #2 in etch, Hitachi a minor third-tier."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:amat-supplies-tsmc-inspection",
+    "source_id": "company:applied_materials",
+    "target_id": "company:tsmc",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.05
+  },
+  {
+    "id": "e:hitachi-supplies-tsmc-inspection",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:tsmc",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.03
+  },
+  {
+    "id": "e:amat-supplies-samsung-inspection",
+    "source_id": "company:applied_materials",
+    "target_id": "company:samsung",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.1
+  },
+  {
+    "id": "e:hitachi-supplies-samsung-inspection",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:samsung",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.05
+  },
+  {
+    "id": "e:amat-supplies-sk_hynix-inspection",
+    "source_id": "company:applied_materials",
+    "target_id": "company:sk_hynix",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.1
+  },
+  {
+    "id": "e:hitachi-supplies-sk_hynix-inspection",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:sk_hynix",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.05
+  },
+  {
+    "id": "e:amat-supplies-intel-inspection",
+    "source_id": "company:applied_materials",
+    "target_id": "company:intel",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.05
+  },
+  {
+    "id": "e:hitachi-supplies-intel-inspection",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "company:intel",
+    "type": "supplies",
+    "supply_category": "inspection",
+    "static": {
+      "confidence": "estimate",
+      "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
+    },
+    "input_share": 0.03
   }
 ]

@@ -123,6 +123,20 @@ class ScoringConfig:
         )
 
     @property
+    def supplies_min_suppliers_for_concentration(self) -> int:
+        """Minimum number of distinct modelled suppliers a per-category bucket
+        must have before it can contribute a concentration signal. Default 2
+        — a single-supplier category cannot distinguish a real monopoly from
+        an unmodelled market."""
+        return int(
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("supplies", {})
+            .get("per_category", {})
+            .get("min_suppliers_for_concentration", 2)
+        )
+
+    @property
     def concentration_outbound_decay(self) -> float:
         return float(self.raw["concentration"]["outbound"]["decay_per_hop"])
 

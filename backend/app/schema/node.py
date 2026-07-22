@@ -49,6 +49,14 @@ class DynamicFields(BaseModel):
     # node has incoming supplies edges. `supplied_by_hhi` above is the
     # combined value that flows into inbound_hhi.
     supplies_per_category_hhi: Optional[dict[str, float]] = None
+    # Categories with fewer than min_suppliers_for_concentration distinct
+    # modelled suppliers — recorded here so the completeness backlog can
+    # surface them. These categories do NOT contribute to the max combine.
+    single_supplier_categories: Optional[list[str]] = None
+    # True when EVERY supplies category on this node is single-supplier,
+    # so the max combine returned no signal and supplies HHI fell back to
+    # the aggregate reading. The narration layer can render this caveat.
+    supplies_hhi_fallback_to_aggregate: bool = False
     # Legacy blended HHI — kept for inspection / before-after diffing.
     combined_hhi: Optional[float] = None
     inbound_hhi: Optional[float] = None               # combine of per-stage per scoring.yaml (default max)

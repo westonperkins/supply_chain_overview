@@ -89,20 +89,22 @@ def compute_supplies_per_category(
     graph: SupplyChainGraph,
     node_id: str,
     normalize: bool = True,
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, int]]:
     """Group the target's incoming `supplies` edges by `supply_category`
-    and compute HHI per category. Returns {category: hhi} — no combine
-    step; the caller decides how to fold these into `supplies` stage HHI.
+    and compute HHI per category. Returns (per_cat_hhi, supplier_counts).
 
-    Edges with no `supply_category` land in a `general` sub-bucket, so
-    behaviour without any category tags is unchanged (one aggregate HHI
-    surfacing as `general`)."""
+    Edges with no `supply_category` land in a `general` sub-bucket. The
+    supplier_counts dict lets the caller apply a `min_suppliers` gate
+    (see `docs/category_validation_spec.md`) to distinguish a real
+    monopoly from a category we simply haven't finished modelling."""
     buckets: dict[str, dict[str, float]] = defaultdict(dict)
     for edge in graph.in_edges(node_id, [EdgeType.SUPPLIES]):
         cat = edge.supply_category or "general"
         buckets[cat][edge.source_id] = edge.effective_weight()
-    return {cat: compute_hhi(shares, normalize=normalize)
+    hhis = {cat: compute_hhi(shares, normalize=normalize)
             for cat, shares in buckets.items()}
+    counts = {cat: len(shares) for cat, shares in buckets.items()}
+    return hhis, counts
 
 
 def combine_per_stage(values: dict[str, float], config: ScoringConfig) -> float:
@@ -301,6 +303,7 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
     normalize = config.inbound_per_stage_normalize
     per_cat_enabled = config.supplies_per_category_enabled
     per_cat_combine = config.supplies_per_category_combine
+    min_suppliers = config.supplies_min_suppliers_for_concentration
 
     for node in graph.nodes.values():
         derived = node.dynamic.derived_shares
@@ -313,17 +316,37 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
         # `supplies` HHI with a per-category combine (default max). Same
         # reasoning as per-stage HHI at the type level: a target is fragile
         # if ANY single category is single-sourced. See
-        # `docs/per_category_supplies_report.md`.
+        # `docs/per_category_supplies_report.md` and
+        # `docs/category_validation_spec.md`.
+        #
+        # A category with < min_suppliers modelled suppliers cannot
+        # distinguish real concentration from an unmodelled market, so it
+        # does NOT contribute to the max. If every category on the node is
+        # single-supplier, we fall back to the aggregate reading rather
+        # than pretending we have signal.
         if per_cat_enabled and "supplies" in stage_hhis:
-            per_cat = compute_supplies_per_category(graph, node.id, normalize=normalize)
-            node.dynamic.supplies_per_category_hhi = per_cat or None
-            if per_cat:
+            per_cat, counts = compute_supplies_per_category(
+                graph, node.id, normalize=normalize
+            )
+            single_supplier = sorted(c for c, n in counts.items() if n < min_suppliers)
+            contributing = {c: h for c, h in per_cat.items()
+                            if counts[c] >= min_suppliers}
+            if contributing:
                 if per_cat_combine == "max":
-                    stage_hhis["supplies"] = max(per_cat.values())
+                    stage_hhis["supplies"] = max(contributing.values())
                 else:  # weighted_sum — equal weight for now
-                    stage_hhis["supplies"] = sum(per_cat.values()) / len(per_cat)
+                    stage_hhis["supplies"] = sum(contributing.values()) / len(contributing)
+            # else: every category is single-supplier — leave the aggregate
+            # value that compute_stage_hhis already put in stage_hhis["supplies"].
+            node.dynamic.supplies_per_category_hhi = per_cat or None
+            node.dynamic.single_supplier_categories = single_supplier or None
+            node.dynamic.supplies_hhi_fallback_to_aggregate = bool(
+                per_cat and not contributing
+            )
         else:
             node.dynamic.supplies_per_category_hhi = None
+            node.dynamic.single_supplier_categories = None
+            node.dynamic.supplies_hhi_fallback_to_aggregate = False
 
         node.dynamic.stage_hhis = stage_hhis or None
 

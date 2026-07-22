@@ -82,6 +82,16 @@ concentration:
         per_category:
           enabled: true
           combine: max          # max | weighted_sum
+          # A category with fewer than N modelled suppliers cannot distinguish
+          # a real monopoly from an unmodelled market. Such buckets are
+          # excluded from the `combine` step and surfaced in the completeness
+          # backlog (see docs/category_validation_spec.md §2). Default 2 —
+          # meaning any category with only one modelled supplier is treated
+          # as incomplete data rather than concentration signal. If EVERY
+          # supplies category on a node falls below this threshold, the
+          # node's supplies HHI falls back to the aggregate reading and
+          # the node is flagged.
+          min_suppliers_for_concentration: 2
   outbound:
     decay_per_hop: 0.7         # geometric decay per hop of downstream walk
     max_hops: 6
