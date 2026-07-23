@@ -119,3 +119,18 @@ class NarrationConfig:
     def company_rating_disclaimer(self) -> str:
         text = self.raw.get("disclaimers", {}).get("company_rating", "")
         return " ".join(text.split())  # collapse YAML line folding
+
+    # ---------- glance strip (Pass I) --------------------------------------
+
+    def glance_summary(self, node_type_key: str) -> dict:
+        """Returns the raw glance_summary block for a node type (mineral /
+        company / product / facility / country) — or an empty dict if
+        none is authored. The builder assembles the sentence from these
+        pieces exactly as it does for `unscored.body`, so no prose text
+        lives in Python."""
+        return self.raw.get("glance_summary", {}).get(node_type_key, {})
+
+    def edge_glance_verb(self, edge_type: str) -> str:
+        """Compact verb for the heaviest-path breadcrumb. Falls back to
+        the edge type token so a missing entry never renders as blank."""
+        return self.raw.get("edge_glance_verb", {}).get(edge_type, edge_type)

@@ -74,6 +74,21 @@ export interface NarrationSection {
   title: string;
   body: string;
 }
+// Pass I — one-hop greedy max-weight walk built from real edges. The
+// backend produces this so the frontend never composes prose or picks
+// edges heuristically (which was the source of the "China supplies
+// copper to TSMC" misread — no such path existed in the graph).
+export interface GlanceBreadcrumbStep {
+  from: string;
+  verb: string;   // authored in narration.yaml `edge_glance_verb`
+  share: number;  // 0..1 effective edge weight
+  to: string;
+}
+export interface Glance {
+  sentence: string | null;
+  breadcrumb: GlanceBreadcrumbStep[];
+  acronyms: { term: string; expansion: string }[];
+}
 export interface Narration {
   node_id: string;
   headline: { name: string; role: string | null; tier: string };
@@ -81,6 +96,7 @@ export interface Narration {
   sections: NarrationSection[];
   caveats: string[];
   acronyms: { term: string; expansion: string }[];
+  glance: Glance;
 }
 
 export interface Node {

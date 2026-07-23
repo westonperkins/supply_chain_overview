@@ -156,6 +156,12 @@ class NarrationBuilder:
         # Caveats
         caveats = self._build_caveats(node)
 
+        # Pass I — one-sentence glance summary for the trail strip. Uses its
+        # own acronym tracker so glance expansions don't shadow the panel's.
+        glance_acronyms: dict[str, str] = {}
+        glance_sentence = self._build_glance(node, glance_acronyms)
+        glance_breadcrumb = self._build_glance_breadcrumb(node)
+
         return {
             "node_id": node_id,
             "headline": {
@@ -169,6 +175,14 @@ class NarrationBuilder:
             "acronyms": [
                 {"term": k, "expansion": v} for k, v in acronyms_used.items()
             ],
+            "glance": {
+                "sentence": glance_sentence,
+                "breadcrumb": glance_breadcrumb,
+                "acronyms": [
+                    {"term": k, "expansion": v}
+                    for k, v in glance_acronyms.items()
+                ],
+            },
         }
 
     # ------------------------------------------------------------------ #
@@ -623,6 +637,359 @@ class NarrationBuilder:
             crit_word = "critical" if critical == 1 else "critical"
             base += f", {critical} of them {crit_word}"
         return base + "."
+
+    # ------------------------------------------------------------------ #
+    # Glance strip — one sentence per node (Pass I)                       #
+    # ------------------------------------------------------------------ #
+
+    def _build_glance(
+        self,
+        node: Node,
+        acronyms_used: dict[str, str],
+    ) -> Optional[str]:
+        """Assemble the one-sentence glance summary for the trail strip.
+        Every word comes from `narration.yaml glance_summary.<type>`.
+        This method only picks pieces and substitutes derived quantities
+        (same shares, edges, tier words the panels already use).
+
+        Clauses whose required placeholder is missing are dropped entirely
+        so the sentence never contains a literal `{...}` or an empty
+        fragment."""
+        type_key = _node_type_key(node)
+        cfg = self.config.glance_summary(type_key)
+        template = cfg.get("template") if cfg else None
+        if not template:
+            return None
+        if type_key == "mineral":
+            return self._glance_mineral(node, cfg, template, acronyms_used)
+        if type_key == "product":
+            return self._glance_product(node, cfg, template, acronyms_used)
+        if type_key == "company":
+            return self._glance_company(node, cfg, template, acronyms_used)
+        if type_key == "facility":
+            return self._glance_facility(node, cfg, template, acronyms_used)
+        if type_key == "country":
+            return self._glance_country(node, cfg, template)
+        return None
+
+    def _build_glance_breadcrumb(self, node: Node) -> list[dict]:
+        """Greedy max-weight walk through real edges to give the trail
+        strip its "heaviest path" — the highest-weight supply edge into
+        the anchor node followed by up to two highest-weight supply
+        edges out of it.
+
+        Returns a list of {from, verb, share, to} steps — each step is
+        one real graph edge. The frontend renders these directly (no
+        wording composed in TypeScript); the verb comes from
+        `edge_glance_verb` in narration.yaml.
+
+        Written from real edges by construction — this is the fix for
+        the misread where visually-crossing strands were chained into
+        chains that don't exist in the graph.
+
+        Restricted to material/supply edge types — `operates` and
+        `located_in` are ownership/geography, not part of the flow
+        the breadcrumb is meant to convey.
+        """
+        # A narrower set than SUPPLY_EDGE_TYPES: excludes OPERATES so a walk
+        # from a company can't chain into "operates" a data center as a
+        # material-flow step.
+        walk_types = [
+            EdgeType.MINES,
+            EdgeType.REFINES,
+            EdgeType.SUPPLIES,
+            EdgeType.INPUT_TO,
+            EdgeType.COMPONENT_OF,
+        ]
+        steps: list[dict] = []
+
+        # One upstream hop (heaviest inbound supply-type edge).
+        up_edge = self._top_incoming_by_types(node.id, walk_types)
+        if up_edge is not None:
+            src = self.graph.nodes.get(up_edge.source_id)
+            if src is not None:
+                steps.append(self._glance_step(src, node, up_edge))
+
+        # Up to two downstream hops (greedy max-weight walk).
+        cur = node
+        for _ in range(2):
+            down_edge = self._top_outgoing_by_types(cur.id, walk_types)
+            if down_edge is None:
+                break
+            tgt = self.graph.nodes.get(down_edge.target_id)
+            if tgt is None:
+                break
+            steps.append(self._glance_step(cur, tgt, down_edge))
+            cur = tgt
+
+        return steps
+
+    def _glance_step(self, src: Node, dst: Node, edge: Edge) -> dict:
+        src_name = (
+            self._country_name(src)
+            if src.type.value == "country_region"
+            else _short_name(src)
+        )
+        dst_name = (
+            self._country_name(dst)
+            if dst.type.value == "country_region"
+            else _short_name(dst)
+        )
+        return {
+            "from": src_name,
+            "verb": self.config.edge_glance_verb(edge.type.value),
+            "share": round(edge.effective_weight(), 3),
+            "to": dst_name,
+        }
+
+    # -- per-type piece assembly ----------------------------------------
+
+    def _top_incoming_by_types(
+        self,
+        node_id: str,
+        edge_types: list[EdgeType],
+    ) -> Optional[Edge]:
+        candidates = [
+            e for e in self.graph.in_edges(node_id) if e.type in edge_types
+        ]
+        if not candidates:
+            return None
+        return max(candidates, key=lambda e: e.effective_weight())
+
+    def _top_outgoing_by_types(
+        self,
+        node_id: str,
+        edge_types: list[EdgeType],
+    ) -> Optional[Edge]:
+        candidates = [
+            e for e in self.graph.out_edges(node_id) if e.type in edge_types
+        ]
+        if not candidates:
+            return None
+        return max(candidates, key=lambda e: e.effective_weight())
+
+    def _glance_node_name(
+        self,
+        node: Node,
+        acronyms_used: dict[str, str],
+    ) -> str:
+        if node.type.value == "country_region":
+            return self._country_name(node)
+        return self._name(node, acronyms_used)
+
+    def _glance_mineral(
+        self,
+        node: Node,
+        cfg: dict,
+        template: str,
+        acronyms_used: dict[str, str],
+    ) -> Optional[str]:
+        # Prefer mines edges for the "mined mainly in" clause. If none exist
+        # (a refined-only mineral), fall back to refines so the sentence stays
+        # honest to how the graph actually models the material.
+        top_mine = self._top_incoming_by_types(node.id, [EdgeType.MINES])
+        if top_mine is None:
+            top_mine = self._top_incoming_by_types(node.id, [EdgeType.REFINES])
+        if top_mine is None:
+            return None
+        src = self.graph.nodes.get(top_mine.source_id)
+        if src is None:
+            return None
+
+        top_source = self._glance_node_name(src, acronyms_used)
+        top_source_share = f"{top_mine.effective_weight() * 100:.{self.config.share_decimals}f}%"
+
+        # Downstream target: highest supply-type edge outbound.
+        top_feed = self._top_outgoing_by_types(node.id, list(SUPPLY_EDGE_TYPES))
+        feeds_into_clause = ""
+        if top_feed is not None:
+            tgt = self.graph.nodes.get(top_feed.target_id)
+            if tgt is not None:
+                clause = cfg.get("feeds_into_clause", "")
+                feeds_into_clause = clause.replace(
+                    "{top_target}", self._glance_node_name(tgt, acronyms_used)
+                )
+
+        return (
+            template
+            .replace("{mines_hedge}", cfg.get("mines_hedge", ""))
+            .replace("{top_source}", top_source)
+            .replace("{top_source_share}", top_source_share)
+            .replace("{feeds_into_clause}", feeds_into_clause)
+        )
+
+    def _glance_product(
+        self,
+        node: Node,
+        cfg: dict,
+        template: str,
+        acronyms_used: dict[str, str],
+    ) -> Optional[str]:
+        top_in = self._top_incoming_by_types(
+            node.id,
+            [EdgeType.COMPONENT_OF, EdgeType.INPUT_TO, EdgeType.SUPPLIES],
+        )
+        top_out = self._top_outgoing_by_types(node.id, list(SUPPLY_EDGE_TYPES))
+        if top_in is None and top_out is None:
+            return None
+
+        top_source = "unknown inputs"
+        if top_in is not None:
+            src = self.graph.nodes.get(top_in.source_id)
+            if src is not None:
+                top_source = self._glance_node_name(src, acronyms_used)
+
+        top_target = "downstream systems"
+        if top_out is not None:
+            tgt = self.graph.nodes.get(top_out.target_id)
+            if tgt is not None:
+                top_target = self._glance_node_name(tgt, acronyms_used)
+
+        return (
+            template
+            .replace("{top_source}", top_source)
+            .replace("{top_target}", top_target)
+        )
+
+    def _glance_company(
+        self,
+        node: Node,
+        cfg: dict,
+        template: str,
+        acronyms_used: dict[str, str],
+    ) -> Optional[str]:
+        sub_phrase = _pretty_sub_category(node.sub_category) or "company"
+
+        role_tail = ""
+        top_in = self._top_incoming_by_types(
+            node.id, [EdgeType.SUPPLIES, EdgeType.INPUT_TO, EdgeType.COMPONENT_OF],
+        )
+        if top_in is not None:
+            src = self.graph.nodes.get(top_in.source_id)
+            if src is not None:
+                role_tail = (
+                    cfg.get("role_tail", "")
+                    .replace(
+                        "{top_source}", self._glance_node_name(src, acronyms_used)
+                    )
+                    .replace(
+                        "{top_source_share}",
+                        f"{top_in.effective_weight() * 100:.{self.config.share_decimals}f}%",
+                    )
+                )
+
+        feeds_tail = ""
+        top_out = self._top_outgoing_by_types(
+            node.id, [EdgeType.SUPPLIES, EdgeType.INPUT_TO, EdgeType.COMPONENT_OF],
+        )
+        if top_out is not None:
+            tgt = self.graph.nodes.get(top_out.target_id)
+            if tgt is not None:
+                feeds_tail = cfg.get("feeds_tail", "").replace(
+                    "{top_target}", self._glance_node_name(tgt, acronyms_used)
+                )
+
+        return (
+            template
+            .replace("{sub_category_phrase}", sub_phrase)
+            .replace("{role_tail}", role_tail)
+            .replace("{feeds_tail}", feeds_tail)
+        )
+
+    def _glance_facility(
+        self,
+        node: Node,
+        cfg: dict,
+        template: str,
+        acronyms_used: dict[str, str],
+    ) -> Optional[str]:
+        # Operator via `operates` inbound; location via `located_in` outbound;
+        # products via any supply-type outbound. Facilities can appear with
+        # any subset present (e.g. Serra Verde has no `operates` edge in the
+        # graph — the mine is independent), so each clause is optional and
+        # drops out when its edge is absent.
+        operator_clause = ""
+        operator_edge = self._top_incoming_by_types(node.id, [EdgeType.OPERATES])
+        if operator_edge is not None:
+            operator = self.graph.nodes.get(operator_edge.source_id)
+            if operator is not None:
+                operator_clause = cfg.get("operator_clause", "").replace(
+                    "{top_operator}",
+                    self._glance_node_name(operator, acronyms_used),
+                )
+
+        location_tail = ""
+        loc_edges = [
+            e for e in self.graph.out_edges(node.id) if e.type == EdgeType.LOCATED_IN
+        ]
+        if loc_edges:
+            primary_loc = max(
+                loc_edges, key=lambda e: e.effective_weight(),
+            )
+            loc_node = self.graph.nodes.get(primary_loc.target_id)
+            if loc_node is not None:
+                location_tail = cfg.get("location_tail", "").replace(
+                    "{top_location}", self._country_name(loc_node)
+                )
+
+        produces_tail = ""
+        top_product = self._top_outgoing_by_types(
+            node.id, list(SUPPLY_EDGE_TYPES),
+        )
+        if top_product is not None:
+            product_node = self.graph.nodes.get(top_product.target_id)
+            if product_node is not None:
+                produces_tail = cfg.get("produces_tail", "").replace(
+                    "{top_target}",
+                    self._glance_node_name(product_node, acronyms_used),
+                )
+
+        if not (operator_clause or location_tail or produces_tail):
+            return None
+
+        return (
+            template
+            .replace("{operator_clause}", operator_clause)
+            .replace("{location_tail}", location_tail)
+            .replace("{produces_tail}", produces_tail)
+        )
+
+    def _glance_country(
+        self,
+        node: Node,
+        cfg: dict,
+        template: str,
+    ) -> Optional[str]:
+        # A country is a "supply source" if it has any outbound mines/refines
+        # edges reaching a majority share (>= 0.5) of at least one mineral.
+        # Otherwise it's a "hosts" country (located_in inbound) or absent.
+        mines_refines_out = [
+            e for e in self.graph.out_edges(node.id)
+            if e.type in (EdgeType.MINES, EdgeType.REFINES)
+            and e.effective_weight() >= 0.5
+        ]
+        mines_or_refines_count = len({e.target_id for e in mines_refines_out})
+
+        if mines_or_refines_count > 0:
+            role = cfg.get("role_phrase_mines_refines", "").replace(
+                "{mines_or_refines_count}", str(mines_or_refines_count)
+            )
+        else:
+            host_edges = [
+                e for e in self.graph.in_edges(node.id)
+                if e.type == EdgeType.LOCATED_IN
+            ]
+            n_hosts = len({e.source_id for e in host_edges})
+            if n_hosts > 0:
+                role = cfg.get("role_phrase_hosts_only", "").replace(
+                    "{n_hosts}", str(n_hosts)
+                )
+            else:
+                role = cfg.get("role_phrase_none", "")
+
+        if not role:
+            return None
+        return template.replace("{country_role}", role)
 
     # ------------------------------------------------------------------ #
     # Caveats                                                              #

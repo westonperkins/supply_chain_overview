@@ -20,6 +20,8 @@ import { ChokepointNode } from "./glance/ChokepointNode";
 import { CountryNode } from "./glance/CountryNode";
 import { SummaryNode } from "./glance/SummaryNode";
 import { ColumnLabelNode } from "./glance/ColumnLabelNode";
+import { TrailStrip } from "./glance/TrailStrip";
+import { HowToRead } from "./glance/HowToRead";
 
 const nodeTypes = {
   chokepoint: ChokepointNode as unknown as React.ComponentType<any>,
@@ -329,6 +331,7 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
           />
           <span className="layer-toggle-label">Pin trail (inspect)</span>
         </label>
+        <HowToRead />
         <div className="glance-hover-hint">
           {pinMode
             ? (pinnedId
@@ -338,8 +341,8 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
         </div>
       </div>
 
+      <HoverContext.Provider value={hoverValue}>
       <div className="glance-flow-wrap" ref={flowWrapRef}>
-        <HoverContext.Provider value={hoverValue}>
         <ReactFlow
           nodes={flowNodes}
           edges={flowEdges}
@@ -365,17 +368,18 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
             setHoveredId((current) => (current === node.id ? null : current));
           }}
           onNodeClick={(_, node) => {
-            if (
-              node.type === "summary" ||
-              node.type === "country" ||
-              node.type === "columnLabel"
-            ) {
+            // Pass I Part 1 — countries pinnable in pin mode. The old
+            // "exclude country" gate was a leftover from click-always-
+            // means-Detail; countries had no useful Detail so were
+            // excluded there. Pin mode has different semantics —
+            // pinning China is the single most useful pin in the graph.
+            // Summary + columnLabel exclusions stay in both modes.
+            if (node.type === "summary" || node.type === "columnLabel") {
               return;
             }
             if (pinMode) {
-              // Pin toggle: same node clears; different node moves the pin.
               setPinnedId((cur) => (cur === node.id ? null : node.id));
-            } else {
+            } else if (node.type !== "country") {
               onSelectNode?.(node.id);
             }
           }}
@@ -387,8 +391,9 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
           <Background gap={24} size={1} color="var(--border)" />
           <Controls showInteractive={false} />
         </ReactFlow>
-        </HoverContext.Provider>
       </div>
+      <TrailStrip nodes={nodes} badges={badges} />
+      </HoverContext.Provider>
     </div>
   );
 }

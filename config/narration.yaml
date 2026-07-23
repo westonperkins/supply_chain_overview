@@ -69,6 +69,20 @@ edges:
     upstream:   "Operated by {source}."
     downstream: "Operates {targets}."
 
+# Pass I — compact verb phrases for the Glance heaviest-path breadcrumb.
+# "China — refines 98% → gallium — input to 90% → RF & Power — …"
+# Same edge set as the full templates above, just shorter for a
+# breadcrumb line. Frontend maps edge type → glance_verb via this
+# config, never hardcoded strings.
+edge_glance_verb:
+  mines:        "mines"
+  refines:      "refines"
+  supplies:     "supplies"
+  input_to:     "input to"
+  component_of: "component of"
+  located_in:   "located in"
+  operates:     "operates"
+
 chain:
   max_hops: 3
   joiner: ", which supply "
@@ -117,6 +131,48 @@ tier_words:
 #
 # The builder assembles from these pieces exactly as it assembles the scored
 # "why it scores" from the scale phrases — no sentence text lives in Python.
+
+# --------------------------------------------------------------------------- #
+# Glance strip — one-sentence role summary per node type                       #
+# --------------------------------------------------------------------------- #
+# The trail-narration strip below the Level 0 Glance shows a single sentence
+# per hovered/pinned node. Sentences are ASSEMBLED from these pieces per
+# node type — no prose composed in TypeScript. Placeholders are filled by
+# the builder from derived quantities the panels already use:
+#   {name}, {sub_category}, {tier_word}, {top_source}, {top_source_share},
+#   {top_target}, {top_target_share}, {n_supplies}, {n_supplies_kind},
+#   {concentration_phrase}, {mines_or_refines_count}, {country_role}
+# Missing pieces are omitted (the whole clause with a missing placeholder
+# drops out) so the sentence never contains "{...}" or an empty clause.
+
+glance_summary:
+  mineral:
+    # e.g. "A modelled input material mined mainly in China (98.0% share) and
+    # fed into gallium arsenide."
+    template: "A modelled input material {mines_hedge}mined mainly in {top_source} ({top_source_share} share){feeds_into_clause}."
+    feeds_into_clause: " and fed into {top_target}"
+    mines_hedge: ""
+
+  product:
+    template: "A downstream product built primarily from {top_source} and consumed by {top_target}."
+
+  company:
+    template: "A {sub_category_phrase}{role_tail}{feeds_tail}."
+    role_tail: " supplied primarily by {top_source} ({top_source_share} share)"
+    feeds_tail: " that supplies {top_target}"
+
+  facility:
+    template: "A specific facility{operator_clause}{location_tail}{produces_tail}."
+    operator_clause: " operated by {top_operator}"
+    location_tail: " in {top_location}"
+    produces_tail: " that produces {top_target}"
+
+  country:
+    # Countries in this graph are supply-source geographies.
+    template: "A supply-source country that {country_role}."
+    role_phrase_mines_refines: "mines or refines a majority share of {mines_or_refines_count} modelled mineral(s)"
+    role_phrase_hosts_only: "hosts {n_hosts} modelled node(s) but is not itself a supply source in the graph"
+    role_phrase_none: "is present in the graph but supplies no material and hosts no node"
 
 unscored:
   section_titles:

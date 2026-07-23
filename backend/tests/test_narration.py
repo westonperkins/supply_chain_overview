@@ -143,6 +143,36 @@ def test_no_placeholder_or_unscored_token_leaks_into_any_rendered_text(
     assert not offenders, offenders[:5]
 
 
+def test_glance_sentence_present_and_clean_for_every_node(
+    graph, narration_builder,
+):
+    """Pass I — every node returns a `glance.sentence` that is:
+      - non-empty
+      - contains no unfilled `{...}` template placeholder
+      - has no double-space or edge-space artifact
+      - ends with a period.
+    These are structural — specific wording is asserted by the yaml
+    review, not here.
+    """
+    offenders = []
+    for node in graph.nodes.values():
+        narr = narration_builder.build(node.id)
+        assert "glance" in narr, f"{node.id}: no glance field"
+        sentence = narr["glance"]["sentence"]
+        if not sentence or not sentence.strip():
+            offenders.append((node.id, "empty"))
+            continue
+        if "{" in sentence or "}" in sentence:
+            offenders.append((node.id, f"placeholder leak: {sentence!r}"))
+        if "  " in sentence:
+            offenders.append((node.id, f"double-space: {sentence!r}"))
+        if sentence != sentence.strip():
+            offenders.append((node.id, f"edge-space: {sentence!r}"))
+        if not sentence.rstrip().endswith("."):
+            offenders.append((node.id, f"no trailing period: {sentence!r}"))
+    assert not offenders, offenders[:5]
+
+
 def test_modeling_caveats_render(graph, narration_builder):
     for node in graph.nodes.values():
         if not node.static.modeling_caveat:

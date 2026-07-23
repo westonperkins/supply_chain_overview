@@ -810,6 +810,194 @@ html, body, #root {
   align-self: center;
 }
 
+/* Pass I Part 4 — "How to read this" popover. Anchored inline in the
+ * layer-controls row; opens a floating panel below the button. Static
+ * legend content (no data flow); dismisses on outside click / Esc. */
+.how-to-read {
+  position: relative;
+}
+.how-to-read-toggle .layer-toggle-icon { font-weight: 700; }
+.how-to-read-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  z-index: 20;
+  min-width: 320px;
+  max-width: 460px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.how-to-read-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.how-to-read-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.how-to-read-swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.how-to-read-swatch {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.how-to-read-swatch.tier-critical { border-color: var(--critical); color: var(--critical); background: rgba(255,82,82,0.10); }
+.how-to-read-swatch.tier-high     { border-color: var(--high);     color: var(--high);     background: rgba(255,152,0,0.10); }
+.how-to-read-swatch.tier-moderate { border-color: var(--moderate); color: var(--moderate); background: rgba(255,202,40,0.10); }
+.how-to-read-swatch.tier-none     { border-color: var(--none);     color: var(--none);     background: rgba(76,175,80,0.10); }
+.how-to-read-swatch.tier-unscored { border-color: var(--unscored); color: var(--unscored); background: rgba(108,114,128,0.12); border-style: dashed; }
+.how-to-read-shape {
+  font-size: 11px;
+  color: var(--text);
+  padding: 2px 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.how-to-read-edges {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.how-to-read-edge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text);
+}
+.how-to-read-edge {
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+}
+.how-to-read-edge--strong { height: 5px;  background: var(--edge-strong); }
+.how-to-read-edge--med    { height: 3px;  background: var(--edge-med);    }
+.how-to-read-edge--weak   { height: 1px;  background: var(--edge-weak);   }
+.how-to-read-edge--dashed {
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--edge-supply-muted) 0,
+    var(--edge-supply-muted) 4px,
+    transparent 4px,
+    transparent 7px
+  );
+}
+.how-to-read-note {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Pass I — trail narration strip below the diagram. Three zones:
+ *   1. identity + chips (client-side, instant)
+ *   2. role sentence (from narration.glance.sentence)
+ *   3. heaviest-path breadcrumb (from narration.glance.breadcrumb —
+ *      built from real graph edges, not highlight geometry)
+ * No prose is composed here; every phrase is authored in narration.yaml.
+ */
+.trail-strip {
+  border-top: 1px solid var(--border);
+  padding: 10px 14px 12px;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 68px;
+}
+.trail-strip--empty {
+  min-height: 34px;
+  justify-content: center;
+}
+.trail-strip-hint {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: italic;
+}
+.trail-strip-identity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.trail-strip-glyph {
+  font-size: 15px;
+  opacity: 0.85;
+}
+.trail-strip-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.trail-strip-chip {
+  font-size: 10px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  line-height: 1.5;
+}
+.trail-strip-chip.tier-chip.tier-critical { border-color: var(--critical); color: var(--critical); background: rgba(255,82,82,0.10); }
+.trail-strip-chip.tier-chip.tier-high     { border-color: var(--high);     color: var(--high);     background: rgba(255,152,0,0.10); }
+.trail-strip-chip.tier-chip.tier-moderate { border-color: var(--moderate); color: var(--moderate); background: rgba(255,202,40,0.10); }
+.trail-strip-chip.tier-chip.tier-none     { border-color: var(--none);     color: var(--none);     background: rgba(76,175,80,0.10); }
+.trail-strip-chip.tier-chip.tier-unscored { border-color: var(--unscored); color: var(--unscored); background: rgba(108,114,128,0.12); border-style: dashed; }
+.trail-strip-badge {
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.trail-strip-pinned {
+  color: var(--muted);
+  border-style: dashed;
+}
+.trail-strip-sentence {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.trail-strip-pending {
+  color: var(--muted);
+  font-style: italic;
+}
+.trail-strip-breadcrumb {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  white-space: normal;
+  word-break: break-word;
+}
+.trail-strip-step-node {
+  color: var(--text);
+}
+.trail-strip-step-verb {
+  color: var(--muted);
+}
+.trail-strip-step-share {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Hover-highlight — actively highlight the whole trail, don't just dim
  * the rest. Trail nodes get an accent border + glow; the hovered node gets
  * a stronger version + slight scale; non-trail fades to near-transparent.
