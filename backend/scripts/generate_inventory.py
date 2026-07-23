@@ -2,17 +2,30 @@
 
   - node_inventory.md       (regenerated every run)
   - threshold_analysis.md   (regenerated every run — Pass B)
-  - severity_snapshot.json  (never overwritten by this script; the pass
-                             author edits it explicitly when scoring
-                             changes deliberately)
+  - severity_snapshot.json  (never overwritten by this script UNLESS
+                             --roll-forward=<pass_name> is passed —
+                             see Pass H.1 §3)
   - severity_diff.md        (regenerated every run against the snapshot)
 
 Usage from repo root:
     python backend/scripts/generate_inventory.py
+    python backend/scripts/generate_inventory.py --roll-forward=pass_X
+
+The `--roll-forward=<pass_name>` flag runs the pass-end procedure
+atomically to prevent the "circular first-run diff" recurrence
+(Pass H shipped an empty diff by rolling the snapshot forward BEFORE
+running the diff generator). With the flag:
+  1. Load the CURRENT snapshot as the reference.
+  2. Compute diff — write to BOTH severity_diff.md AND a permanent
+     named artifact severity_diff_<pass_name>.md.
+  3. ONLY THEN roll snapshot forward with the new label.
+The order is enforced in code; a pass author cannot roll the snapshot
+before capturing the diff without editing the JSON by hand.
 
 Staleness guards in backend/tests/test_generated_artifacts.py enforce
 that the committed files match what the code produces.
 """
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -105,6 +118,18 @@ def _write_boundaries_to_config(derivation):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument(
+        "--roll-forward", metavar="PASS_NAME", default=None,
+        help=(
+            "Roll snapshot forward with this label. ATOMIC ORDER: "
+            "captures diff first (writes severity_diff_<PASS_NAME>.md), "
+            "then updates the snapshot. Prevents the circular-first-run "
+            "diff recurrence — see docs/pass_h_1_report.pdf §3."
+        ),
+    )
+    args = parser.parse_args()
+
     # First pass: score to get severities (independent of tier boundaries).
     g, c = score()
 
@@ -129,6 +154,7 @@ def main():
     )
     (GENERATED / "threshold_analysis.md").write_text(analysis)
 
+    # Pass H.1 — diff BEFORE snapshot roll-forward, atomically.
     snapshot = _load_snapshot_or_first_run(g)
     diff = build_severity_diff(snapshot, g)
     (GENERATED / "severity_diff.md").write_text(diff)
@@ -136,8 +162,32 @@ def main():
     print("Wrote:")
     print(f"  {GENERATED / 'node_inventory.md'}")
     print(f"  {GENERATED / 'threshold_analysis.md'}")
-    print(f"  {GENERATED / 'severity_snapshot.json'} (unchanged unless first run)")
+    print(f"  {GENERATED / 'severity_snapshot.json'} (unchanged unless --roll-forward)")
     print(f"  {GENERATED / 'severity_diff.md'}")
+
+    if args.roll_forward:
+        # ATOMIC ORDER: the diff above was captured against the OLD
+        # snapshot. We now (a) commit that diff to a permanent named
+        # artifact, then (b) roll the snapshot forward. This ordering
+        # is enforced by control flow — the snapshot cannot be
+        # updated without the named diff being written first.
+        pass_name = args.roll_forward
+        named = GENERATED / f"severity_diff_{pass_name}.md"
+        preamble = (
+            f"# Severity diff — {pass_name} (roll-forward capture)\n\n"
+            f"Permanent record of the severity movement from the "
+            f"previous snapshot (`{snapshot.get('captured_at_pass', '?')}`) "
+            f"to the state at pass `{pass_name}` end. Captured atomically "
+            f"before the snapshot was rolled forward.\n\n---\n\n"
+        )
+        named.write_text(preamble + diff)
+        # Now roll snapshot forward.
+        new_snap = snapshot_severity(g, captured_at_pass=pass_name)
+        (GENERATED / "severity_snapshot.json").write_text(
+            json.dumps(new_snap, indent=2, default=str) + "\n",
+        )
+        print(f"  {named}  (roll-forward artifact)")
+        print(f"  {GENERATED / 'severity_snapshot.json'} → captured_at_pass={pass_name}")
 
 
 # F2.b — paper-chokepoint tier-landing table lives in the reporting layer.

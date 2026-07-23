@@ -62,18 +62,32 @@ def test_severity_diff_matches_committed_file():
     )
 
 
+# Pass H.1 §4 — Germany was added deliberately without rolling the
+# snapshot forward, so the rolling `severity_diff.md` reports its
+# membership drift as expected. Known-drift entries are pinned here
+# so a NEW membership drift still fails loudly.
+KNOWN_MEMBERSHIP_DRIFT_IN_GRAPH_NOT_SNAPSHOT = {"country_region:germany"}
+
+
 def test_severity_snapshot_covers_every_node():
-    """Snapshot membership must match graph membership exactly — a
-    missing node in the snapshot would silently drop from the diff.
-    Reads under the labelled schema introduced by the H4 fix."""
+    """Snapshot membership must match graph membership except for the
+    pinned Pass H.1 drift set. A NEW drift (a node in graph but not
+    in the snapshot AND not in the pinned set, OR a node in snapshot
+    but not in graph) fails loudly. This preserves the guard's
+    purpose — catching silent snapshot / graph mismatch — while
+    allowing intentional, documented drift."""
     g, _ = _score_from_fixtures()
     snapshot = json.loads((GENERATED / "severity_snapshot.json").read_text())
     graph_ids = {n.id for n in g.nodes.values()}
     snap_ids = set(snapshot.get("nodes", {}).keys())
-    assert graph_ids == snap_ids, (
+    in_graph_only = graph_ids - snap_ids
+    in_snap_only = snap_ids - graph_ids
+    unexpected_in_graph = in_graph_only - KNOWN_MEMBERSHIP_DRIFT_IN_GRAPH_NOT_SNAPSHOT
+    assert not unexpected_in_graph and not in_snap_only, (
         f"snapshot / graph membership mismatch. "
-        f"only in graph: {graph_ids - snap_ids}; "
-        f"only in snapshot: {snap_ids - graph_ids}"
+        f"unexpected only-in-graph: {unexpected_in_graph}; "
+        f"only-in-snapshot: {in_snap_only}; "
+        f"expected drift (Pass H.1 §4): {in_graph_only & KNOWN_MEMBERSHIP_DRIFT_IN_GRAPH_NOT_SNAPSHOT}."
     )
 
 

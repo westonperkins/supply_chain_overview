@@ -31,6 +31,7 @@ from .engine import (
     axes_for_severity,
     compute_severity,
     derive_chokepoint_tier,
+    derive_current_tier,
     normalize_lead_time,
     _compute_tier_ambiguity,
 )
@@ -205,13 +206,26 @@ def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig
         node.dynamic.current_severity = new_current
         if not origin_scored:
             node.dynamic.current_severity_has_unscored_origin = True
-        # Re-derive current_tier + ambiguity from new current_severity.
-        new_tier = derive_chokepoint_tier(new_current, config)
+        # Pass H.1 — derive_current_tier enforces: baseline is None →
+        # current_tier stays UNSCORED, even when current_severity is
+        # non-null. The scored thresholds are calibrated on baseline
+        # severities; applying them to a bare event contribution
+        # (baseline None + event) buckets against the wrong scale.
+        # Ambiguity is only meaningful across scored tiers; skip it
+        # for unscored nodes rather than compare a bare contribution
+        # against baseline-derived unresolved bands.
+        new_tier = derive_current_tier(
+            node.dynamic.baseline_severity, new_current, config,
+        )
         node.dynamic.current_tier = new_tier
-        tier_name = new_tier.value if new_tier else None
-        amb, amb_with = _compute_tier_ambiguity(new_current, tier_name, config)
-        node.dynamic.current_tier_ambiguous = amb
-        node.dynamic.current_tier_ambiguous_with = amb_with
+        if node.dynamic.baseline_severity is None:
+            node.dynamic.current_tier_ambiguous = False
+            node.dynamic.current_tier_ambiguous_with = None
+        else:
+            tier_name = new_tier.value if new_tier else None
+            amb, amb_with = _compute_tier_ambiguity(new_current, tier_name, config)
+            node.dynamic.current_tier_ambiguous = amb
+            node.dynamic.current_tier_ambiguous_with = amb_with
 
     # Build the CascadeStep list for the event object (UI/inspection).
     cascade = sorted(

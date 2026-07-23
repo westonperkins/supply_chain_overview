@@ -116,13 +116,12 @@ def test_unscored_why_section_title_and_body_are_authored(graph, narration_build
             f"{node.id}: unscored body names no missing-axis reason: {body!r}"
         )
 
-    # Pass H — cohort (NVIDIA, Quanta) newly scored; unscored count 42 → 40.
-    # Note: xAI and OpenAI intentionally stay unscored (spec §Step 1
-    # decision — paper doesn't reason about AI-lab substitutability).
-    assert checked == 40, (
-        f"expected 40 unscored nodes to check (Pass H cohort update), "
-        f"got {checked}. If the graph's scored/unscored split changed, "
-        f"update this count deliberately (not silently)."
+    # Pass E: 42 unscored. Pass H: NVIDIA + Quanta scored → 40.
+    # Pass H.1 §4: Germany added → 41.
+    assert checked == 41, (
+        f"expected 41 unscored nodes to check (Pass H.1 §4 update: "
+        f"+Germany), got {checked}. If the graph's scored/unscored "
+        f"split changed, update this count deliberately (not silently)."
     )
 
 

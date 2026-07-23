@@ -55,6 +55,7 @@ export const COUNTRY_FLAGS: Record<string, string> = {
   "country_region:drc":           "🇨🇩",
   "country_region:peru":          "🇵🇪",
   "country_region:canada":        "🇨🇦",
+  "country_region:germany":       "🇩🇪",
 };
 
 export interface BadgeDecisions {

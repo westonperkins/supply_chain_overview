@@ -439,6 +439,34 @@ def derive_chokepoint_tier(
     return ChokepointTier.NONE
 
 
+def derive_current_tier(
+    baseline_severity: Optional[float],
+    current_severity: Optional[float],
+    config: ScoringConfig,
+) -> ChokepointTier:
+    """Pass H.1 fix — a node with no baseline_severity NEVER carries a
+    scored current_tier, even if Pass H's cascade wrote a non-null
+    current_severity via propagation from a scored-origin event.
+
+    Rule: baseline is None → current_tier stays UNSCORED. Otherwise
+    derive normally from current_severity.
+
+    Why: tier boundaries are distribution-anchored on the BASELINE
+    severity distribution (Passes B/C). Applying them to an unscored
+    node's `current_severity` (which is a bare event contribution,
+    not `baseline ⊕ event`) buckets a value against thresholds
+    calibrated for a different scale. Two different quantities;
+    incomparable at the tier level.
+
+    See DynamicFields.current_severity schema comment for the
+    corresponding rule at the raw-value layer that news-ingestion
+    ranking will need to respect.
+    """
+    if baseline_severity is None:
+        return ChokepointTier.UNSCORED
+    return derive_chokepoint_tier(current_severity, config)
+
+
 def _compute_tier_ambiguity(
     severity: Optional[float],
     tier_name: Optional[str],

@@ -96,10 +96,25 @@ class DynamicFields(BaseModel):
     # refresh_all_derived; then updated by propagate_event for nodes
     # touched by an active event. With zero active events, current == baseline
     # everywhere. Written ONLY by cascade.propagate_event (INV-4).
-    #   current_severity is None iff baseline_severity is None AND no
-    #   scored-origin event has raised it — an unscored node whose
-    #   current stays None is honest: an event does not fabricate a
-    #   severity value from axes the node explicitly lacks.
+    #
+    # Pass H: unscored ORIGIN's current_severity stays None (event does
+    # not fabricate a severity from axes the node explicitly lacks).
+    # Unscored DOWNSTREAM accumulates a real propagated walk value.
+    #
+    # Pass H.1 — INCOMPARABILITY RULE (news-ingestion, do not miss this):
+    # current_severity carries two different quantities depending on
+    # whether the node is scored:
+    #   scored node   → baseline ⊕ event  (structural severity + event)
+    #   unscored node → 0.0 ⊕ event       (event contribution alone)
+    # Ranking events by raw `current_severity` across both compares a
+    # full structural severity against a bare walk contribution — they
+    # are not on the same scale. Any ranking / comparison that mixes
+    # scored + unscored nodes MUST partition by `baseline_severity is
+    # None` first. This is derivable (no new field), matching the
+    # standing "derived over hand-asserted" principle.
+    # Correspondingly, current_tier stays UNSCORED whenever
+    # baseline_severity is None — enforced in
+    # engine.derive_current_tier and applied in cascade.
     current_severity: Optional[float] = None
     current_tier: Optional[ChokepointTier] = None
     # True if any contribution to this node's current_severity came from

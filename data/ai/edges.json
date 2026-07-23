@@ -2692,5 +2692,19 @@
       "confidence": "hard",
       "source_note": "Public HQ location \u2014 Tokyo HQ (Hitachi High-Tech Corporation). Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
     }
+  },
+  {
+    "id": "e:siemens_energy-located-germany",
+    "source_id": "company:siemens_energy",
+    "target_id": "country_region:germany",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Munich, Germany. Added in Pass H.1 \u00a74 to close the located_in coverage gap Pass G explicitly left open (Germany country_region did not yet exist). `located_in` is not a supply edge; scoring must not move."
+    }
   }
 ]

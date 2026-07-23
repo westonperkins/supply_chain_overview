@@ -7,6 +7,7 @@ from .engine import (
     normalize_lead_time,
     compute_baseline_severity,
     derive_chokepoint_tier,
+    derive_current_tier,
     refresh_all_derived,
 )
 from .cascade import propagate_event
@@ -20,6 +21,7 @@ __all__ = [
     "normalize_lead_time",
     "compute_baseline_severity",
     "derive_chokepoint_tier",
+    "derive_current_tier",
     "refresh_all_derived",
     "propagate_event",
 ]

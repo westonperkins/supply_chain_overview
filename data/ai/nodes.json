@@ -1642,5 +1642,22 @@
       }
     },
     "dynamic": {}
+  },
+  {
+    "id": "country_region:germany",
+    "type": "country_region",
+    "name": "Germany",
+    "aliases": [
+      "DE",
+      "Deutschland"
+    ],
+    "domains": [
+      "ai"
+    ],
+    "layer": null,
+    "sub_category": null,
+    "description": "Home country of Siemens Energy (Munich HQ). Added in Pass H.1 \u00a74 to close the located_in coverage gap on Siemens Energy. Country_region has no static axes \u2014 countries are unscored by design. Whether country_region means 'a country that supplies something' or 'a country where things are' is an open modelling question flagged in Pass H.1 \u00a77.",
+    "static": {},
+    "dynamic": {}
   }
 ]

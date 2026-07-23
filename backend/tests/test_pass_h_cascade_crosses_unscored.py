@@ -1,19 +1,30 @@
-"""Pass H — cascade traversal must reach a scored downstream node
-through an intermediate unscored node.
+"""Pass H — cascade apply layer must not drop walk contributions on
+unscored downstream nodes.
 
-Q1-Q3 investigation showed the walk traversal was correct (visited all
-downstream nodes regardless of scored status), but the APPLY step
-skipped unscored nodes, silently blanking downstream contributions
-that the walk had computed. Fixed in cascade.py by:
+Pass H investigation established two things:
 
-- Unscored ORIGIN: current stays None (Pass D §4 principle preserved)
-- Unscored DOWNSTREAM: accumulates walk value (anchored at 0.0) — the
-  contribution is a real propagated quantity, not fabricated from
-  absent axes.
+1. The BFS walk itself was correct — it visited every downstream node
+   regardless of scored / unscored status (values in the cascade
+   output confirmed).
+2. The APPLY step silently dropped contributions on unscored nodes
+   (`if baseline is None: continue`), so downstream branches that
+   crossed an unscored intermediate had `current_severity` stay
+   None even though the walk had computed a real value.
 
-This test constructs a synthetic 3-hop chain (scored → unscored → scored)
-and verifies both the intermediate unscored node AND the scored
-downstream node receive the walk value.
+Fix: apply loop now accumulates the walk value on unscored downstream
+nodes (anchored at 0.0), while preserving the Pass D §4 origin rule
+(unscored ORIGIN's current stays None). Pass H.1 then further
+constrained the derived tier — see test_current_tier_stays_unscored
+below and derive_current_tier in engine.py.
+
+Recorded graph finding: **the AI graph today contains no path of the
+form scored → unscored → scored.** All unscored downstream nodes
+(hyperscalers, AI labs, most facilities) sit at the terminal end of
+their supply chains — there's no scored node further downstream.
+This test therefore uses an unscored downstream node (Broadcom) as
+the evidence that the apply fix works; a truly synthetic
+scored→unscored→scored chain would need a fixture graph, which is
+not built here.
 """
 import sys
 from pathlib import Path
@@ -48,61 +59,56 @@ def _event(node_id: str, magnitude: float) -> Event:
     )
 
 
-def test_cascade_crosses_unscored_intermediate_to_scored_downstream():
-    """Fire event on gallium (scored). Traversal reaches RF & Power
-    Semis (unscored intermediate) and Vertiv (scored downstream via
-    RF & Power → Vertiv input_to). Verify:
-
-    - RF & Power's current_severity is now non-None (walk value applied
-      even though baseline is None — Pass H Q3 fix)
-    - Vertiv's current_severity > baseline (a scored downstream node
-      received a contribution through an unscored intermediate)
-    - The cascade metadata records both hops
-    """
+def test_unscored_downstream_node_receives_applied_walk_value():
+    """Pass H apply fix — Broadcom (baseline_severity is None, sits
+    downstream of gallium via RF & Power Semis) receives a non-null
+    current_severity after a gallium event. Pre-Pass-H this was
+    silently None because the apply loop skipped unscored nodes."""
     g = SupplyChainGraph.from_dir(FIXTURES, domain="ai")
     c = ScoringConfig.load(FIXTURES / "scoring.yaml")
     refresh_all_derived(g, c)
 
-    rf = g.nodes["product:rf_power_semis"]
-    vertiv = g.nodes["company:vertiv"]
-
-    # RF & Power is scored (has a baseline) — good, but the intermediate
-    # we care about is what the walk crosses. Let's use a truly unscored
-    # intermediate: the walk from gallium goes gallium → rf → siemens →
-    # colossus (unscored facility). Or use the mines chain:
-    # china (unscored origin) → gallium → rf → vertiv.
-    # For this test, an event on Mountain Pass (unscored origin) →
-    # neodymium (scored downstream) already covered by test T4. We need
-    # scored → unscored → scored.
-    #
-    # Ah — gallium (scored) → RF & Power (scored, but low sev) → Vertiv
-    # (scored). All intermediate hops are scored; there's no genuinely
-    # unscored intermediate in the AI graph BETWEEN two scored nodes.
-    # Instead: verify the walk value hits Broadcom (unscored downstream)
-    # after crossing RF & Power.
-
-    baseline_vertiv = vertiv.dynamic.baseline_severity
+    broadcom = g.nodes["company:broadcom"]
+    assert broadcom.dynamic.baseline_severity is None, (
+        "test premise: Broadcom is unscored (baseline_severity=None)"
+    )
 
     propagate_event(_event("mineral:gallium", magnitude=0.5), g, c)
 
-    # Vertiv (scored downstream of an unscored path): got walk contribution
-    broadcom = g.nodes["company:broadcom"]
-    assert broadcom.dynamic.baseline_severity is None, (
-        "test premise: Broadcom is unscored"
-    )
     assert broadcom.dynamic.current_severity is not None, (
         f"Broadcom (unscored downstream) has current_severity=None. "
-        f"The walk reached it (visible in cascade output) but the apply "
-        f"layer discarded the value — the Pass H Q3 defect."
+        f"The walk reached it — visible in the cascade output — but "
+        f"the apply layer discarded the value. This is the Pass H "
+        f"apply-layer defect."
     )
     assert broadcom.dynamic.current_severity > 0.0, (
         f"Broadcom current_severity should be a positive walk value, "
         f"got {broadcom.dynamic.current_severity}"
     )
-    # And Vertiv (scored) also got hit
-    assert vertiv.dynamic.current_severity > baseline_vertiv, (
-        f"Vertiv current should have risen above baseline "
-        f"({baseline_vertiv}), got {vertiv.dynamic.current_severity}"
+
+
+def test_scored_downstream_of_unscored_intermediate_still_gets_hit():
+    """Non-regression check on scored downstream — per Pass H Q1/Q2,
+    scored downstream was always applied correctly (walk traversal
+    was never broken; only apply on unscored was). Vertiv (scored,
+    downstream of gallium via RF & Power) rises above baseline.
+
+    NOT evidence of the apply fix itself — this passed before Pass H
+    too. Kept as a guard against a regression that would break the
+    already-correct scored-path behaviour."""
+    g = SupplyChainGraph.from_dir(FIXTURES, domain="ai")
+    c = ScoringConfig.load(FIXTURES / "scoring.yaml")
+    refresh_all_derived(g, c)
+
+    vertiv = g.nodes["company:vertiv"]
+    baseline = vertiv.dynamic.baseline_severity
+    assert baseline is not None, "test premise: Vertiv is scored"
+
+    propagate_event(_event("mineral:gallium", magnitude=0.5), g, c)
+
+    assert vertiv.dynamic.current_severity > baseline, (
+        f"Vertiv current should have risen above baseline ({baseline}), "
+        f"got {vertiv.dynamic.current_severity}"
     )
 
 
@@ -114,7 +120,6 @@ def test_unscored_origin_still_stays_none_after_pass_h():
     c = ScoringConfig.load(FIXTURES / "scoring.yaml")
     refresh_all_derived(g, c)
 
-    # Mountain Pass is an unscored facility with a downstream mines edge.
     mp = g.nodes["facility:mountain_pass"]
     assert mp.dynamic.baseline_severity is None
 
@@ -123,4 +128,41 @@ def test_unscored_origin_still_stays_none_after_pass_h():
     assert mp.dynamic.current_severity is None, (
         f"unscored ORIGIN's current_severity was fabricated: "
         f"{mp.dynamic.current_severity}. Pass D §4 principle violated."
+    )
+
+
+def test_current_tier_stays_unscored_when_baseline_is_none():
+    """Pass H.1 Part 1 — a node with baseline_severity=None must have
+    current_tier=UNSCORED after any event propagation, even when the
+    Pass H apply fix wrote a non-null current_severity via propagation.
+
+    Rationale: tier boundaries are distribution-anchored on the
+    BASELINE severity distribution (Pass B/C). Applying them to a
+    bare event contribution buckets against thresholds calibrated
+    for structural severity. Two different quantities.
+    """
+    from app.schema.enums import ChokepointTier
+
+    g = SupplyChainGraph.from_dir(FIXTURES, domain="ai")
+    c = ScoringConfig.load(FIXTURES / "scoring.yaml")
+    refresh_all_derived(g, c)
+
+    propagate_event(_event("mineral:gallium", magnitude=0.5), g, c)
+
+    offenders = []
+    for n in g.nodes.values():
+        if n.dynamic.baseline_severity is not None:
+            continue
+        if n.dynamic.current_tier != ChokepointTier.UNSCORED:
+            offenders.append((
+                n.id,
+                n.dynamic.current_severity,
+                n.dynamic.current_tier.value if n.dynamic.current_tier else None,
+            ))
+
+    assert not offenders, (
+        f"{len(offenders)} unscored node(s) carry a scored current_tier "
+        f"after a real event. Pass H.1 rule violated: derive_current_tier "
+        f"must return UNSCORED whenever baseline_severity is None. "
+        f"Offenders (first 3): {offenders[:3]}"
     )
