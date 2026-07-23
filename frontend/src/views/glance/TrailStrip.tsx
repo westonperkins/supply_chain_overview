@@ -6,23 +6,28 @@ import { HoverContext } from "../../lib/hover-context";
 import type { BadgeDecisions } from "../../lib/badge-decisions";
 import { api } from "../../api";
 
-// Pass I Part 2/3 — trail narration strip.
+// Pass I / I.1 — trail narration strip.
 //
 // Reads hoveredId / pinnedId from HoverContext (same activeTrailId rule
-// as the diagram itself: hover previews the pin). Fetches the anchor
-// node's narration.glance lazily with a 150 ms debounce so brief
-// hover-throughs don't fire a request per pixel, and caches responses
-// in an in-memory Map keyed by node id (bounded by the graph size ≈ 66).
+// as the diagram: hover previews the pin). Fetches narration.glance
+// lazily with a 150 ms debounce and caches responses in an in-memory
+// Map keyed by node id (bounded by graph size).
 //
 // CRITICAL: TrailStrip must NEVER cause GlanceView's flowNodes /
 // flowEdges memos to rebuild. It reads state from the same
-// HoverContext the nodes already read; it does not sit in the memo
-// dependency chain.
+// HoverContext the diagram nodes already read; it does not sit in the
+// memo dependency chain.
 //
-// No sentence in this file is composed in TypeScript. All prose comes
-// from the /nodes/{id}/narration payload's `glance` field, which is
-// assembled in the backend from narration.yaml `glance_summary` and
-// `edge_glance_verb`.
+// AC5 — no English composed here. All wording (including section
+// labels "Supplies" / "Reach" / "Heaviest paths", chip labels, and
+// every supply-line string) is authored in narration.yaml and comes
+// through /nodes/{id}/narration. This file interpolates DATA
+// (counts, shares) — it does not compose sentences.
+//
+// AC4 — chips read glance.stats, NOT the client-side computeReachable
+// walk. The client walk runs over RENDERED edges, which shrink when
+// meta-layers collapse into summary nodes, so client counts drift
+// with view state. One canonical source.
 
 const DEBOUNCE_MS = 150;
 const TYPE_GLYPH: Record<string, string> = {
@@ -43,9 +48,6 @@ export function TrailStrip({ nodes, badges }: Props) {
   const activeId = ctx.hoveredId ?? ctx.pinnedId;
   const nodeById = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
 
-  // In-memory cache: node id -> Glance (or `null` if the fetch resolved
-  // with no glance payload). Kept in a ref so the closure over `cache`
-  // doesn't force a re-render, and so re-renders don't blow it away.
   const cacheRef = useRef<Map<string, Glance | null>>(new Map());
   const [glance, setGlance] = useState<Glance | null>(null);
   const [pending, setPending] = useState<boolean>(false);
@@ -91,7 +93,7 @@ export function TrailStrip({ nodes, badges }: Props) {
     return (
       <div className="trail-strip trail-strip--empty">
         <span className="trail-strip-hint">
-          hover or pin a node to see its role, top supplier / customer, and heaviest path
+          hover or pin a node to see its role, supply edges, downstream reach, and heaviest paths
         </span>
       </div>
     );
@@ -104,6 +106,11 @@ export function TrailStrip({ nodes, badges }: Props) {
   const badge = badges.badgeByHost.get(node.id);
   const glyph = TYPE_GLYPH[node.type] ?? "•";
   const pinnedTag = ctx.pinnedId === node.id && ctx.hoveredId === null;
+
+  const stats = glance?.stats;
+  const labels = glance?.labels;
+  const sectionLabels = labels?.sections ?? {};
+  const chipLabels = labels?.chips ?? {};
 
   return (
     <div className="trail-strip">
@@ -121,30 +128,117 @@ export function TrailStrip({ nodes, badges }: Props) {
         )}
       </div>
 
-      <div className="trail-strip-sentence">
-        {glance?.sentence ??
-          (pending ? <span className="trail-strip-pending">loading…</span> : null)}
-      </div>
-
-      {glance?.breadcrumb && glance.breadcrumb.length > 0 && (
-        <div className="trail-strip-breadcrumb" aria-label="heaviest path from real edges">
-          {glance.breadcrumb.map((step, i) => (
-            <span key={i} className="trail-strip-step">
-              {i === 0 && (
-                <span className="trail-strip-step-node">{step.from}</span>
-              )}
-              <span className="trail-strip-step-verb">
-                {" — "}{step.verb}{" "}
-                <span className="trail-strip-step-share">
-                  {(step.share * 100).toFixed(0)}%
-                </span>
-                {" → "}
-              </span>
-              <span className="trail-strip-step-node">{step.to}</span>
-            </span>
-          ))}
+      {stats && chipLabels && (
+        <div className="trail-strip-stat-chips" aria-label="reach statistics">
+          <StatChip label={chipLabels.trail_label} value={stats.downstream_nodes} />
+          <StatChip
+            label={chipLabels.critical_label}
+            value={stats.critical_reached.length}
+            emphasis={stats.critical_reached.length > 0 ? "critical" : undefined}
+          />
+          <StatChip
+            label={chipLabels.high_label}
+            value={stats.high_reached.length}
+            emphasis={stats.high_reached.length > 0 ? "high" : undefined}
+          />
+          <StatChip label={chipLabels.layers_label} value={stats.layers_crossed} />
         </div>
       )}
+
+      <div className="trail-strip-body">
+        <div className="trail-strip-summary">
+          {glance?.summary ??
+            (pending ? <span className="trail-strip-pending">loading…</span> : null)}
+        </div>
+
+        {glance && glance.supply_lines.length > 0 && (
+          <Section label={sectionLabels.supply_lines}>
+            <div className="trail-strip-supply-lines">
+              {glance.supply_lines.map((line, i) => (
+                <span
+                  key={`${i}-${line.target_id ?? "overflow"}`}
+                  className={
+                    line.kind === "overflow"
+                      ? "trail-strip-supply-line trail-strip-supply-line--overflow"
+                      : "trail-strip-supply-line"
+                  }
+                >
+                  {line.text}
+                </span>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {glance?.reach && (
+          <Section label={sectionLabels.reach}>
+            <div className="trail-strip-reach">{glance.reach}</div>
+          </Section>
+        )}
+
+        {glance && glance.paths.length > 0 && (
+          <Section label={sectionLabels.paths}>
+            <div className="trail-strip-paths">
+              {glance.paths.map((path, pi) => (
+                <div key={pi} className="trail-strip-path">
+                  {path.map((step, si) => (
+                    <span key={si} className="trail-strip-step">
+                      {si === 0 && (
+                        <span className="trail-strip-step-node">{step.from}</span>
+                      )}
+                      <span className="trail-strip-step-verb">
+                        {" — "}{step.verb}{" "}
+                        <span className="trail-strip-step-share">
+                          {(step.share * 100).toFixed(0)}%
+                        </span>
+                        {" → "}
+                      </span>
+                      <span className="trail-strip-step-node">{step.to}</span>
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+      </div>
     </div>
+  );
+}
+
+function Section({
+  label,
+  children,
+}: {
+  label?: string;
+  children: React.ReactNode;
+}) {
+  if (!label) return <>{children}</>;
+  return (
+    <div className="trail-strip-section">
+      <div className="trail-strip-section-label">{label}</div>
+      {children}
+    </div>
+  );
+}
+
+function StatChip({
+  label,
+  value,
+  emphasis,
+}: {
+  label?: string;
+  value: number;
+  emphasis?: "critical" | "high";
+}) {
+  if (!label) return null;
+  const cls = emphasis
+    ? `trail-strip-stat trail-strip-stat--${emphasis}`
+    : "trail-strip-stat";
+  return (
+    <span className={cls}>
+      <span className="trail-strip-stat-value">{value}</span>
+      <span className="trail-strip-stat-label">{label}</span>
+    </span>
   );
 }

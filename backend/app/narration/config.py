@@ -134,3 +134,10 @@ class NarrationConfig:
         """Compact verb for the heaviest-path breadcrumb. Falls back to
         the edge type token so a missing entry never renders as blank."""
         return self.raw.get("edge_glance_verb", {}).get(edge_type, edge_type)
+
+    def glance_strip(self) -> dict:
+        """The authored strip pieces (section labels, supply-line
+        template, reach templates, chip labels, path budgets). Pass I.1
+        adds this so the frontend never composes English in TS — even
+        the section labels come from here."""
+        return self.raw.get("glance_strip", {})

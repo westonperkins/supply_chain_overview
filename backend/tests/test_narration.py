@@ -143,22 +143,39 @@ def test_no_placeholder_or_unscored_token_leaks_into_any_rendered_text(
     assert not offenders, offenders[:5]
 
 
-def test_glance_sentence_present_and_clean_for_every_node(
+def _glance_text_fragments(glance: dict) -> list[tuple[str, str]]:
+    """Every user-facing string in a glance payload — the summary
+    sentence, each supply line, the reach sentence, and every
+    breadcrumb step's from/verb/to. Returned as (label, text) so an
+    offender can be traced back to its field."""
+    out: list[tuple[str, str]] = []
+    if glance.get("summary"):
+        out.append(("summary", glance["summary"]))
+    for i, l in enumerate(glance.get("supply_lines") or []):
+        out.append((f"supply_lines[{i}].text", l.get("text", "")))
+    if glance.get("reach"):
+        out.append(("reach", glance["reach"]))
+    for pi, path in enumerate(glance.get("paths") or []):
+        for si, step in enumerate(path):
+            out.append((f"paths[{pi}][{si}].from", step.get("from", "")))
+            out.append((f"paths[{pi}][{si}].verb", step.get("verb", "")))
+            out.append((f"paths[{pi}][{si}].to",   step.get("to",   "")))
+    return out
+
+
+def test_glance_summary_present_and_clean_for_every_node(
     graph, narration_builder,
 ):
-    """Pass I — every node returns a `glance.sentence` that is:
-      - non-empty
-      - contains no unfilled `{...}` template placeholder
-      - has no double-space or edge-space artifact
-      - ends with a period.
-    These are structural — specific wording is asserted by the yaml
-    review, not here.
-    """
+    """Pass I / I.1 — every node returns a `glance.summary` sentence
+    that is non-empty, has no unfilled `{...}` placeholder, no
+    double-space or edge-space artifact, and ends with a period.
+    The summary is the one universal glance field; supply_lines /
+    reach / paths render only where they apply."""
     offenders = []
     for node in graph.nodes.values():
         narr = narration_builder.build(node.id)
         assert "glance" in narr, f"{node.id}: no glance field"
-        sentence = narr["glance"]["sentence"]
+        sentence = narr["glance"].get("summary")
         if not sentence or not sentence.strip():
             offenders.append((node.id, "empty"))
             continue
@@ -171,6 +188,92 @@ def test_glance_sentence_present_and_clean_for_every_node(
         if not sentence.rstrip().endswith("."):
             offenders.append((node.id, f"no trailing period: {sentence!r}"))
     assert not offenders, offenders[:5]
+
+
+def test_glance_no_placeholder_or_literal_s_paren_leaks(
+    graph, narration_builder,
+):
+    """Pass I.1 AC5 — no `{...}` placeholder and no literal `(s)`
+    pluralization token appears anywhere in the glance payload
+    (summary / supply_lines / reach / paths). Pluralization is
+    authored via singular/plural forms in narration.yaml so the
+    rendered strip never reads `mineral(s)`."""
+    offenders: list[tuple[str, str, str]] = []
+    for node in graph.nodes.values():
+        narr = narration_builder.build(node.id)
+        for label, text in _glance_text_fragments(narr["glance"]):
+            if not text:
+                continue
+            if "{" in text or "}" in text:
+                offenders.append((node.id, label, f"placeholder leak: {text!r}"))
+            if "(s)" in text.lower():
+                offenders.append((node.id, label, f"literal '(s)': {text!r}"))
+    assert not offenders, offenders[:5]
+
+
+def test_glance_reach_downstream_count_matches_independent_bfs(
+    graph, narration_builder,
+):
+    """Pass I.1 AC2 — glance.stats.downstream_nodes is computed on the
+    backend over the REAL edge set (not rendered edges). This test
+    pins it against an independent BFS over the graph's outbound
+    supply-flow edges, so a future refactor that drifts the client's
+    view-state walk into the strip's chip count is caught here.
+
+    Chosen anchor: China. Its trail covers roughly half the graph and
+    is the exemplar for the whole feature."""
+    from collections import deque
+    walk_types = {"mines", "refines", "supplies", "input_to", "component_of"}
+    anchor_id = "country_region:china"
+    reached: set[str] = set()
+    queue: deque[str] = deque([anchor_id])
+    while queue:
+        cur = queue.popleft()
+        for e in graph.out_edges(cur):
+            if e.type.value not in walk_types:
+                continue
+            if e.target_id == anchor_id or e.target_id in reached:
+                continue
+            reached.add(e.target_id)
+            queue.append(e.target_id)
+
+    narr = narration_builder.build(anchor_id)
+    stats = narr["glance"]["stats"]
+    assert stats["downstream_nodes"] == len(reached), (
+        f"glance.stats.downstream_nodes drift for {anchor_id}: "
+        f"stats={stats['downstream_nodes']}, independent BFS={len(reached)}"
+    )
+    # China's downstream reach covers roughly half the graph — the
+    # canonical demo for the whole strip. Pin the number so a scoring
+    # or edge-set change here surfaces loudly.
+    assert stats["downstream_nodes"] == 33, (
+        f"China downstream_nodes changed: {stats['downstream_nodes']} "
+        f"(previously 33). If the graph or the walk set changed, "
+        f"update this pin deliberately."
+    )
+    # Chokepoints named in the reach sentence per AC1/AC2.
+    assert "mineral:dysprosium" in stats["critical_reached"]
+    assert "mineral:gallium" in stats["high_reached"]
+    assert "company:tsmc" in stats["high_reached"]
+    assert "Dysprosium" in narr["glance"]["reach"]
+
+
+def test_glance_paths_seeded_from_distinct_first_hops(
+    graph, narration_builder,
+):
+    """Pass I.1 AC3 — paths seed from N heaviest DISTINCT first-hop
+    edges. Three near-identical dysprosium walks would fail this even
+    if hops 2/3 differ, so we assert distinct first-hop targets
+    across paths for any node with out-degree >= 2."""
+    for node in graph.nodes.values():
+        narr = narration_builder.build(node.id)
+        paths = narr["glance"]["paths"]
+        if len(paths) < 2:
+            continue
+        first_hop_targets = [p[0]["to"] for p in paths if p]
+        assert len(first_hop_targets) == len(set(first_hop_targets)), (
+            f"{node.id}: paths share a first-hop target: {first_hop_targets}"
+        )
 
 
 def test_modeling_caveats_render(graph, narration_builder):

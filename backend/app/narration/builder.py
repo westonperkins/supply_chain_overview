@@ -156,11 +156,20 @@ class NarrationBuilder:
         # Caveats
         caveats = self._build_caveats(node)
 
-        # Pass I — one-sentence glance summary for the trail strip. Uses its
-        # own acronym tracker so glance expansions don't shadow the panel's.
+        # Pass I / I.1 — structured glance payload for the trail strip.
+        # Uses its own acronym tracker so glance expansions don't shadow
+        # the panel's. Every field below is data or authored-phrase
+        # assembly; nothing composed in Python beyond joining pieces.
         glance_acronyms: dict[str, str] = {}
-        glance_sentence = self._build_glance(node, glance_acronyms)
-        glance_breadcrumb = self._build_glance_breadcrumb(node)
+        glance_summary = self._build_glance(node, glance_acronyms)
+        glance_supply_lines = self._build_glance_supply_lines(node, glance_acronyms)
+        glance_reach, glance_stats = self._build_glance_reach_and_stats(
+            node, glance_acronyms,
+        )
+        glance_paths = self._build_glance_paths(node)
+        # Labels for the frontend sections + chips are authored here so
+        # no English is composed in TS (AC5).
+        strip_cfg = self.config.glance_strip()
 
         return {
             "node_id": node_id,
@@ -176,8 +185,15 @@ class NarrationBuilder:
                 {"term": k, "expansion": v} for k, v in acronyms_used.items()
             ],
             "glance": {
-                "sentence": glance_sentence,
-                "breadcrumb": glance_breadcrumb,
+                "summary": glance_summary,
+                "supply_lines": glance_supply_lines,
+                "reach": glance_reach,
+                "paths": glance_paths,
+                "stats": glance_stats,
+                "labels": {
+                    "sections": strip_cfg.get("section_labels", {}),
+                    "chips": strip_cfg.get("chips", {}),
+                },
                 "acronyms": [
                     {"term": k, "expansion": v}
                     for k, v in glance_acronyms.items()
@@ -672,57 +688,276 @@ class NarrationBuilder:
             return self._glance_country(node, cfg, template)
         return None
 
-    def _build_glance_breadcrumb(self, node: Node) -> list[dict]:
-        """Greedy max-weight walk through real edges to give the trail
-        strip its "heaviest path" — the highest-weight supply edge into
-        the anchor node followed by up to two highest-weight supply
-        edges out of it.
+    # Material-flow edge types used for supply lines, paths, and reach.
+    # A narrower set than SUPPLY_EDGE_TYPES: excludes OPERATES (ownership,
+    # not material flow) so a walk from a company can't chain into
+    # "operates" a data center as a supply step.
+    _GLANCE_WALK_TYPES: list[EdgeType] = [
+        EdgeType.MINES,
+        EdgeType.REFINES,
+        EdgeType.SUPPLIES,
+        EdgeType.INPUT_TO,
+        EdgeType.COMPONENT_OF,
+    ]
 
-        Returns a list of {from, verb, share, to} steps — each step is
-        one real graph edge. The frontend renders these directly (no
-        wording composed in TypeScript); the verb comes from
-        `edge_glance_verb` in narration.yaml.
-
-        Written from real edges by construction — this is the fix for
-        the misread where visually-crossing strands were chained into
-        chains that don't exist in the graph.
-
-        Restricted to material/supply edge types — `operates` and
-        `located_in` are ownership/geography, not part of the flow
-        the breadcrumb is meant to convey.
+    def _build_glance_supply_lines(
+        self,
+        node: Node,
+        acronyms_used: dict[str, str],
+    ) -> list[dict]:
+        """One line per outbound supply edge (mines/refines/supplies/
+        input_to/component_of), sorted by share descending, share to 0
+        decimals. Top N by config; overflow surfaced as an authored
+        "+n more" marker — silent truncation is the copper-drop bug
+        (Pass I.1 Part 1 rule 1).
         """
-        # A narrower set than SUPPLY_EDGE_TYPES: excludes OPERATES so a walk
-        # from a company can't chain into "operates" a data center as a
-        # material-flow step.
-        walk_types = [
-            EdgeType.MINES,
-            EdgeType.REFINES,
-            EdgeType.SUPPLIES,
-            EdgeType.INPUT_TO,
-            EdgeType.COMPONENT_OF,
+        strip_cfg = self.config.glance_strip()
+        line_cfg = strip_cfg.get("supply_line", {})
+        template = line_cfg.get("template", "")
+        max_lines = int(line_cfg.get("max_lines", 6))
+
+        out_edges = [
+            e for e in self.graph.out_edges(node.id)
+            if e.type in self._GLANCE_WALK_TYPES
         ]
-        steps: list[dict] = []
+        if not out_edges:
+            return []
+        out_edges.sort(key=lambda e: -e.effective_weight())
 
-        # One upstream hop (heaviest inbound supply-type edge).
-        up_edge = self._top_incoming_by_types(node.id, walk_types)
-        if up_edge is not None:
-            src = self.graph.nodes.get(up_edge.source_id)
-            if src is not None:
-                steps.append(self._glance_step(src, node, up_edge))
-
-        # Up to two downstream hops (greedy max-weight walk).
-        cur = node
-        for _ in range(2):
-            down_edge = self._top_outgoing_by_types(cur.id, walk_types)
-            if down_edge is None:
-                break
-            tgt = self.graph.nodes.get(down_edge.target_id)
+        rendered: list[dict] = []
+        top = out_edges[:max_lines]
+        for e in top:
+            tgt = self.graph.nodes.get(e.target_id)
             if tgt is None:
-                break
-            steps.append(self._glance_step(cur, tgt, down_edge))
-            cur = tgt
+                continue
+            tgt_name = self._glance_node_name(tgt, acronyms_used)
+            share_pct = f"{e.effective_weight() * 100:.0f}%"
+            verb = self.config.edge_glance_verb(e.type.value)
+            rendered.append({
+                "text": (
+                    template
+                    .replace("{target}", tgt_name)
+                    .replace("{verb}", verb)
+                    .replace("{share}", share_pct)
+                ),
+                "target_id": tgt.id,
+                "verb": verb,
+                "share": round(e.effective_weight(), 3),
+                "kind": "edge",
+            })
 
-        return steps
+        remainder = len(out_edges) - len(top)
+        if remainder > 0:
+            more_suffix = line_cfg.get("more_suffix", "").replace(
+                "{n}", str(remainder)
+            )
+            if more_suffix:
+                rendered.append({
+                    "text": more_suffix,
+                    "target_id": None,
+                    "verb": None,
+                    "share": None,
+                    "kind": "overflow",
+                })
+        return rendered
+
+    def _build_glance_reach_and_stats(
+        self,
+        node: Node,
+        acronyms_used: dict[str, str],
+    ) -> tuple[Optional[str], dict]:
+        """BFS downstream over REAL supply edges (not rendered edges) —
+        the client's computeReachable walks the layout's rendered edges,
+        which change when meta-layers collapse into summary nodes and
+        would drift with view state (Pass I.1 Part 1 rule 4). One
+        canonical source lives here.
+
+        Returns (sentence, stats). The sentence names every reached
+        critical-tier chokepoint and up to max_named_high high-tier
+        nodes, with an authored overflow phrase beyond that. Unscored
+        nodes are counted in reach but never named as chokepoints
+        (Pass E honesty carries over).
+        """
+        strip_cfg = self.config.glance_strip()
+        reach_cfg = strip_cfg.get("reach", {})
+
+        # BFS from the anchor over material-flow out-edges.
+        reached: set[str] = set()
+        queue: deque[str] = deque([node.id])
+        while queue:
+            cur = queue.popleft()
+            for e in self.graph.out_edges(cur):
+                if e.type not in self._GLANCE_WALK_TYPES:
+                    continue
+                if e.target_id == node.id or e.target_id in reached:
+                    continue
+                reached.add(e.target_id)
+                queue.append(e.target_id)
+
+        total_nodes = len(self.graph.nodes)
+        count = len(reached)
+
+        # Chokepoints reached, split by baseline tier — unscored counted
+        # but never named.
+        critical_ids: list[str] = []
+        high_ids: list[str] = []
+        for rid in reached:
+            r = self.graph.nodes.get(rid)
+            if r is None:
+                continue
+            tier = r.dynamic.baseline_tier
+            if tier is None:
+                continue
+            if tier.value == "critical":
+                critical_ids.append(rid)
+            elif tier.value == "high":
+                high_ids.append(rid)
+
+        # Layers crossed — distinct non-None layer values across anchor +
+        # reached nodes.
+        layers: set[str] = set()
+        if node.layer is not None:
+            layers.add(node.layer.value)
+        for rid in reached:
+            r = self.graph.nodes.get(rid)
+            if r is not None and r.layer is not None:
+                layers.add(r.layer.value)
+
+        stats = {
+            "downstream_nodes": count,
+            "total_nodes": total_nodes,
+            "critical_reached": sorted(critical_ids),
+            "high_reached": sorted(high_ids),
+            "layers_crossed": len(layers),
+        }
+
+        if count == 0:
+            return None, stats
+
+        # Compose sentence from authored pieces.
+        node_word = (
+            reach_cfg.get("node_singular", "node")
+            if count == 1
+            else reach_cfg.get("node_plural", "nodes")
+        )
+        verb_word = (
+            reach_cfg.get("verb_singular", "sits")
+            if count == 1
+            else reach_cfg.get("verb_plural", "sit")
+        )
+        base = (
+            reach_cfg.get("base", "")
+            .replace("{count}", str(count))
+            .replace("{total}", str(total_nodes))
+            .replace("{node_word}", node_word)
+            .replace("{verb_word}", verb_word)
+        )
+        clauses: list[str] = []
+        if critical_ids:
+            names = self._join_glance_names(critical_ids, acronyms_used)
+            key = (
+                "critical_singular"
+                if len(critical_ids) == 1
+                else "critical_plural"
+            )
+            clauses.append(
+                reach_cfg.get(key, "")
+                .replace("{n}", str(len(critical_ids)))
+                .replace("{names}", names)
+            )
+        if high_ids:
+            max_named = int(reach_cfg.get("max_named_high", 3))
+            named_high = high_ids[:max_named]
+            names = self._join_glance_names(named_high, acronyms_used)
+            key = (
+                "high_singular"
+                if len(named_high) == 1
+                else "high_plural"
+            )
+            high_clause = (
+                reach_cfg.get(key, "")
+                .replace("{n}", str(len(named_high)))
+                .replace("{names}", names)
+            )
+            remainder = len(high_ids) - len(named_high)
+            if remainder > 0:
+                high_clause += reach_cfg.get("high_more_suffix", "").replace(
+                    "{n}", str(remainder)
+                )
+            clauses.append(high_clause)
+
+        if clauses:
+            joined = reach_cfg.get("joiner", " and ").join(clauses)
+            sentence = base + reach_cfg.get("including", ", including ") + joined
+        else:
+            sentence = base
+        sentence += reach_cfg.get("terminator", ".")
+        return sentence, stats
+
+    def _join_glance_names(
+        self,
+        node_ids: list[str],
+        acronyms_used: dict[str, str],
+    ) -> str:
+        names: list[str] = []
+        for nid in node_ids:
+            n = self.graph.nodes.get(nid)
+            if n is None:
+                continue
+            names.append(self._glance_node_name(n, acronyms_used))
+        return _join_names(names)
+
+    def _build_glance_paths(self, node: Node) -> list[list[dict]]:
+        """Top-N heaviest paths seeded from the N heaviest DISTINCT
+        first-hop edges (N = min(config.max_seeds, out-degree)), then
+        greedy max-weight continuation. First-hop diversity is what
+        forces the fan-out to show — three near-identical dysprosium
+        walks would be worse than one (Pass I.1 Part 1 rule 3).
+
+        Nodes with out-degree 1 render a single-path shape as before.
+        Nodes with no outbound supply edges render no paths.
+        """
+        strip_cfg = self.config.glance_strip()
+        path_cfg = strip_cfg.get("paths", {})
+        max_seeds = int(path_cfg.get("max_seeds", 3))
+        hops_per_path = int(path_cfg.get("hops_per_path", 2))
+
+        # Distinct-first-hop seeds: sort outbound supply edges by weight
+        # descending, keep at most one edge per distinct target so we
+        # don't seed two paths that share the same first node.
+        out_edges = [
+            e for e in self.graph.out_edges(node.id)
+            if e.type in self._GLANCE_WALK_TYPES
+        ]
+        out_edges.sort(key=lambda e: -e.effective_weight())
+        seen_targets: set[str] = set()
+        seeds: list[Edge] = []
+        for e in out_edges:
+            if e.target_id in seen_targets:
+                continue
+            seen_targets.add(e.target_id)
+            seeds.append(e)
+            if len(seeds) >= max_seeds:
+                break
+
+        paths: list[list[dict]] = []
+        for seed in seeds:
+            tgt = self.graph.nodes.get(seed.target_id)
+            if tgt is None:
+                continue
+            path = [self._glance_step(node, tgt, seed)]
+            cur = tgt
+            for _ in range(hops_per_path - 1):
+                nxt = self._top_outgoing_by_types(cur.id, self._GLANCE_WALK_TYPES)
+                if nxt is None:
+                    break
+                nxt_node = self.graph.nodes.get(nxt.target_id)
+                if nxt_node is None:
+                    break
+                path.append(self._glance_step(cur, nxt_node, nxt))
+                cur = nxt_node
+            paths.append(path)
+        return paths
 
     def _glance_step(self, src: Node, dst: Node, edge: Edge) -> dict:
         src_name = (
@@ -971,7 +1206,12 @@ class NarrationBuilder:
         mines_or_refines_count = len({e.target_id for e in mines_refines_out})
 
         if mines_or_refines_count > 0:
-            role = cfg.get("role_phrase_mines_refines", "").replace(
+            key = (
+                "role_phrase_mines_refines_singular"
+                if mines_or_refines_count == 1
+                else "role_phrase_mines_refines_plural"
+            )
+            role = cfg.get(key, "").replace(
                 "{mines_or_refines_count}", str(mines_or_refines_count)
             )
         else:
@@ -981,9 +1221,12 @@ class NarrationBuilder:
             ]
             n_hosts = len({e.source_id for e in host_edges})
             if n_hosts > 0:
-                role = cfg.get("role_phrase_hosts_only", "").replace(
-                    "{n_hosts}", str(n_hosts)
+                key = (
+                    "role_phrase_hosts_only_singular"
+                    if n_hosts == 1
+                    else "role_phrase_hosts_only_plural"
                 )
+                role = cfg.get(key, "").replace("{n_hosts}", str(n_hosts))
             else:
                 role = cfg.get("role_phrase_none", "")
 

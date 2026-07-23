@@ -74,19 +74,57 @@ export interface NarrationSection {
   title: string;
   body: string;
 }
-// Pass I — one-hop greedy max-weight walk built from real edges. The
-// backend produces this so the frontend never composes prose or picks
-// edges heuristically (which was the source of the "China supplies
-// copper to TSMC" misread — no such path existed in the graph).
+// Pass I / I.1 — structured glance payload built from real edges.
+// The backend produces this so the frontend never composes prose or
+// picks edges heuristically (the source of the "China supplies copper
+// to TSMC" misread — no such path existed in the graph).
+//
+// Each breadcrumb step is one real graph edge. Each of `paths` is a
+// full greedy max-weight walk seeded from a distinct first-hop edge —
+// the diversity rule that forces fan-out to show.
 export interface GlanceBreadcrumbStep {
   from: string;
   verb: string;   // authored in narration.yaml `edge_glance_verb`
   share: number;  // 0..1 effective edge weight
   to: string;
 }
+export interface GlanceSupplyLine {
+  text: string;                     // authored, fully rendered
+  target_id: string | null;
+  verb: string | null;
+  share: number | null;
+  kind: "edge" | "overflow";
+}
+export interface GlanceStats {
+  downstream_nodes: number;
+  total_nodes: number;
+  critical_reached: string[];       // node ids
+  high_reached: string[];
+  layers_crossed: number;
+}
+// Chip + section labels ALSO come from the backend so the frontend
+// composes zero English — even the word "Supplies" lives in
+// narration.yaml `glance_strip.section_labels`.
+export interface GlanceLabels {
+  sections: {
+    supply_lines?: string;
+    reach?: string;
+    paths?: string;
+  };
+  chips: {
+    trail_label?: string;
+    critical_label?: string;
+    high_label?: string;
+    layers_label?: string;
+  };
+}
 export interface Glance {
-  sentence: string | null;
-  breadcrumb: GlanceBreadcrumbStep[];
+  summary: string | null;
+  supply_lines: GlanceSupplyLine[];
+  reach: string | null;
+  paths: GlanceBreadcrumbStep[][];
+  stats: GlanceStats;
+  labels: GlanceLabels;
   acronyms: { term: string; expansion: string }[];
 }
 export interface Narration {

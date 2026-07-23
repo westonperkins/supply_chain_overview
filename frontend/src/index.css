@@ -908,25 +908,32 @@ html, body, #root {
   line-height: 1.5;
 }
 
-/* Pass I — trail narration strip below the diagram. Three zones:
- *   1. identity + chips (client-side, instant)
- *   2. role sentence (from narration.glance.sentence)
- *   3. heaviest-path breadcrumb (from narration.glance.breadcrumb —
- *      built from real graph edges, not highlight geometry)
- * No prose is composed here; every phrase is authored in narration.yaml.
- */
+/* Pass I / I.1 — trail narration strip below the diagram. Zones:
+ *   1. identity + tier / country / pinned chips (client-side, instant)
+ *   2. stat chips from glance.stats (backend truth, NOT client walk)
+ *   3. summary sentence
+ *   4. supply lines section (all outbound supply edges)
+ *   5. reach sentence (names critical + high chokepoints)
+ *   6. heaviest-path breadcrumbs (top-3 distinct-first-hop walks)
+ * Every string above is authored in narration.yaml and rendered as
+ * data — no English is composed in this file. Strip caps its height
+ * and scrolls internally so the diagram never gets pushed out of view. */
 .trail-strip {
   border-top: 1px solid var(--border);
   padding: 10px 14px 12px;
   background: var(--panel);
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-height: 68px;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
 }
 .trail-strip--empty {
   min-height: 34px;
+  max-height: 34px;
   justify-content: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 .trail-strip-hint {
   color: var(--muted);
@@ -971,7 +978,42 @@ html, body, #root {
   color: var(--muted);
   border-style: dashed;
 }
-.trail-strip-sentence {
+.trail-strip-stat-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.trail-strip-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--panel-2);
+  font-size: 11px;
+}
+.trail-strip-stat-value {
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.trail-strip-stat-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.trail-strip-stat--critical { border-color: var(--critical); background: rgba(255,82,82,0.10); }
+.trail-strip-stat--critical .trail-strip-stat-value { color: var(--critical); }
+.trail-strip-stat--high     { border-color: var(--high);     background: rgba(255,152,0,0.10); }
+.trail-strip-stat--high     .trail-strip-stat-value { color: var(--high); }
+.trail-strip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.trail-strip-summary {
   font-size: 12px;
   color: var(--text);
   line-height: 1.5;
@@ -980,10 +1022,53 @@ html, body, #root {
   color: var(--muted);
   font-style: italic;
 }
-.trail-strip-breadcrumb {
+.trail-strip-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.trail-strip-section-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.trail-strip-supply-lines {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 2px;
+}
+.trail-strip-supply-line {
+  color: var(--text);
+}
+.trail-strip-supply-line + .trail-strip-supply-line::before {
+  content: "· ";
+  color: var(--muted);
+  margin-right: 4px;
+}
+.trail-strip-supply-line--overflow {
+  color: var(--muted);
+  font-style: italic;
+}
+.trail-strip-reach {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.trail-strip-paths {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.trail-strip-path {
   font-size: 11px;
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.55;
   white-space: normal;
   word-break: break-word;
 }

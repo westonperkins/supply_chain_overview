@@ -168,11 +168,82 @@ glance_summary:
     produces_tail: " that produces {top_target}"
 
   country:
-    # Countries in this graph are supply-source geographies.
+    # Countries in this graph are supply-source geographies. Pluralization
+    # is authored — no literal "(s)" leaks into rendered strip content
+    # (Pass I.1 AC5).
     template: "A supply-source country that {country_role}."
-    role_phrase_mines_refines: "mines or refines a majority share of {mines_or_refines_count} modelled mineral(s)"
-    role_phrase_hosts_only: "hosts {n_hosts} modelled node(s) but is not itself a supply source in the graph"
+    role_phrase_mines_refines_singular: "mines or refines a majority share of {mines_or_refines_count} modelled mineral"
+    role_phrase_mines_refines_plural:   "mines or refines a majority share of {mines_or_refines_count} modelled minerals"
+    role_phrase_hosts_only_singular: "hosts {n_hosts} modelled node but is not itself a supply source in the graph"
+    role_phrase_hosts_only_plural:   "hosts {n_hosts} modelled nodes but is not itself a supply source in the graph"
     role_phrase_none: "is present in the graph but supplies no material and hosts no node"
+
+# --------------------------------------------------------------------------- #
+# Glance strip — structured payload (Pass I.1)                                #
+# --------------------------------------------------------------------------- #
+# The strip stopped under-telling once it stopped being one sentence — a node
+# whose trail covers half the graph must read like it. All wording below is
+# assembled by the builder from these authored pieces (no prose in Python,
+# same rule as always). Section labels here so the frontend never composes
+# English in TS (Pass I.1 AC5).
+
+glance_strip:
+  section_labels:
+    supply_lines: "Supplies"
+    reach:        "Reach"
+    paths:        "Heaviest paths"
+
+  # One line per outbound supply edge, top N by weight. Shares to 0
+  # decimals; sub-majority shares (copper 47%) appear. If more than
+  # max_lines edges exist, emit the top max_lines and an authored
+  # overflow marker for the remainder — silent truncation was the
+  # copper-drop bug.
+  supply_line:
+    template:    "{target} — {verb} {share}"
+    more_suffix: "+{n} more"
+    # Bumped from the spec's ~6 aspiration to 10 so China's copper edges
+    # (ranks 8 and 10 by share) appear — the point of listing every edge
+    # is that sub-majority chokepoints show. The strip has scroll for
+    # visual density; overflow markers still fire beyond 10 (no silent
+    # truncation, per Pass I.1 Part 1 rule 1).
+    max_lines:   10
+
+  # Downstream reach sentence — names its chokepoints. Reachability is
+  # computed over REAL edges (never rendered edges — the client walk is
+  # view-state-dependent and drifts when layers collapse into summary
+  # nodes, so the strip reads the backend's canonical count instead).
+  reach:
+    node_singular: "node"
+    node_plural:   "nodes"
+    verb_singular: "sits"
+    verb_plural:   "sit"
+    base:          "{count} of {total} {node_word} {verb_word} downstream"
+    including:     ", including "
+    joiner:        " and "
+    critical_singular: "{n} critical chokepoint ({names})"
+    critical_plural:   "{n} critical chokepoints ({names})"
+    high_singular:     "{n} high ({names})"
+    high_plural:       "{n} high ({names})"
+    high_more_suffix:  " (+{n} more high)"
+    max_named_high:    3
+    terminator:        "."
+
+  # Chip labels rendered above the summary. Values come from
+  # glance.stats — not from the client's computeReachable, per AC4.
+  chips:
+    trail_label:    "in trail"
+    critical_label: "critical reached"
+    high_label:     "high reached"
+    layers_label:   "layers crossed"
+
+  # Frontend renders whatever sections exist. A leaf company may show
+  # only `summary` + one upstream path (per Part 1 rule 5). No padding.
+  paths:
+    # Number of DISTINCT first-hop seed edges to walk from. Effective
+    # cap is min(this, out_degree). Continuation uses the same greedy
+    # walk logic as Pass I.
+    max_seeds:      3
+    hops_per_path:  2
 
 unscored:
   section_titles:
