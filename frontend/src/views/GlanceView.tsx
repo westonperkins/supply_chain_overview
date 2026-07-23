@@ -257,6 +257,9 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
           <span className="glance-legend-item"><span className="tier-dot high" /> high</span>
           <span className="glance-legend-item"><span className="tier-dot moderate" /> moderate</span>
           <span className="glance-legend-item"><span className="tier-dot none" /> none</span>
+          <span className="glance-legend-item" title="Pass F — engine refused to score (missing static axis)">
+            <span className="tier-dot unscored" /> unscored
+          </span>
           <span className="glance-legend-item glance-legend-supply">
             <span className="tier-dot supply" /> supply source
           </span>

@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/views/dashboard.tsx"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/lib/badge-decisions.ts","./src/lib/full-layout.ts","./src/lib/hover-context.ts","./src/lib/render-config.ts","./src/views/dashboard.tsx","./src/views/glanceview.tsx","./src/views/glance/chokepointnode.tsx","./src/views/glance/columnlabelnode.tsx","./src/views/glance/countrynode.tsx","./src/views/glance/summarynode.tsx"],"version":"5.9.3"}

@@ -10,6 +10,15 @@
   --high: #ff9800;
   --moderate: #ffca28;
   --none: #4caf50;
+  /* Pass F — `unscored` is deliberately NOT green. `none` is a scored
+     node whose severity landed low (real reading, green all-clear).
+     `unscored` is a node the engine refused to score because a required
+     static axis is missing — an absence of data, not low risk. Painting
+     them the same would launder "we don't know" into "it's fine."
+     Desaturated slate reads as "present in the graph, deliberately not
+     rated." */
+  --unscored: #6c7280;
+  --unscored-glow: rgba(108, 114, 128, 0.35);
   --supply: #7f8894;   /* neutral gray for pure-supply-source nodes */
   --edge-weak:  rgba(140, 160, 180, 0.35);
   --edge-med:   rgba(180, 200, 220, 0.55);
@@ -127,6 +136,7 @@ html, body, #root {
 .filter-chip.tier-chip.tier-high.active     { border-color: var(--high);     color: var(--high);     background: rgba(255,152,0,0.10); }
 .filter-chip.tier-chip.tier-moderate.active { border-color: var(--moderate); color: var(--moderate); background: rgba(255,202,40,0.10); }
 .filter-chip.tier-chip.tier-none.active     { border-color: var(--none);     color: var(--none);     background: rgba(76,175,80,0.10); }
+.filter-chip.tier-chip.tier-unscored.active { border-color: var(--unscored); color: var(--unscored); background: rgba(108,114,128,0.12); border-style: dashed; }
 
 .filter-status {
   display: flex;
@@ -186,6 +196,12 @@ html, body, #root {
 .tier.high     { background: rgba(255,152,0,0.15); color: var(--high); }
 .tier.moderate { background: rgba(255,202,40,0.15); color: var(--moderate); }
 .tier.none     { background: rgba(76,175,80,0.15); color: var(--none); }
+.tier.unscored {
+  background: transparent;
+  color: var(--unscored);
+  border: 1px dashed var(--unscored);
+  padding: 0 4px;
+}
 
 /* Detail pane */
 .detail-header { margin-bottom: 20px; }
@@ -391,6 +407,10 @@ html, body, #root {
 .tier-dot.high     { background: var(--high); }
 .tier-dot.moderate { background: var(--moderate); }
 .tier-dot.none     { background: var(--none); }
+.tier-dot.unscored {
+  background: transparent;
+  border: 1px dashed var(--unscored);
+}
 .tier-dot.supply {
   background: transparent;
   border: 1px dashed var(--supply);
@@ -473,6 +493,17 @@ html, body, #root {
 }
 
 /* --- Color channel (border color / glow by tier) --- */
+/* Pass F — unscored: dashed, desaturated, semi-transparent. Reads as
+   "present in the graph, deliberately not rated" — not the green
+   all-clear that `.tier-none` shows. */
+.glance-node.tier-unscored {
+  border-color: var(--unscored);
+  border-style: dashed;
+  opacity: 0.72;
+  background: rgba(108, 114, 128, 0.06);
+}
+.glance-node.tier-unscored:hover { box-shadow: 0 0 12px var(--unscored-glow); opacity: 1; }
+
 .glance-node.tier-critical {
   border-color: var(--critical);
   box-shadow: 0 0 14px rgba(255, 82, 82, 0.30);
@@ -527,6 +558,12 @@ html, body, #root {
 .glance-tier.tier-high     { background: rgba(255,152,0,0.15); color: var(--high); }
 .glance-tier.tier-moderate { background: rgba(255,202,40,0.15); color: var(--moderate); }
 .glance-tier.tier-none     { background: rgba(76,175,80,0.15); color: var(--none); }
+.glance-tier.tier-unscored {
+  background: transparent;
+  color: var(--unscored);
+  border: 1px dashed var(--unscored);
+  padding: 0 4px;
+}
 
 .glance-node-badge {
   margin-top: 8px;
@@ -582,6 +619,7 @@ html, body, #root {
 .glance-summary.tier-high     { border-color: var(--high);     box-shadow: 0 0 12px rgba(255,152,0,0.30); }
 .glance-summary.tier-moderate { border-color: var(--moderate); }
 .glance-summary.tier-none     { border-color: var(--border);   }
+.glance-summary.tier-unscored { border-color: var(--unscored); border-style: dashed; }
 .glance-summary-title {
   font-size: 15px;
   font-weight: 600;
@@ -612,6 +650,11 @@ html, body, #root {
 .glance-summary-bucket.high     { background: rgba(255,152,0,0.20); color: var(--high); }
 .glance-summary-bucket.moderate { background: rgba(255,202,40,0.20); color: var(--moderate); }
 .glance-summary-bucket.none     { background: rgba(76,175,80,0.15);  color: var(--none); }
+.glance-summary-bucket.unscored {
+  background: transparent;
+  color: var(--unscored);
+  border: 1px dashed var(--unscored);
+}
 
 /* ============================================================ *
  *  Layer controls (collapse toggles)                            *

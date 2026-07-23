@@ -1,4 +1,4 @@
-import type { Edge, Event, Node } from "./types";
+import type { Edge, Event, Narration, Node } from "./types";
 
 const BASE = "http://127.0.0.1:8000";
 
@@ -14,6 +14,7 @@ export const api = {
   edges: () => j<Edge[]>("/edges"),
   events: () => j<Event[]>("/events"),
   eventCascade: (id: string) => j<Event>(`/events/${encodeURIComponent(id)}/cascade`),
+  narration: (id: string) => j<Narration>(`/nodes/${encodeURIComponent(id)}/narration`),
 };
 
 // Add weight to Edge (Edge type in types.ts already has it — this is a no-op

@@ -10,7 +10,10 @@ type Data = {
 export function ChokepointNode({ id, data }: { id: string; data: Data }) {
   const n = data.node;
   const badge = data.badge;
-  const tier = n.dynamic.chokepoint_tier ?? "none";
+  // Pass F — read baseline_tier (structural). current_tier waits for the
+  // news-ingestion pass. Default to "unscored" when the field is absent so
+  // an unfamiliar node reads as "not rated" rather than silently green.
+  const tier = n.dynamic.baseline_tier ?? "unscored";
   const icon =
     n.type === "facility" ? "🏭"
     : n.type === "mineral"  ? "⛏"

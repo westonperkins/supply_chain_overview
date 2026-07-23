@@ -6,7 +6,13 @@ interface SummaryData {
   metaLayerId: MetaLayerId;
   label: string;
   worstTier: "critical" | "high" | "moderate" | "none";
-  tierCounts: { critical: number; high: number; moderate: number; none: number };
+  tierCounts: {
+    critical: number;
+    high: number;
+    moderate: number;
+    none: number;
+    unscored: number;  // Pass F — first-class visual state, not a hidden fallback
+  };
   count: number;
 }
 
@@ -44,6 +50,11 @@ export function SummaryNode({ id, data }: { id: string; data: SummaryData }) {
         {tierCounts.none > 0 && (
           <span className="glance-summary-bucket none" title={`${tierCounts.none} none`}>
             {tierCounts.none}
+          </span>
+        )}
+        {tierCounts.unscored > 0 && (
+          <span className="glance-summary-bucket unscored" title={`${tierCounts.unscored} unscored`}>
+            {tierCounts.unscored}
           </span>
         )}
       </div>

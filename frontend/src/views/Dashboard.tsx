@@ -1,5 +1,6 @@
-import { useState } from "react";
-import type { ChokepointTier, Event, Node, NodeType, SourcedValue } from "../types";
+import { useEffect, useState } from "react";
+import type { ChokepointTier, Event, Narration, Node, NodeType, SourcedValue } from "../types";
+import { api } from "../api";
 
 interface Props {
   nodes: Node[];
@@ -25,7 +26,11 @@ export default function Dashboard({ nodes, events, selectedId, onSelect }: Props
 // --------------------------------------------------------------------------- //
 
 const TYPE_OPTIONS: NodeType[] = ["mineral", "product", "company", "facility", "country_region"];
-const TIER_OPTIONS: ChokepointTier[] = ["critical", "high", "moderate", "none"];
+// Pass F — `unscored` is a first-class filter chip. `unscored` is NOT
+// `none`: the engine refused to score the node (missing static axes),
+// as opposed to a scored node that landed low. Ordering keeps scored
+// tiers left-to-right by severity, unscored last.
+const TIER_OPTIONS: ChokepointTier[] = ["critical", "high", "moderate", "none", "unscored"];
 
 // Empty filter set = "no filter applied (show all)". Non-empty = must be in set.
 // Type and Tier filters are ANDed.
@@ -52,13 +57,20 @@ function NodeList({
 
   const filtered = nodes.filter((n) => {
     if (typeFilter.size > 0 && !typeFilter.has(n.type)) return false;
-    const tier = (n.dynamic.chokepoint_tier ?? "none") as ChokepointTier;
+    // Pass F — read baseline_tier (structural). Default to "unscored"
+    // rather than "none" when the field is absent, so a node without
+    // a scored severity is honestly labelled, not silently green.
+    const tier = (n.dynamic.baseline_tier ?? "unscored") as ChokepointTier;
     if (tierFilter.size > 0 && !tierFilter.has(tier)) return false;
     return true;
   });
 
+  // Sort by baseline_severity (structural) descending. Unscored nodes
+  // have baseline_severity == null → treat as -1 so they land at the
+  // bottom (present but not comparable to scored severities).
   const sorted = [...filtered].sort(
-    (a, b) => (b.dynamic.current_severity ?? 0) - (a.dynamic.current_severity ?? 0),
+    (a, b) =>
+      (b.dynamic.baseline_severity ?? -1) - (a.dynamic.baseline_severity ?? -1),
   );
 
   const filtersActive = typeFilter.size > 0 || tierFilter.size > 0;
@@ -128,9 +140,9 @@ function NodeList({
               </div>
             </div>
             <div style={{ textAlign: "right" }}>
-              <TierBadge tier={n.dynamic.chokepoint_tier ?? "none"} />
+              <TierBadge tier={n.dynamic.baseline_tier ?? "unscored"} />
               <div className="meta" style={{ marginTop: 4 }}>
-                {fmt(n.dynamic.current_severity)}
+                {fmt(n.dynamic.baseline_severity)}
               </div>
             </div>
           </div>
@@ -195,19 +207,37 @@ function NodeDetail({ node }: { node: Node | null }) {
           <span>live / derived</span>
         </div>
         <div className="kv">
-          <div className="k">chokepoint_tier</div>
+          <div className="k">baseline tier</div>
           <div className="v">
-            <TierBadge tier={node.dynamic.chokepoint_tier ?? "none"} />
-            <span className="conf">derived</span>
+            <TierBadge tier={node.dynamic.baseline_tier ?? "unscored"} />
+            <span className="conf">structural</span>
+          </div>
+          <div className="k">current tier</div>
+          <div className="v">
+            <TierBadge tier={node.dynamic.current_tier ?? "unscored"} />
+            <span className="conf">event-adjusted</span>
           </div>
           <div className="k">inbound HHI</div>       <div className="v">{fmt(node.dynamic.inbound_hhi)}</div>
           <div className="k">outbound criticality</div><div className="v">{fmt(node.dynamic.outbound_criticality)}</div>
           <div className="k">concentration</div>     <div className="v">{fmt(node.dynamic.concentration)} <span className="conf">max(in,out)</span></div>
-          <div className="k">baseline severity</div><div className="v">{fmt(node.dynamic.current_severity)}</div>
+          <div className="k">baseline severity</div><div className="v">{fmt(node.dynamic.baseline_severity)} <span className="conf">structural</span></div>
+          <div className="k">current severity</div><div className="v">{fmt(node.dynamic.current_severity)} <span className="conf">event-adjusted; == baseline with no active events</span></div>
+          {node.dynamic.scored_on_default_axes && node.dynamic.scored_on_default_axes.length > 0 && (
+            <>
+              <div className="k">missing axes</div>
+              <div className="v" style={{ color: "var(--unscored)" }}>
+                {node.dynamic.scored_on_default_axes.join(", ")}
+              </div>
+            </>
+          )}
           <div className="k">price</div>           <div className="v">{node.dynamic.price ?? "—"}</div>
           <div className="k">price ex-China</div>  <div className="v">{node.dynamic.price_ex_china ?? "—"}</div>
           <div className="k">market cap</div>      <div className="v">{money(node.dynamic.market_cap)}</div>
         </div>
+
+        {/* Narration — including Pass E "Why this isn't scored" for unscored nodes */}
+        <NarrationPanel nodeId={node.id} />
+
         {node.dynamic.derived_shares && (
           <div style={{ marginTop: 12 }}>
             <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 6 }}>
@@ -225,6 +255,63 @@ function NodeDetail({ node }: { node: Node | null }) {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// --------------------------------------------------------------------------- //
+// Narration panel — renders /nodes/{id}/narration into the detail card         //
+// --------------------------------------------------------------------------- //
+// Pass F wired this in so the Pass E "Why this isn't scored" copy is visible
+// for the 42 unscored nodes (NVIDIA foremost). For scored nodes it renders the
+// existing "why it scores X" prose. The panel gates purely on presence of
+// sections in the payload; if the endpoint fails or returns nothing, it
+// stays silent rather than fabricating placeholder text.
+
+function NarrationPanel({ nodeId }: { nodeId: string }) {
+  const [narr, setNarr] = useState<Narration | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setNarr(null);
+    setError(null);
+    api
+      .narration(nodeId)
+      .then((n) => { if (!cancelled) setNarr(n); })
+      .catch((e) => { if (!cancelled) setError(String(e)); });
+    return () => { cancelled = true; };
+  }, [nodeId]);
+
+  if (error) {
+    return (
+      <div className="note" style={{ marginTop: 12 }}>
+        narration unavailable: {error}
+      </div>
+    );
+  }
+  if (!narr || narr.sections.length === 0) return null;
+
+  return (
+    <div style={{ marginTop: 16, borderTop: "1px solid var(--border)", paddingTop: 12 }}>
+      <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
+        Narration
+      </div>
+      {narr.sections.map((s) => (
+        <div key={s.key} style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text)", marginBottom: 2 }}>
+            {s.title}
+          </div>
+          <div style={{ fontSize: 12, color: "var(--muted)", lineHeight: 1.5 }}>
+            {s.body}
+          </div>
+        </div>
+      ))}
+      {narr.caveats.length > 0 && (
+        <div style={{ marginTop: 8, fontSize: 11, color: "var(--muted)", fontStyle: "italic" }}>
+          {narr.caveats.join(" ")}
+        </div>
+      )}
     </div>
   );
 }

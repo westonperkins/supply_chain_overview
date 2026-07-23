@@ -30,11 +30,41 @@ export interface DynamicFields {
   inbound_hhi?: number | null;
   outbound_criticality?: number | null;
   concentration?: number | null;
+  // Pass D — structural (never moved by events) vs live (event-adjusted).
+  // With no active events, baseline_* == current_* by definition.
+  // Glance colours by baseline_tier this pass; current_tier waits for the
+  // news-ingestion pass. The legacy per-node tier field was renamed to
+  // baseline_tier in Pass D; served JSON no longer carries the old name.
+  baseline_severity?: number | null;
+  baseline_tier?: ChokepointTier | null;
   current_severity?: number | null;
-  chokepoint_tier?: ChokepointTier | null;
+  current_tier?: ChokepointTier | null;
+  // Provenance flag attached by cascade — true if any contribution to
+  // current_severity came from an unscored-origin event. Ranking policy
+  // (how the frontend uses this) is a future news-ingestion concern.
+  current_severity_has_unscored_origin?: boolean;
+  // Names the required static axes that were missing when the engine
+  // refused to score this node (Pass A unscored mode). Empty/null when
+  // the node scored. Powers the "Why this isn't scored" narration.
+  scored_on_default_axes?: string[] | null;
   derived_shares?: Record<string, Record<string, number>> | null;
   recent_event_ids: string[];
   last_updated?: string | null;
+}
+
+// The rendered narration payload from `/nodes/{id}/narration`.
+export interface NarrationSection {
+  key: string;
+  title: string;
+  body: string;
+}
+export interface Narration {
+  node_id: string;
+  headline: { name: string; role: string | null; tier: string };
+  dominant_axis: string;
+  sections: NarrationSection[];
+  caveats: string[];
+  acronyms: { term: string; expansion: string }[];
 }
 
 export interface Node {

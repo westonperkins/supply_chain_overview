@@ -253,6 +253,11 @@ export function computeFullLayout(
   }
 
   // Summary nodes: centered around the same midline as full columns.
+  // Pass F — `unscored` is a first-class bucket, distinct from `none`.
+  // worstTier walks scored tiers only (unscored is not "worse" or "better"
+  // than a scored tier; it's a data-absence category), so the summary
+  // outline reflects worst SCORED reading in the layer; unscored count
+  // ships in tierCounts for the histogram to render its own bucket.
   const tierOrder: Array<"critical" | "high" | "moderate" | "none"> = [
     "critical",
     "high",
@@ -266,12 +271,14 @@ export function computeFullLayout(
       if (!isVisibleCountry(n)) return false;
       return metaLayerOf(n) === metaId;
     });
-    const tierCounts = { critical: 0, high: 0, moderate: 0, none: 0 };
+    const tierCounts = { critical: 0, high: 0, moderate: 0, none: 0, unscored: 0 };
     let worstTier: "critical" | "high" | "moderate" | "none" = "none";
     for (const n of inLayer) {
-      const t = (n.dynamic.chokepoint_tier ?? "none") as keyof typeof tierCounts;
+      const t = (n.dynamic.baseline_tier ?? "unscored") as keyof typeof tierCounts;
       tierCounts[t]++;
-      if (tierOrder.indexOf(t) < tierOrder.indexOf(worstTier)) worstTier = t;
+      if (t !== "unscored" && tierOrder.indexOf(t) < tierOrder.indexOf(worstTier)) {
+        worstTier = t;
+      }
     }
     flowNodes.push({
       id: `summary:${metaId}`,
