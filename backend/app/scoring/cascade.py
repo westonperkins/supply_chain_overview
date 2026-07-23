@@ -167,21 +167,40 @@ def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig
                 queue.append((target.id, downstream, new_path, hop + 1))
 
     # Apply contributions to each touched node's current_severity.
-    # Unscored downstream nodes (baseline is None) do NOT accumulate a
-    # current_severity — an event does not fabricate severity from
-    # absent axes (§4). Their current_severity stays None.
+    # Pass H (Q1-Q3 fix) — distinguish:
+    #  - Unscored ORIGIN: current stays None. An event does not fabricate
+    #    a severity for the origin from axes the node explicitly lacks
+    #    (Pass D §4 principle).
+    #  - Unscored DOWNSTREAM: current DOES accumulate the walk value
+    #    (anchored at 0.0, not from a fabricated baseline). The walk's
+    #    running contribution is a real propagated quantity; discarding
+    #    it silently blanked entire downstream branches every cascade
+    #    crossed. See docs/pass_h_report.pdf §Q3.
+    #  - Scored (origin or downstream): combines contribution into
+    #    current starting from baseline.
     max_source_severity = 0.0
-    for node_id, (contribution, origin_scored, _, _) in best_contribution.items():
+    for node_id, (contribution, origin_scored, _, hop) in best_contribution.items():
         node = graph.nodes[node_id]
         max_source_severity = max(max_source_severity, contribution)
-        if node.dynamic.baseline_severity is None:
-            # Unscored node: no baseline to combine with. Skip.
+
+        is_origin = hop == 0
+        if node.dynamic.baseline_severity is None and is_origin:
+            # Unscored origin — do not manufacture a severity for the
+            # origin itself; walk downstream nodes still accumulated.
+            if not origin_scored:
+                node.dynamic.current_severity_has_unscored_origin = True
             continue
-        current = node.dynamic.current_severity
-        if current is None:
-            # Should not happen (engine initializes current = baseline
-            # for scored nodes) but be defensive.
-            current = node.dynamic.baseline_severity
+
+        if node.dynamic.baseline_severity is None:
+            # Unscored downstream: no baseline to combine against.
+            # Anchor at 0.0 — the walk value is real, propagated
+            # through actual edges; not fabricated from absent axes.
+            current = node.dynamic.current_severity if node.dynamic.current_severity is not None else 0.0
+        else:
+            current = node.dynamic.current_severity
+            if current is None:
+                current = node.dynamic.baseline_severity  # defensive
+
         new_current = _combine(current, contribution, combine_method)
         node.dynamic.current_severity = new_current
         if not origin_scored:

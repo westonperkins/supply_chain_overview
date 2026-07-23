@@ -83,9 +83,19 @@ def test_no_event_current_equals_baseline_everywhere():
 # T2 — baseline equals prior current (INV-1)
 # ---------------------------------------------------------------------
 
-def test_baseline_severity_equals_prior_pass_current_bit_for_bit():
-    """T2 (INV-1). New baseline_severity == Pass C snapshot's per-node
-    severity bit-for-bit. Fails naming any node that moved."""
+def test_baseline_severity_equals_committed_snapshot():
+    """Snapshot integrity — the committed severity_snapshot.json is
+    always the reference the current pass's diff was computed against
+    (see docs/generated/severity_diff.md). This test asserts snapshot
+    values match current engine baselines, so drift between the two is
+    caught immediately.
+
+    Originally (Pass D) this was T2 / INV-1 — a one-time proof that the
+    baseline/current split didn't move structural values. Post Pass H
+    (which authored cohort axes and moved baselines for NVIDIA + Quanta),
+    the snapshot rolls forward to represent END-of-current-pass state,
+    so this assertion holds by construction — its remaining role is
+    catching accidental drift, not proving invariance across passes."""
     g, _ = _fresh()
     snap = json.loads(
         (REPO / "docs" / "generated" / "severity_snapshot.json").read_text()
@@ -93,15 +103,15 @@ def test_baseline_severity_equals_prior_pass_current_bit_for_bit():
     label = snap.get("captured_at_pass")
     for nid, entry in snap["nodes"].items():
         node = g.nodes[nid]
-        prior_sev = entry.get("severity")
-        new_base = node.dynamic.baseline_severity
-        if prior_sev is None and new_base is None:
+        snap_sev = entry.get("severity")
+        cur_base = node.dynamic.baseline_severity
+        if snap_sev is None and cur_base is None:
             continue
-        assert prior_sev == new_base, (
-            f"{nid}: Pass C snapshot severity {prior_sev!r} != new "
-            f"baseline_severity {new_base!r}. INV-1 says the schema "
-            f"split must not move any structural value. Snapshot label: "
-            f"{label!r}."
+        assert snap_sev == cur_base, (
+            f"{nid}: snapshot severity {snap_sev!r} != current "
+            f"baseline_severity {cur_base!r}. Snapshot label: {label!r}. "
+            f"Regenerate: `python backend/scripts/generate_inventory.py` "
+            f"and update snapshot deliberately if scoring moved."
         )
 
 

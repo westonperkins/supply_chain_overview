@@ -195,7 +195,7 @@ thresholds:
     separation_factor: 3.0
   boundaries:
     critical: 0.5096065543117585
-    high: 0.386574100831867
+    high: 0.40723699915969647
     moderate: 0.1330282807796614
   # An unresolved band is declared when a required boundary has no
   # separating gap. Nodes inside the band still tier normally (backward

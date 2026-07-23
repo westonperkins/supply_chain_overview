@@ -606,7 +606,17 @@
         "confidence": "inference",
         "source_note": "Strong FCF and cash pile, but heavy customer + supplier concentration. Placeholder \u2014 retune when we have real distributions."
       },
-      "notes": "Market cap ~$5.0T (June 2026). CUDA lock-in is the real moat."
+      "notes": "Market cap ~$5.0T (June 2026). CUDA lock-in is the real moat.",
+      "substitutability": {
+        "value": 0.15,
+        "confidence": "estimate",
+        "source_note": "Paper \u00a72C: no substitute at scale for CUDA + H100/B100 in frontier AI training runs. AMD MI300 is a partial alternative at inference (paper cites qualification lag); custom silicon (TPU, Trainium) is captive and requires 2-3yr redesign. Industry-informed estimate \u2014 sub is low but nonzero because MI300 does substitute at inference workloads."
+      },
+      "lead_time_years": {
+        "value": 3.0,
+        "confidence": "estimate",
+        "source_note": "Paper \u00a72C-D: NVIDIA's chip development cadence \u2014 A100 \u2192 H100 was ~2.5yr; H100 \u2192 B100 similar. Building a competing training accelerator requires ~3yr redesign + qualification even for AMD or a captive ASIC. Industry-informed estimate."
+      }
     },
     "dynamic": {
       "market_cap": 5000000000000.0
@@ -1306,7 +1316,17 @@
         "value": 0.55,
         "confidence": "inference"
       },
-      "modeling_caveat": "Inbound HHI reads 1.0 because copper is the only modelled input. Real inputs include steel, transformers, labour and permits \u2014 Quanta is not single-sourced to the degree the number suggests."
+      "modeling_caveat": "Inbound HHI reads 1.0 because copper is the only modelled input. Real inputs include steel, transformers, labour and permits \u2014 Quanta is not single-sourced to the degree the number suggests.",
+      "substitutability": {
+        "value": 0.4,
+        "confidence": "estimate",
+        "source_note": "Paper (grid section): Quanta is one of several grid EPC contractors (Fluor, Bechtel, MYR Group). Contractor substitution is possible but constrained by skilled-labour shortage. Industry-informed estimate \u2014 sub reflects real alternatives, not monopoly."
+      },
+      "lead_time_years": {
+        "value": 3.0,
+        "confidence": "estimate",
+        "source_note": "Paper (grid section): transmission-project mobilization + build cycle 3-5yr for typical scope, longer for major HV corridors. Industry-informed estimate \u2014 lead time is project-cycle, not decade-scale mine/fab."
+      }
     }
   },
   {

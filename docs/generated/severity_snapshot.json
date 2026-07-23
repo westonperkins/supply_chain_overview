@@ -1,5 +1,5 @@
 {
-  "captured_at_pass": "pass_c_threshold_fixes",
+  "captured_at_pass": "pass_h_investigation",
   "nodes": {
     "mineral:gallium": {
       "severity": 0.4802713494238954,
@@ -170,8 +170,8 @@
       "outbound_criticality": 0.09743456413885744
     },
     "company:nvidia": {
-      "severity": null,
-      "tier": "unscored",
+      "severity": 0.35450725887811113,
+      "tier": "moderate",
       "concentration": 0.9802,
       "inbound_hhi": 0.9802,
       "outbound_criticality": 0.5401225192530577
@@ -359,8 +359,8 @@
       "outbound_criticality": 0.1819268342116367
     },
     "company:quanta_services": {
-      "severity": null,
-      "tier": "unscored",
+      "severity": 0.038898517140345555,
+      "tier": "none",
       "concentration": 0.15236677911939359,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.15236677911939359
