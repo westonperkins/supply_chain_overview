@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { ChokepointTier, Event, Narration, Node, NodeType, SourcedValue } from "../types";
+import { displayTier } from "../types";
 import { api } from "../api";
 
 interface Props {
@@ -57,10 +58,9 @@ function NodeList({
 
   const filtered = nodes.filter((n) => {
     if (typeFilter.size > 0 && !typeFilter.has(n.type)) return false;
-    // Pass F — read baseline_tier (structural). Default to "unscored"
-    // rather than "none" when the field is absent, so a node without
-    // a scored severity is honestly labelled, not silently green.
-    const tier = (n.dynamic.baseline_tier ?? "unscored") as ChokepointTier;
+    // Pass G Part 3 — displayTier guard: baseline_severity === null
+    // → "unscored" regardless of any current_tier value.
+    const tier = displayTier(n);
     if (tierFilter.size > 0 && !tierFilter.has(tier)) return false;
     return true;
   });
@@ -140,7 +140,7 @@ function NodeList({
               </div>
             </div>
             <div style={{ textAlign: "right" }}>
-              <TierBadge tier={n.dynamic.baseline_tier ?? "unscored"} />
+              <TierBadge tier={displayTier(n)} />
               <div className="meta" style={{ marginTop: 4 }}>
                 {fmt(n.dynamic.baseline_severity)}
               </div>

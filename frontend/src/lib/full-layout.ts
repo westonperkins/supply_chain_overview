@@ -274,7 +274,13 @@ export function computeFullLayout(
     const tierCounts = { critical: 0, high: 0, moderate: 0, none: 0, unscored: 0 };
     let worstTier: "critical" | "high" | "moderate" | "none" = "none";
     for (const n of inLayer) {
-      const t = (n.dynamic.baseline_tier ?? "unscored") as keyof typeof tierCounts;
+      // Pass G Part 3 — displayTier guard: baseline_severity === null →
+      // "unscored", regardless of any current_tier value.
+      const t = (
+        n.dynamic.baseline_severity == null
+          ? "unscored"
+          : (n.dynamic.baseline_tier ?? "unscored")
+      ) as keyof typeof tierCounts;
       tierCounts[t]++;
       if (t !== "unscored" && tierOrder.indexOf(t) < tierOrder.indexOf(worstTier)) {
         worstTier = t;

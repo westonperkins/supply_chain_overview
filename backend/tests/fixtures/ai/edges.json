@@ -2300,5 +2300,397 @@
       "source_note": "Paper \u00a72D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share. Industry-informed estimate \u2014 AMAT has a real but modest inspection / metrology business behind KLA; Hitachi third-tier."
     },
     "input_share": 0.03
+  },
+  {
+    "id": "e:nvidia-located-usa",
+    "source_id": "company:nvidia",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Santa Clara CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:broadcom-located-usa",
+    "source_id": "company:broadcom",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 San Jose CA HQ (post 2018 relocation to US from Singapore). Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:amd-located-usa",
+    "source_id": "company:amd",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Santa Clara CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:intel-located-usa",
+    "source_id": "company:intel",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Santa Clara CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:applied_materials-located-usa",
+    "source_id": "company:applied_materials",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Santa Clara CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:lam_research-located-usa",
+    "source_id": "company:lam_research",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Fremont CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:kla-located-usa",
+    "source_id": "company:kla",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Milpitas CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:marvell-located-usa",
+    "source_id": "company:marvell",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Santa Clara CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:google-located-usa",
+    "source_id": "company:google",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Mountain View CA HQ (Alphabet). Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:amazon-located-usa",
+    "source_id": "company:amazon",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Seattle WA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:microsoft-located-usa",
+    "source_id": "company:microsoft",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Redmond WA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:meta-located-usa",
+    "source_id": "company:meta",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Menlo Park CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:xai-located-usa",
+    "source_id": "company:xai",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 San Francisco CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:openai-located-usa",
+    "source_id": "company:openai",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 San Francisco CA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:micron-located-usa",
+    "source_id": "company:micron",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Boise ID HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:constellation_energy-located-usa",
+    "source_id": "company:constellation_energy",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Baltimore MD HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:vistra-located-usa",
+    "source_id": "company:vistra",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Irving TX HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:talen_energy-located-usa",
+    "source_id": "company:talen_energy",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 The Woodlands TX HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:nextera_energy-located-usa",
+    "source_id": "company:nextera_energy",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Juno Beach FL HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:duke_energy-located-usa",
+    "source_id": "company:duke_energy",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Charlotte NC HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:ge_vernova-located-usa",
+    "source_id": "company:ge_vernova",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Cambridge MA HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:quanta_services-located-usa",
+    "source_id": "company:quanta_services",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Houston TX HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:vertiv-located-usa",
+    "source_id": "company:vertiv",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Westerville OH HQ. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:mp_materials-located-usa",
+    "source_id": "company:mp_materials",
+    "target_id": "country_region:usa",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Las Vegas NV HQ; operates Mountain Pass CA. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:lynas-located-australia",
+    "source_id": "company:lynas",
+    "target_id": "country_region:australia",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Perth HQ; operates Malaysian refining plant separately modelled. Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:nikon-located-japan",
+    "source_id": "company:nikon",
+    "target_id": "country_region:japan",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Tokyo HQ (Nikon Corporation Precision Equipment). Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:canon-located-japan",
+    "source_id": "company:canon",
+    "target_id": "country_region:japan",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Tokyo HQ (Canon Inc.). Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
+  },
+  {
+    "id": "e:hitachi_high_tech-located-japan",
+    "source_id": "company:hitachi_high_tech",
+    "target_id": "country_region:japan",
+    "type": "located_in",
+    "input_share": 1.0,
+    "domains": [
+      "ai"
+    ],
+    "static": {
+      "confidence": "hard",
+      "source_note": "Public HQ location \u2014 Tokyo HQ (Hitachi High-Tech Corporation). Added in Pass G located_in backfill so the frontend can render a country badge. `located_in` is not a supply edge and does not enter concentration/HHI (verified by severity_diff)."
+    }
   }
 ]

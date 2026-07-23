@@ -52,6 +52,22 @@ export interface DynamicFields {
   last_updated?: string | null;
 }
 
+// Pass G Part 3 — display-tier guard.
+//
+// Pass H's cascade fix writes current_severity on unscored nodes and
+// re-derives current_tier from it — so a node with
+// baseline_severity === null can now carry current_tier: "none" (green).
+// Any frontend colour/class resolution MUST use this helper, not raw
+// current_tier / baseline_tier reads, so a future current_tier colouring
+// mode cannot silently paint an unscored node green even if the backend
+// invariant "current_tier stays unscored when baseline_tier is unscored"
+// hasn't landed. Applies to every tier→colour path: ChokepointNode,
+// SummaryNode counts, Dashboard filters + badges.
+export function displayTier(node: Node): ChokepointTier {
+  if (node.dynamic.baseline_severity == null) return "unscored";
+  return node.dynamic.baseline_tier ?? "unscored";
+}
+
 // The rendered narration payload from `/nodes/{id}/narration`.
 export interface NarrationSection {
   key: string;

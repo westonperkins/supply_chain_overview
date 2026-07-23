@@ -1,5 +1,6 @@
 import { Handle, Position } from "@xyflow/react";
 import type { Node } from "../../types";
+import { displayTier } from "../../types";
 import { useHoverState } from "../../lib/hover-context";
 
 type Data = {
@@ -10,17 +11,19 @@ type Data = {
 export function ChokepointNode({ id, data }: { id: string; data: Data }) {
   const n = data.node;
   const badge = data.badge;
-  // Pass F — read baseline_tier (structural). current_tier waits for the
-  // news-ingestion pass. Default to "unscored" when the field is absent so
-  // an unfamiliar node reads as "not rated" rather than silently green.
-  const tier = n.dynamic.baseline_tier ?? "unscored";
+  // Pass G — displayTier applies the belt-and-braces guard:
+  // baseline_severity === null → "unscored" regardless of any other
+  // tier field. Pass H's cascade can raise current_severity on unscored
+  // nodes and re-derive a scored current_tier from it; without this
+  // guard, a future colouring-by-current mode could paint them green.
+  const tier = displayTier(n);
   const icon =
     n.type === "facility" ? "🏭"
     : n.type === "mineral"  ? "⛏"
     : n.type === "product"  ? "◆"
     : null;
 
-  const { focused, inTrail, dimmed } = useHoverState(id);
+  const { focused, inTrail, dimmed, pinned } = useHoverState(id);
   // Inline styles because CSS class specificity was fighting with the base
   // .tier-critical rules and losing. Inline styles beat class selectors.
   const hoverStyle: React.CSSProperties = focused
@@ -43,7 +46,7 @@ export function ChokepointNode({ id, data }: { id: string; data: Data }) {
     : { transition: "outline 0.12s ease, opacity 0.15s ease, transform 0.12s ease" };
 
   return (
-    <div className={`glance-node type-${n.type} tier-${tier}`} style={hoverStyle}>
+    <div className={`glance-node type-${n.type} tier-${tier}${pinned ? " is-pinned" : ""}`} style={hoverStyle}>
       <Handle type="target" position={Position.Left} />
       <div className="glance-node-body">
         <div className="glance-node-title">

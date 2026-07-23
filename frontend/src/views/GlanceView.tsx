@@ -131,6 +131,13 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
   // header toggles when they want to focus on a slice.
   const [collapsed, setCollapsed] = useState<Set<MetaLayerId>>(new Set());
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  // Pass G — pinned-trail inspect mode. `pinMode` toggles the click
+  // behaviour (pin vs navigate); `pinnedId` is the currently pinned
+  // node when pinMode is on. Both MUST route through HoverContext /
+  // imperative DOM classes only — never into the flowNodes / flowEdges
+  // useMemo deps below (see the block comment above those memos).
+  const [pinMode, setPinMode] = useState<boolean>(false);
+  const [pinnedId, setPinnedId] = useState<string | null>(null);
   const rf = useReactFlow();
   const flowWrapRef = useRef<HTMLDivElement>(null);
 
@@ -154,10 +161,28 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
     return () => clearTimeout(t);
   }, [collapsed, rf]);
 
+  // Active trail = hover if present, else pin. Hover previews; when it
+  // clears we revert to the pin instead of going dark (spec §Part 2).
+  const activeTrailId = hoveredId ?? pinnedId;
   const highlight = useMemo<Highlight | null>(() => {
-    if (!hoveredId) return null;
-    return computeReachable(hoveredId, layout.flowEdges);
-  }, [hoveredId, layout.flowEdges]);
+    if (!activeTrailId) return null;
+    return computeReachable(activeTrailId, layout.flowEdges);
+  }, [activeTrailId, layout.flowEdges]);
+
+  // Esc clears the pin. Kept outside the flowNodes / flowEdges memo path.
+  useEffect(() => {
+    if (!pinnedId) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPinnedId(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [pinnedId]);
+
+  // Turning pin mode off clears any orphan pin.
+  useEffect(() => {
+    if (!pinMode) setPinnedId(null);
+  }, [pinMode]);
 
   // -------------------------------------------------------------------- //
   // STABLE flowNodes / flowEdges — no hover dependency, ever.            //
@@ -221,10 +246,11 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
   const hoverValue: HoverState = useMemo(
     () => ({
       hoveredId,
+      pinnedId,
       trailNodes: highlight ? highlight.nodes : null,
       trailEdges: highlight ? highlight.edges : null,
     }),
-    [hoveredId, highlight],
+    [hoveredId, pinnedId, highlight],
   );
 
   useEffect(() => {
@@ -287,8 +313,28 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
             </button>
           );
         })}
+        <label
+          className={`layer-toggle pin-toggle ${pinMode ? "is-collapsed" : "is-expanded"}`}
+          title={
+            pinMode
+              ? "Pin mode on — click a node to pin its trail; Esc / empty canvas / same node clears"
+              : "Off: clicking a node opens Detail. Toggle on to pin trails for zooming without losing them."
+          }
+        >
+          <input
+            type="checkbox"
+            checked={pinMode}
+            onChange={(e) => setPinMode(e.target.checked)}
+            style={{ marginRight: 6 }}
+          />
+          <span className="layer-toggle-label">Pin trail (inspect)</span>
+        </label>
         <div className="glance-hover-hint">
-          hover a node → highlight its full up + downstream chain
+          {pinMode
+            ? (pinnedId
+                ? "Pinned. Hover previews other trails; move off → back to pin. Click same node / Esc / empty canvas clears."
+                : "Click any node to pin its trail. Zoom without losing it. Esc clears.")
+            : "hover a node → highlight its full up + downstream chain"}
         </div>
       </div>
 
@@ -320,12 +366,22 @@ function GlanceInternal({ nodes, edges, onSelectNode }: Props) {
           }}
           onNodeClick={(_, node) => {
             if (
-              node.type !== "summary" &&
-              node.type !== "country" &&
-              node.type !== "columnLabel"
+              node.type === "summary" ||
+              node.type === "country" ||
+              node.type === "columnLabel"
             ) {
+              return;
+            }
+            if (pinMode) {
+              // Pin toggle: same node clears; different node moves the pin.
+              setPinnedId((cur) => (cur === node.id ? null : node.id));
+            } else {
               onSelectNode?.(node.id);
             }
+          }}
+          onPaneClick={() => {
+            // Clicking empty canvas clears the pin.
+            if (pinMode) setPinnedId(null);
           }}
         >
           <Background gap={24} size={1} color="var(--border)" />

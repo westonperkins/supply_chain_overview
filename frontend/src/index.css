@@ -462,6 +462,32 @@ html, body, #root {
   fill: var(--muted);
 }
 
+/* ---------- Pin toggle (Pass G) --------------- */
+.layer-toggle.pin-toggle {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  cursor: pointer;
+  user-select: none;
+}
+.layer-toggle.pin-toggle input { cursor: pointer; }
+
+/* Pinned node — persistent accent outline + pin glyph. Distinguishable
+   from a hovered node (which uses the same accent but transient). */
+.glance-node.is-pinned {
+  outline: 3px dashed var(--accent);
+  outline-offset: 4px;
+  position: relative;
+}
+.glance-node.is-pinned::after {
+  content: "📌";
+  position: absolute;
+  top: -10px;
+  right: -6px;
+  font-size: 14px;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.6));
+}
+
 /* ---------- Chokepoint node (tier-colored) --------------- */
 
 .glance-node {
