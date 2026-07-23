@@ -1022,6 +1022,12 @@ html, body, #root {
   color: var(--muted);
   font-style: italic;
 }
+.trail-strip-error {
+  color: var(--muted);
+  font-style: italic;
+  border-left: 2px solid var(--unscored);
+  padding-left: 8px;
+}
 .trail-strip-section {
   display: flex;
   flex-direction: column;

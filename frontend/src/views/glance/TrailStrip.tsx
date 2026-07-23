@@ -30,6 +30,12 @@ import { api } from "../../api";
 // with view state. One canonical source.
 
 const DEBOUNCE_MS = 150;
+// Pass I.1 correction — a failed fetch is NOT cached for the session.
+// Next hover retries the request. To avoid hammering a dead backend
+// (e.g. a long restart), the failure gets a short-TTL marker instead
+// — 10 s is enough to ride through a restart while still self-healing
+// without a hard reload.
+const FAILURE_TTL_MS = 10_000;
 const TYPE_GLYPH: Record<string, string> = {
   mineral: "⛏",
   product: "◆",
@@ -37,6 +43,15 @@ const TYPE_GLYPH: Record<string, string> = {
   facility: "🏭",
   country_region: "🌐",
 };
+
+// Pass I.1 correction — the ONE authored string that must not come from
+// narration.yaml. Rendering it depends precisely on the fetch that just
+// failed, so serving it via that same fetch would be a lamp that needs
+// electricity to report a power cut. Hardcoded in TS as UI chrome —
+// same category as the empty-state hint that already lives here, not
+// data prose. Every glance-DATA sentence continues to be authored on
+// the backend.
+const ERROR_HINT = "narration unavailable — hover again to retry";
 
 interface Props {
   nodes: Node[];
@@ -48,23 +63,43 @@ export function TrailStrip({ nodes, badges }: Props) {
   const activeId = ctx.hoveredId ?? ctx.pinnedId;
   const nodeById = useMemo(() => new Map(nodes.map((n) => [n.id, n])), [nodes]);
 
-  const cacheRef = useRef<Map<string, Glance | null>>(new Map());
+  // Success cache — Glance objects live for the session.
+  const cacheRef = useRef<Map<string, Glance>>(new Map());
+  // Failure cache — timestamp of last failed fetch per id. Cleared on
+  // success or when TTL expires; never session-sticky. This is the
+  // fix for the blank-strip bug (a single transient failure permanently
+  // blanking that node until hard reload, with no console output).
+  const failureRef = useRef<Map<string, number>>(new Map());
   const [glance, setGlance] = useState<Glance | null>(null);
   const [pending, setPending] = useState<boolean>(false);
+  const [failed, setFailed] = useState<boolean>(false);
 
   useEffect(() => {
     if (!activeId) {
       setGlance(null);
       setPending(false);
+      setFailed(false);
       return;
     }
     const cached = cacheRef.current.get(activeId);
     if (cached !== undefined) {
       setGlance(cached);
       setPending(false);
+      setFailed(false);
+      return;
+    }
+    // If a recent failure is still in-window, show the failure state
+    // without hitting the backend again. Beyond the TTL, retry on
+    // this render.
+    const lastFailure = failureRef.current.get(activeId);
+    if (lastFailure !== undefined && Date.now() - lastFailure < FAILURE_TTL_MS) {
+      setGlance(null);
+      setPending(false);
+      setFailed(true);
       return;
     }
     setPending(true);
+    setFailed(false);
     let cancelled = false;
     const timer = setTimeout(() => {
       api
@@ -72,15 +107,27 @@ export function TrailStrip({ nodes, badges }: Props) {
         .then((n) => {
           if (cancelled) return;
           const g = n.glance ?? null;
-          cacheRef.current.set(activeId, g);
+          if (g) {
+            cacheRef.current.set(activeId, g);
+            failureRef.current.delete(activeId);
+          }
           setGlance(g);
           setPending(false);
+          setFailed(false);
         })
-        .catch(() => {
+        .catch((err) => {
           if (cancelled) return;
-          cacheRef.current.set(activeId, null);
+          // Pass I.1 correction — do NOT write to the success cache.
+          // Record a timestamp so a subsequent hover in the next 10 s
+          // shows the failure state without hammering the backend,
+          // but never lock the id out for the session. And surface the
+          // error to the console; the swallowed error is what turned
+          // this into a screenshot-diagnosis last time.
+          console.error("glance fetch failed", activeId, err);
+          failureRef.current.set(activeId, Date.now());
           setGlance(null);
           setPending(false);
+          setFailed(true);
         });
     }, DEBOUNCE_MS);
     return () => {
@@ -148,7 +195,11 @@ export function TrailStrip({ nodes, badges }: Props) {
       <div className="trail-strip-body">
         <div className="trail-strip-summary">
           {glance?.summary ??
-            (pending ? <span className="trail-strip-pending">loading…</span> : null)}
+            (pending ? (
+              <span className="trail-strip-pending">loading…</span>
+            ) : failed ? (
+              <span className="trail-strip-error">{ERROR_HINT}</span>
+            ) : null)}
         </div>
 
         {glance && glance.supply_lines.length > 0 && (
