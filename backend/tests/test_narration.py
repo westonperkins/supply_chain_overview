@@ -34,7 +34,14 @@ def test_no_section_body_is_empty_or_dangling(graph, narration_builder):
     assert not offenders, offenders[:5]
 
 
+SEVERITY_WORDS = ("critical", "high", "moderate", "low")
+
+
 def test_tier_word_in_why_title_matches_chokepoint_tier(graph, narration_builder):
+    """Scored nodes only: the why-section title contains the tier word.
+    Pass E — unscored nodes are handled by
+    test_unscored_why_section_title_and_body_are_authored below; this
+    test no longer skips them silently (that hid 42 panels)."""
     tier_words = {
         "critical": "critical",
         "high": "high",
@@ -44,21 +51,13 @@ def test_tier_word_in_why_title_matches_chokepoint_tier(graph, narration_builder
     mismatches = []
     for node in graph.nodes.values():
         narr = narration_builder.build(node.id)
-        # Pass D — narration reads BASELINE tier (structural). "Why it
-        # scores X" is the structural story; live/current tier is a
-        # future narration-pass concern.
         tier = (
             node.dynamic.baseline_tier.value
             if node.dynamic.baseline_tier
             else "none"
         )
-        # Narration text for `unscored` is a narration-layer concern
-        # explicitly out of scope for the honesty-fixes pass. Skip these
-        # nodes for the title-word check; their tier value is `unscored`
-        # and no severity word applies. Guarded by
-        # test_no_unscored_node_appears_in_tier_counts elsewhere.
         if tier == "unscored":
-            continue
+            continue  # covered explicitly by the unscored test below
         expected_word = tier_words[tier]
         for s in narr["sections"]:
             if s["key"] != "why_scores":
@@ -70,6 +69,76 @@ def test_tier_word_in_why_title_matches_chokepoint_tier(graph, narration_builder
             if expected_word not in title:
                 mismatches.append((node.id, tier, s["title"]))
     assert not mismatches, mismatches[:5]
+
+
+def test_unscored_why_section_title_and_body_are_authored(graph, narration_builder):
+    """Pass E — every unscored node's why-section renders authored copy:
+      - title contains the authored unscored wording and NONE of the
+        severity words {critical, high, moderate, low}
+      - body is non-empty and names a missing axis (or generic fallback)
+      - no {tier} placeholder and no literal 'unscored' token leak into
+        any title or body (INV-4)
+    """
+    from app.schema.enums import ChokepointTier
+
+    checked = 0
+    for node in graph.nodes.values():
+        if node.dynamic.baseline_tier != ChokepointTier.UNSCORED:
+            continue
+        checked += 1
+        narr = narration_builder.build(node.id)
+        why = next((s for s in narr["sections"] if s["key"] == "why_scores"), None)
+        assert why is not None, (
+            f"{node.id} unscored: no why_scores section rendered"
+        )
+
+        # Title contains authored wording (case-insensitive substring)
+        title_lower = why["title"].lower()
+        assert "why this isn't scored" in title_lower, (
+            f"{node.id}: unscored title unexpected: {why['title']!r}"
+        )
+        # And none of the severity words
+        for sev_word in SEVERITY_WORDS:
+            assert sev_word not in title_lower, (
+                f"{node.id}: unscored title contains severity word "
+                f"{sev_word!r}: {why['title']!r}"
+            )
+
+        # Body is non-empty and names a reason (missing axis or generic).
+        body = why["body"]
+        assert body and body.strip(), f"{node.id}: unscored body empty"
+        acceptable = [
+            "no substitutability value on record",
+            "no lead-time value on record",
+            "required static axes for scoring are absent",  # generic fallback
+        ]
+        assert any(phrase in body for phrase in acceptable), (
+            f"{node.id}: unscored body names no missing-axis reason: {body!r}"
+        )
+
+    assert checked == 42, (
+        f"expected 42 unscored nodes to check, got {checked}. "
+        f"If the graph's scored/unscored split changed, update this "
+        f"count deliberately (not silently)."
+    )
+
+
+def test_no_placeholder_or_unscored_token_leaks_into_any_rendered_text(
+    graph, narration_builder,
+):
+    """INV-4: no `{tier}` placeholder and no literal `unscored` token
+    appears in any rendered title or body across all 66 nodes."""
+    offenders = []
+    for node in graph.nodes.values():
+        narr = narration_builder.build(node.id)
+        for s in narr["sections"]:
+            for field in ("title", "body"):
+                text = s.get(field, "")
+                if "{tier}" in text:
+                    offenders.append((node.id, s["key"], field, "{tier} placeholder"))
+                if "unscored" in text.lower():
+                    offenders.append((node.id, s["key"], field, "literal 'unscored'"))
+    assert not offenders, offenders[:5]
 
 
 def test_modeling_caveats_render(graph, narration_builder):

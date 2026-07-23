@@ -42,7 +42,20 @@ class NarrationConfig:
         tier: str,
     ) -> Optional[str]:
         """Returns the section title for the given (type, section), or None to
-        signal the section is omitted for this type."""
+        signal the section is omitted for this type.
+
+        Pass E — when tier == 'unscored', a dedicated per-section title from
+        the `unscored.section_titles` block is used. It never runs through
+        the {tier} → tier_words substitution that would otherwise resolve to
+        the literal token `unscored` or a severity word (INV-4)."""
+        if tier == "unscored":
+            override = self.raw.get("unscored", {}).get("section_titles", {}).get(section_key)
+            if override is not None:
+                return override
+            # No override for this (unscored, section) — fall through so
+            # sections we haven't authored for (where_from / what_feeds /
+            # if_broke) still render normally.
+
         type_map = self.raw["sections"].get(node_type_key, {})
         default_map = self.raw["sections"]["default"]
 
@@ -58,6 +71,11 @@ class NarrationConfig:
 
         tier_word = self.tier_words.get(tier, tier)
         return title.replace("{tier}", tier_word)
+
+    def unscored_body(self) -> dict:
+        """The authored body pieces for the unscored `why` section (Pass E).
+        See config/narration.yaml `unscored.body`."""
+        return self.raw.get("unscored", {}).get("body", {})
 
     @property
     def tier_words(self) -> dict[str, str]:

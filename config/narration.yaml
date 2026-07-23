@@ -106,6 +106,50 @@ tier_words:
   none:     "low"             # title becomes "Why it scores low"
 
 # --------------------------------------------------------------------------- #
+# Unscored panels                                                              #
+# --------------------------------------------------------------------------- #
+# A node with baseline_tier == "unscored" (== baseline_severity is None) has
+# no severity, so the "Why it scores {tier}" register does not apply.
+# Everything here is authored specifically for that case:
+#   - a fixed section title that never runs through {tier} substitution
+#   - body pieces the builder composes into an honest sentence
+# See docs/pass_e_narration_unscored_report.pdf (Pass E).
+#
+# The builder assembles from these pieces exactly as it assembles the scored
+# "why it scores" from the scale phrases — no sentence text lives in Python.
+
+unscored:
+  section_titles:
+    why_scores: "Why this isn't scored"
+
+  body:
+    intro: "This node isn't scored."
+
+    # Per-axis reason phrases. Key matches the axis name recorded on
+    # node.dynamic.scored_on_default_axes by the scoring engine — the
+    # single source of truth (Pass A `unscored` mode).
+    missing_axes:
+      substitutability: "no substitutability value on record"
+      lead_time_years:  "no lead-time value on record"
+
+    # Prefix + joiner for the missing-axis clause. The builder produces
+    # "Missing: <axis-phrase1> and <axis-phrase2>." or the singular form.
+    missing_prefix: "Missing:"
+
+    # Fallback used ONLY when scored_on_default_axes is empty/None yet
+    # baseline_severity is None (defensive — engine invariants say this
+    # should not occur; report §4 names every node that hits this branch
+    # so the invariant can be tightened if it ever fires).
+    missing_generic: "The required static axes for scoring are absent."
+
+    # Concentration addendum — what IS known, without implying severity.
+    # Rendered only when a non-zero concentration value exists on the
+    # node. Uses the same concentration scale phrases as the scored
+    # path (INV-3: concentration is a real number even for unscored).
+    concentration_addendum:
+      "Concentration is known ({phrase}, {value:.2f} on a 0–1 scale)."
+
+# --------------------------------------------------------------------------- #
 # Confidence hedging                                                           #
 # --------------------------------------------------------------------------- #
 

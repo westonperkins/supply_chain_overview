@@ -128,10 +128,16 @@ class NarrationBuilder:
             if body:
                 sections.append({"key": "what_feeds", "title": title, "body": body})
 
-        # Section 3: why it scores
+        # Section 3: why it scores — or, for unscored nodes, why it isn't
+        # scored. The unscored branch produces its own title (no {tier}
+        # substitution) and a body assembled from Pass E's authored
+        # pieces in narration.yaml `unscored.body`.
         title = self.config.section_title(type_key, "why_scores", tier)
         if title is not None:
-            body = self._build_why_scores(node, dominant_axis, acronyms_used)
+            if tier == "unscored":
+                body = self._build_unscored_why(node)
+            else:
+                body = self._build_why_scores(node, dominant_axis, acronyms_used)
             if body:
                 sections.append({"key": "why_scores", "title": title, "body": body})
 
@@ -512,6 +518,73 @@ class NarrationBuilder:
         if len(parts) == 2:
             return f"{first}, and {parts[1]}."
         return f"{first}, {parts[1]}, and {parts[2]}."
+
+    # ------------------------------------------------------------------ #
+    # Section 3b — why it isn't scored (Pass E)                           #
+    # ------------------------------------------------------------------ #
+
+    def _build_unscored_why(self, node: Node) -> Optional[str]:
+        """Assemble the unscored `why` body from the authored pieces in
+        narration.yaml `unscored.body`. Determines the missing-axis
+        reason from `node.dynamic.scored_on_default_axes` — the single
+        source of truth written by the scoring engine's unscored mode.
+
+        Every WORD comes from the config; this method only picks pieces
+        and joins them (INV-3: no prose in Python).
+        """
+        cfg = self.config.unscored_body()
+        parts: list[str] = []
+
+        intro = cfg.get("intro")
+        if intro:
+            parts.append(intro)
+
+        # Missing-axis clause. Preference: engine field
+        # (scored_on_default_axes) — the single source of truth.
+        missing = node.dynamic.scored_on_default_axes or []
+        axis_phrases_map = cfg.get("missing_axes", {})
+        rendered_reasons = [
+            axis_phrases_map[a] for a in missing if a in axis_phrases_map
+        ]
+        prefix = cfg.get("missing_prefix", "")
+        if rendered_reasons:
+            if len(rendered_reasons) == 1:
+                joined = rendered_reasons[0]
+            elif len(rendered_reasons) == 2:
+                joined = f"{rendered_reasons[0]} and {rendered_reasons[1]}"
+            else:
+                joined = (
+                    ", ".join(rendered_reasons[:-1])
+                    + f", and {rendered_reasons[-1]}"
+                )
+            parts.append(f"{prefix} {joined}.")
+        else:
+            # Fallback — engine invariants say every unscored node has at
+            # least one missing axis recorded. If we reach here, the
+            # report §4 names the node so the invariant can be tightened.
+            generic = cfg.get("missing_generic")
+            if generic:
+                parts.append(generic)
+
+        # Concentration addendum — what IS known, no severity implied.
+        conc_template = cfg.get("concentration_addendum")
+        if conc_template:
+            inbound = node.dynamic.inbound_hhi or 0.0
+            outbound = node.dynamic.outbound_criticality or 0.0
+            if inbound >= outbound and inbound > 0:
+                phrase = self.config.scale_phrase("concentration_inbound", inbound)
+                value = inbound
+            elif outbound > 0:
+                phrase = self.config.scale_phrase("concentration_outbound", outbound)
+                value = outbound
+            else:
+                phrase, value = None, None
+            if phrase and value is not None:
+                parts.append(conc_template.format(phrase=phrase, value=value))
+
+        if not parts:
+            return None
+        return " ".join(parts)
 
     # ------------------------------------------------------------------ #
     # Section 4 — if it broke                                             #
