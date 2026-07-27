@@ -17,11 +17,32 @@ Each event answers three questions:
 Ordinal from `outcomes.json` (1 = most disruption, 7 = least):
 `HBM(1) > REE(2) > gallium(3) > kachin(4) > taiwan(5) > asml(6) > nexperia(7)`.
 
+> **⚠ Pass J.1 correction (§1).** The paragraph immediately below stated the
+> model ordering was `by (origin_scale, max_delta)`. That lexicographic sort
+> does NOT produce the ordering that follows it (under that sort, kachin
+> ranks 3, not 5). The ordering was in fact a pure `max_delta` sort.
+> Rank is now computed in `backend/scripts/replay_events.py::_rank_events`
+> and emitted in `summary.md` as `model_rank`. All grading below cites
+> `model_rank` from that file rather than restating an ordering.
+
 Model ordering by `(origin_scale, max_delta)` from the summary:
 `REE(1) > gallium(2) > taiwan(3) > HBM(4) > kachin(5) > asml(6) ≈ nexperia(7)`.
 
+> **⚠ Pass J.1 restatement.** The authoritative model ordering is now
+> `model_rank` in `docs/generated/replay/summary.md` (metric: `max_delta ↓`,
+> tie-broken by `nodes_reached ↓, origin_scale ↓, event_id ↑`):
+> `REE(1) > gallium(2) > taiwan(3) > HBM(4) > kachin(5) > asml(6) ≈ nexperia(7)`.
+> An alternate metric `rank_by_origin_scale` is also emitted (Pass J.1 §2):
+> `REE(1) > gallium(2) > kachin(3) > taiwan(4) > HBM(5) > asml(6) ≈ nexperia(7)`.
+> The two metrics disagree by ≥ 2 slots on **kachin** (3 ↔ 5) — see F-J-5.
+
 Two big rank inversions to explain: **HBM 1→4** (the model badly under-fires
 the story of 2024-25) and **Taiwan 5→3** (moderate model over-fire).
+
+> **⚠ Pass J.1 restatement of A-J-2 inversion.** Under `model_rank` the HBM
+> inversion is 1 → 4; under `rank_by_origin_scale` it is 1 → 5. A-J-2's row
+> in the findings table quotes the primary-metric number and cross-notes the
+> alternate.
 
 ---
 
@@ -178,15 +199,42 @@ warnings, downstream motor/actuator effects; ranking 2 of 7.
 | id | event | classification | one-line description |
 |---|---|---|---|
 | **F-J-1** | Taiwan quake | FORMULA ARTIFACT | Concentration axis reads a transient event as a structural share loss; no time-decay to attenuate. |
-| **F-J-2** | Kachin KIA | FORMULA ARTIFACT | Unscored-origin seed (concentration × magnitude) under-fires when the target's downstream input_share is small; the paper's canonical case survives with severity in the noise floor. |
+| **F-J-2** | Kachin KIA | FORMULA ARTIFACT | ⚠ Pass J.1 amendment: Kachin under-fires because Kachin's own **concentration** is low (≈ 0.15 implied by seed 0.030 ÷ magnitude 0.20 ÷ confidence 1.0), NOT because the unscored-origin seed under-weights in general. The seeding mechanism itself over-weights unscored origins — see [[F-J-4]]. The remaining defect for Kachin is that the downstream dampens further via dysprosium's low `input_share` (0.20) into NdFeB, so the paper's canonical "news says Kachin, impact is dysprosium" case survives with severity in the noise floor. |
 | **F-J-3** | gallium ban, REE licence | FORMULA ARTIFACT | Country-origin fanout — a single-magnitude event at country_region walks over every outbound supply edge equally; ban-specificity ("this mineral, not that one") cannot be represented without per-edge event scoping. |
+| **F-J-4** | any country-origin event | FORMULA ARTIFACT | **Pass J.1 §7.** Unscored origins systematically **out-seed** scored origins. The unscored seed is `concentration × magnitude × confidence`; the scored seed is `baseline_severity × magnitude × confidence`. Since `severity = concentration × (1 − substitutability) × lead_time_norm` and both remaining factors are ≤ 1, `severity ≤ concentration` always. Committed evidence from `docs/generated/replay/J-2024-12-china-gallium.md`: at identical magnitude, `country_region:china` (unscored) seeds **0.248** while `mineral:gallium` (scored, tier `high`, baseline 0.480) seeds **0.147**. Under live ingestion, country-origin events are the majority case, so this dominates in practice. Shares fix surface with [[F-J-3]] but is a separable defect (seed weight vs edge scoping). |
+| **F-J-5** | Kachin KIA (metric-instability exemplar) | FORMULA ARTIFACT | **Pass J.1 §2.** The model's severity ordering of the event set depends on which observable is chosen as the ordering statistic. The two available observables — `max_delta` and `origin_scale` — disagree by ≥ 2 slots on kachin (`model_rank` 5, `rank_by_origin_scale` 3). Live ingestion cannot rank events without picking one; the picked metric materially changes which events lead. |
 | **A-J-1** | ASML export licence | AXIS EXPRESSIVENESS | Demand-side restriction on a supplier has no axis. Even with an ASML→China edge, "restrict downstream customers by geography" would not map onto concentration / substitutability / lead_time. |
-| **A-J-2** | HBM sellout | AXIS EXPRESSIVENESS | The pipeline reads only `concentration_delta`. Capacity-commitment events whose real signal sits in `lead_time_delta` and `substitutability_delta` are systematically under-weighted — the single largest rank inversion in the set (1 → 4). |
+| **A-J-2** | HBM sellout | AXIS EXPRESSIVENESS | The pipeline reads only `concentration_delta`. Capacity-commitment events whose real signal sits in `lead_time_delta` and `substitutability_delta` are systematically under-weighted. ⚠ Pass J.1 restatement: the HBM inversion is **1 → 4 under `model_rank`** (primary metric) and **1 → 5 under `rank_by_origin_scale`** (alternate). The finding stands under either metric; the size is metric-dependent. See [[F-J-5]]. |
 | **D-J-1** | ASML export licence | DATA GAP | No ASML→China edge (nor should there be for AI graph); recorded as a pre-registered gap because a demand-side-axis fix without this data would still produce nothing. |
 | **D-J-2** | gallium ban | DATA GAP | Germanium is not modelled. Pre-registered in Phase A. If ingestion targets Dec 2024 material, needs a node. |
 | **D-J-3** | REE licence | DATA GAP | Dysprosium's real irreplaceability in NdFeB is not captured by the mass-fraction `input_share` of 0.20. Needs a criticality-of-share concept for "small mass fraction, no substitute" cases. |
-| **D-J-4** | Nexperia | DATA GAP | No explicit "unresolved event / out-of-domain" signal; silent zero is indistinguishable from an in-domain zero-magnitude event. |
+| **D-J-4** | Nexperia | DATA GAP | ⚠ Pass J.1 correction: probe `P-J-1` (nexperia copy with injected `concentration_delta = 0.20`, artifact `docs/generated/replay/probes/P-J-1.md`) reaches **0 nodes**. `country_region:netherlands` has `concentration = 0.0` and **no outbound material-flow edges** (only `located_in` inbound from ASML). The null in Pass J was **structural**, not a spurious partial match suppressed by the authored zero magnitude. The finding weakens: an unresolved-event signal is still useful for corpus visibility, but out-of-domain events do not, on the current graph, produce a spurious cascade even at non-zero magnitude. See §Nexperia sensitivity probe below and Pass J.1 §6. |
 | **H-J-1** | Taiwan quake (rank) | HONEST DISAGREEMENT | Rank 3 vs 5 is a two-slot inversion, but within the authoring-basis uncertainty. Not a defect requiring code work — logged as a data point for future recalibration once several similar physical-halt events are in the corpus. |
+
+## Nexperia sensitivity probe — Pass J.1 §6
+
+The probe `P-J-1` is a copy of `J-2025-10-nexperia` with `concentration_delta`
+injected to 0.20 (all other fields byte-identical). It is quarantined in
+`data/ai/replay/probes.json`, run via `python backend/scripts/replay_events.py
+--probes`, and its artifact lives at `docs/generated/replay/probes/P-J-1.md`.
+Probes never enter `summary.md`, `model_rank`, or `outcomes.json`.
+
+Result: **nodes reached = 0**; max Δ = +0.000; top-5 affected = (none);
+**none** of the six pre-registered nodes (`company:asml`, `company:tsmc`,
+`company:samsung`, `company:intel`, `company:sk_hynix`, `company:micron`) is
+touched.
+
+Mechanism: `country_region:netherlands` is the only matched entity;
+`_event_source_scale` for an unscored origin returns
+`concentration × magnitude × confidence`; Netherlands has `concentration = 0.0`
+(no material-flow outbound edges — only `located_in` inbound from ASML). Seed
+is `0.0 × 0.20 × 0.7 = 0.0` so no walk occurs, and even if it did, there are
+no `mines`/`refines`/`supplies`/`input_to`/`component_of` edges from
+Netherlands to traverse.
+
+Per the Pass J.1 §6 pre-registration, this is **branch (2): reach was zero
+and the null was structural.** D-J-4's framing is weakened accordingly —
+recorded inline in the findings table above.
 
 ## Ingestion gate list
 
@@ -202,10 +250,25 @@ Findings that **must** close before live news ingestion can be built:
   news ingestion runs many China-source events; the pipeline needs a way
   to say "this event targets these edges" rather than "this event is at
   this origin".
-- **D-J-4 (unresolved-event signal).** Silent zero cascades from
-  out-of-domain events would be indistinguishable from real in-domain
-  events with zero-magnitude axes; ingestion needs an explicit
-  "unresolved / out-of-domain" result state.
+- **F-J-4 (unscored origins out-seed scored).** Added Pass J.1 §7.
+  Unscored origins (every `country_region`) seed the walk with
+  `concentration × magnitude × confidence`, which mathematically
+  dominates the `baseline_severity × magnitude × confidence` seed used
+  for scored origins at the same concentration. Country-origin events
+  are the majority case under live ingestion, so this bias runs
+  everywhere. Shares fix surface with F-J-3 (both involve rethinking
+  how country-origin events enter the walk) but is a separable defect
+  — do not merge them into one finding.
+- **D-J-4 (unresolved-event signal).** ⚠ Weakened by Pass J.1 §6 probe
+  P-J-1: the Pass J null on Nexperia was **structural** (Netherlands
+  has zero concentration and no material-flow outbound edges), not a
+  spurious partial match suppressed by the authored zero magnitude.
+  The gate remains — ingestion still benefits from an explicit
+  unresolved/out-of-domain signal for corpus visibility and matcher
+  telemetry — but the framing "silent zero indistinguishable from
+  in-domain zero-magnitude" is no longer supported by the observed
+  behaviour. Kept on the must-close list for the visibility benefit;
+  reprioritise if that alone is judged insufficient.
 
 Findings that **can wait** until after first ingestion:
 
@@ -214,8 +277,12 @@ Findings that **can wait** until after first ingestion:
   the corpus contains multiple examples.
 - **F-J-1 (transient vs structural).** Real, but time-decay is its own
   design pass; the transient-event over-fire is bounded per-event.
-- **F-J-2 (unscored-origin seed floor).** Improves Kachin-style upstream
-  events; not a blocker for the majority of events which have scored
+- **F-J-2 (Kachin-style low-concentration origins).** ⚠ Pass J.1
+  amendment: the diagnosis was originally "unscored-origin seed
+  under-fires". Per F-J-4, unscored-origin seeding OVER-weights in
+  general; Kachin under-fires specifically because Kachin's own
+  concentration is low. Improves Kachin-style upstream events; not a
+  blocker for the majority of events which have scored
   origins.
 - **D-J-1, D-J-2, D-J-3 (data gaps).** Add nodes/edges/weights as the
   news corpus surfaces them; not preconditions.

@@ -23,9 +23,23 @@ scored severities.
 Asserts against baseline severity (== current_severity today; see the
 schema gap in test_tier_coherence).
 """
+import hashlib
 import statistics
 
 import pytest
+
+# Pass J.1 §3 — pinned SHA-256 of every KNOWN_MISS_XFAIL_REASONS value.
+# A defect that recurred across passes (the report characterising xfails
+# by non-existent function names and calling both misses `moderate` when
+# one is `none`) gets a machine check, not another prose reminder. The
+# hashes below are computed over the exact reason string bytes; a spec
+# change that legitimately edits a reason must update the hash in the
+# SAME commit as the string, and cite the spec authorising the change.
+# Do not update the hash alone — that path defeats the pin.
+KNOWN_MISS_XFAIL_REASON_HASHES = {
+    "product:hbm":             "ba782ac27eb403b643f212083d95ab720175c3518800e21c6aee45764a03db2e",
+    "product:rf_power_semis":  "8186bf40fc6413be215cef6ff983a8cec52ac2c0f7e116ed7e07593d81d3f131",
+}
 
 PAPER_CHOKEPOINTS = [
     ("company:tsmc",                 "TSMC"),
@@ -105,3 +119,40 @@ def test_paper_chokepoint_severity_above_median(graph, node_id, name):
         f"document in KNOWN_MISS_XFAIL_REASONS with a paper-anchored "
         f"reason."
     )
+
+
+def test_xfail_registry_is_pinned():
+    """Pass J.1 §3 — the xfail registry is pinned by SHA-256.
+
+    Keys must be exactly the two documented misses; each reason string's
+    SHA-256 must equal the hex constant committed alongside it. If a
+    reason legitimately changes, update the hash in the same commit as
+    the string and cite the spec authorising the change. Do NOT update
+    the hash alone — that path defeats the pin.
+
+    Motivation: the Pass J report characterised these xfails by
+    non-existent function names, and called both misses `moderate` when
+    committed `docs/generated/threshold_analysis.md` shows
+    `product:rf_power_semis` = 0.0261 → `none` (per Pass I.1 review, the
+    same species of defect had recurred). A machine check replaces the
+    fourth prose reminder.
+    """
+    keys_expected = set(KNOWN_MISS_XFAIL_REASON_HASHES.keys())
+    keys_actual = set(KNOWN_MISS_XFAIL_REASONS.keys())
+    assert keys_actual == keys_expected, (
+        f"KNOWN_MISS_XFAIL_REASONS keys drifted from the pinned set. "
+        f"Expected {sorted(keys_expected)}; got {sorted(keys_actual)}. "
+        f"Update both the registry and KNOWN_MISS_XFAIL_REASON_HASHES "
+        f"in the same commit, and cite the spec authorising the change."
+    )
+    for node_id, reason in KNOWN_MISS_XFAIL_REASONS.items():
+        h = hashlib.sha256(reason.encode("utf-8")).hexdigest()
+        expected = KNOWN_MISS_XFAIL_REASON_HASHES[node_id]
+        assert h == expected, (
+            f"xfail reason for {node_id} does not match its pinned "
+            f"SHA-256. expected={expected}, got={h}. The xfail registry "
+            f"is pinned; if a reason string legitimately changes, "
+            f"update the hash in the same commit as the string and "
+            f"cite the spec authorising the change. Do not update the "
+            f"hash alone."
+        )

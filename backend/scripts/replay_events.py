@@ -14,8 +14,36 @@ NOTHING to data/, NOTHING to config/, NOTHING to
 docs/generated/severity_*. It reads config + graph, snapshots per-node
 severities into local dicts, propagates a single event on a fresh
 graph instance per event, and writes only under docs/generated/replay/.
+
+Pass J.1 — model_rank metric.
+--------------------------------------------------------------------- #
+Ranking is the primary grading instrument. The rank is computed here,
+in one place, so that grading.md can cite it rather than restate it.
+
+Metric: `max_delta` descending, tie-broken by (`nodes_reached`
+descending, `origin_scale` descending, `event_id` ascending). Ties
+that survive all four keys are asserted impossible.
+
+Rationale for max_delta as the primary key: max_delta measures the
+model's response to the event — the largest severity move it produced
+somewhere in the graph. origin_scale measures only the authored seed
+(`{baseline|concentration} × magnitude × confidence`) and so is
+substantially a measure of the Phase A author, not of the model. What
+grading compares against observed disruption is the model's response,
+not the seed.
+
+For Pass J.1 §2 we ALSO emit `rank_by_origin_scale` (same tie-break
+chain, with origin_scale promoted to primary). Events whose two ranks
+differ by ≥ 2 slots feed finding F-J-5 (rank-metric instability).
+
+Pass J.1 — probes.
+--------------------------------------------------------------------- #
+`--probes` runs `data/ai/replay/probes.json` (an injected-magnitude
+counterfactual file) into `docs/generated/replay/probes/`. Probes NEVER
+enter summary.md, ranking, or outcomes.json. Default invocation
+(no flag) is unchanged.
 """
-import copy
+import argparse
 import json
 import sys
 from dataclasses import dataclass
@@ -31,10 +59,11 @@ from app.scoring import (
     propagate_event,
     refresh_all_derived,
 )
-from app.scoring.engine import derive_current_tier
 
 REPLAY_EVENTS = REPO / "data" / "ai" / "replay" / "events.json"
+REPLAY_PROBES = REPO / "data" / "ai" / "replay" / "probes.json"
 REPLAY_OUT = REPO / "docs" / "generated" / "replay"
+REPLAY_PROBES_OUT = REPLAY_OUT / "probes"
 REPLAY_OUT.mkdir(parents=True, exist_ok=True)
 
 
@@ -265,29 +294,115 @@ def _write_event_md(
     path.write_text("\n".join(lines) + "\n")
 
 
+def _class_from_tags(tags: list[str]) -> str:
+    """Render event class from the committed tag vocabulary (Pass J.1 §5).
+    Three values only: home_turf / misfit / misfit_candidate. Frozen —
+    do not collapse misfit_candidate into misfit."""
+    if "home_turf" in tags:
+        return "home_turf"
+    if "misfit" in tags:
+        return "misfit"
+    if "misfit_candidate" in tags:
+        return "misfit_candidate"
+    return "(untagged)"
+
+
+def _rank_events(rows: list[dict]) -> None:
+    """Compute model_rank + rank_by_origin_scale in place.
+
+    Metric contract (Pass J.1 §1):
+      model_rank            = max_delta ↓, nodes_reached ↓,
+                              origin_scale ↓, event_id ↑
+      rank_by_origin_scale  = origin_scale ↓, max_delta ↓,
+                              nodes_reached ↓, event_id ↑
+
+    Ties that survive all four keys are asserted impossible — event_id
+    is unique per input file. The runner is the single place this
+    metric is defined; grading.md CITES the runner output.
+    """
+    def _key_model(r: dict) -> tuple:
+        return (
+            -float(r["_max_delta_num"]),
+            -int(r["reached"]),
+            -float(r["_origin_scale_num"]),
+            str(r["id"]),
+        )
+
+    def _key_origin(r: dict) -> tuple:
+        return (
+            -float(r["_origin_scale_num"]),
+            -float(r["_max_delta_num"]),
+            -int(r["reached"]),
+            str(r["id"]),
+        )
+
+    for key_fn, out_field in (
+        (_key_model, "model_rank"),
+        (_key_origin, "rank_by_origin_scale"),
+    ):
+        ordered = sorted(rows, key=key_fn)
+        # Detect impossible ties — two rows with identical 4-tuple.
+        seen: dict[tuple, str] = {}
+        for r in ordered:
+            k = key_fn(r)
+            if k in seen:
+                raise AssertionError(
+                    f"impossible tie under {out_field}: "
+                    f"{r['id']} and {seen[k]} share full 4-key ({k!r})"
+                )
+            seen[k] = r["id"]
+        for i, r in enumerate(ordered, start=1):
+            r[out_field] = i
+
+
 def _write_summary(rows: list[dict]) -> None:
     path = REPLAY_OUT / "summary.md"
     lines = [
         "# Pass J replay — summary",
         "",
-        "One row per event. Nodes-reached counts nodes with |Δ| > 1e-6 "
-        "(includes both scored-baseline nodes with current_severity moved "
-        "and unscored nodes whose current_severity moved off None).",
+        "One row per event. `nodes reached` counts nodes with |Δ| > 1e-6 "
+        "(includes both scored-baseline nodes with `current_severity` moved "
+        "and unscored nodes whose `current_severity` moved off None).",
         "",
-        "Tier-changed = did any node's `current_tier` differ from its "
+        "`tier change?` = did any node's `current_tier` differ from its "
         "`baseline_tier` after propagation? For unscored nodes `current_tier` "
         "stays UNSCORED per Pass H.1 — a walk touching an unscored downstream "
-        "node writes current_severity but never a scored tier.",
+        "node writes `current_severity` but never a scored tier.",
         "",
-        "| event | origin(s) | origin scale | nodes reached (Δ>0) | max Δ | top affected | any tier change? |",
-        "|---|---|---|---|---|---|---|",
+        "`model_rank` is `max_delta ↓`, tie-broken by "
+        "`nodes_reached ↓, origin_scale ↓, event_id ↑` (Pass J.1 §1). "
+        "`rank_by_origin_scale` is the same chain with `origin_scale` "
+        "promoted to primary (Pass J.1 §2). Rank definitions live in "
+        "`backend/scripts/replay_events.py::_rank_events`; any doc that "
+        "restates an ordering is a defect.",
+        "",
+        "`class` is rendered from the committed `tags` array on each event "
+        "(Pass J.1 §5). Vocabulary: `home_turf`, `misfit`, `misfit_candidate`.",
+        "",
+        "| event | class | origins | origin scale | nodes reached | max Δ | top affected | tier change? | model_rank | rank_by_origin_scale |",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
-    for r in rows:
+    for r in sorted(rows, key=lambda x: x["model_rank"]):
         lines.append(
-            "| {id} | {origins} | {origin_sev} | {reached} | {max_delta} | {top} | {tier_changed} |".format(**r)
+            "| {id} | {class_} | {origins} | {origin_sev} | {reached} | "
+            "{max_delta} | {top} | {tier_changed} | {model_rank} | "
+            "{rank_by_origin_scale} |".format(**r)
         )
     lines.append("")
     path.write_text("\n".join(lines) + "\n")
+
+
+def _rank_disagreements(rows: list[dict]) -> list[tuple[str, int, int, int]]:
+    """Return events whose two ranks differ by ≥ 2 slots. Consumed by
+    grading.md for F-J-5 (rank-metric instability)."""
+    out = []
+    for r in rows:
+        diff = abs(r["model_rank"] - r["rank_by_origin_scale"])
+        if diff >= 2:
+            out.append((
+                r["id"], r["model_rank"], r["rank_by_origin_scale"], diff,
+            ))
+    return out
 
 
 def _served_graph_untouched_check(
@@ -316,8 +431,134 @@ def _served_graph_untouched_check(
     return (not offenders), offenders
 
 
+def _run_one_event(
+    ev: Event,
+    config: ScoringConfig,
+) -> tuple[Event, dict[str, NodeSnapshot], dict[str, NodeAfter], dict]:
+    """Run one event against a fresh baseline graph and return
+    (event-with-cascade, baseline snapshot, after snapshot, summary row).
+    Non-cumulative because `_fresh_graph` is called once per event; this
+    is the only enforcement of non-cumulativity in the runner (the INV-1
+    self-check compares baseline severities and can only fire on
+    baseline mutation, so it does NOT cover non-cumulativity — see
+    Pass J.1 §4)."""
+    g = _fresh_graph(config)
+    baseline = _capture_baseline(g)
+    # Deep-copy so propagate_event's writes to cascade/severity don't
+    # leak between runs (defensive; each event is already a fresh Event
+    # instance from the outer loop).
+    ev_copy = Event.model_validate(ev.model_dump())
+    propagate_event(ev_copy, g, config)
+    after = _capture_after(g)
+
+    deltas = [
+        (nid, _delta(after[nid].current_severity, baseline[nid].baseline_severity))
+        for nid in g.nodes
+    ]
+    moved = [(nid, d) for nid, d in deltas if abs(d) > 1e-6]
+    moved.sort(key=lambda t: -t[1])
+    top_nid, top_delta = (moved[0] if moved else (None, 0.0))
+    any_tier_change = any(
+        after[nid].current_tier != baseline[nid].baseline_tier
+        for nid in g.nodes
+    )
+    origins = ", ".join(m.node_id for m in ev_copy.entities_matched) or "(none)"
+    row = {
+        "id": ev_copy.id,
+        "class_": _class_from_tags(list(ev_copy.tags)),
+        "origins": origins,
+        "origin_sev": _fmt(ev_copy.severity),
+        "reached": len(moved),
+        "max_delta": f"{top_delta:+.3f}",
+        "top": top_nid or "—",
+        "tier_changed": "yes" if any_tier_change else "no",
+        # Numeric shadows used for ranking; not rendered.
+        "_max_delta_num": top_delta,
+        "_origin_scale_num": (ev_copy.severity or 0.0),
+    }
+    return ev_copy, baseline, after, row
+
+
+def _run_probes(config: ScoringConfig) -> None:
+    """Pass J.1 §6 — run injected-magnitude counterfactual probes into
+    docs/generated/replay/probes/. NEVER touches summary.md, ranking,
+    or outcomes.json. Probes are for measuring pipeline behaviour, not
+    for stating beliefs about events."""
+    if not REPLAY_PROBES.exists():
+        print(f"No probes file at {REPLAY_PROBES}", file=sys.stderr)
+        sys.exit(1)
+    REPLAY_PROBES_OUT.mkdir(parents=True, exist_ok=True)
+    raw = json.loads(REPLAY_PROBES.read_text())
+    probes = [Event.model_validate(p) for p in raw]
+    for p in probes:
+        ev_copy, baseline, after, _ = _run_one_event(p, config)
+        # Write into the probes/ subdir so probes cannot be confused
+        # with authored events.
+        original_out = REPLAY_OUT
+        try:
+            # _write_event_md writes to REPLAY_OUT / f"{event.id}.md";
+            # temporarily rebind by writing directly.
+            path = REPLAY_PROBES_OUT / f"{ev_copy.id}.md"
+            # Reuse the same rendering by monkey-patching the module-level
+            # REPLAY_OUT briefly is ugly; instead call a small helper that
+            # takes the target path.
+            _write_probe_md(path, ev_copy, baseline, after)
+        finally:
+            pass
+    print(
+        f"Wrote {len(probes)} probe artifacts to {REPLAY_PROBES_OUT}. "
+        f"summary.md / ranking / outcomes.json NOT modified."
+    )
+
+
+def _write_probe_md(
+    path: Path,
+    event: Event,
+    baseline: dict[str, NodeSnapshot],
+    after: dict[str, NodeAfter],
+) -> None:
+    """Like _write_event_md but writes to an explicit path and stamps
+    the file with a PROBE banner so an artifact cannot be mistaken for
+    an authored replay result."""
+    # Delegate the body to _write_event_md by temporarily redirecting
+    # its target — cleaner: render inline, small duplication.
+    global REPLAY_OUT
+    original = REPLAY_OUT
+    REPLAY_OUT = path.parent
+    try:
+        # _write_event_md computes path = REPLAY_OUT / f"{event.id}.md",
+        # which after the rebind lands where we want.
+        _write_event_md(event, baseline, after)
+    finally:
+        REPLAY_OUT = original
+    # Prepend the PROBE banner to the generated file.
+    body = path.read_text()
+    banner = (
+        "> **PROBE.** This is an injected-magnitude counterfactual — the "
+        "axes on this record are not an estimate of any real event's "
+        "impact. Probes do not enter summary.md, ranking, or outcomes.json. "
+        "See Pass J.1 §6 and the probe's `notes` field for rationale.\n\n"
+    )
+    path.write_text(banner + body)
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--probes",
+        action="store_true",
+        help=(
+            "Run data/ai/replay/probes.json into docs/generated/replay/probes/. "
+            "Never touches summary.md, ranking, or outcomes.json (Pass J.1 §6)."
+        ),
+    )
+    args = parser.parse_args()
+
     config = ScoringConfig.load(REPO / "config" / "scoring.yaml")
+
+    if args.probes:
+        _run_probes(config)
+        return
 
     if not REPLAY_EVENTS.exists():
         print(f"No replay events file at {REPLAY_EVENTS}", file=sys.stderr)
@@ -326,50 +567,32 @@ def main() -> None:
     raw_events = json.loads(REPLAY_EVENTS.read_text())
     events = [Event.model_validate(e) for e in raw_events]
 
-    # Capture a "fresh baseline" reference from an untouched graph.
+    # Capture a "fresh baseline" reference from an untouched graph. The
+    # INV-1 self-check below compares this against a graph reloaded
+    # after the loop, and can only fire if propagate_event mutates a
+    # BASELINE field. propagate_event writes only current_* (see
+    # backend/app/scoring/cascade.py). The self-check is therefore NOT
+    # evidence that replay is non-cumulative; that guarantee comes from
+    # calling _fresh_graph() once per event inside _run_one_event.
     reference = _fresh_graph(config)
     fresh_baseline = _capture_baseline(reference)
 
     summary_rows = []
     for ev in events:
-        g = _fresh_graph(config)
-        baseline = _capture_baseline(g)
-        # Deep-copy the event so propagate_event's writes to cascade /
-        # severity don't leak between runs (defensive; each event is a
-        # fresh Event instance from the outer loop).
-        ev_copy = Event.model_validate(ev.model_dump())
-        propagate_event(ev_copy, g, config)
-        after = _capture_after(g)
-
+        ev_copy, baseline, after, row = _run_one_event(ev, config)
         _write_event_md(ev_copy, baseline, after)
+        summary_rows.append(row)
 
-        # Summary row.
-        deltas = [
-            (nid, _delta(after[nid].current_severity, baseline[nid].baseline_severity))
-            for nid in g.nodes
-        ]
-        moved = [(nid, d) for nid, d in deltas if abs(d) > 1e-6]
-        moved.sort(key=lambda t: -t[1])
-        top_nid, top_delta = (moved[0] if moved else (None, 0.0))
-        any_tier_change = any(
-            after[nid].current_tier != baseline[nid].baseline_tier
-            for nid in g.nodes
-        )
-        origins = ", ".join(m.node_id for m in ev_copy.entities_matched) or "(none)"
-        summary_rows.append({
-            "id": ev_copy.id,
-            "origins": origins,
-            "origin_sev": _fmt(ev_copy.severity),
-            "reached": len(moved),
-            "max_delta": f"{top_delta:+.3f}",
-            "top": top_nid or "—",
-            "tier_changed": "yes" if any_tier_change else "no",
-        })
-
+    _rank_events(summary_rows)
     _write_summary(summary_rows)
 
-    # INV-1 self-check — a graph loaded after every replay should be
-    # byte-identical baseline-wise to the first fresh copy.
+    disagreements = _rank_disagreements(summary_rows)
+    if disagreements:
+        print("Rank-metric disagreements ≥ 2 slots (feeds F-J-5):")
+        for eid, m, o, d in disagreements:
+            print(f"  {eid}: model_rank={m}, rank_by_origin_scale={o} (Δ={d})")
+
+    # INV-1 self-check.
     post_reference = _fresh_graph(config)
     ok, offenders = _served_graph_untouched_check(
         fresh_baseline, _capture_baseline(post_reference),

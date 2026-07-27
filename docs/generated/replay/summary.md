@@ -1,16 +1,20 @@
 # Pass J replay — summary
 
-One row per event. Nodes-reached counts nodes with |Δ| > 1e-6 (includes both scored-baseline nodes with current_severity moved and unscored nodes whose current_severity moved off None).
+One row per event. `nodes reached` counts nodes with |Δ| > 1e-6 (includes both scored-baseline nodes with `current_severity` moved and unscored nodes whose `current_severity` moved off None).
 
-Tier-changed = did any node's `current_tier` differ from its `baseline_tier` after propagation? For unscored nodes `current_tier` stays UNSCORED per Pass H.1 — a walk touching an unscored downstream node writes current_severity but never a scored tier.
+`tier change?` = did any node's `current_tier` differ from its `baseline_tier` after propagation? For unscored nodes `current_tier` stays UNSCORED per Pass H.1 — a walk touching an unscored downstream node writes `current_severity` but never a scored tier.
 
-| event | origin(s) | origin scale | nodes reached (Δ>0) | max Δ | top affected | any tier change? |
-|---|---|---|---|---|---|---|
-| J-2024-04-taiwan-quake | company:tsmc, country_region:taiwan | 0.023 | 13 | +0.012 | company:tsmc | no |
-| J-2024-09-asml-export | company:asml, country_region:netherlands | 0.000 | 0 | +0.000 | — | no |
-| J-2024-10-kachin-kia | country_region:kachin, country_region:myanmar | 0.030 | 8 | +0.003 | mineral:dysprosium | no |
-| J-2024-11-hynix-hbm | company:sk_hynix, product:hbm | 0.011 | 13 | +0.008 | company:sk_hynix | no |
-| J-2024-12-china-gallium | country_region:china, mineral:gallium, country_region:usa | 0.248 | 34 | +0.077 | product:rf_power_semis | yes |
-| J-2025-04-china-rees | country_region:china, mineral:dysprosium | 0.290 | 34 | +0.090 | product:rf_power_semis | yes |
-| J-2025-10-nexperia | country_region:netherlands | 0.000 | 0 | +0.000 | — | no |
+`model_rank` is `max_delta ↓`, tie-broken by `nodes_reached ↓, origin_scale ↓, event_id ↑` (Pass J.1 §1). `rank_by_origin_scale` is the same chain with `origin_scale` promoted to primary (Pass J.1 §2). Rank definitions live in `backend/scripts/replay_events.py::_rank_events`; any doc that restates an ordering is a defect.
+
+`class` is rendered from the committed `tags` array on each event (Pass J.1 §5). Vocabulary: `home_turf`, `misfit`, `misfit_candidate`.
+
+| event | class | origins | origin scale | nodes reached | max Δ | top affected | tier change? | model_rank | rank_by_origin_scale |
+|---|---|---|---|---|---|---|---|---|---|
+| J-2025-04-china-rees | home_turf | country_region:china, mineral:dysprosium | 0.290 | 34 | +0.090 | product:rf_power_semis | yes | 1 | 1 |
+| J-2024-12-china-gallium | home_turf | country_region:china, mineral:gallium, country_region:usa | 0.248 | 34 | +0.077 | product:rf_power_semis | yes | 2 | 2 |
+| J-2024-04-taiwan-quake | misfit_candidate | company:tsmc, country_region:taiwan | 0.023 | 13 | +0.012 | company:tsmc | no | 3 | 4 |
+| J-2024-11-hynix-hbm | misfit_candidate | company:sk_hynix, product:hbm | 0.011 | 13 | +0.008 | company:sk_hynix | no | 4 | 5 |
+| J-2024-10-kachin-kia | misfit_candidate | country_region:kachin, country_region:myanmar | 0.030 | 8 | +0.003 | mineral:dysprosium | no | 5 | 3 |
+| J-2024-09-asml-export | misfit | company:asml, country_region:netherlands | 0.000 | 0 | +0.000 | — | no | 6 | 6 |
+| J-2025-10-nexperia | misfit | country_region:netherlands | 0.000 | 0 | +0.000 | — | no | 7 | 7 |
 

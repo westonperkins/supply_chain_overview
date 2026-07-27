@@ -1,0 +1,21 @@
+[
+  {
+    "id": "P-J-1",
+    "timestamp": "2025-10-13T00:00:00Z",
+    "source": {
+      "publisher": "PROBE — not a real event authoring; see notes"
+    },
+    "headline": "PROBE — Nexperia (Oct 2025) with injected concentration_delta=0.20",
+    "summary": "This probe copies the entities and timestamp of J-2025-10-nexperia but injects concentration_delta=0.20. It measures pipeline behaviour on an out-of-domain event whose only matched entity is a place (country_region:netherlands); it does not represent a belief about the real event's impact.",
+    "entities_matched": [
+      {"node_id": "country_region:netherlands", "confidence": 0.7, "match_type": "place"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.20,
+      "substitutability_delta": 0.0,
+      "lead_time_delta": 0.0
+    },
+    "tags": ["probe", "misfit", "out_of_domain"],
+    "notes": "This magnitude is not an estimate of this event's real impact; it is an injected value chosen to measure entity-match fanout from an out-of-domain place match. Pass J.1 §6 uses this probe to decide whether the Nexperia null result in Pass J came from correct model behaviour or from the authored zero magnitude — the two possibilities produce different findings and are separable only under an injected magnitude that suppresses the axis-authoring path. Do not re-author the axes on the real event (J-2025-10-nexperia) based on anything this probe reveals; the real event's honest axis reading is 0.0."
+  }
+]
