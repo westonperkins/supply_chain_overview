@@ -1,5 +1,15 @@
 # Pass J Phase B — grading
 
+> ⚠ **Pass K §6 provenance banner.** Every number in this document refers to
+> the replay artifacts computed on the **Pass J 67-node graph** (commit
+> `1bd6090`). Those artifacts are archived verbatim under
+> `docs/generated/replay/archive/pass_j_67node/`. The live artifacts in
+> `docs/generated/replay/*.md` and `summary.md` may regenerate against a
+> newer graph (Pass K adds design-IP nodes and moves scoring); do NOT
+> compare cited numbers below against a later regeneration. Re-grading is a
+> separate pass with its own blinding discipline (Pass J.1 §10 four-phase
+> rule); Pass K does not re-run the replay.
+
 **Discipline reminder.** Axes were authored in Phase A (commit `e111af7`) and
 frozen. This grading document was written from `data/ai/replay/outcomes.json`
 in a separate commit. No Phase A file has been edited to reach any grade
@@ -201,14 +211,14 @@ warnings, downstream motor/actuator effects; ranking 2 of 7.
 | **F-J-1** | Taiwan quake | FORMULA ARTIFACT | Concentration axis reads a transient event as a structural share loss; no time-decay to attenuate. |
 | **F-J-2** | Kachin KIA | FORMULA ARTIFACT | ⚠ Pass J.1 amendment: Kachin under-fires because Kachin's own **concentration** is low (≈ 0.15 implied by seed 0.030 ÷ magnitude 0.20 ÷ confidence 1.0), NOT because the unscored-origin seed under-weights in general. The seeding mechanism itself over-weights unscored origins — see [[F-J-4]]. The remaining defect for Kachin is that the downstream dampens further via dysprosium's low `input_share` (0.20) into NdFeB, so the paper's canonical "news says Kachin, impact is dysprosium" case survives with severity in the noise floor. |
 | **F-J-3** | gallium ban, REE licence | FORMULA ARTIFACT | Country-origin fanout — a single-magnitude event at country_region walks over every outbound supply edge equally; ban-specificity ("this mineral, not that one") cannot be represented without per-edge event scoping. |
-| **F-J-4** | any country-origin event | FORMULA ARTIFACT | **Pass J.1 §7.** Unscored origins systematically **out-seed** scored origins. The unscored seed is `concentration × magnitude × confidence`; the scored seed is `baseline_severity × magnitude × confidence`. Since `severity = concentration × (1 − substitutability) × lead_time_norm` and both remaining factors are ≤ 1, `severity ≤ concentration` always. Committed evidence from `docs/generated/replay/J-2024-12-china-gallium.md`: at identical magnitude, `country_region:china` (unscored) seeds **0.248** while `mineral:gallium` (scored, tier `high`, baseline 0.480) seeds **0.147**. Under live ingestion, country-origin events are the majority case, so this dominates in practice. Shares fix surface with [[F-J-3]] but is a separable defect (seed weight vs edge scoping). |
+| **F-J-4** | any country-origin event | FORMULA ARTIFACT | **Pass J.1 §7.** Unscored origins systematically **out-seed** scored origins. The unscored seed is `concentration × magnitude × confidence`; the scored seed is `baseline_severity × magnitude × confidence`. Since `severity = concentration × (1 − substitutability) × lead_time_norm` and both remaining factors are ≤ 1, `severity ≤ concentration` always. Committed evidence from `docs/generated/replay/J-2024-12-china-gallium.md`: at identical magnitude, `country_region:china` (unscored) seeds **0.248** while `mineral:gallium` (scored, tier `high`, baseline 0.480) seeds **0.144** (`0.480 × 0.30 × 1.0`). ⚠ **Pass K §0.1 correction:** the earlier value 0.147 in this row was gallium's **hop-1 cascade contribution** from China (`0.248 × 0.6 × 0.99`, decay 0.6 × `input_share` 0.99) — hence gallium appearing at hop 1, not hop 0, in the artifact. The finding is unaffected and slightly wider: 0.144 < 0.248, so the unscored China origin out-seeds scored gallium by a wider margin than previously reported. A second-order corollary: the China→gallium walk (0.147) also outweighs gallium's own seed (0.144), which is why gallium never appears at hop 0 in the artifact — its seed is masked by the max-of-paths rule. Under live ingestion, country-origin events are the majority case, so this dominates in practice. Shares fix surface with [[F-J-3]] but is a separable defect (seed weight vs edge scoping). |
 | **F-J-5** | Kachin KIA (metric-instability exemplar) | FORMULA ARTIFACT | **Pass J.1 §2.** The model's severity ordering of the event set depends on which observable is chosen as the ordering statistic. The two available observables — `max_delta` and `origin_scale` — disagree by ≥ 2 slots on kachin (`model_rank` 5, `rank_by_origin_scale` 3). Live ingestion cannot rank events without picking one; the picked metric materially changes which events lead. |
 | **A-J-1** | ASML export licence | AXIS EXPRESSIVENESS | Demand-side restriction on a supplier has no axis. Even with an ASML→China edge, "restrict downstream customers by geography" would not map onto concentration / substitutability / lead_time. |
 | **A-J-2** | HBM sellout | AXIS EXPRESSIVENESS | The pipeline reads only `concentration_delta`. Capacity-commitment events whose real signal sits in `lead_time_delta` and `substitutability_delta` are systematically under-weighted. ⚠ Pass J.1 restatement: the HBM inversion is **1 → 4 under `model_rank`** (primary metric) and **1 → 5 under `rank_by_origin_scale`** (alternate). The finding stands under either metric; the size is metric-dependent. See [[F-J-5]]. |
 | **D-J-1** | ASML export licence | DATA GAP | No ASML→China edge (nor should there be for AI graph); recorded as a pre-registered gap because a demand-side-axis fix without this data would still produce nothing. |
 | **D-J-2** | gallium ban | DATA GAP | Germanium is not modelled. Pre-registered in Phase A. If ingestion targets Dec 2024 material, needs a node. |
 | **D-J-3** | REE licence | DATA GAP | Dysprosium's real irreplaceability in NdFeB is not captured by the mass-fraction `input_share` of 0.20. Needs a criticality-of-share concept for "small mass fraction, no substitute" cases. |
-| **D-J-4** | Nexperia | DATA GAP | ⚠ Pass J.1 correction: probe `P-J-1` (nexperia copy with injected `concentration_delta = 0.20`, artifact `docs/generated/replay/probes/P-J-1.md`) reaches **0 nodes**. `country_region:netherlands` has `concentration = 0.0` and **no outbound material-flow edges** (only `located_in` inbound from ASML). The null in Pass J was **structural**, not a spurious partial match suppressed by the authored zero magnitude. The finding weakens: an unresolved-event signal is still useful for corpus visibility, but out-of-domain events do not, on the current graph, produce a spurious cascade even at non-zero magnitude. See §Nexperia sensitivity probe below and Pass J.1 §6. |
+| **D-J-4** | Nexperia | DATA GAP | ⚠ Pass J.1 correction: probe `P-J-1` (nexperia copy with injected `concentration_delta = 0.20`, artifact `docs/generated/replay/probes/P-J-1.md`) reaches **0 nodes**. `country_region:netherlands` has `concentration = 0.0` and **no outbound material-flow edges** (only `located_in` inbound from ASML). The null in Pass J was **structural**, not a spurious partial match suppressed by the authored zero magnitude. ⚠ **Pass K §0.2 correction & re-scoping:** the earlier conclusion "out-of-domain events do not, on the current graph, produce a spurious cascade even at non-zero magnitude" was an `n = 1` generalisation from the most inert node in the graph and is withdrawn. What P-J-1 shows narrowly: out-of-domain events matching **only zero-concentration, zero-outbound-edge nodes** produce no cascade. Probe P-J-2 (see below) tests the live-ingestion-relevant case: an out-of-domain story that merely *mentions* China matches `country_region:china` (34-node reach) — see §Out-of-domain sensitivity probe P-J-2. |
 | **H-J-1** | Taiwan quake (rank) | HONEST DISAGREEMENT | Rank 3 vs 5 is a two-slot inversion, but within the authoring-basis uncertainty. Not a defect requiring code work — logged as a data point for future recalibration once several similar physical-halt events are in the corpus. |
 
 ## Nexperia sensitivity probe — Pass J.1 §6
@@ -236,6 +246,41 @@ Per the Pass J.1 §6 pre-registration, this is **branch (2): reach was zero
 and the null was structural.** D-J-4's framing is weakened accordingly —
 recorded inline in the findings table above.
 
+## Out-of-domain sensitivity probe — Pass K §0.2 (P-J-2)
+
+The Pass J.1 review noted that P-J-1's null was over-generalised to "all
+out-of-domain events" from an `n = 1` test against the most inert node in
+the graph. The live-ingestion risk is the opposite: an out-of-domain story
+that mentions a **high-reach** country matches that country and fires a
+34-node fanout.
+
+Probe **P-J-2** — plausible non-AI China event (Chinese port congestion,
+timestamp 2026-03-14), only matched entity `country_region:china`,
+`concentration_delta = 0.20`, confidence 0.7. Same quarantine rules as
+P-J-1 (`data/ai/replay/probes.json`; run via `--probes`; artifact
+`docs/generated/replay/probes/P-J-2.md`). Run **before K-1 landed** so the
+result is comparable to P-J-1's against the 67-node graph.
+
+Result:
+
+- **Nodes reached: 34** — matches the pre-registered "on the order of 34".
+- Max Δ **+0.036** at **`product:rf_power_semis`** — matches the
+  pre-registered "tops out on `product:rf_power_semis`".
+- Top-5 affected: `product:rf_power_semis` +0.036, `mineral:gallium` +0.036,
+  `mineral:neodymium` +0.033, `mineral:dysprosium` +0.021,
+  `mineral:indium` +0.019 (all China outbound minerals — [[F-J-3]] fanout).
+- AI-facing nodes touched (9): `company:broadcom` +0.0006, and
+  `sk_hynix`/`micron`/`samsung`/`tsmc`/`amd`/`nvidia`/`hbm`/`cowos_packaging`
+  each at |Δ| ≤ 0.0001 — small but non-zero.
+
+**D-J-4 restored and re-scoped.** The exposure is not out-of-domain events
+in general (as Pass J.1 wrongly generalised from P-J-1) and it is not
+zero-concentration nodes (P-J-1's specific case). **The exposure is
+out-of-domain events whose only match is a high-reach country node** —
+the live-ingestion majority case per F-J-4. An unresolved-event /
+low-specificity signal remains on the must-close gate list; the
+justification is now this probe number, not the P-J-1 argument.
+
 ## Ingestion gate list
 
 Findings that **must** close before live news ingestion can be built:
@@ -258,17 +303,19 @@ Findings that **must** close before live news ingestion can be built:
   are the majority case under live ingestion, so this bias runs
   everywhere. Shares fix surface with F-J-3 (both involve rethinking
   how country-origin events enter the walk) but is a separable defect
-  — do not merge them into one finding.
-- **D-J-4 (unresolved-event signal).** ⚠ Weakened by Pass J.1 §6 probe
-  P-J-1: the Pass J null on Nexperia was **structural** (Netherlands
-  has zero concentration and no material-flow outbound edges), not a
-  spurious partial match suppressed by the authored zero magnitude.
-  The gate remains — ingestion still benefits from an explicit
-  unresolved/out-of-domain signal for corpus visibility and matcher
-  telemetry — but the framing "silent zero indistinguishable from
-  in-domain zero-magnitude" is no longer supported by the observed
-  behaviour. Kept on the must-close list for the visibility benefit;
-  reprioritise if that alone is judged insufficient.
+  — do not merge them into one finding. ⚠ **Pass K §0.1**: the
+  supporting number in the findings-table row corrected from 0.147
+  (hop-1 walk contribution) to **0.144** (gallium's actual seed,
+  `0.480 × 0.30 × 1.0`).
+- **D-J-4 (unresolved-event signal).** ⚠ Pass K §0.2: P-J-1 weakened
+  the finding to "out-of-domain matches on zero-concentration,
+  zero-outbound-edge nodes produce no cascade"; P-J-2 (China-mentioning
+  out-of-domain event) **restores it at full strength and re-scopes**:
+  an out-of-domain story that matches only a high-reach country
+  produces the full country-origin fanout (P-J-2 reached 34 nodes,
+  topped by `product:rf_power_semis`). Under live ingestion this is the
+  majority-case exposure (per [[F-J-4]]). Kept on the must-close list;
+  the justification is now the P-J-2 number, not the P-J-1 argument.
 
 Findings that **can wait** until after first ingestion:
 

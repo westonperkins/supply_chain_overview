@@ -1,5 +1,24 @@
 [
   {
+    "id": "P-J-2",
+    "timestamp": "2026-03-14T00:00:00Z",
+    "source": {
+      "publisher": "PROBE — not a real event authoring; see notes"
+    },
+    "headline": "PROBE — Chinese port congestion (Shanghai) with injected concentration_delta=0.20; entity match: country_region:china only",
+    "summary": "A plausible non-AI out-of-domain event: sustained congestion at Chinese container ports affects global shipping schedules for consumer goods and automotive parts. Nothing in the described event flows through AI compute supply. Only `country_region:china` matches (place-based); the probe measures whether an out-of-domain story that merely mentions a high-reach country produces a spurious AI-facing cascade — the live-ingestion risk that P-J-1 could not test because Netherlands is structurally inert.",
+    "entities_matched": [
+      {"node_id": "country_region:china", "confidence": 0.7, "match_type": "place"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.20,
+      "substitutability_delta": 0.0,
+      "lead_time_delta": 0.0
+    },
+    "tags": ["probe", "misfit", "out_of_domain"],
+    "notes": "This magnitude is not an estimate of this event's real impact; it is an injected value chosen to measure entity-match fanout from an out-of-domain place match against a high-reach country node. Pass K §0.2 introduces this probe because P-J-1's Netherlands match tested the most inert node available (concentration 0.0, zero outbound material-flow edges), which guaranteed a null and left the general D-J-4 claim unfalsified. Do not re-author the axes on any real event based on anything this probe reveals; probes are diagnostics, not authorings."
+  },
+  {
     "id": "P-J-1",
     "timestamp": "2025-10-13T00:00:00Z",
     "source": {

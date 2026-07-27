@@ -355,10 +355,36 @@ def _rank_events(rows: list[dict]) -> None:
             r[out_field] = i
 
 
-def _write_summary(rows: list[dict]) -> None:
+def _graph_provenance(graph: SupplyChainGraph) -> str:
+    """Pass K §6 — every generated replay artifact carries a provenance
+    line so archived vs live outputs cannot be confused. Emits node
+    count, edge count, and the git HEAD SHA (best-effort — falls back
+    to `unknown` if git isn't available)."""
+    import subprocess
+    try:
+        sha = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=REPO, stderr=subprocess.DEVNULL,
+        ).decode().strip()
+    except Exception:
+        sha = "unknown"
+    n_nodes = len(graph.nodes)
+    # Count edges by iterating out_edges over every node.
+    n_edges = sum(len(graph.out_edges(nid)) for nid in graph.nodes)
+    return (
+        f"_Provenance: graph @ commit `{sha}` — {n_nodes} nodes, "
+        f"{n_edges} edges. Archived Pass J artifacts (67-node graph, "
+        f"commit `1bd6090`) live under "
+        f"`docs/generated/replay/archive/pass_j_67node/`._"
+    )
+
+
+def _write_summary(rows: list[dict], graph: SupplyChainGraph) -> None:
     path = REPLAY_OUT / "summary.md"
     lines = [
         "# Pass J replay — summary",
+        "",
+        _graph_provenance(graph),
         "",
         "One row per event. `nodes reached` counts nodes with |Δ| > 1e-6 "
         "(includes both scored-baseline nodes with `current_severity` moved "
@@ -584,7 +610,7 @@ def main() -> None:
         summary_rows.append(row)
 
     _rank_events(summary_rows)
-    _write_summary(summary_rows)
+    _write_summary(summary_rows, reference)
 
     disagreements = _rank_disagreements(summary_rows)
     if disagreements:
