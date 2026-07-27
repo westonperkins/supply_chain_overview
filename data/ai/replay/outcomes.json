@@ -1,0 +1,48 @@
+{
+  "_note": "Pass J Phase B — observed real-world effect of each replay event, written after Phase A axes are frozen (see git log for commit order). Sources named per event; 2-4 sentences each. Where an effect is 'not visible in AI compute supply', that null result is itself the finding.",
+  "outcomes": [
+    {
+      "id": "J-2024-04-taiwan-quake",
+      "observed": "TSMC evacuated fabs including advanced-node Fab 18 and F15/F14; lines were brought back within roughly 24-48 hours per company disclosures. Wafer loss was small — reporting cited a low single-digit percent of quarterly output at risk, most later recovered. No downstream AI customer reported an allocation cut attributable to the event.",
+      "magnitude_ordinal": 5,
+      "source_notes": "TSMC Q2 2024 earnings call; contemporaneous reporting from Nikkei / Digitimes."
+    },
+    {
+      "id": "J-2024-09-asml-export",
+      "observed": "ASML's China revenue share fell across Q4 2024 and 2025 as expanded licences were required and some denied; ASML reduced its China outlook in 2025 guidance. Non-China customers (TSMC, Samsung, Intel, SK Hynix) reported no shortage of ASML tools attributable to the licence expansion. Effect on AI-compute-facing supply: none observed; effect concentrated on Chinese chipmakers (out of the AI graph's domain).",
+      "magnitude_ordinal": 6,
+      "source_notes": "ASML Q4 2024 and Q1-Q3 2025 earnings; Dutch Ministry of Foreign Affairs export statistics; SEMI reporting."
+    },
+    {
+      "id": "J-2024-10-kachin-kia",
+      "observed": "KIA control of Chipwi/Pangwa disrupted cross-border heavy-REE feedstock flow to Chinese refiners for roughly Q4 2024 through mid-Q1 2025. Dysprosium/terbium mineral prices ticked up ~15-25% before drawing down as stockpiles absorbed the shock and alternative border flows resumed. NdFeB permanent-magnet buyers noted the tightness but reported no line-down events attributable to feedstock alone.",
+      "magnitude_ordinal": 4,
+      "source_notes": "Adamas Intelligence REE market updates 2024 Q4; Argus rare-earth pricing; regional reporting on cross-border trade."
+    },
+    {
+      "id": "J-2024-11-hynix-hbm",
+      "observed": "HBM3E supply remained the binding constraint on AI compute build-out through 2025. Hyperscaler capex commentary (Meta, Microsoft, Google, Amazon) repeatedly named HBM allocation as the limit on NVIDIA GB200/GB300 delivery pace. SK Hynix maintained lead through 2025; Samsung and Micron ramped but did not close the gap. Prices and margins on HBM stayed elevated well above pre-2024 levels.",
+      "magnitude_ordinal": 1,
+      "source_notes": "SK Hynix Q4 2024 through Q4 2025 earnings; NVIDIA Q1-Q3 2025 calls; hyperscaler capex commentary."
+    },
+    {
+      "id": "J-2024-12-china-gallium",
+      "observed": "Gallium spot prices spiked ~30-50% in Dec 2024 / Jan 2025 and remained elevated through 2025. RF & power-semi manufacturers reported drawing down inventory and paying a premium; some flow re-routed via Japan, Canada. No widespread outage of RF/power semiconductor production was reported, but sustained supply premium and multi-quarter guidance impact on GaN/GaAs product lines were visible.",
+      "magnitude_ordinal": 3,
+      "source_notes": "Metal Bulletin / Argus gallium spot; MOFCOM announcement Dec 2 2024; company disclosures from Wolfspeed, MACOM, Qorvo through 2025."
+    },
+    {
+      "id": "J-2025-04-china-rees",
+      "observed": "Dysprosium and terbium prices spiked ~40-70% within weeks; multiple magnet and motor manufacturers issued warnings. By mid-2025, MOFCOM began granting selective export licences and some flow resumed, though at reduced volumes and only to approved end-uses. NdFeB magnet buyers accelerated recycling programs and heavy-REE-lean magnet designs. AI compute impact was indirect: any AI-adjacent motor/actuator hardware (data center liquid cooling, robotics) saw price and lead-time pressure.",
+      "magnitude_ordinal": 2,
+      "source_notes": "MOFCOM Apr 4 2025 announcement; Adamas Intelligence updates through 2025; automotive OEM statements Q2-Q3 2025."
+    },
+    {
+      "id": "J-2025-10-nexperia",
+      "observed": "Legal and diplomatic dispute between the Dutch government and Nexperia's Chinese parent Wingtech. Some automotive OEMs (BMW, VW) reported disruption to discrete/analog chip supply. No impact on AI compute or hyperscaler capex reported. Nexperia's product portfolio is discrete power semiconductors, MOSFETs, and analog — outside AI accelerator / HBM / advanced-node domains.",
+      "magnitude_ordinal": 7,
+      "source_notes": "Dutch Ministry of Economic Affairs statement Oct 13 2025; Wingtech corporate response; automotive OEM Q4 2025 supply commentary.",
+      "domain_note": "AI graph does not model automotive or discrete power; the null result from the replay is the correct answer, but for a specific reason — see grading."
+    }
+  ]
+}
