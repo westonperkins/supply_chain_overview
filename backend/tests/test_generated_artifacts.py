@@ -164,11 +164,19 @@ def test_fixtures_and_data_are_content_identical():
     identity so drift fails at the source with a message naming the
     files, not somewhere far downstream via a mysterious diff mismatch.
     Escalation rule per spec §0: if this ever fails, STOP and report;
-    do not reconcile the two roots inside a hygiene block."""
+    do not reconcile the two roots inside a hygiene block.
+
+    Pass J — `data/ai/replay/` holds a historical-event replay input file
+    that is DELIBERATELY not part of the served graph. It is loaded only
+    by `backend/scripts/replay_events.py` and never by the terminal.
+    Excluded here by name, not by silent reconciliation: the fixtures
+    have no replay copy because no test scores from replay events.
+    """
     import filecmp
     data_ai = REPO / "data" / "ai"
     fx_ai = FIXTURES / "ai"
-    cmp = filecmp.dircmp(data_ai, fx_ai)
+    IGNORE_UNDER_DATA_AI = ["replay"]
+    cmp = filecmp.dircmp(data_ai, fx_ai, ignore=IGNORE_UNDER_DATA_AI)
     diffs = list(cmp.diff_files)
     left_only = list(cmp.left_only)
     right_only = list(cmp.right_only)

@@ -1,0 +1,149 @@
+[
+  {
+    "id": "J-2024-04-taiwan-quake",
+    "timestamp": "2024-04-03T00:58:00Z",
+    "source": {
+      "publisher": "Central Weather Administration (Taiwan) / TSMC statement",
+      "url": null
+    },
+    "headline": "M7.4 earthquake off Hualien; TSMC evacuates fabs",
+    "summary": "A magnitude 7.4 earthquake struck offshore of Hualien County at 07:58 local time. TSMC evacuated several fabs including its most advanced sites, halting production for the duration of the evacuation. TSMC states most tools were unaffected and lines are being brought back online through the day.",
+    "entities_matched": [
+      {"node_id": "company:tsmc", "confidence": 1.0, "match_type": "name"},
+      {"node_id": "country_region:taiwan", "confidence": 1.0, "match_type": "place"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.05,
+      "substitutability_delta": 0.0,
+      "lead_time_delta": 0.02
+    },
+    "tags": ["misfit_candidate", "physical", "short_halt"],
+    "notes": "Axes basis: TSMC ships tens of millions of wafers/year at ~99% share to advanced logic customers; a same-day evacuation and restart implies a tiny share of quarterly output at risk. concentration_delta=0.05 as a low estimate — no shares redistributed, no long-run capacity lost. lead_time_delta=0.02 reflects a small number of days pushed on the leading-edge queue. substitutability_delta=0 because a same-day event does not shift the industry's substitution posture. Confidence: estimate. Pre-registered gap: the graph models TSMC at company level; a fab-level model would let this event fire on advanced-node output only. This event is a candidate misfit because the formula reads only concentration_delta today — an axis that struggles to represent physical short-halt events."
+  },
+  {
+    "id": "J-2024-09-asml-export",
+    "timestamp": "2024-09-06T00:00:00Z",
+    "source": {
+      "publisher": "Netherlands Ministry of Foreign Affairs",
+      "url": null
+    },
+    "headline": "Netherlands expands ASML DUV export licence to include additional immersion tools for shipments to China",
+    "summary": "The Dutch government announces that the export licence requirement covering ASML's advanced DUV immersion lithography systems is expanded to bring additional tool models under its scope for shipments destined for China. ASML confirms compliance and states that a portion of expected China revenue for the coming quarters will require export licences that may not be granted. Shipments to non-China customers are unaffected.",
+    "entities_matched": [
+      {"node_id": "company:asml", "confidence": 1.0, "match_type": "name"},
+      {"node_id": "country_region:netherlands", "confidence": 1.0, "match_type": "place"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.0,
+      "substitutability_delta": 0.0,
+      "lead_time_delta": 0.0
+    },
+    "tags": ["misfit", "demand_side_restriction"],
+    "notes": "Axes basis: this event restricts ASML's ability to sell to a specific customer geography (China). ASML's supply relationships to graph-modelled customers (TSMC 0.99, Samsung 0.95, Intel 0.95, SK Hynix 0.55, Micron 0.50) are unchanged; no share redistribution touches any modelled AI-facing edge. concentration_delta=0.0 is the honest reading of the axis — supply-side concentration on modelled downstream customers has not moved. Confidence: hard. Pre-registered gap: the graph has no ASML→China edge and no notion of demand-side restriction. This event is a deliberate misfit chosen to expose that the concentration axis cannot represent demand-side supplier events at all — the cascade will not fire, which is what the finding should surface."
+  },
+  {
+    "id": "J-2024-10-kachin-kia",
+    "timestamp": "2024-10-27T00:00:00Z",
+    "source": {
+      "publisher": "Kachin Independence Organization statements / regional reporting",
+      "url": null
+    },
+    "headline": "Kachin Independence Army takes control of Chipwi and Pangwa townships",
+    "summary": "The Kachin Independence Army (KIA) announces control of Chipwi and Pangwa townships in northern Kachin State, areas that host the majority of Myanmar's heavy rare earth ion-adsorption clay mining. Cross-border trade with Chinese refiners through KIA-held crossings is reportedly halted while control is being consolidated. Chinese refiners of heavy REEs source a significant fraction of feedstock from these areas.",
+    "entities_matched": [
+      {"node_id": "country_region:kachin", "confidence": 1.0, "match_type": "place"},
+      {"node_id": "country_region:myanmar", "confidence": 0.7, "match_type": "place"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.20,
+      "substitutability_delta": 0.0,
+      "lead_time_delta": 0.10
+    },
+    "tags": ["misfit_candidate", "regional_control", "upstream_only"],
+    "notes": "Axes basis: the graph models Kachin as supplying 35% of dysprosium mining. A full halt of Kachin flow removes ~35 pts of world supply, but China's refining share (99% of dysprosium refines edge) is unaffected — Kachin is upstream feedstock to Chinese refiners. concentration_delta=0.20 (estimate) captures a partial halt through KIA-held crossings and the possibility of alternative export routes. lead_time_delta=0.10 for the operational disruption to feedstock logistics. substitutability_delta=0 because dysprosium substitutes are not summoned by a regional control event. Confidence: estimate. This event tests whether the graph's Kachin → mineral:dysprosium path carries the event, and whether the current cascade formula distinguishes 'upstream feedstock disruption to a refiner-country still holds the refining chokepoint' from 'end-to-end supply disruption'. Candidate misfit — the news says 'Kachin', the real impact should read through dysprosium, and the correct downstream picture depends on the refining bottleneck the current formula reads via origin severity times output-share."
+  },
+  {
+    "id": "J-2024-11-hynix-hbm",
+    "timestamp": "2024-11-04T00:00:00Z",
+    "source": {
+      "publisher": "SK Hynix earnings guidance",
+      "url": null
+    },
+    "headline": "SK Hynix confirms HBM3E capacity sold out through 2025; HBM4 volumes largely committed",
+    "summary": "SK Hynix states in an earnings update that its HBM3E production capacity for 2025 is fully committed to customers under multi-quarter agreements, and that a substantial share of expected 2026 HBM4 volume is also allocated. The company reiterates that HBM capacity expansion is constrained by advanced packaging supply and wafer allocation, not by demand. No new HBM entrants are ready to ship at scale in the reporting period.",
+    "entities_matched": [
+      {"node_id": "company:sk_hynix", "confidence": 1.0, "match_type": "name"},
+      {"node_id": "product:hbm", "confidence": 1.0, "match_type": "name"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.05,
+      "substitutability_delta": 0.15,
+      "lead_time_delta": 0.25
+    },
+    "tags": ["misfit_candidate", "capacity_commitment", "non_disruption"],
+    "notes": "Axes basis: nothing was destroyed, no share moved, no supply was cut. What tightened is FUTURE availability — HBM3E share stays 0.60 for SK Hynix in the graph. concentration_delta=0.05 (low) reflects the tightening of an already concentrated supply. substitutability_delta=0.15 is the meaningful axis for this event: sold-out capacity temporarily removes the ability to substitute across HBM suppliers. lead_time_delta=0.25 is the largest axis: new demand faces multi-quarter waits, and this is the axis the news actually moves. Confidence: estimate. This is a deliberate misfit that tests axis-expressiveness — the event's true nature enters through lead_time and substitutability, but the current pipeline reads only concentration_delta. Predicted outcome: the cascade fires only weakly at SK Hynix and HBM, understating a real event."
+  },
+  {
+    "id": "J-2024-12-china-gallium",
+    "timestamp": "2024-12-02T00:00:00Z",
+    "source": {
+      "publisher": "China Ministry of Commerce (MOFCOM) announcement",
+      "url": null
+    },
+    "headline": "China announces immediate ban on exports of gallium, germanium, antimony to the United States",
+    "summary": "China's Ministry of Commerce announces an immediate ban on exports of gallium, germanium, antimony and certain related products destined for the United States, citing national security. The announcement follows US export controls announced the prior day covering additional semiconductor equipment. Chinese producers state they will not accept new orders for the listed materials from US-facing buyers.",
+    "entities_matched": [
+      {"node_id": "country_region:china", "confidence": 1.0, "match_type": "place"},
+      {"node_id": "mineral:gallium", "confidence": 1.0, "match_type": "name"},
+      {"node_id": "country_region:usa", "confidence": 0.7, "match_type": "place"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.30,
+      "substitutability_delta": 0.05,
+      "lead_time_delta": 0.15
+    },
+    "tags": ["home_turf", "export_ban"],
+    "notes": "Axes basis: China supplies ~98% of world gallium mining and ~60% of refining per graph edges. The ban blocks the flow to a single geography (US) rather than to all customers. US is roughly 30-50% of gallium end-use consumption for semiconductor applications. Applied at China origin without a US-consumer decomposition, concentration_delta=0.30 (estimate) attempts to reflect the US-directed share of an already 98%-concentrated supply — but the delta is being applied at the ALL-customers level because the graph does not decompose demand by geography. This is the primary honesty caveat for this event. Confidence: estimate. Pre-registered gap: germanium is not a node in the graph and is dropped from the entity list (the graph does not model germanium supply). This event is on the formula's home turf: single-country origin of a mined material, direct downstream path via gallium → RF & Power Semiconductors."
+  },
+  {
+    "id": "J-2025-04-china-rees",
+    "timestamp": "2025-04-04T00:00:00Z",
+    "source": {
+      "publisher": "China Ministry of Commerce (MOFCOM) announcement",
+      "url": null
+    },
+    "headline": "China imposes export licence requirement on seven heavy rare earths including dysprosium",
+    "summary": "China's Ministry of Commerce announces an export licence requirement covering seven heavy rare earth elements — dysprosium, terbium, yttrium, samarium, gadolinium, lutetium, scandium — and related items. The announcement takes effect immediately, and industry sources report that no export licences have been approved in the days following the announcement, producing a de facto halt on covered shipments. The ministry states the measures are national-security-motivated.",
+    "entities_matched": [
+      {"node_id": "country_region:china", "confidence": 1.0, "match_type": "place"},
+      {"node_id": "mineral:dysprosium", "confidence": 1.0, "match_type": "name"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.35,
+      "substitutability_delta": 0.10,
+      "lead_time_delta": 0.20
+    },
+    "tags": ["home_turf", "export_licence", "rees"],
+    "notes": "Axes basis: China supplies ~65% of dysprosium mining and ~99% of refining per graph edges. Unlike an outright ban, a licence requirement with de facto halt is a temporary chokehold that may relax under negotiation. concentration_delta=0.35 (estimate) reflects that the refining chokepoint (0.99 share) is where the real leverage sits. substitutability_delta=0.10 acknowledges limited near-term substitution for dysprosium in NdFeB permanent magnets. lead_time_delta=0.20 for the multi-month re-routing timelines that graph-external commentary identifies. Confidence: estimate. Pre-registered gap: the graph's dysprosium → NdFeB Magnets outbound edge is at input_share 0.20 (low — since NdFeB uses a small dysprosium fraction), so the cascade dampens quickly downstream of the mineral even though the real chokepoint is severe. This event is home turf: single-country origin of a refined material, direct downstream path via dysprosium → NdFeB Magnets."
+  },
+  {
+    "id": "J-2025-10-nexperia",
+    "timestamp": "2025-10-13T00:00:00Z",
+    "source": {
+      "publisher": "Netherlands Ministry of Economic Affairs",
+      "url": null
+    },
+    "headline": "Netherlands takes control of Nexperia from Chinese owner Wingtech citing security concerns",
+    "summary": "The Dutch government invokes the Goods Availability Act to take administrative control of Nexperia BV, the Chinese-owned Dutch semiconductor company producing discrete and analog automotive chips. The action is justified by concerns about knowledge and IP transfer to Nexperia's parent, Wingtech Technology. Nexperia's Chinese parent contests the action.",
+    "entities_matched": [
+      {"node_id": "country_region:netherlands", "confidence": 0.7, "match_type": "place"}
+    ],
+    "axes_impact": {
+      "concentration_delta": 0.0,
+      "substitutability_delta": 0.0,
+      "lead_time_delta": 0.0
+    },
+    "tags": ["misfit", "out_of_domain"],
+    "notes": "Axes basis: Nexperia produces discrete and analog automotive semiconductors — outside the AI compute supply chain the graph models. No modelled node participates in this event's material flow. The only matched entity (Netherlands) is a location for ASML but has no direct edge relevant to Nexperia. All axes are 0.0 by structural argument, not by estimate: there is nothing to move. Confidence: hard. Pre-registered gap: this event is entirely out-of-domain for the AI graph; entity resolution has no target for 'Nexperia'. This event is a deliberate misfit chosen to test that the pipeline correctly produces a null result for an out-of-domain event rather than a spurious cascade from a partial place-name match."
+  }
+]
