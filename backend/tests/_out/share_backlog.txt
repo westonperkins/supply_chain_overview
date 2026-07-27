@@ -1,25 +1,27 @@
-share-completeness backlog — 38 bucket(s) below 0.95
+share-completeness backlog — 40 bucket(s) below 0.95
 severity    sum edges  node                                   stage         
-FAIL      0.080     1  TSMC                                   input_to      
+FAIL      0.028     3  Marvell                                input_to      
+FAIL      0.050     4  ARM                                    input_to      
 FAIL      0.080     1  SK Hynix                               input_to      
 FAIL      0.080     1  Micron                                 input_to      
 FAIL      0.080     1  Colossus                               input_to      
 FAIL      0.080     1  Stargate (Abilene)                     input_to      
 FAIL      0.080     1  Vantage Frontier                       input_to      
 FAIL      0.080     1  The Citadel                            input_to      
-FAIL      0.090     2  Samsung Electronics                    input_to      
-FAIL      0.120     1  Amazon                                 input_to      
-FAIL      0.120     1  Microsoft                              input_to      
+FAIL      0.110     4  TSMC                                   input_to      
+FAIL      0.120     5  Samsung Electronics                    input_to      
 FAIL      0.120     1  Meta                                   input_to      
-FAIL      0.300     2  Google (Alphabet)                      input_to      
+FAIL      0.140     2  Amazon                                 input_to      
+FAIL      0.140     2  Microsoft                              input_to      
 FAIL      0.300     2  Constellation Energy                   supplies      
 FAIL      0.300     1  Quanta Services                        input_to      
-FAIL      0.400     3  Broadcom                               input_to      
-FAIL      0.430     2  AMD                                    input_to      
+FAIL      0.320     3  Google (Alphabet)                      input_to      
+FAIL      0.428     6  Broadcom                               input_to      
 FAIL      0.450     2  GE Vernova                             input_to      
-FAIL      0.500     2  NVIDIA                                 input_to      
+FAIL      0.458     5  AMD                                    input_to      
 FAIL      0.500     2  Siemens Energy                         input_to      
 FAIL      0.530     3  Vertiv                                 input_to      
+FAIL      0.548     6  NVIDIA                                 input_to      
 FAIL      0.600     3  Google (Alphabet)                      supplies      
 FAIL      0.600     3  Amazon                                 supplies      
 FAIL      0.600     3  Duke Energy                            supplies      

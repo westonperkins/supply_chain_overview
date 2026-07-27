@@ -1,9 +1,10 @@
-category-completeness backlog — 22 single-supplier category bucket(s) across 13 node(s)
+category-completeness backlog — 24 single-supplier category bucket(s) across 15 node(s)
 node                                   category             sole supplier                 
 Amazon                                 ai_asics             company:marvell               
 Amazon                                 foundry_wafers       company:tsmc                  
 Amazon                                 gpu_accelerators     company:nvidia                
 AMD                                    foundry_wafers       company:tsmc                  
+ARM                                    foundry_wafers       company:tsmc                  
 Broadcom                               foundry_wafers       company:tsmc                  
 Google (Alphabet)                      ai_asics             company:broadcom              
 Google (Alphabet)                      foundry_wafers       company:tsmc                  
@@ -22,3 +23,4 @@ Stargate (Abilene)                     cooling              company:vertiv
 The Citadel                            cooling              company:vertiv                
 The Citadel                            power_generation     company:nextera_energy        
 Vantage Frontier                       cooling              company:vertiv                
+ARM Core IP                            ip                   company:arm                   

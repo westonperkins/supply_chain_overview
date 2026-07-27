@@ -565,13 +565,26 @@ class NarrationBuilder:
         cfg = self.config.unscored_body()
         parts: list[str] = []
 
-        intro = cfg.get("intro")
+        # Pass K §3.1 — country nodes are unscored by DESIGN, not by
+        # omission. Prefer the per-type intro under `by_type_intro.<key>`
+        # over the generic `intro` so country panels don't read
+        # "missing axes" against a schema decision to withhold scoring.
+        type_key = _node_type_key(node)
+        by_type_intro = (cfg.get("by_type_intro") or {}).get(type_key)
+        intro = by_type_intro if by_type_intro is not None else cfg.get("intro")
         if intro:
             parts.append(intro)
 
         # Missing-axis clause. Preference: engine field
         # (scored_on_default_axes) — the single source of truth.
-        missing = node.dynamic.scored_on_default_axes or []
+        # For country nodes there is no missing-axis reason (unscored
+        # by design); skip the missing-axis clause entirely so the panel
+        # doesn't append "Missing: no substitutability value on record"
+        # to text that just said this node is unscored by design.
+        if type_key == "country":
+            missing = []
+        else:
+            missing = node.dynamic.scored_on_default_axes or []
         axis_phrases_map = cfg.get("missing_axes", {})
         rendered_reasons = [
             axis_phrases_map[a] for a in missing if a in axis_phrases_map
@@ -588,6 +601,11 @@ class NarrationBuilder:
                     + f", and {rendered_reasons[-1]}"
                 )
             parts.append(f"{prefix} {joined}.")
+        elif type_key == "country":
+            # Pass K §3.1 — country nodes are unscored by design; the
+            # generic "required static axes are absent" fallback would
+            # contradict the by-design intro.
+            pass
         else:
             # Fallback — engine invariants say every unscored node has at
             # least one missing axis recorded. If we reach here, the
@@ -1195,24 +1213,37 @@ class NarrationBuilder:
         cfg: dict,
         template: str,
     ) -> Optional[str]:
-        # A country is a "supply source" if it has any outbound mines/refines
-        # edges reaching a majority share (>= 0.5) of at least one mineral.
-        # Otherwise it's a "hosts" country (located_in inbound) or absent.
-        mines_refines_out = [
+        # Pass K §3.2 — sentence now names BOTH the total distinct minerals
+        # in the country's outbound mines/refines edges (`n_mines_refines`)
+        # AND how many of those the country holds ≥ 50 % share on
+        # (`n_majority`). Previous "majority share of N minerals" contradicted
+        # the full supply list rendered beneath it.
+        all_mines_refines = [
             e for e in self.graph.out_edges(node.id)
             if e.type in (EdgeType.MINES, EdgeType.REFINES)
-            and e.effective_weight() >= 0.5
         ]
-        mines_or_refines_count = len({e.target_id for e in mines_refines_out})
+        n_mines_refines = len({e.target_id for e in all_mines_refines})
+        majority_targets = {
+            e.target_id for e in all_mines_refines if e.effective_weight() >= 0.5
+        }
+        n_majority = len(majority_targets)
 
-        if mines_or_refines_count > 0:
+        if n_mines_refines > 0:
             key = (
                 "role_phrase_mines_refines_singular"
-                if mines_or_refines_count == 1
+                if n_mines_refines == 1
                 else "role_phrase_mines_refines_plural"
             )
-            role = cfg.get(key, "").replace(
-                "{mines_or_refines_count}", str(mines_or_refines_count)
+            if n_majority > 0 and n_majority < n_mines_refines:
+                majority_clause = cfg.get(
+                    "majority_clause_partial", ""
+                ).replace("{n_majority}", str(n_majority))
+            else:
+                majority_clause = cfg.get("majority_clause_full", "")
+            role = (
+                cfg.get(key, "")
+                .replace("{n_mines_refines}", str(n_mines_refines))
+                .replace("{majority_clause}", majority_clause)
             )
         else:
             host_edges = [

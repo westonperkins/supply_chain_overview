@@ -334,6 +334,10 @@
     "description": "Dominant across gallium (~99%), heavy-REE separation (~99%), light-REE mining (~60%), indium refining (~60%), copper refining (~47%). Uses export controls as policy lever.",
     "static": {
       "notes": "Banned gallium exports to the US Dec 2024; restricted 7 heavy REEs incl. dysprosium Apr 4 2025."
+    },
+    "coordinates": {
+      "lat": 35.8617,
+      "lng": 104.1954
     }
   },
   {
@@ -370,7 +374,11 @@
       "ai"
     ],
     "sub_category": "country",
-    "description": "Home of most chip designers, all named data centers, most equipment (ex-ASML), MP Materials REE mining, growing merchant power / utility consolidation."
+    "description": "Home of most chip designers, all named data centers, most equipment (ex-ASML), MP Materials REE mining, growing merchant power / utility consolidation.",
+    "coordinates": {
+      "lat": 37.0902,
+      "lng": -95.7129
+    }
   },
   {
     "id": "country_region:netherlands",
@@ -1658,6 +1666,174 @@
     "sub_category": null,
     "description": "Home country of Siemens Energy (Munich HQ). Added in Pass H.1 \u00a74 to close the located_in coverage gap on Siemens Energy. Country_region has no static axes \u2014 countries are unscored by design. Whether country_region means 'a country that supplies something' or 'a country where things are' is an open modelling question flagged in Pass H.1 \u00a77.",
     "static": {},
+    "dynamic": {},
+    "coordinates": {
+      "lat": 51.1657,
+      "lng": 10.4515
+    }
+  },
+  {
+    "id": "company:synopsys",
+    "type": "company",
+    "name": "Synopsys",
+    "aliases": [
+      "SNPS"
+    ],
+    "domains": [
+      "ai"
+    ],
+    "layer": "chips",
+    "sub_category": "eda",
+    "description": "Largest of the three EDA vendors. Sells design automation tools (synthesis, place-and-route, verification, sign-off) plus interface IP. Every leading-edge chip design flow depends on Synopsys tools. Ansys acquisition (2025) expanded simulation footprint. Added Pass K \u00a71 as part of the design-IP layer.",
+    "static": {
+      "substitutability": {
+        "value": 0.3,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71: not in the paper (\u00a71.2 EDA paper-revision note). Industry estimate: Cadence and Siemens EDA cover most Synopsys tool categories, but flow migration in a large fabless designer is a multi-year, multi-hundred-engineer project. Alternatives exist; substitution cost is high but not prohibitive. Verified against 2024/2026 market-share sources cited in Pass K report (Synopsys ~46% share of legacy EDA market, ~31% of AI EDA \u2014 Big-3 combined 70-85%)."
+      },
+      "lead_time_years": {
+        "value": 4.0,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71: full flow migration for a leading-edge chip design (synthesis + P&R + timing + verification) takes 2-4 years per industry practitioner reports; on the upper end for advanced nodes with sign-off IP. Industry-informed estimate."
+      },
+      "financial_cushion": {
+        "value": 0.75,
+        "confidence": "inference",
+        "source_note": "Pass K \u00a71: recurring subscription revenue base, ~$8B revenue CY2025 (incl. Ansys), high margins. Comparable to other large-cap software incumbents at 0.75."
+      },
+      "notes": "Big-3 EDA (Synopsys/Cadence/Siemens EDA) is a US-jurisdictional oligopoly. Has already been used as an export-control lever (US EDA export controls on China 2025)."
+    },
     "dynamic": {}
+  },
+  {
+    "id": "company:cadence",
+    "type": "company",
+    "name": "Cadence",
+    "aliases": [
+      "CDNS",
+      "Cadence Design Systems"
+    ],
+    "domains": [
+      "ai"
+    ],
+    "layer": "chips",
+    "sub_category": "eda",
+    "description": "Second of the Big-3 EDA vendors. Sells design automation tools + interface IP (PCIe, DDR, SerDes). Roughly co-equal with Synopsys in advanced-node place-and-route and analog flow. Added Pass K \u00a71 as part of the design-IP layer.",
+    "static": {
+      "substitutability": {
+        "value": 0.3,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71: symmetric with Synopsys reasoning. Synopsys and Siemens EDA are alternatives in most tool categories; flow migration is multi-year. 2024/2026 market-share sources cited in Pass K report (Cadence ~35% legacy EDA, ~30% AI EDA)."
+      },
+      "lead_time_years": {
+        "value": 4.0,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71: same as Synopsys \u2014 full flow migration for leading-edge chip design takes 2-4 years. Industry-informed estimate."
+      },
+      "financial_cushion": {
+        "value": 0.7,
+        "confidence": "inference",
+        "source_note": "Pass K \u00a71: recurring subscription revenue base, ~$5.3B revenue CY2025, high margins. Slightly lower cushion than Synopsys due to smaller scale."
+      },
+      "notes": "Big-3 EDA. Cloud EDA leader; Cadence + Synopsys + Siemens EDA together capture ~60% of cloud EDA revenue."
+    },
+    "dynamic": {}
+  },
+  {
+    "id": "company:siemens_eda",
+    "type": "company",
+    "name": "Siemens EDA",
+    "aliases": [
+      "Mentor Graphics",
+      "Mentor"
+    ],
+    "domains": [
+      "ai"
+    ],
+    "layer": "chips",
+    "sub_category": "eda",
+    "description": "Third of the Big-3 EDA vendors (Mentor Graphics lineage; acquired by Siemens 2017). Sub-scale to Synopsys and Cadence but essential for market-share dilution in min_suppliers logic \u2014 a two-vendor EDA bucket would substantially overstate concentration. Distinct company from Siemens Energy (grid equipment). Added Pass K \u00a71 as part of the design-IP layer.",
+    "static": {
+      "substitutability": {
+        "value": 0.35,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71: as the smaller of the three, Siemens EDA is EASIER to substitute (most Siemens EDA tools have Synopsys/Cadence alternatives); slightly higher substitutability. Industry estimate. Market share ~13% of AI EDA, revenue $2.2-2.5B CY2025."
+      },
+      "lead_time_years": {
+        "value": 3.0,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71: shorter than the Big-2 due to narrower tool footprint per design. Industry estimate."
+      },
+      "financial_cushion": {
+        "value": 0.8,
+        "confidence": "inference",
+        "source_note": "Pass K \u00a71: division of Siemens AG (huge industrial parent), so cushion inherits parent-scale balance sheet. Higher than standalone Big-2 EDA vendors."
+      },
+      "notes": "Distinct entity from `company:siemens_energy`. Two Siemens divisions play different roles in the AI supply chain \u2014 EDA in the design layer, and Energy in the power layer."
+    },
+    "dynamic": {}
+  },
+  {
+    "id": "company:arm",
+    "type": "company",
+    "name": "ARM",
+    "aliases": [
+      "Arm Holdings",
+      "Arm"
+    ],
+    "domains": [
+      "ai"
+    ],
+    "layer": "chips",
+    "sub_category": "chip_designer_fabless",
+    "description": "Historically a pure IP licensor (Neoverse cores for servers, Cortex for mobile/embedded). Announced Arm AGI CPU in March 2026 \u2014 first production silicon in ARM's 35-year history, co-developed with Meta as lead customer, fabbed at TSMC 3nm. Production begins H2 2026 with first shipments expected Q4 2026. This node models ARM as a fabless chip designer for the AGI CPU; the licensed IP itself is separated as `product:arm_core_ip`. Sources cited in Pass K report. Added Pass K \u00a71.3.",
+    "static": {
+      "substitutability": {
+        "value": 0.5,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71.3: as a fabless AGI CPU vendor, ARM is entering a market where x86 (AMD, Intel) and other ARM-based server CPUs (Amazon Graviton, Google Axion) are direct substitutes at the system level. Substitutability moderate \u2014 new entrant into an already-competitive category."
+      },
+      "lead_time_years": {
+        "value": 3.0,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71.3: development took ARM 18 months per the March 2026 announcement (Austin, TX, $71M investment, 1000+ engineers). A different fabless entrant into server-class CPUs would face similar 2-3 year silicon development plus qualification."
+      },
+      "financial_cushion": {
+        "value": 0.65,
+        "confidence": "inference",
+        "source_note": "Pass K \u00a71.3: ARM Holdings public company (IPO'd 2023), SoftBank-controlled. Strong balance sheet from IP royalty base; moderate cushion for AGI CPU business unit which is pre-revenue."
+      },
+      "notes": "Pre-revenue as of Pass K (July 2026): AGI CPU announced March 2026, production H2 2026, first shipments Q4 2026. No outbound `supplies` edges are authored in Pass K per \u00a71.3 \u2014 a placeholder share on a pre-shipment product would be authoring to make the node look connected. Downstream customer relationships (Meta lead, OpenAI/Cerebras/Cloudflare launch partners) will be authorable once shipping data exists."
+    },
+    "dynamic": {}
+  },
+  {
+    "id": "product:arm_core_ip",
+    "type": "product",
+    "name": "ARM Core IP",
+    "aliases": [
+      "Neoverse",
+      "ARM architecture license",
+      "ARM Cortex"
+    ],
+    "domains": [
+      "ai"
+    ],
+    "layer": "chips",
+    "sub_category": "cpu_core_ip",
+    "description": "The ARM instruction-set architecture and pre-designed core IP that ARM licenses to chip designers. Gates NVIDIA's Grace CPU, Amazon's Graviton, Google's Axion, Microsoft's Cobalt \u2014 every ARM-based server CPU in the AI stack. Single-source for the ARM ISA; RISC-V exists as an alternative in the world but does not supply any of the four graph-modelled consumers, so per Pass K \u00a71.1(2) is not a bucket member. Added Pass K \u00a71.3.",
+    "static": {
+      "substitutability": {
+        "value": 0.4,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71.5(6): at the ISA level, swapping an existing design is impossible without redesign. At the SYSTEM level \u2014 which is the level this graph models \u2014 x86 substitutes, and most AI racks today run x86 CPUs alongside their GPUs; RISC-V is emerging and now capitalised. Moderate, not near-zero. Deliberately AVOIDING the D-J-3 trap of low input_share masking the actual dependency \u2014 see D-J-3 second instance and the source_note on the arm_core_ip \u2192 nvidia edge."
+      },
+      "lead_time_years": {
+        "value": 5.0,
+        "confidence": "estimate",
+        "source_note": "Pass K \u00a71.5: swapping the ARM ISA for x86 or RISC-V in a shipping server CPU requires a full core redesign + software ecosystem re-qualification. 3-7 years depending on target performance; 5 years as a central industry estimate."
+      },
+      "notes": "This node's input_share into consumers (0.02 authored) is a BOM/royalty-fraction \u2014 a rounding error on chip cost \u2014 while the real dependency is binary (no ISA, no CPU). This is the second independent instance of the criticality-of-share problem (first was dysprosium's 0.20 mass fraction into NdFeB, see D-J-3). Two instances is a materially stronger argument for the concept than one."
+    }
   }
 ]

@@ -2,6 +2,15 @@
 # Format: node_id	stage	sum
 # These are the (node, stage) pairs whose input edges have not been fully
 # modelled. Closing them is a data pass. New shortfalls fail loudly.
+#
+# Pass K §1 additions: company:arm (new pre-revenue fabless designer)
+# and company:marvell (now consumes EDA + interface IP via new K-1
+# input_to edges). Both input_to buckets sum to ~0.05 because the K-1
+# edges are BOM-fraction EDA/IP inputs; the main BOM component for
+# these designers is via the `supplies` stage (TSMC foundry wafers).
+# Expected + known — not a data gap to close.
+company:arm	input_to	0.0500000000
+company:marvell	input_to	0.0550000000
 company:amazon	input_to	0.1200000000
 company:amazon	supplies	0.6000000000
 company:amd	input_to	0.4300000000

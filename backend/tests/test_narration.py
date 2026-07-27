@@ -92,7 +92,9 @@ def test_unscored_why_section_title_and_body_are_authored(graph, narration_build
             f"{node.id} unscored: no why_scores section rendered"
         )
 
-        # Title contains authored wording (case-insensitive substring)
+        # Title contains authored wording (case-insensitive substring).
+        # Pass K §3.1 — country nodes get "(by design)" appended to the
+        # title; the substring "why this isn't scored" still matches.
         title_lower = why["title"].lower()
         assert "why this isn't scored" in title_lower, (
             f"{node.id}: unscored title unexpected: {why['title']!r}"
@@ -104,13 +106,20 @@ def test_unscored_why_section_title_and_body_are_authored(graph, narration_build
                 f"{sev_word!r}: {why['title']!r}"
             )
 
-        # Body is non-empty and names a reason (missing axis or generic).
+        # Body is non-empty and names a reason (missing axis, generic
+        # fallback, or — Pass K §3.1 — the by-design country wording).
         body = why["body"]
         assert body and body.strip(), f"{node.id}: unscored body empty"
         acceptable = [
             "no substitutability value on record",
             "no lead-time value on record",
             "required static axes for scoring are absent",  # generic fallback
+            # Pass K §3.1: country nodes are excluded from severity
+            # scoring by design; the body reads out the by-design intro
+            # instead of a missing-axis reason. The two are semantically
+            # different (design decision vs data gap) so they cannot
+            # share wording.
+            "excluded from severity scoring by design",
         ]
         assert any(phrase in body for phrase in acceptable), (
             f"{node.id}: unscored body names no missing-axis reason: {body!r}"
@@ -118,6 +127,8 @@ def test_unscored_why_section_title_and_body_are_authored(graph, narration_build
 
     # Pass E: 42 unscored. Pass H: NVIDIA + Quanta scored → 40.
     # Pass H.1 §4: Germany added → 41.
+    # Pass K §1: nothing added to the unscored set (all 5 K-1 nodes are
+    # scored). Unscored count still 41.
     assert checked == 41, (
         f"expected 41 unscored nodes to check (Pass H.1 §4 update: "
         f"+Germany), got {checked}. If the graph's scored/unscored "
@@ -246,10 +257,24 @@ def test_glance_reach_downstream_count_matches_independent_bfs(
     # China's downstream reach covers roughly half the graph — the
     # canonical demo for the whole strip. Pin the number so a scoring
     # or edge-set change here surfaces loudly.
-    assert stats["downstream_nodes"] == 33, (
+    #
+    # Pass K §4 re-pin: denominator moved 67 → 72 (5 new design-IP
+    # nodes: synopsys, cadence, siemens_eda, arm, arm_core_ip);
+    # numerator moved 33 → 35. The numerator move was surfaced by
+    # this test (as designed) and cleared through the §4/§8
+    # escalation: it is NOT a China-directed edge. The new
+    # `tsmc supplies arm` edge (foundry_wafers for the AGI CPU
+    # per the March 2026 announcement) attaches ARM to TSMC's
+    # output; TSMC was already downstream of China via the
+    # existing `copper input_to tsmc` edge, so the transitive
+    # closure over material-flow edges now reaches
+    # `company:arm` and `product:arm_core_ip`. Two new
+    # reachable nodes: {company:arm, product:arm_core_ip}.
+    assert stats["downstream_nodes"] == 35, (
         f"China downstream_nodes changed: {stats['downstream_nodes']} "
-        f"(previously 33). If the graph or the walk set changed, "
-        f"update this pin deliberately."
+        f"(previously 35, was 33 pre-K). If the graph or the walk "
+        f"set changed, update this pin deliberately and name the "
+        f"mechanism — the §4/§8 escalation exists to force that."
     )
     # Chokepoints named in the reach sentence per AC1/AC2.
     assert "mineral:dysprosium" in stats["critical_reached"]

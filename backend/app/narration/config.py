@@ -47,9 +47,20 @@ class NarrationConfig:
         Pass E — when tier == 'unscored', a dedicated per-section title from
         the `unscored.section_titles` block is used. It never runs through
         the {tier} → tier_words substitution that would otherwise resolve to
-        the literal token `unscored` or a severity word (INV-4)."""
+        the literal token `unscored` or a severity word (INV-4).
+
+        Pass K §3.1 — for the unscored branch, prefer the per-node-type
+        `by_type.<key>` override under `unscored.section_titles` before
+        falling back to the flat `section_titles.<section_key>`. This is
+        how country nodes get "Why this isn't scored (by design)" while
+        other unscored types keep the by-omission wording."""
         if tier == "unscored":
-            override = self.raw.get("unscored", {}).get("section_titles", {}).get(section_key)
+            section_titles = self.raw.get("unscored", {}).get("section_titles", {})
+            by_type = section_titles.get("by_type", {})
+            typed_override = by_type.get(node_type_key)
+            if typed_override is not None and section_key == "why_scores":
+                return typed_override
+            override = section_titles.get(section_key)
             if override is not None:
                 return override
             # No override for this (unscored, section) — fall through so

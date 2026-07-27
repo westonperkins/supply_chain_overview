@@ -141,11 +141,13 @@ concentration:
     # top-10 raw-outbound table and the identity of the reference node.
     normalization:
       mode: fixed
-      # Derived from ASML's raw outbound under the honesty-fixes-pass
-      # default config (share_field: input_share, missing_static_axes:
-      # unscored). ASML is #1 at 1.6711 raw; TSMC #2 at 1.535; KLA #3
-      # at 1.524. Full top-15 in report §3.
-      fixed_reference: 1.6711394969476698
+      # Pass K §4 — re-derived from ASML's raw outbound after adding the
+      # design-IP layer (EDA + ARM + arm_core_ip, +5 nodes / +36 edges).
+      # ASML #1 at 1.7710; TSMC #2 at 1.7524; KLA #3 at 1.6148; LAM #4
+      # at 1.5241; China #5 at 1.3826. Previous value 1.6711394969476698
+      # (Pass H hygiene reference). This is a derived value like the
+      # threshold boundary block — not a hand-authored parameter.
+      fixed_reference: 1.770976984672585
   combine:
     # `max` — a node is severe if EITHER axis is high. Averaging would wash
     # ASML out; do not switch to weighted_sum without a reason.
@@ -195,8 +197,8 @@ thresholds:
     separation_factor: 3.0
   boundaries:
     critical: 0.5096065543117585
-    high: 0.40723699915969647
-    moderate: 0.1330282807796614
+    high: 0.40943246107049935
+    moderate: 0.132797275078736
   # An unresolved band is declared when a required boundary has no
   # separating gap. Nodes inside the band still tier normally (backward
   # compatibility) but carry dynamic.tier_ambiguous = true and

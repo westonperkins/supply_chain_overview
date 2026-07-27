@@ -171,9 +171,19 @@ glance_summary:
     # Countries in this graph are supply-source geographies. Pluralization
     # is authored — no literal "(s)" leaks into rendered strip content
     # (Pass I.1 AC5).
+    #
+    # Pass K §3.2 fix — the earlier "majority share of 4 minerals" line
+    # contradicted the supply list beneath it (which showed 5 minerals).
+    # The sentence now names BOTH counts: total distinct minerals in
+    # outbound mines/refines edges AND how many of those the country
+    # holds ≥ 50 % share on. If the two are equal the parenthetical
+    # majority clause is omitted so the sentence doesn't say
+    # "supplies 4 minerals, majority share on 4".
     template: "A supply-source country that {country_role}."
-    role_phrase_mines_refines_singular: "mines or refines a majority share of {mines_or_refines_count} modelled mineral"
-    role_phrase_mines_refines_plural:   "mines or refines a majority share of {mines_or_refines_count} modelled minerals"
+    role_phrase_mines_refines_singular: "supplies {n_mines_refines} modelled mineral{majority_clause}"
+    role_phrase_mines_refines_plural:   "supplies {n_mines_refines} modelled minerals{majority_clause}"
+    majority_clause_partial: " (majority share on {n_majority})"
+    majority_clause_full: ""
     role_phrase_hosts_only_singular: "hosts {n_hosts} modelled node but is not itself a supply source in the graph"
     role_phrase_hosts_only_plural:   "hosts {n_hosts} modelled nodes but is not itself a supply source in the graph"
     role_phrase_none: "is present in the graph but supplies no material and hosts no node"
@@ -248,9 +258,29 @@ glance_strip:
 unscored:
   section_titles:
     why_scores: "Why this isn't scored"
+    # Pass K §3.1 — country nodes are unscored by DESIGN, not by omission.
+    # Keyed by node type so `country_region` gets by-design wording and
+    # other node types keep the by-omission wording above. The section
+    # builder tries `by_type.<type_key>` first, then falls back to the
+    # default value at `why_scores`.
+    by_type:
+      country: "Why this isn't scored (by design)"
 
   body:
     intro: "This node isn't scored."
+
+    # Pass K §3.1 — country nodes get a distinct intro that names WHY:
+    # the graph deliberately does not score country_region nodes because
+    # `country_region` semantics are still being resolved (supply-source
+    # vs corporate-location geography; noted in Pass H.1 §7 and Pass K
+    # §2). This is not a data gap to close by adding static axes.
+    by_type_intro:
+      country:
+        # Wording deliberately avoids the literal token "unscored" so INV-4
+        # (no 'unscored' leaks into rendered text) stays green. The
+        # by-design distinction is carried by "excluded from severity
+        # scoring by design in this graph".
+        "This node isn't scored — country nodes are excluded from severity scoring by design in this graph; the modelling question (supply-source vs corporate-location semantics) is separate from any missing-axis reason."
 
     # Per-axis reason phrases. Key matches the axis name recorded on
     # node.dynamic.scored_on_default_axes by the scoring engine — the

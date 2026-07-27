@@ -79,8 +79,26 @@ KNOWN_MISS_XFAIL_REASONS = {
 }
 
 
+def _param_with_xfail(node_id: str, name: str):
+    """Pass K §5 — conditional xfail marker rather than imperative
+    `pytest.xfail()`. The imperative form short-circuits BEFORE the
+    assertion runs, so the test never evaluates whether the gap has
+    closed — an HBM or RF & Power rise above the median would be
+    silently masked. Under `strict=False`, pytest runs the assertion:
+    fails → XFAIL, passes → XPASS. An XPASS is a finding that must be
+    closed by a spec decision, never by silently deleting the entry."""
+    reason = KNOWN_MISS_XFAIL_REASONS.get(node_id)
+    if reason is None:
+        return pytest.param(node_id, name)
+    return pytest.param(
+        node_id, name,
+        marks=pytest.mark.xfail(strict=False, reason=reason),
+    )
+
+
 @pytest.mark.parametrize(
-    "node_id,name", PAPER_CHOKEPOINTS,
+    "node_id,name",
+    [_param_with_xfail(nid, nm) for nid, nm in PAPER_CHOKEPOINTS],
     ids=lambda x: x if ":" not in str(x) else x.split(":", 1)[1],
 )
 def test_paper_chokepoint_severity_above_median(graph, node_id, name):
@@ -90,13 +108,12 @@ def test_paper_chokepoint_severity_above_median(graph, node_id, name):
     Threshold-independent by construction — tests severity against a
     severity statistic, so it does not move when display boundaries
     move. Known misses (HBM, RF & Power) carry their pre-existing
-    reasons — both score below median (0.178 and 0.026 vs ~0.212) for
-    the same modelling gaps already documented, so the reasons remain
-    valid without editing.
+    reasons — Pass K §5 confirmation: HBM 0.178 (moderate), RF & Power
+    0.026 (none); both below median. Pass K adds scored nodes which
+    moves the median, so the "gap closed?" question must be answered
+    by the assertion each run — hence the conversion from imperative
+    xfail to conditional mark.
     """
-    if node_id in KNOWN_MISS_XFAIL_REASONS:
-        pytest.xfail(KNOWN_MISS_XFAIL_REASONS[node_id])
-
     node = graph.nodes.get(node_id)
     assert node is not None, f"paper chokepoint {node_id} ({name}) not in graph"
 
