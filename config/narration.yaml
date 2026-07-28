@@ -120,6 +120,49 @@ tier_words:
   none:     "low"             # title becomes "Why it scores low"
 
 # --------------------------------------------------------------------------- #
+# Pass K.1 §7.1 — tier language states STRUCTURE, not event.                  #
+# --------------------------------------------------------------------------- #
+# A red "critical" node reads ambiguously to a first-time user: it may be
+# taken to mean "something happened in the news" when it in fact means
+# "this node is structurally load-bearing and always has been." Those are
+# different claims and must never share a presentation.
+#
+# tier_descriptions carry the STRUCTURAL sentence for each tier. News /
+# event / cascade language stays exclusively in the event narration
+# (built by propagate_event, rendered separately from the panel). The
+# two voices are separated so they cannot be crossed.
+#
+# The frontend consumes tier_description as part of the narration payload
+# `headline.tier_description` field (added in K.1). Any future visual
+# design of tier-vs-event (static fill for tier, motion for event) belongs
+# in its own pass; the principle is recorded on §7.3 and is not
+# implemented here.
+tier_descriptions:
+  critical: "structurally load-bearing — the modelled supply chain is propped up on this node; withdrawal collapses large portions of the downstream graph"
+  high:     "structurally important — heavy downstream dependence with limited alternatives at scale"
+  moderate: "structurally influential — meaningful downstream reach or supply-side concentration, but not the sole route"
+  none:     "structurally routine — modelled dependencies do not concentrate on this node"
+  unscored: "not assigned a structural score — see 'Why this isn't scored'"
+
+# --------------------------------------------------------------------------- #
+# Pass K.1 §7.2 — concept one-liners (proof slice).                            #
+# --------------------------------------------------------------------------- #
+# Not a definition. The sentence that makes the tier felt.
+#
+# Target reader: a non-expert who recognises NVIDIA and China but does
+# not know what a fab is, what CoWoS is, or why TSMC cannot be replaced.
+# Authored for a proof slice only — validate the shape before authoring
+# full coverage. Absence for a node id is expected: not every node needs
+# this treatment, and speculative coverage would be worse than none.
+concept_one_liners:
+  "company:tsmc": "The single foundry that builds the most advanced AI accelerator chips — every leading-edge NVIDIA, AMD, or Broadcom design goes through TSMC before anywhere else in the world can make it."
+  "company:asml": "The Dutch company that builds the lithography machines TSMC uses to print those chips — no ASML, no cutting-edge foundry, no leading-edge AI silicon."
+  "product:cowos_packaging": "TSMC's technique for stacking accelerator chips next to their memory in one package. Repeatedly the gating step that limited AI GPU output in 2024-25."
+  "product:hbm": "High Bandwidth Memory — the specialised memory that sits directly next to AI accelerator chips. Every top-end AI chip needs it; only three suppliers make it (SK Hynix, Samsung, Micron)."
+  "product:ndfeb_magnets": "Neodymium-iron-boron permanent magnets — the strong magnets in EV motors, wind-turbine generators, and cooling / actuator hardware. Depend on Chinese rare-earths for the heat-stable variety."
+  "company:synopsys": "The design-software company whose tools every leading-edge chip company uses to design chips. Sits alongside Cadence and Siemens EDA as a three-vendor oligopoly you cannot design a modern chip without."
+
+# --------------------------------------------------------------------------- #
 # Unscored panels                                                              #
 # --------------------------------------------------------------------------- #
 # A node with baseline_tier == "unscored" (== baseline_severity is None) has

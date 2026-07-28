@@ -146,6 +146,26 @@ class NarrationConfig:
         the edge type token so a missing entry never renders as blank."""
         return self.raw.get("edge_glance_verb", {}).get(edge_type, edge_type)
 
+    # ---------- Pass K.1 §7.1 tier structural descriptions ---------------
+
+    def tier_description(self, tier: str) -> Optional[str]:
+        """The STRUCTURAL sentence for a tier (Pass K.1 §7.1). Kept
+        separate from tier_words so an unfamiliar user cannot conflate
+        the tier chip (a structural property) with event-cascade
+        movement (news). Returns None if the tier has no authored
+        description — callers should omit the field rather than
+        fabricate one."""
+        return self.raw.get("tier_descriptions", {}).get(tier)
+
+    # ---------- Pass K.1 §7.2 concept one-liners -------------------------
+
+    def concept_one_liner(self, node_id: str) -> Optional[str]:
+        """The sentence that makes a specialised node's role concrete for
+        a non-expert reader (Pass K.1 §7.2). Authored only for a proof
+        slice; returns None for nodes without an authored line — the
+        caller must not invent one."""
+        return self.raw.get("concept_one_liners", {}).get(node_id)
+
     def glance_strip(self) -> dict:
         """The authored strip pieces (section labels, supply-line
         template, reach templates, chip labels, path budgets). Pass I.1

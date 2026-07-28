@@ -171,12 +171,24 @@ class NarrationBuilder:
         # no English is composed in TS (AC5).
         strip_cfg = self.config.glance_strip()
 
+        # Pass K.1 §7.1 — tier_description carries the STRUCTURAL sentence
+        # so downstream consumers can distinguish "structurally load-bearing"
+        # from "event-driven cascade movement". None when no description is
+        # authored for the tier; callers must not fabricate one.
+        tier_description = self.config.tier_description(tier)
+        # Pass K.1 §7.2 — concept_one_liner authored per node_id for the
+        # proof slice (tsmc, asml, cowos, hbm, permanent_magnets, synopsys).
+        # None for other nodes; the non-authoring is deliberate.
+        concept = self.config.concept_one_liner(node_id)
+
         return {
             "node_id": node_id,
             "headline": {
                 "name": node.name,
                 "role": _pretty_sub_category(node.sub_category),
                 "tier": self.config.tier_words.get(tier, tier),
+                "tier_description": tier_description,
+                "concept_one_liner": concept,
             },
             "dominant_axis": dominant_axis,
             "sections": sections,
