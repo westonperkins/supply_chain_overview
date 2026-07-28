@@ -6,3 +6,12 @@
 mineral:dysprosium	refines	1.0100000000
 mineral:neodymium	mines	1.1700000000
 mineral:neodymium	refines	1.1000000000
+# Pass K.1 §4.3 — NdFeB Magnets' input_to bucket now sums to 1.9 because
+# both Nd (1.00) and Dy (0.90) are ~binary dependencies for high-temp NdFeB
+# (withdrawal of either halts most magnet production). Under §4.1 semantics
+# each is authored on dependency basis independently — the sum >1.0 is
+# expected and correct. This surfaces a formula-behavior tension: the
+# aggregation logic in some places assumes shares sum to ≤1, which is
+# incompatible with dependency-basis authoring for co-critical inputs.
+# Logged for the formula pass; not a data defect to reconcile here.
+product:ndfeb_magnets	input_to	1.9000000000

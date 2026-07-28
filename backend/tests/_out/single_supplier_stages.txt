@@ -1,13 +1,13 @@
 stage-level completeness backlog — 13 single-
 supplier stage bucket(s)
 node                                   stage          sole source                   
-AMD                                    supplies       company:tsmc                  
-ARM                                    supplies       company:tsmc                  
-Broadcom                               supplies       company:tsmc                  
+Amazon                                 input_to       product:hbm                   
 Meta                                   input_to       product:hbm                   
 Micron                                 input_to       mineral:copper                
+Microsoft                              input_to       product:hbm                   
 Quanta Services                        input_to       mineral:copper                
 SK Hynix                               input_to       mineral:copper                
+TSMC                                   input_to       mineral:copper                
 Colossus                               input_to       product:ndfeb_magnets         
 Stargate (Abilene)                     input_to       product:ndfeb_magnets         
 The Citadel                            input_to       product:ndfeb_magnets         

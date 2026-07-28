@@ -1,6 +1,5 @@
-Removing the single highest-outbound node (ASML, id=company:asml, score=1.000) and renormalizing changes:
+Removing the single highest-outbound node (TSMC, id=company:tsmc, score=1.000) and renormalizing changes:
 
-  1 node(s) shift tier.
+  0 node(s) shift tier.
 
-Changed:
-  company:asml                          critical → none     
+No tier shifts under perturbation.

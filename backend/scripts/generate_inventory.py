@@ -61,7 +61,7 @@ def score():
     return g, c
 
 
-def _load_snapshot_or_first_run(g):
+def _load_snapshot_or_first_run(g, c=None):
     """Never overwrite the snapshot from this script — the pass author
     updates it explicitly by editing the JSON when scoring deliberately
     moves. First-run behaviour: emit an empty labelled snapshot so the
@@ -70,7 +70,7 @@ def _load_snapshot_or_first_run(g):
     if path.exists():
         return json.loads(path.read_text())
     # First-run capture
-    snap = snapshot_severity(g, captured_at_pass=CURRENT_PASS_NAME)
+    snap = snapshot_severity(g, captured_at_pass=CURRENT_PASS_NAME, config=c)
     path.write_text(json.dumps(snap, indent=2, default=str) + "\n")
     return snap
 
@@ -155,8 +155,10 @@ def main():
     (GENERATED / "threshold_analysis.md").write_text(analysis)
 
     # Pass H.1 — diff BEFORE snapshot roll-forward, atomically.
-    snapshot = _load_snapshot_or_first_run(g)
-    diff = build_severity_diff(snapshot, g)
+    # Pass K.1 §5.4 — pass config so the diff can classify deltas as
+    # RESCALE (fixed_reference movement) or STRUCTURAL.
+    snapshot = _load_snapshot_or_first_run(g, c)
+    diff = build_severity_diff(snapshot, g, config=c)
     (GENERATED / "severity_diff.md").write_text(diff)
 
     print("Wrote:")
@@ -182,7 +184,7 @@ def main():
         )
         named.write_text(preamble + diff)
         # Now roll snapshot forward.
-        new_snap = snapshot_severity(g, captured_at_pass=pass_name)
+        new_snap = snapshot_severity(g, captured_at_pass=pass_name, config=c)
         (GENERATED / "severity_snapshot.json").write_text(
             json.dumps(new_snap, indent=2, default=str) + "\n",
         )

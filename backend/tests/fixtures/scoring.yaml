@@ -3,6 +3,35 @@
 # formula in code.
 version: 1
 
+# ---------------------------------------------------------------------------
+# Definition of `input_share` (Pass K.1 §4.1) — recorded here because this
+# is the canonical config, and because three independent D-J-3 instances
+# (dysprosium→magnets, ARM→NVIDIA, Pass K's EDA vendors) traced to authoring
+# `input_share` on cost/BOM basis rather than dependency basis.
+#
+# `input_share` is the fraction of the consuming node's function that
+# ceases if this input is withdrawn, measured over the relevant response
+# window. It is NOT cost share, NOT volume share, and NOT revenue share.
+#
+# Consequences (stated so they cannot be argued away later):
+#
+#   1. A cheap input can carry a high input_share. Cost and criticality
+#      are independent axes. Software licences, specialty chemicals,
+#      cores of IP libraries are the normal case.
+#
+#   2. An expensive input can carry a low input_share if it is readily
+#      substitutable. Substitutability lives on its own axis; input_share
+#      measures dependency, not scarcity.
+#
+#   3. Within a supply_category (bucket of alternatives), the bucket's
+#      aggregate weight represents the consumer's dependency on that
+#      class of input, and each member's share represents its position
+#      within the bucket. Author the bucket weight first, then split it.
+#
+# See docs/generated/input_share_audit.md for the Pass K.1 graph-wide
+# audit that reclassified every edge against this definition.
+# ---------------------------------------------------------------------------
+
 # The formula is a plain Python arithmetic expression evaluated with these
 # three variables in scope:
 #   concentration      — HHI in [0, 1] (sum of squared supplier shares)
@@ -141,13 +170,30 @@ concentration:
     # top-10 raw-outbound table and the identity of the reference node.
     normalization:
       mode: fixed
-      # Pass K §4 — re-derived from ASML's raw outbound after adding the
-      # design-IP layer (EDA + ARM + arm_core_ip, +5 nodes / +36 edges).
-      # ASML #1 at 1.7710; TSMC #2 at 1.7524; KLA #3 at 1.6148; LAM #4
-      # at 1.5241; China #5 at 1.3826. Previous value 1.6711394969476698
-      # (Pass H hygiene reference). This is a derived value like the
-      # threshold boundary block — not a hand-authored parameter.
-      fixed_reference: 1.770976984672585
+      # ------------------------------------------------------------------
+      # Pass K.1 §2 (DECIDED: Option A) — FROZEN SCALE CONSTANT.
+      #
+      # This value is a permanent scale constant, restored from Pass K's
+      # unauthorized re-derivation. Its purpose is exactly to make
+      # `fixed` mode NOT behave like `graph_max`; re-deriving it each pass
+      # collapses the two modes into one and destroys cross-pass severity
+      # comparability. That collapse was what Pass K silently did:
+      # `outbound_criticality = raw / fixed_reference` with fixed_reference
+      # re-derived from the same graph — always 1.0 at the ranking-1 node,
+      # regardless of graph edits.
+      #
+      # The value below is the ASML raw outbound as of the honesty-fixes
+      # pass (docs/scoring_honesty_fixes_spec.md §3). It is deliberately
+      # NOT the current graph's max; that's the point.
+      #
+      # Changing this value requires an explicit spec authorization and a
+      # full re-baseline of committed severity snapshots. It is guarded by
+      # test_fixed_reference_is_frozen (Pass K.1 §5.3) which fails if the
+      # literal drifts. Do not update the constant to "match the graph" or
+      # to reflect a new #1 node — that is graph_max mode wearing fixed's
+      # name.
+      # ------------------------------------------------------------------
+      fixed_reference: 1.6711394969476698
   combine:
     # `max` — a node is severe if EITHER axis is high. Averaging would wash
     # ASML out; do not switch to weighted_sum without a reason.
@@ -197,8 +243,8 @@ thresholds:
     separation_factor: 3.0
   boundaries:
     critical: 0.5096065543117585
-    high: 0.40943246107049935
-    moderate: 0.132797275078736
+    high: 0.4118946228794891
+    moderate: 0.0
   # An unresolved band is declared when a required boundary has no
   # separating gap. Nodes inside the band still tier normally (backward
   # compatibility) but carry dynamic.tier_ambiguous = true and

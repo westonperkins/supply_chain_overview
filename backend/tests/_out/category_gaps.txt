@@ -1,12 +1,15 @@
-category-completeness backlog — 24 single-supplier category bucket(s) across 15 node(s)
+category-completeness backlog — 29 single-supplier category bucket(s) across 15 node(s)
 node                                   category             sole supplier                 
 Amazon                                 ai_asics             company:marvell               
+Amazon                                 cpu_core_ip          product:arm_core_ip           
 Amazon                                 foundry_wafers       company:tsmc                  
 Amazon                                 gpu_accelerators     company:nvidia                
 AMD                                    foundry_wafers       company:tsmc                  
+ARM                                    cpu_core_ip          product:arm_core_ip           
 ARM                                    foundry_wafers       company:tsmc                  
 Broadcom                               foundry_wafers       company:tsmc                  
 Google (Alphabet)                      ai_asics             company:broadcom              
+Google (Alphabet)                      cpu_core_ip          product:arm_core_ip           
 Google (Alphabet)                      foundry_wafers       company:tsmc                  
 Google (Alphabet)                      gpu_accelerators     company:nvidia                
 Intel                                  deposition           company:applied_materials     
@@ -14,9 +17,11 @@ Meta                                   ai_asics             company:broadcom
 Meta                                   foundry_wafers       company:tsmc                  
 Meta                                   gpu_accelerators     company:nvidia                
 Micron                                 deposition           company:applied_materials     
+Microsoft                              cpu_core_ip          product:arm_core_ip           
 Microsoft                              foundry_wafers       company:tsmc                  
 Microsoft                              gpu_accelerators     company:nvidia                
 Microsoft                              power_generation     company:constellation_energy  
+NVIDIA                                 cpu_core_ip          product:arm_core_ip           
 NVIDIA                                 memory               company:sk_hynix              
 Colossus                               cooling              company:vertiv                
 Stargate (Abilene)                     cooling              company:vertiv                

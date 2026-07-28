@@ -1,0 +1,357 @@
+# `input_share` graph-wide audit — Pass K.1 §4.4
+
+Every edge classified against the §4.1 definition of `input_share` — the fraction of the consuming node's function that ceases if this input is withdrawn, measured over the relevant response window.
+
+## Summary
+
+| classification | count |
+|---|---|
+| unclassified | 119 |
+| supply_share (mining/refining) | 40 |
+| dependency (K.1 §4.3 re-author) | 36 |
+| supply_share_basis | 35 |
+| suspect_cost_or_volume | 27 |
+| cost_or_mass_basis | 2 |
+| **total edges** | 259 |
+
+## dependency (K.1 §4.3 re-author)  (n = 36)
+
+| source | target | type | category | input_share | note (first 90c) |
+|---|---|---|---|---|---|
+| company:cadence | company:amd | supplies | eda_tools | 0.32 | Pass K §1: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a lea |
+| company:cadence | company:amd | supplies | interface_ip | 0.14 | Pass K §1: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. I |
+| company:cadence | company:arm | supplies | eda_tools | 0.32 | Pass K §1: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a lea |
+| company:cadence | company:broadcom | supplies | eda_tools | 0.32 | Pass K §1: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a lea |
+| company:cadence | company:broadcom | supplies | interface_ip | 0.14 | Pass K §1: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. I |
+| company:cadence | company:marvell | supplies | eda_tools | 0.32 | Pass K §1: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a lea |
+| company:cadence | company:marvell | supplies | interface_ip | 0.14 | Pass K §1: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. I |
+| company:cadence | company:nvidia | supplies | eda_tools | 0.32 | Pass K §1: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a lea |
+| company:cadence | company:nvidia | supplies | interface_ip | 0.14 | Pass K §1: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. I |
+| company:cadence | company:samsung | supplies | eda_tools | 0.16 | Pass K §1: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a lea |
+| company:cadence | company:tsmc | supplies | eda_tools | 0.16 | Pass K §1: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a lea |
+| company:siemens_eda | company:amd | supplies | eda_tools | 0.12 | Pass K §1: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and  |
+| company:siemens_eda | company:arm | supplies | eda_tools | 0.12 | Pass K §1: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and  |
+| company:siemens_eda | company:broadcom | supplies | eda_tools | 0.12 | Pass K §1: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and  |
+| company:siemens_eda | company:marvell | supplies | eda_tools | 0.12 | Pass K §1: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and  |
+| company:siemens_eda | company:nvidia | supplies | eda_tools | 0.12 | Pass K §1: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and  |
+| company:siemens_eda | company:samsung | supplies | eda_tools | 0.06 | Pass K §1: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and  |
+| company:siemens_eda | company:tsmc | supplies | eda_tools | 0.06 | Pass K §1: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and  |
+| company:synopsys | company:amd | supplies | eda_tools | 0.4 | Pass K §1: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and s |
+| company:synopsys | company:amd | supplies | interface_ip | 0.2 | Pass K §1: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB,  |
+| company:synopsys | company:arm | supplies | eda_tools | 0.4 | Pass K §1: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and s |
+| company:synopsys | company:broadcom | supplies | eda_tools | 0.4 | Pass K §1: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and s |
+| company:synopsys | company:broadcom | supplies | interface_ip | 0.2 | Pass K §1: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB,  |
+| company:synopsys | company:marvell | supplies | eda_tools | 0.4 | Pass K §1: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and s |
+| company:synopsys | company:marvell | supplies | interface_ip | 0.2 | Pass K §1: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB,  |
+| company:synopsys | company:nvidia | supplies | eda_tools | 0.4 | Pass K §1: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and s |
+| company:synopsys | company:nvidia | supplies | interface_ip | 0.2 | Pass K §1: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB,  |
+| company:synopsys | company:samsung | supplies | eda_tools | 0.2 | Pass K §1: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and s |
+| company:synopsys | company:tsmc | supplies | eda_tools | 0.2 | Pass K §1: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and s |
+| mineral:dysprosium | product:ndfeb_magnets | input_to | — | 0.9 | Critical high-temperature stability additive. [K.1 §4.3 dependency-basis re-author: Depend |
+| mineral:neodymium | product:ndfeb_magnets | input_to | — | 1.0 | Primary metal in NdFeB magnets. [K.1 §4.3 dependency-basis re-author: Dependency basis (§4 |
+| product:arm_core_ip | company:amazon | supplies | cpu_core_ip | 0.35 | Pass K §1.5(2): Amazon Graviton uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty |
+| product:arm_core_ip | company:arm | supplies | cpu_core_ip | 0.95 | Pass K §1.3: ARM AGI CPU (announced March 2026) uses Neoverse V3 cores — 136 cores per chi |
+| product:arm_core_ip | company:google | supplies | cpu_core_ip | 0.2 | Pass K §1.5(2): Google Axion uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty fr |
+| product:arm_core_ip | company:microsoft | supplies | cpu_core_ip | 0.15 | Pass K §1.5(2): Microsoft Cobalt uses ARM Neoverse cores. input_share=0.02 is a BOM/royalt |
+| product:arm_core_ip | company:nvidia | supplies | cpu_core_ip | 0.25 | Pass K §1.5(2): NVIDIA Grace CPU uses ARM Neoverse cores. Single-source bucket for NVIDIA  |
+
+## supply_share (mining/refining)  (n = 40)
+
+| source | target | type | category | input_share | note (first 90c) |
+|---|---|---|---|---|---|
+| country_region:australia | mineral:neodymium | mines | — | 0.1 | Lynas. |
+| country_region:brazil | mineral:neodymium | mines | — | 0.05 | Serra Verde — emerging. |
+| country_region:canada | mineral:gallium | refines | — | 0.15 |  |
+| country_region:canada | mineral:indium | mines | — | 0.15 |  |
+| country_region:canada | mineral:indium | refines | — | 0.1 |  |
+| country_region:chile | mineral:copper | mines | — | 0.25 | #1 producer at ~25% of world output. |
+| country_region:chile | mineral:copper | refines | — | 0.15 | Paper names Chile as #1 copper miner; ex-China refining distributed across paper-named cop |
+| country_region:china | mineral:copper | mines | — | 0.1 | #4 producer. |
+| country_region:china | mineral:copper | refines | — | 0.47 | China ~45-48% of refined output, ~40% of smelting capacity. |
+| country_region:china | mineral:dysprosium | mines | — | 0.65 | China + Myanmar dominate ionic-clay heavy-REE mining. |
+| country_region:china | mineral:dysprosium | refines | — | 0.99 | China up to ~99% of heavy-REE separation. |
+| country_region:china | mineral:gallium | mines | — | 0.985 | China ~98-99% of primary gallium. |
+| country_region:china | mineral:gallium | refines | — | 0.6 | China dominant on ~320 t/yr refined; balance Canada, Japan, Slovakia, US. |
+| country_region:china | mineral:indium | mines | — | 0.3 | Byproduct of zinc smelting — Asia-Pacific ~70% of total. |
+| country_region:china | mineral:indium | refines | — | 0.58 | China ~58-60% of refined output. |
+| country_region:china | mineral:neodymium | mines | — | 0.6 | China ~60% of magnet-REE mining. |
+| country_region:china | mineral:neodymium | refines | — | 0.9 | China ~90% of light-REE separation. |
+| country_region:drc | mineral:copper | mines | — | 0.13 | #2 producer. |
+| country_region:drc | mineral:copper | refines | — | 0.13 | Paper names DRC as #2 copper miner; ex-China refining share estimated (see e:chile-refines |
+| country_region:japan | mineral:gallium | mines | — | 0.01 |  |
+| country_region:japan | mineral:gallium | refines | — | 0.1 |  |
+| country_region:japan | mineral:indium | mines | — | 0.1 |  |
+| country_region:japan | mineral:indium | refines | — | 0.1 |  |
+| country_region:kachin | mineral:dysprosium | mines | — | 0.35 | Kachin State ionic-clay deposits feeding Chinese refineries. |
+| country_region:malaysia | mineral:dysprosium | refines | — | 0.01 | Only non-China commercial milestone: Lynas Malaysia. |
+| country_region:malaysia | mineral:neodymium | refines | — | 0.1 | Lynas Malaysia. |
+| country_region:myanmar | mineral:neodymium | mines | — | 0.1 | Feeds Chinese refineries upstream. |
+| country_region:peru | mineral:copper | mines | — | 0.11 | #3 producer. |
+| country_region:peru | mineral:copper | refines | — | 0.13 | Paper names Peru as #3 copper miner; ex-China refining share estimated (see e:chile-refine |
+| country_region:south_korea | mineral:gallium | mines | — | 0.005 |  |
+| country_region:south_korea | mineral:indium | mines | — | 0.2 |  |
+| country_region:south_korea | mineral:indium | refines | — | 0.15 |  |
+| country_region:usa | mineral:copper | mines | — | 0.06 | #5 producer. |
+| country_region:usa | mineral:copper | refines | — | 0.12 | Paper names US as #5 copper miner; ex-China refining share estimated (see e:chile-refines- |
+| country_region:usa | mineral:gallium | refines | — | 0.05 |  |
+| country_region:usa | mineral:neodymium | mines | — | 0.15 | Mountain Pass / MP Materials. |
+| facility:lynas_malaysia | mineral:dysprosium | refines | — | 0.01 | The only non-China heavy-REE separation. |
+| facility:lynas_malaysia | mineral:neodymium | refines | — | 0.1 |  |
+| facility:mountain_pass | mineral:neodymium | mines | — | 0.12 | MP Materials' share of Nd mining — subset of USA total. |
+| facility:serra_verde | mineral:neodymium | mines | — | 0.05 | Emerging Brazil share — subset of Brazil total. |
+
+## supply_share_basis  (n = 35)
+
+| source | target | type | category | input_share | note (first 90c) |
+|---|---|---|---|---|---|
+| company:applied_materials | company:intel | supplies | deposition | 0.55 | AMAT dominant CVD supplier. Industry-informed estimate of AMAT's share of Intel's depositi |
+| company:applied_materials | company:micron | supplies | deposition | 0.6 | AMAT dominant CVD supplier for DRAM/NAND production. Industry-informed estimate of AMAT's  |
+| company:applied_materials | company:samsung | supplies | deposition | 0.6 | Memory + foundry mix raises AMAT's deposition share vs pure logic. Industry-informed estim |
+| company:applied_materials | company:sk_hynix | supplies | deposition | 0.55 | AMAT dominant CVD / thin-film supplier for memory. Industry-informed estimate of AMAT's sh |
+| company:applied_materials | company:tsmc | supplies | deposition | 0.55 | Applied Materials is the dominant CVD / thin-film deposition supplier to leading-edge foun |
+| company:arm | product:arm_core_ip | supplies | ip | 1.0 | Pass K §1.3: ARM Holdings is the sole producer of ARM ISA licences and Neoverse core IP. |
+| company:asml | company:intel | supplies | lithography | 0.95 | Intel needs EUV for leading-edge nodes (18A, 20A). ASML sole EUV maker. Industry-informed  |
+| company:asml | company:micron | supplies | lithography | 0.5 | Micron uses less EUV than SK Hynix/Samsung; largely DUV. Industry-informed estimate of ASM |
+| company:asml | company:samsung | supplies | lithography | 0.95 | ASML is Samsung's sole EUV supplier; slight reduction vs TSMC reflects Samsung's greater s |
+| company:asml | company:sk_hynix | supplies | lithography | 0.55 | SK Hynix uses less EUV than TSMC/Samsung (leading-edge DRAM is starting to; HBM stacks les |
+| company:asml | company:tsmc | supplies | lithography | 0.99 | Paper §2D + §2B: ASML is the sole EUV maker and dominant DUV supplier; TSMC's leading-edge |
+| company:canon | company:intel | supplies | lithography | 0.01 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:canon | company:micron | supplies | lithography | 0.03 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:canon | company:samsung | supplies | lithography | 0.01 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:canon | company:sk_hynix | supplies | lithography | 0.02 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:canon | company:tsmc | supplies | lithography | 0.005 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:kla | company:intel | supplies | inspection | 0.85 | KLA dominant metrology / inspection at Intel. Industry-informed estimate. |
+| company:kla | company:samsung | supplies | inspection | 0.8 | Memory production requires denser metrology / inspection. Industry-informed estimate of KL |
+| company:kla | company:sk_hynix | supplies | inspection | 0.75 | KLA metrology / inspection for HBM production. Industry-informed estimate of KLA's share o |
+| company:kla | company:tsmc | supplies | inspection | 0.9 | KLA dominates process-control / inspection tools at leading-edge fabs. Value is industry-i |
+| company:lam_research | company:micron | supplies | etch | 0.85 | Lam dominant etch supplier for 3D memory. Industry-informed estimate of Lam's share of Mic |
+| company:lam_research | company:samsung | supplies | etch | 0.75 | Memory 3D-stack etch requirements raise Lam's share. Industry-informed estimate of Lam's s |
+| company:lam_research | company:sk_hynix | supplies | etch | 0.85 | Lam dominant etch supplier; memory 3D stacks are etch-intensive. Industry-informed estimat |
+| company:lam_research | company:tsmc | supplies | etch | 0.8 | Lam Research is the dominant etch supplier to leading-edge foundries. Value is industry-in |
+| company:nikon | company:intel | supplies | lithography | 0.03 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:nikon | company:micron | supplies | lithography | 0.15 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:nikon | company:samsung | supplies | lithography | 0.03 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:nikon | company:sk_hynix | supplies | lithography | 0.1 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:nikon | company:tsmc | supplies | lithography | 0.005 | Paper §2D anchors ASML as sole EUV maker but does NOT quantify Nikon/Canon's role in DUV.  |
+| company:sk_hynix | company:nvidia | supplies | memory | 0.6 | Under per-category semantics, this is SK Hynix's share of NVIDIA's memory supply (NOT of a |
+| company:tokyo_electron | company:tsmc | supplies | deposition | 0.3 | Tokyo Electron plays a secondary role in deposition / coating at leading-edge foundries (d |
+| company:tsmc | company:amazon | supplies | foundry_wafers | 0.3 | AWS Trainium wafers are fabbed at TSMC per paper §2G. Paper does not quantify share of Ama |
+| company:tsmc | company:arm | supplies | foundry_wafers | 0.99 | Pass K §1.3: ARM AGI CPU is fabbed at TSMC 3nm per the March 2026 announcement. Sole found |
+| company:tsmc | company:nvidia | supplies | foundry_wafers | 0.99 | Paper §2B: TSMC has ~90% share at 3nm/2nm and is essentially the sole leading-edge foundry |
+| product:rf_power_semis | company:broadcom | input_to | — | 0.1 | Broadcom's networking / RF chip lines. Paper §2F: 'Broadcom (dominant), Arista, NVIDIA net |
+
+## cost_or_mass_basis  (n = 2)
+
+| source | target | type | category | input_share | note (first 90c) |
+|---|---|---|---|---|---|
+| mineral:copper | company:tsmc | input_to | — | 0.08 | Chip interconnects. |
+| product:cowos_packaging | company:nvidia | input_to | — | 0.2 | Paper §2E: CoWoS 'repeatedly gated GPU output.' Paper does not quantify cost share; indust |
+
+## suspect_cost_or_volume  (n = 27)
+
+| source | target | type | category | input_share | note (first 90c) |
+|---|---|---|---|---|---|
+| company:amd | company:openai | supplies | gpu_accelerators | 0.1 |  |
+| company:amd | company:xai | supplies | gpu_accelerators | 0.1 |  |
+| company:ge_vernova | company:constellation_energy | supplies | power_equipment | 0.15 |  |
+| company:ge_vernova | company:duke_energy | supplies | power_equipment | 0.2 |  |
+| company:ge_vernova | company:nextera_energy | supplies | power_equipment | 0.25 |  |
+| company:ge_vernova | facility:the_citadel | supplies | power_equipment | 0.15 |  |
+| company:nextera_energy | facility:the_citadel | supplies | power_generation | 0.1 |  |
+| company:quanta_services | company:duke_energy | supplies | power_equipment | 0.2 |  |
+| company:quanta_services | company:nextera_energy | supplies | power_equipment | 0.3 |  |
+| company:siemens_energy | company:constellation_energy | supplies | power_equipment | 0.15 |  |
+| company:siemens_energy | company:duke_energy | supplies | power_equipment | 0.2 |  |
+| company:siemens_energy | company:nextera_energy | supplies | power_equipment | 0.2 |  |
+| company:siemens_energy | facility:the_citadel | supplies | power_equipment | 0.15 |  |
+| company:vertiv | facility:the_citadel | supplies | cooling | 0.35 |  |
+| company:vertiv | facility:vantage_frontier | supplies | cooling | 0.2 | Same rationale. |
+| mineral:copper | company:ge_vernova | input_to | — | 0.35 | Turbines + wind. |
+| mineral:copper | company:micron | input_to | — | 0.08 |  |
+| mineral:copper | company:quanta_services | input_to | — | 0.3 |  |
+| mineral:copper | company:samsung | input_to | — | 0.06 |  |
+| mineral:copper | company:siemens_energy | input_to | — | 0.4 | Transformers heavy. |
+| mineral:copper | company:sk_hynix | input_to | — | 0.08 |  |
+| mineral:copper | company:vertiv | input_to | — | 0.15 |  |
+| product:ndfeb_magnets | facility:stargate_abilene | input_to | — | 0.08 |  |
+| product:ndfeb_magnets | facility:the_citadel | input_to | — | 0.08 |  |
+| product:ndfeb_magnets | facility:vantage_frontier | input_to | — | 0.08 |  |
+| product:rf_power_semis | company:ge_vernova | input_to | — | 0.1 |  |
+| product:rf_power_semis | company:vertiv | input_to | — | 0.08 |  |
+
+## unclassified  (n = 119)
+
+| source | target | type | category | input_share | note (first 90c) |
+|---|---|---|---|---|---|
+| company:amazon | country_region:usa | located_in | — | 1.0 | Public HQ location — Seattle WA HQ. Added in Pass G located_in backfill so the frontend ca |
+| company:amd | country_region:usa | located_in | — | 1.0 | Public HQ location — Santa Clara CA HQ. Added in Pass G located_in backfill so the fronten |
+| company:applied_materials | company:intel | supplies | inspection | 0.05 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:applied_materials | company:samsung | supplies | inspection | 0.1 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:applied_materials | company:sk_hynix | supplies | inspection | 0.1 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:applied_materials | company:tsmc | supplies | inspection | 0.05 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:applied_materials | country_region:usa | located_in | — | 1.0 | Public HQ location — Santa Clara CA HQ. Added in Pass G located_in backfill so the fronten |
+| company:asml | country_region:netherlands | located_in | — | 1.0 |  |
+| company:broadcom | company:google | supplies | ai_asics | 0.2 | Paper §2G: TPU designed with Broadcom. Estimate. |
+| company:broadcom | company:meta | supplies | ai_asics | 0.15 | MTIA co-design with Broadcom per paper. Estimate. |
+| company:broadcom | country_region:usa | located_in | — | 1.0 | Public HQ location — San Jose CA HQ (post 2018 relocation to US from Singapore). Added in  |
+| company:canon | country_region:japan | located_in | — | 1.0 | Public HQ location — Tokyo HQ (Canon Inc.). Added in Pass G located_in backfill so the fro |
+| company:constellation_energy | company:microsoft | supplies | power_generation | 0.1 | Microsoft's Three Mile Island PPA with Constellation. Paper §3C names the arrangement but  |
+| company:constellation_energy | country_region:usa | located_in | — | 1.0 | Public HQ location — Baltimore MD HQ. Added in Pass G located_in backfill so the frontend  |
+| company:constellation_energy | facility:colossus | supplies | power_generation | 0.1 | Local generation PPA share; paper §3A/§4A name Constellation. Estimate. |
+| company:constellation_energy | facility:stargate_abilene | supplies | power_generation | 0.1 | PPA share; estimate. |
+| company:constellation_energy | facility:three_mile_island | operates | — | 1.0 |  |
+| company:duke_energy | country_region:usa | located_in | — | 1.0 | Public HQ location — Charlotte NC HQ. Added in Pass G located_in backfill so the frontend  |
+| company:duke_energy | facility:colossus | supplies | power_generation | 0.05 | Southeast utility. Estimate. |
+| company:ge_vernova | country_region:usa | located_in | — | 1.0 | Public HQ location — Cambridge MA HQ. Added in Pass G located_in backfill so the frontend  |
+| company:ge_vernova | facility:colossus | supplies | power_equipment | 0.1 | Paper §3D; estimate. |
+| company:ge_vernova | facility:stargate_abilene | supplies | power_equipment | 0.1 | Paper §3D; estimate. |
+| company:ge_vernova | facility:vantage_frontier | supplies | power_equipment | 0.1 | Paper §3D; estimate. |
+| company:google | country_region:usa | located_in | — | 1.0 | Public HQ location — Mountain View CA HQ (Alphabet). Added in Pass G located_in backfill s |
+| company:hitachi_high_tech | company:intel | supplies | inspection | 0.03 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:hitachi_high_tech | company:micron | supplies | etch | 0.03 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:hitachi_high_tech | company:samsung | supplies | etch | 0.03 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:hitachi_high_tech | company:samsung | supplies | inspection | 0.05 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:hitachi_high_tech | company:sk_hynix | supplies | etch | 0.03 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:hitachi_high_tech | company:sk_hynix | supplies | inspection | 0.05 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:hitachi_high_tech | company:tsmc | supplies | etch | 0.03 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:hitachi_high_tech | company:tsmc | supplies | inspection | 0.03 | Paper §2D lists KLA / AMAT as the equipment stack but does NOT quantify per-supplier share |
+| company:hitachi_high_tech | country_region:japan | located_in | — | 1.0 | Public HQ location — Tokyo HQ (Hitachi High-Tech Corporation). Added in Pass G located_in  |
+| company:intel | country_region:usa | located_in | — | 1.0 | Public HQ location — Santa Clara CA HQ. Added in Pass G located_in backfill so the fronten |
+| company:kla | country_region:usa | located_in | — | 1.0 | Public HQ location — Milpitas CA HQ. Added in Pass G located_in backfill so the frontend c |
+| company:lam_research | country_region:usa | located_in | — | 1.0 | Public HQ location — Fremont CA HQ. Added in Pass G located_in backfill so the frontend ca |
+| company:lynas | country_region:australia | located_in | — | 1.0 | Public HQ location — Perth HQ; operates Malaysian refining plant separately modelled. Adde |
+| company:lynas | facility:lynas_malaysia | operates | — | 1.0 |  |
+| company:marvell | company:amazon | supplies | ai_asics | 0.1 | Paper §2G: 'Amazon Trainium/Inferentia … mostly designed with Broadcom or Marvell.' Estima |
+| company:marvell | country_region:usa | located_in | — | 1.0 | Public HQ location — Santa Clara CA HQ. Added in Pass G located_in backfill so the fronten |
+| company:meta | country_region:usa | located_in | — | 1.0 | Public HQ location — Menlo Park CA HQ. Added in Pass G located_in backfill so the frontend |
+| company:micron | country_region:usa | located_in | — | 1.0 | Public HQ location — Boise ID HQ. Added in Pass G located_in backfill so the frontend can  |
+| company:micron | product:hbm | supplies | memory | 0.21 | Micron ~21% HBM share. |
+| company:microsoft | country_region:usa | located_in | — | 1.0 | Public HQ location — Redmond WA HQ. Added in Pass G located_in backfill so the frontend ca |
+| company:mp_materials | country_region:usa | located_in | — | 1.0 | Public HQ location — Las Vegas NV HQ; operates Mountain Pass CA. Added in Pass G located_i |
+| company:mp_materials | facility:mountain_pass | operates | — | 1.0 |  |
+| company:nextera_energy | country_region:usa | located_in | — | 1.0 | Public HQ location — Juno Beach FL HQ. Added in Pass G located_in backfill so the frontend |
+| company:nextera_energy | facility:colossus | supplies | power_generation | 0.1 | Paper §3B: NextEra largest US utility; estimate. |
+| company:nextera_energy | facility:stargate_abilene | supplies | power_generation | 0.1 | NextEra pipeline into Texas per paper §3B. Estimate. |
+| company:nextera_energy | facility:vantage_frontier | supplies | power_generation | 0.15 | Paper §3B: NextEra Texas exposure. Estimate. |
+| company:nikon | country_region:japan | located_in | — | 1.0 | Public HQ location — Tokyo HQ (Nikon Corporation Precision Equipment). Added in Pass G loc |
+| company:nvidia | company:amazon | supplies | gpu_accelerators | 0.2 | AWS also buys external NVIDIA GPUs. Paper does not quantify. Estimate. |
+| company:nvidia | company:google | supplies | gpu_accelerators | 0.1 | Google Cloud also buys NVIDIA GPUs. Estimate. |
+| company:nvidia | company:meta | supplies | gpu_accelerators | 0.25 | Meta's substantial external NVIDIA purchases. Estimate. |
+| company:nvidia | company:microsoft | supplies | gpu_accelerators | 0.3 | Microsoft's large NVIDIA purchases. Estimate. |
+| company:nvidia | company:openai | supplies | gpu_accelerators | 0.7 |  |
+| company:nvidia | company:xai | supplies | gpu_accelerators | 0.7 | xAI Colossus is a huge NVIDIA customer. |
+| company:nvidia | country_region:usa | located_in | — | 1.0 | Public HQ location — Santa Clara CA HQ. Added in Pass G located_in backfill so the fronten |
+| company:openai | country_region:usa | located_in | — | 1.0 | Public HQ location — San Francisco CA HQ. Added in Pass G located_in backfill so the front |
+| company:openai | facility:stargate_abilene | operates | — | 1.0 |  |
+| company:quanta_services | country_region:usa | located_in | — | 1.0 | Public HQ location — Houston TX HQ. Added in Pass G located_in backfill so the frontend ca |
+| company:samsung | company:nvidia | supplies | foundry_wafers | 0.01 | Samsung's small foundry role in NVIDIA's wafer mix (some prior-generation parts). Value un |
+| company:samsung | country_region:south_korea | located_in | — | 1.0 |  |
+| company:samsung | product:cowos_packaging | supplies | packaging | 0.05 | Samsung alternative packaging at low share. |
+| company:samsung | product:hbm | supplies | memory | 0.19 | Samsung ~17-22% HBM share. |
+| company:siemens_energy | country_region:germany | located_in | — | 1.0 | Public HQ location — Munich, Germany. Added in Pass H.1 §4 to close the located_in coverag |
+| company:siemens_energy | facility:colossus | supplies | power_equipment | 0.1 | Paper §3D: grid equipment critical, multi-year backlog. Estimate. |
+| company:siemens_energy | facility:stargate_abilene | supplies | power_equipment | 0.1 | Paper §3D; estimate. |
+| company:siemens_energy | facility:vantage_frontier | supplies | power_equipment | 0.1 | Paper §3D; estimate. |
+| company:sk_hynix | country_region:south_korea | located_in | — | 1.0 |  |
+| company:sk_hynix | product:hbm | supplies | memory | 0.6 | SK Hynix ~57-62% HBM share. |
+| company:talen_energy | country_region:usa | located_in | — | 1.0 | Public HQ location — The Woodlands TX HQ. Added in Pass G located_in backfill so the front |
+| company:talen_energy | facility:stargate_abilene | supplies | power_generation | 0.05 | Paper §3A: Talen ~13 GW Susquehanna. Estimate. |
+| company:tokyo_electron | company:micron | supplies | etch | 0.1 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:tokyo_electron | company:samsung | supplies | deposition | 0.35 | TEL's coating / thin-film role in Samsung's mixed logic + memory operations. Industry-info |
+| company:tokyo_electron | company:samsung | supplies | etch | 0.2 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:tokyo_electron | company:sk_hynix | supplies | deposition | 0.35 | TEL's secondary deposition/coating role at SK Hynix. Industry-informed estimate; bucket su |
+| company:tokyo_electron | company:sk_hynix | supplies | etch | 0.1 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:tokyo_electron | company:tsmc | supplies | etch | 0.15 | Paper §2D lists Lam / TEL as the equipment stack but does NOT quantify per-supplier share. |
+| company:tokyo_electron | country_region:japan | located_in | — | 1.0 |  |
+| company:tsmc | company:amd | supplies | foundry_wafers | 0.98 | TSMC is AMD's foundry (7/5/3nm). Value unchanged (0.98) — under per-category this is AMD's |
+| company:tsmc | company:broadcom | supplies | foundry_wafers | 0.95 | TSMC is Broadcom's foundry. Value unchanged (0.95). |
+| company:tsmc | company:google | supplies | foundry_wafers | 0.3 | Google TPU wafers via TSMC per paper §2G. Estimate. |
+| company:tsmc | company:meta | supplies | foundry_wafers | 0.3 | Meta MTIA wafers via TSMC per paper §2G. Estimate. |
+| company:tsmc | company:microsoft | supplies | foundry_wafers | 0.3 | Microsoft Maia wafers via TSMC per paper §2G. Estimate. |
+| company:tsmc | country_region:taiwan | located_in | — | 1.0 |  |
+| company:tsmc | product:cowos_packaging | supplies | packaging | 0.95 | TSMC dominates advanced packaging. |
+| company:vertiv | country_region:usa | located_in | — | 1.0 | Public HQ location — Westerville OH HQ. Added in Pass G located_in backfill so the fronten |
+| company:vertiv | facility:colossus | supplies | cooling | 0.2 | Paper §4B: 'Vertiv (leader).' Cooling ~15–25% of data-centre capex per industry norms. Est |
+| company:vertiv | facility:stargate_abilene | supplies | cooling | 0.2 | Same rationale as Colossus. |
+| company:vistra | country_region:usa | located_in | — | 1.0 | Public HQ location — Irving TX HQ. Added in Pass G located_in backfill so the frontend can |
+| company:vistra | facility:colossus | supplies | power_generation | 0.05 | Paper §3A: Vistra ~45 GW. Estimate. |
+| company:vistra | facility:vantage_frontier | supplies | power_generation | 0.1 | Vistra's Texas gas + nuclear per paper §3A. Estimate. |
+| company:xai | country_region:usa | located_in | — | 1.0 | Public HQ location — San Francisco CA HQ. Added in Pass G located_in backfill so the front |
+| company:xai | facility:colossus | operates | — | 1.0 |  |
+| country_region:kachin | country_region:myanmar | located_in | — | 1.0 |  |
+| facility:colossus | country_region:usa | located_in | — | 1.0 |  |
+| facility:lynas_malaysia | country_region:malaysia | located_in | — | 1.0 |  |
+| facility:mountain_pass | country_region:usa | located_in | — | 1.0 |  |
+| facility:serra_verde | country_region:brazil | located_in | — | 1.0 |  |
+| facility:stargate_abilene | country_region:usa | located_in | — | 1.0 |  |
+| facility:the_citadel | country_region:usa | located_in | — | 1.0 |  |
+| facility:three_mile_island | country_region:usa | located_in | — | 1.0 |  |
+| facility:vantage_frontier | country_region:usa | located_in | — | 1.0 |  |
+| mineral:gallium | product:rf_power_semis | input_to | — | 0.9 | Paper §1A: 'Gallium (GaAs/GaN wafers, RF chips, power electronics). GaAs/GaN wafers, RF ch |
+| mineral:indium | company:samsung | input_to | — | 0.03 | Marginal — mostly displays, some semi. |
+| product:cowos_packaging | company:amd | input_to | — | 0.18 | AMD Instinct uses similar advanced packaging. Estimate. |
+| product:cowos_packaging | company:broadcom | input_to | — | 0.15 | Broadcom custom silicon uses CoWoS. Estimate. |
+| product:cowos_packaging | company:google | input_to | — | 0.15 | Google TPU packaging. Estimate. |
+| product:hbm | company:amazon | input_to | — | 0.12 | Amazon Trainium; estimate. |
+| product:hbm | company:amd | input_to | — | 0.25 | AMD's Instinct GPUs similar HBM dependence; industry-informed. |
+| product:hbm | company:broadcom | input_to | — | 0.15 | Broadcom's ASIC customers use HBM; industry-informed, lower share than NVIDIA/AMD given no |
+| product:hbm | company:google | input_to | — | 0.15 | Google TPU uses HBM; paper §2C mentions HBM in AI accelerators. Estimate. |
+| product:hbm | company:meta | input_to | — | 0.12 | Meta MTIA; estimate. |
+| product:hbm | company:microsoft | input_to | — | 0.12 | Microsoft Maia; estimate. |
+| product:hbm | company:nvidia | input_to | — | 0.3 | Paper §2C names HBM a co-equal bottleneck with the GPU. Paper does not quantify HBM's frac |
+| product:ndfeb_magnets | company:vertiv | input_to | — | 0.3 | Cooling fan magnets. |
+| product:ndfeb_magnets | facility:colossus | input_to | — | 0.08 | Drive + fan magnets. |
+| product:rf_power_semis | company:siemens_energy | input_to | — | 0.1 | Power delivery components. |
+
+## Re-authored in Pass K.1 §4.3 / §4.4
+
+Two known prior D-J-3 instances explicitly re-checked and updated:
+
+| edge | old input_share | new input_share | basis change |
+|---|---|---|---|
+| mineral:dysprosium → product:ndfeb_magnets | 0.20 | **0.90** | mass fraction → dependency (high-temp NdFeB halts entirely without Dy; ~10% low-temp niche survives) |
+| mineral:neodymium → product:ndfeb_magnets | 0.60 | **1.00** | mass fraction → dependency (no NdFeB without Nd) |
+
+The ARM→NVIDIA instance (spec §4.4 explicit check) exists in the graph as `product:arm_core_ip → company:nvidia`, re-authored 0.02 → 0.25 in the §4.3 design-IP block.
+
+## Queued for future re-authoring (research required)
+
+The following edges are cost- or volume-basis by their source notes but their honest dependency-basis re-author requires research beyond existing sourced material. **Queued, not invented** per §4.4:
+
+| edge | current | why queued |
+|---|---|---|
+| company:amd → company:openai | 0.1 | consumer-function decomposition needed (existing note: "...") |
+| company:amd → company:xai | 0.1 | consumer-function decomposition needed (existing note: "...") |
+| company:ge_vernova → company:constellation_energy | 0.15 | consumer-function decomposition needed (existing note: "...") |
+| company:ge_vernova → company:duke_energy | 0.2 | consumer-function decomposition needed (existing note: "...") |
+| company:ge_vernova → company:nextera_energy | 0.25 | consumer-function decomposition needed (existing note: "...") |
+| company:ge_vernova → facility:the_citadel | 0.15 | consumer-function decomposition needed (existing note: "...") |
+| company:nextera_energy → facility:the_citadel | 0.1 | consumer-function decomposition needed (existing note: "...") |
+| company:quanta_services → company:duke_energy | 0.2 | consumer-function decomposition needed (existing note: "...") |
+| company:quanta_services → company:nextera_energy | 0.3 | consumer-function decomposition needed (existing note: "...") |
+| company:siemens_energy → company:constellation_energy | 0.15 | consumer-function decomposition needed (existing note: "...") |
+| company:siemens_energy → company:duke_energy | 0.2 | consumer-function decomposition needed (existing note: "...") |
+| company:siemens_energy → company:nextera_energy | 0.2 | consumer-function decomposition needed (existing note: "...") |
+| company:siemens_energy → facility:the_citadel | 0.15 | consumer-function decomposition needed (existing note: "...") |
+| company:vertiv → facility:the_citadel | 0.35 | consumer-function decomposition needed (existing note: "...") |
+| company:vertiv → facility:vantage_frontier | 0.2 | consumer-function decomposition needed (existing note: "Same rationale....") |
+| mineral:copper → company:ge_vernova | 0.35 | consumer-function decomposition needed (existing note: "Turbines + wind....") |
+| mineral:copper → company:micron | 0.08 | consumer-function decomposition needed (existing note: "...") |
+| mineral:copper → company:quanta_services | 0.3 | consumer-function decomposition needed (existing note: "...") |
+| mineral:copper → company:samsung | 0.06 | consumer-function decomposition needed (existing note: "...") |
+| mineral:copper → company:siemens_energy | 0.4 | consumer-function decomposition needed (existing note: "Transformers heavy....") |
+| mineral:copper → company:sk_hynix | 0.08 | consumer-function decomposition needed (existing note: "...") |
+| mineral:copper → company:tsmc | 0.08 | consumer-function decomposition needed (existing note: "Chip interconnects....") |
+| mineral:copper → company:vertiv | 0.15 | consumer-function decomposition needed (existing note: "...") |
+| product:cowos_packaging → company:nvidia | 0.2 | consumer-function decomposition needed (existing note: "Paper §2E: CoWoS 'repeatedly gated GPU output.' Paper does n...") |
+| product:ndfeb_magnets → facility:stargate_abilene | 0.08 | consumer-function decomposition needed (existing note: "...") |
+| product:ndfeb_magnets → facility:the_citadel | 0.08 | consumer-function decomposition needed (existing note: "...") |
+| product:ndfeb_magnets → facility:vantage_frontier | 0.08 | consumer-function decomposition needed (existing note: "...") |
+| product:rf_power_semis → company:ge_vernova | 0.1 | consumer-function decomposition needed (existing note: "...") |
+| product:rf_power_semis → company:vertiv | 0.08 | consumer-function decomposition needed (existing note: "...") |
+
+## Method notes
+
+- Classification uses source_note keyword patterns (BOM / mass fraction / royalty / share of world / market share / etc.). Not perfect; false positives and false negatives possible.
+- `mines` and `refines` edges are treated as "supply share (mining/refining)" — a country's share of world extraction/refining IS the correct basis for these edges: withdrawal of that share is the response measured.
+- `supply_share_basis` for `supplies` edges (e.g. ASML → TSMC at 0.99 = "share of TSMC's lithography-tool supply") is a within-bucket position under §4.1. Under the per-category HHI logic, this is the correct authoring.

@@ -51,10 +51,13 @@ def test_node_inventory_matches_committed_file():
 
 
 def test_severity_diff_matches_committed_file():
-    """Regenerate the diff against the committed snapshot and byte-compare."""
-    g, _ = _score_from_fixtures()
+    """Regenerate the diff against the committed snapshot and byte-compare.
+    Pass K.1 §5.4 — passes the scoring config to build_severity_diff so
+    the rescale/structural cause classifier gets the current
+    fixed_reference to compare against the snapshot's captured value."""
+    g, c = _score_from_fixtures()
     snapshot = json.loads((GENERATED / "severity_snapshot.json").read_text())
-    generated = build_severity_diff(snapshot, g)
+    generated = build_severity_diff(snapshot, g, config=c)
     committed = (GENERATED / "severity_diff.md").read_text()
     assert generated == committed, (
         "docs/generated/severity_diff.md is out of sync.\n"

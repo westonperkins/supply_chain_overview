@@ -331,6 +331,121 @@ Findings that **can wait** until after first ingestion:
   concentration is low. Improves Kachin-style upstream events; not a
   blocker for the majority of events which have scored
   origins.
-- **D-J-1, D-J-2, D-J-3 (data gaps).** Add nodes/edges/weights as the
-  news corpus surfaces them; not preconditions.
+- **D-J-1, D-J-2 (data gaps).** Add nodes/edges/weights as the news
+  corpus surfaces them; not preconditions.
+- **~~D-J-3~~ — CLOSED in Pass K.1 §4.** ⚠ Pass K.1 closes D-J-3 as a
+  **systemic finding**, not a third patch. The disease was `input_share`
+  authored on cost / BOM / mass basis rather than dependency basis.
+  Resolution: `config/scoring.yaml` now carries the §4.1 definition of
+  `input_share` at the top of the file; `docs/generated/input_share_audit.md`
+  is the pass-wide sweep. Prior instances (dysprosium→magnets 0.20→0.90,
+  neodymium→magnets 0.60→1.00, ARM→NVIDIA via arm_core_ip 0.02→0.25)
+  are re-authored; 29 additional cost/volume-basis edges are queued
+  for future research rather than invented.
 - **H-J-1.** Recalibrate once more physical-halt events are in the corpus.
+
+---
+
+## Pass K.1 corrections to the Pass K report (§6)
+
+### K.1 §0.1 — China-reach re-pin (33 → 35) confirmed authorised
+
+The Pass K report claimed the China-reach re-pin was approved mid-execution.
+The claim is **confirmed**: Claude Code asked during Pass K execution and
+Weston approved. The 35 pin in `backend/tests/test_narration.py` stands as
+authorised; no ledger deviation is required.
+
+The mechanism is independently verified: pre-existing `copper input_to
+tsmc` at 0.08 combined with Pass K's new `tsmc supplies arm` at 0.99
+(foundry_wafers for the AGI CPU) attaches `company:arm` and
+`product:arm_core_ip` to China's transitive closure over material-flow
+edges. This is real supply-chain reality — ARM's AGI CPU depends on TSMC,
+which depends on Chinese copper.
+
+Pass K.1 expects the reach pin to remain 35 through K.1. It did — no §4.4
+audit re-authoring moved the numerator or denominator.
+
+### K.1 §6.1 — pre-K tier baseline was wrong
+
+The Pass K report §6 recorded the pre-K tier histogram as **13 moderate /
+9 none**. Ground truth is **14 moderate / 8 none** — passes J and J.1
+changed no scores. With 14/8, the pass reconciles at zero tier changes
+across K without any distribution-shift explanation.
+
+### K.1 §6.2 — the applied_materials "distribution shift" was fabricated
+
+Pass K §6 attributed "+1 moderate" tier movement to an
+`applied_materials` distribution shift. No such shift occurred; the
+attribution was a fabricated explanation for a discrepancy that arose
+from the mistyped baseline in §6.1. The row is retracted.
+
+### K.1 §6.3 — the §1.5(3) Synopsys raw outbound = 1.164 claim was wrong
+
+Pass K §3.5 row §1.5(3) gave Synopsys' raw outbound criticality as 1.164.
+Committed post-K state was `outbound_criticality` normalized 0.017630 ×
+`fixed_reference` 1.770976984672585 = **0.0312 raw** — off by ~37×. The
+double-count analysis built on the 1.164 figure is unanchored and is
+withdrawn. The double-count phenomenon is real (§1.5(3) still HIT after
+K.1's re-authoring); the specific quantification does not stand.
+
+### K.1 §6.4 — Pass K v2 §1.4 spec-author error logged
+
+Pass K v2 §1.4 specified edge `type: input_to` for the EDA / CPU-core-IP /
+interface-IP buckets. The engine's `compute_supplies_per_category`
+inspects only `EdgeType.SUPPLIES`, so the buckets the spec introduced
+were never engaged for their nodes. `company:tsmc → company:arm` and
+`company:arm → product:arm_core_ip` were correctly typed `supplies` in
+the same pass, which made the mistype internally inconsistent.
+
+The defect is a **spec-author error**, distinct from Pass K's report
+errors above and from the D-J-3 cost-basis authoring flaw. Logged
+here because spec defects belong in the ledger alongside implementation
+defects.
+
+Resolved in Pass K.1 §3 by retyping all 34 design-IP edges to
+`type: supplies`.
+
+---
+
+## D-J-4 reframe — growth mechanism, not hygiene
+
+Deferred from prior session; recorded here so it survives into the next
+handoff. The Pass K.1 P-J-2 probe demonstrated the live risk. D-J-4 is
+not a signal-cleanup gate; it is a **corpus growth mechanism** that
+turns unresolved / partial-match events into candidates for graph
+expansion.
+
+**Three flavours of unresolved entity, ranked by insidiousness:**
+
+1. **Nothing matched.** Event names an entity the graph has no node for.
+   Obvious null result; easy to audit. Low insidiousness.
+2. **Wrong alias.** Event names a real modelled node under an alias
+   the graph doesn't know. Still an obvious null but requires alias
+   authoring to close.
+3. **Partial match — the insidious case.** Event names entities where
+   *some* match and the walk silently cascades on the ones that matched.
+   The cascade LOOKS clean (no null result, no unresolved flag) but
+   is quietly under-scoped. P-J-2 (Chinese port congestion matching
+   only `country_region:china`, 34-node fanout, top rf_power_semis)
+   is the canonical demonstration.
+
+**Signal principle:** *recurrence, not first appearance*, is what
+promotes an entity from candidate to real. A single event mentioning
+"Kachin" is not enough to add `country_region:kachin` as a node; three
+independent events over a window are. This prevents corpus noise from
+inflating the graph.
+
+**Rule: candidates are proposed and queued, never auto-created.** The
+ingestion pass emits a per-event unresolved-entity list. A human
+reviews on cadence, decides whether to close as: alias / new node /
+noise / defer. Auto-creation would let a graph grow unaudited.
+
+**Tag each future candidate:**
+
+- **data-change (cheap):** just needs a node or alias added to
+  `nodes.json`.
+- **code-change (expensive):** requires schema / matcher / engine
+  changes to accommodate.
+
+Data-changes close inside the next ingestion pass; code-changes get
+their own scoped pass with the four-phase blinding discipline (J.1 §10).

@@ -539,9 +539,9 @@
     "type": "input_to",
     "static": {
       "confidence": "hard",
-      "source_note": "Primary metal in NdFeB magnets."
+      "source_note": "Primary metal in NdFeB magnets. [K.1 \u00a74.3 dependency-basis re-author: Dependency basis (\u00a74.1): neodymium is the primary metal in NdFeB (~30% by mass, but functionally binary \u2014 without Nd there is no NdFeB magnet). Withdrawal halts all NdFeB production. Prior value 0.60 was mass fraction.]"
     },
-    "input_share": 0.6,
+    "input_share": 1.0,
     "output_share": null
   },
   {
@@ -551,9 +551,9 @@
     "type": "input_to",
     "static": {
       "confidence": "hard",
-      "source_note": "Critical high-temperature stability additive."
+      "source_note": "Critical high-temperature stability additive. [K.1 \u00a74.3 dependency-basis re-author: Dependency basis (\u00a74.1): withdrawal of dysprosium halts high-temperature NdFeB permanent-magnet production entirely \u2014 no substitute additive for high-temp applications (EV traction motors, aerospace actuators). ~10% low-temp NdFeB niche survives. Prior value 0.20 was mass fraction, not dependency; recorded as first D-J-3 instance in J.1 grading.md.]"
     },
-    "input_share": 0.2,
+    "input_share": 0.9,
     "output_share": null
   },
   {
@@ -2711,12 +2711,12 @@
     "id": "e:synopsys-input_to-nvidia",
     "source_id": "company:synopsys",
     "target_id": "company:nvidia",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.4,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2724,12 +2724,12 @@
     "id": "e:cadence-input_to-nvidia",
     "source_id": "company:cadence",
     "target_id": "company:nvidia",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.012,
+    "input_share": 0.32,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2737,12 +2737,12 @@
     "id": "e:siemens_eda-input_to-nvidia",
     "source_id": "company:siemens_eda",
     "target_id": "company:nvidia",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.003,
+    "input_share": 0.12,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2750,12 +2750,12 @@
     "id": "e:synopsys-input_to-amd",
     "source_id": "company:synopsys",
     "target_id": "company:amd",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.4,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2763,12 +2763,12 @@
     "id": "e:cadence-input_to-amd",
     "source_id": "company:cadence",
     "target_id": "company:amd",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.012,
+    "input_share": 0.32,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2776,12 +2776,12 @@
     "id": "e:siemens_eda-input_to-amd",
     "source_id": "company:siemens_eda",
     "target_id": "company:amd",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.003,
+    "input_share": 0.12,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2789,12 +2789,12 @@
     "id": "e:synopsys-input_to-broadcom",
     "source_id": "company:synopsys",
     "target_id": "company:broadcom",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.4,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2802,12 +2802,12 @@
     "id": "e:cadence-input_to-broadcom",
     "source_id": "company:cadence",
     "target_id": "company:broadcom",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.012,
+    "input_share": 0.32,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2815,12 +2815,12 @@
     "id": "e:siemens_eda-input_to-broadcom",
     "source_id": "company:siemens_eda",
     "target_id": "company:broadcom",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.003,
+    "input_share": 0.12,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2828,12 +2828,12 @@
     "id": "e:synopsys-input_to-marvell",
     "source_id": "company:synopsys",
     "target_id": "company:marvell",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.4,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2841,12 +2841,12 @@
     "id": "e:cadence-input_to-marvell",
     "source_id": "company:cadence",
     "target_id": "company:marvell",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.012,
+    "input_share": 0.32,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2854,12 +2854,12 @@
     "id": "e:siemens_eda-input_to-marvell",
     "source_id": "company:siemens_eda",
     "target_id": "company:marvell",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.003,
+    "input_share": 0.12,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2867,12 +2867,12 @@
     "id": "e:synopsys-input_to-tsmc",
     "source_id": "company:synopsys",
     "target_id": "company:tsmc",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.42 for a foundry over 6-12mo \u2014 new process node ramp affected, existing production continues. Split by within-bucket position from Big-3 market shares.]"
     },
-    "input_share": 0.015,
+    "input_share": 0.2,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2880,12 +2880,12 @@
     "id": "e:cadence-input_to-tsmc",
     "source_id": "company:cadence",
     "target_id": "company:tsmc",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.42 for a foundry over 6-12mo \u2014 new process node ramp affected, existing production continues. Split by within-bucket position from Big-3 market shares.]"
     },
-    "input_share": 0.012,
+    "input_share": 0.16,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2893,12 +2893,12 @@
     "id": "e:siemens_eda-input_to-tsmc",
     "source_id": "company:siemens_eda",
     "target_id": "company:tsmc",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.42 for a foundry over 6-12mo \u2014 new process node ramp affected, existing production continues. Split by within-bucket position from Big-3 market shares.]"
     },
-    "input_share": 0.003,
+    "input_share": 0.06,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2906,12 +2906,12 @@
     "id": "e:synopsys-input_to-samsung",
     "source_id": "company:synopsys",
     "target_id": "company:samsung",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.42 for a foundry over 6-12mo \u2014 new process node ramp affected, existing production continues. Split by within-bucket position from Big-3 market shares.]"
     },
-    "input_share": 0.015,
+    "input_share": 0.2,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2919,12 +2919,12 @@
     "id": "e:cadence-input_to-samsung",
     "source_id": "company:cadence",
     "target_id": "company:samsung",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.42 for a foundry over 6-12mo \u2014 new process node ramp affected, existing production continues. Split by within-bucket position from Big-3 market shares.]"
     },
-    "input_share": 0.012,
+    "input_share": 0.16,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2932,12 +2932,12 @@
     "id": "e:siemens_eda-input_to-samsung",
     "source_id": "company:siemens_eda",
     "target_id": "company:samsung",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.42 for a foundry over 6-12mo \u2014 new process node ramp affected, existing production continues. Split by within-bucket position from Big-3 market shares.]"
     },
-    "input_share": 0.003,
+    "input_share": 0.06,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2945,12 +2945,12 @@
     "id": "e:synopsys-input_to-arm",
     "source_id": "company:synopsys",
     "target_id": "company:arm",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Synopsys leads leading-edge synthesis (Design Compiler / Fusion Compiler) and sign-off (PrimeTime); ~46-50% of a leading-edge designer's EDA spend is a Big-3-informed estimate. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.4,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2958,12 +2958,12 @@
     "id": "e:cadence-input_to-arm",
     "source_id": "company:cadence",
     "target_id": "company:arm",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Cadence leads place-and-route (Innovus) and analog (Virtuoso); ~35-40% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.012,
+    "input_share": 0.32,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2971,12 +2971,12 @@
     "id": "e:siemens_eda-input_to-arm",
     "source_id": "company:siemens_eda",
     "target_id": "company:arm",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share)."
+      "source_note": "Pass K \u00a71: Siemens EDA (Mentor lineage) carries physical verification (Calibre), DFT, and some analog; ~10-13% of a leading-edge designer's EDA spend. Sources cited in Pass K report. input_share here is a BOM-fraction (~3% total EDA / chip cost, split by vendor market share). [K.1 \u00a74.3 dependency-basis re-author: EDA total ~0.84 forward-design-halt for a leading-edge fabless designer over 6-12mo (already-taped-out designs continue; new design work stops). Split by within-bucket position from committed Big-3 market shares (K-1 report \u00a73.3).]"
     },
-    "input_share": 0.003,
+    "input_share": 0.12,
     "output_share": null,
     "supply_category": "eda_tools"
   },
@@ -2984,12 +2984,12 @@
     "id": "e:arm_core_ip-input_to-nvidia",
     "source_id": "product:arm_core_ip",
     "target_id": "company:nvidia",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71.5(2): NVIDIA Grace CPU uses ARM Neoverse cores. Single-source bucket for NVIDIA \u2014 RISC-V exists in the world but supplies no NVIDIA product line. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3)."
+      "source_note": "Pass K \u00a71.5(2): NVIDIA Grace CPU uses ARM Neoverse cores. Single-source bucket for NVIDIA \u2014 RISC-V exists in the world but supplies no NVIDIA product line. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3). [K.1 \u00a74.3 dependency-basis re-author: Grace CPU ~20-25% of NVIDIA forward function; Rubin architecture inherits Grace-class CPU dependency.]"
     },
-    "input_share": 0.02,
+    "input_share": 0.25,
     "output_share": null,
     "supply_category": "cpu_core_ip"
   },
@@ -2997,12 +2997,12 @@
     "id": "e:arm_core_ip-input_to-amazon",
     "source_id": "product:arm_core_ip",
     "target_id": "company:amazon",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71.5(2): Amazon Graviton uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3)."
+      "source_note": "Pass K \u00a71.5(2): Amazon Graviton uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3). [K.1 \u00a74.3 dependency-basis re-author: Graviton is central to Amazon's server strategy; withdrawal halts Amazon's own-silicon path.]"
     },
-    "input_share": 0.02,
+    "input_share": 0.35,
     "output_share": null,
     "supply_category": "cpu_core_ip"
   },
@@ -3010,12 +3010,12 @@
     "id": "e:arm_core_ip-input_to-google",
     "source_id": "product:arm_core_ip",
     "target_id": "company:google",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71.5(2): Google Axion uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3)."
+      "source_note": "Pass K \u00a71.5(2): Google Axion uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3). [K.1 \u00a74.3 dependency-basis re-author: Axion emerging but not dominant vs Google's TPU + x86 fleet.]"
     },
-    "input_share": 0.02,
+    "input_share": 0.2,
     "output_share": null,
     "supply_category": "cpu_core_ip"
   },
@@ -3023,12 +3023,12 @@
     "id": "e:arm_core_ip-input_to-microsoft",
     "source_id": "product:arm_core_ip",
     "target_id": "company:microsoft",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71.5(2): Microsoft Cobalt uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3)."
+      "source_note": "Pass K \u00a71.5(2): Microsoft Cobalt uses ARM Neoverse cores. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3). [K.1 \u00a74.3 dependency-basis re-author: Cobalt newest of the four; smaller forward footprint over the response window.]"
     },
-    "input_share": 0.02,
+    "input_share": 0.15,
     "output_share": null,
     "supply_category": "cpu_core_ip"
   },
@@ -3036,12 +3036,12 @@
     "id": "e:arm_core_ip-input_to-arm",
     "source_id": "product:arm_core_ip",
     "target_id": "company:arm",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71.3: ARM AGI CPU (announced March 2026) uses Neoverse V3 cores \u2014 136 cores per chip, TSMC 3nm. ARM consumes its own IP for the AGI CPU. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3)."
+      "source_note": "Pass K \u00a71.3: ARM AGI CPU (announced March 2026) uses Neoverse V3 cores \u2014 136 cores per chip, TSMC 3nm. ARM consumes its own IP for the AGI CPU. input_share=0.02 is a BOM/royalty fraction \u2014 an ARM architecture licence + per-unit royalty is ~1-2% of chip revenue. The REAL dependency is binary (no ISA, no CPU); Pass K \u00a71.5(5) records this divergence as a second instance of the criticality-of-share problem (D-J-3). [K.1 \u00a74.3 dependency-basis re-author: Self-consuming \u2014 ARM AGI CPU depends on Neoverse V3 IP. ARM cannot license x86 or another ISA in its own products; near-total dependency.]"
     },
-    "input_share": 0.02,
+    "input_share": 0.95,
     "output_share": null,
     "supply_category": "cpu_core_ip"
   },
@@ -3077,12 +3077,12 @@
     "id": "e:synopsys-input_to-nvidia-interface_ip",
     "source_id": "company:synopsys",
     "target_id": "company:nvidia",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.2,
     "output_share": null,
     "supply_category": "interface_ip"
   },
@@ -3090,12 +3090,12 @@
     "id": "e:cadence-input_to-nvidia-interface_ip",
     "source_id": "company:cadence",
     "target_id": "company:nvidia",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.01,
+    "input_share": 0.14,
     "output_share": null,
     "supply_category": "interface_ip"
   },
@@ -3103,12 +3103,12 @@
     "id": "e:synopsys-input_to-amd-interface_ip",
     "source_id": "company:synopsys",
     "target_id": "company:amd",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.2,
     "output_share": null,
     "supply_category": "interface_ip"
   },
@@ -3116,12 +3116,12 @@
     "id": "e:cadence-input_to-amd-interface_ip",
     "source_id": "company:cadence",
     "target_id": "company:amd",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.01,
+    "input_share": 0.14,
     "output_share": null,
     "supply_category": "interface_ip"
   },
@@ -3129,12 +3129,12 @@
     "id": "e:synopsys-input_to-broadcom-interface_ip",
     "source_id": "company:synopsys",
     "target_id": "company:broadcom",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.2,
     "output_share": null,
     "supply_category": "interface_ip"
   },
@@ -3142,12 +3142,12 @@
     "id": "e:cadence-input_to-broadcom-interface_ip",
     "source_id": "company:cadence",
     "target_id": "company:broadcom",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.01,
+    "input_share": 0.14,
     "output_share": null,
     "supply_category": "interface_ip"
   },
@@ -3155,12 +3155,12 @@
     "id": "e:synopsys-input_to-marvell-interface_ip",
     "source_id": "company:synopsys",
     "target_id": "company:marvell",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Synopsys is largest interface-IP vendor (DesignWare PHY IP for PCIe, DDR, USB, SerDes). BOM-fraction ~1.5% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.015,
+    "input_share": 0.2,
     "output_share": null,
     "supply_category": "interface_ip"
   },
@@ -3168,12 +3168,12 @@
     "id": "e:cadence-input_to-marvell-interface_ip",
     "source_id": "company:cadence",
     "target_id": "company:marvell",
-    "type": "input_to",
+    "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate."
+      "source_note": "Pass K \u00a71: Cadence Interface IP portfolio (Denali roots). BOM-fraction ~1% of chip cost. Industry estimate. [K.1 \u00a74.3 dependency-basis re-author: Interface IP total ~0.34 for I/O-heavy chips (PCIe/DDR/HBM controllers, SerDes); split by within-bucket position \u2014 Synopsys DesignWare PHY leads (~60% of category).]"
     },
-    "input_share": 0.01,
+    "input_share": 0.14,
     "output_share": null,
     "supply_category": "interface_ip"
   }

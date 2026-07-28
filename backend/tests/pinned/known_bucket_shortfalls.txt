@@ -3,28 +3,33 @@
 # These are the (node, stage) pairs whose input edges have not been fully
 # modelled. Closing them is a data pass. New shortfalls fail loudly.
 #
-# Pass K §1 additions: company:arm (new pre-revenue fabless designer)
-# and company:marvell (now consumes EDA + interface IP via new K-1
-# input_to edges). Both input_to buckets sum to ~0.05 because the K-1
-# edges are BOM-fraction EDA/IP inputs; the main BOM component for
-# these designers is via the `supplies` stage (TSMC foundry wafers).
-# Expected + known — not a data gap to close.
-company:arm	input_to	0.0500000000
-company:marvell	input_to	0.0550000000
+# Pass K §1 / K.1 §3 additions:
+#   company:arm — new pre-revenue fabless designer added Pass K. K.1
+#     retyped the K-1 EDA + cpu_core_ip edges from input_to to supplies
+#     (fixing an engine-wiring defect), so ARM's supplies bucket now
+#     includes tsmc (0.99) + arm_core_ip (0.02) + EDA (3 vendors) which
+#     sums >0.80; no shortfall pin needed for supplies. ARM's input_to
+#     bucket is now empty (no longer a shortfall).
+#   company:marvell — the K-1 EDA + interface_ip edges now sit in
+#     Marvell's `supplies` bucket, sum ~0.055. Still small — the main
+#     BOM component (TSMC foundry wafers) is unmodelled for Marvell.
+#     Expected + known — a K.1 data gap to close later, not now.
+company:marvell	supplies	0.0550000000
+# Pass K.1 §4.3 note: amazon/google/microsoft `supplies` shortfalls closed
+# by the cpu_core_ip re-authoring (arm_core_ip → each at 0.35/0.20/0.15
+# dependency-basis) — no longer below the 0.80 threshold. Removed from
+# this list as stale.
 company:amazon	input_to	0.1200000000
-company:amazon	supplies	0.6000000000
 company:amd	input_to	0.4300000000
 company:broadcom	input_to	0.4000000000
 company:constellation_energy	supplies	0.3000000000
 company:duke_energy	supplies	0.6000000000
 company:ge_vernova	input_to	0.4500000000
 company:google	input_to	0.3000000000
-company:google	supplies	0.6000000000
 company:meta	input_to	0.1200000000
 company:meta	supplies	0.7000000000
 company:micron	input_to	0.0800000000
 company:microsoft	input_to	0.1200000000
-company:microsoft	supplies	0.7000000000
 company:nextera_energy	supplies	0.7500000000
 company:nvidia	input_to	0.5000000000
 company:openai	supplies	0.8000000000

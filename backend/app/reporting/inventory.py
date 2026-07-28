@@ -199,14 +199,23 @@ def build_inventory(graph: SupplyChainGraph, config: ScoringConfig) -> str:
 # Severity snapshot + diff                                            #
 # ------------------------------------------------------------------ #
 
-def snapshot_severity(graph: SupplyChainGraph, captured_at_pass: str) -> dict:
+def snapshot_severity(
+    graph: SupplyChainGraph,
+    captured_at_pass: str,
+    config: Optional[object] = None,
+) -> dict:
     """Capture the state a future pass will diff against. Returns a dict
     with a `captured_at_pass` label (H4 fix) and a `nodes` map keyed by
     node id. The label names the pass whose END state this snapshot
     represents — so a future diff can say plainly which pass it is
     comparing against, and a first-run diff can say `first-run, no
-    prior snapshot` unambiguously."""
-    return {
+    prior snapshot` unambiguously.
+
+    Pass K.1 §5.4 — records `fixed_reference` at capture time so
+    `build_severity_diff` can compute the rescale ratio when the
+    constant differs between snapshot and current, and separate
+    rescale-induced deltas from structural ones."""
+    result = {
         "captured_at_pass": captured_at_pass,
         "nodes": {
             n.id: {
@@ -219,9 +228,16 @@ def snapshot_severity(graph: SupplyChainGraph, captured_at_pass: str) -> dict:
             for n in graph.nodes.values()
         },
     }
+    if config is not None and hasattr(config, "outbound_fixed_reference"):
+        result["fixed_reference"] = config.outbound_fixed_reference
+    return result
 
 
-def build_severity_diff(snapshot: dict, graph: SupplyChainGraph) -> str:
+def build_severity_diff(
+    snapshot: dict,
+    graph: SupplyChainGraph,
+    config: Optional[object] = None,
+) -> str:
     """Return the docs/generated/severity_diff.md contents.
 
     Emits every node with severity_before / severity_after / delta so
@@ -229,11 +245,31 @@ def build_severity_diff(snapshot: dict, graph: SupplyChainGraph) -> str:
     header states plainly whether it is a first-run (empty snapshot)
     or a genuine comparison against a named prior pass (H4 fix).
 
-    Also lists any node in the graph that is missing from the snapshot
-    (or vice versa) — those are the kinds of drift that would silently
-    make a diff look clean when it wasn't."""
+    Pass K.1 §5.4 — when the snapshot recorded a `fixed_reference` and
+    the current `config.outbound_fixed_reference` differs, the diff
+    computes the rescale ratio and annotates each non-zero delta with
+    whether it is rescale-consistent (Δ ≈ (ratio − 1) × severity_before,
+    within a tolerance) or STRUCTURAL. Pass K.1 §2's defect was that
+    outbound-dominated nodes were deflated by a silent fixed_reference
+    re-derivation; this classifier makes that class of movement
+    diagnosable in the diff itself.
+    """
     label = snapshot.get("captured_at_pass") if snapshot else None
     nodes_map = snapshot.get("nodes", {}) if snapshot else {}
+    fr_before = snapshot.get("fixed_reference") if snapshot else None
+    fr_after = (
+        config.outbound_fixed_reference
+        if config is not None and hasattr(config, "outbound_fixed_reference")
+        else None
+    )
+    # For an outbound-dominated node, outbound_criticality = raw /
+    # fixed_reference, so a change in the constant multiplies severity by
+    # (FR_before / FR_after). That is the ratio a rescale-only movement
+    # would produce; if the observed delta matches it within tolerance,
+    # the row is RESCALE-caused.
+    rescale_ratio = None
+    if fr_before is not None and fr_after is not None and fr_after > 0:
+        rescale_ratio = fr_before / fr_after
 
     lines: list[str] = []
     lines.append("# Severity diff — generated")
@@ -248,6 +284,38 @@ def build_severity_diff(snapshot: dict, graph: SupplyChainGraph) -> str:
         lines.append(f"Comparison of prior-pass state `{label or 'unlabelled'}` "
                      f"against the current graph.")
     lines.append("")
+
+    # Pass K.1 §5.4 — call out fixed_reference movement in the header so
+    # anyone reading the diff sees the rescale factor before scanning
+    # per-node rows.
+    if fr_before is not None or fr_after is not None:
+        lines.append("## Scale-constant status")
+        lines.append("")
+        lines.append(f"- `fixed_reference` at snapshot capture: `{fr_before}`")
+        lines.append(f"- `fixed_reference` in current config:    `{fr_after}`")
+        if rescale_ratio is not None and abs(rescale_ratio - 1.0) > 1e-9:
+            lines.append(
+                f"- **Rescale ratio (after / before): "
+                f"`{rescale_ratio:.10f}`** — outbound-dominated nodes "
+                f"are expected to move by approximately this ratio purely "
+                f"from the scale-constant change. Rows whose delta is "
+                f"rescale-consistent are flagged **RESCALE** in the "
+                f"`cause` column; the remainder are **STRUCTURAL** and "
+                f"require a per-node explanation in the pass report."
+            )
+        elif rescale_ratio is not None:
+            lines.append(
+                "- Ratio ≈ 1: the scale constant did not move between "
+                "snapshots, so all non-zero deltas below are STRUCTURAL."
+            )
+        else:
+            lines.append(
+                "- Ratio not computable (snapshot pre-dates K.1's "
+                "capture of `fixed_reference`). Every non-zero delta "
+                "below is treated as UNKNOWN cause — the pass author "
+                "must classify by hand."
+            )
+        lines.append("")
 
     snap_ids = set(nodes_map.keys())
     cur_ids = {n.id for n in graph.nodes.values()}
@@ -264,11 +332,20 @@ def build_severity_diff(snapshot: dict, graph: SupplyChainGraph) -> str:
 
     lines.append("## Per-node severity comparison")
     lines.append("")
-    lines.append("| id | severity_before | severity_after | delta | tier_before | tier_after |")
-    lines.append("|---|---|---|---|---|---|")
+    lines.append("| id | severity_before | severity_after | delta | tier_before | tier_after | cause |")
+    lines.append("|---|---|---|---|---|---|---|")
 
     non_zero_deltas = 0
     tier_changes = 0
+    rescale_deltas = 0
+    structural_deltas = 0
+    # Pass K.1 §5.4 tolerance: consider a delta rescale-consistent if the
+    # observed delta matches (ratio − 1) × severity_before within 1e-6
+    # absolute OR 5% relative to expected (whichever larger). 5% relative
+    # tolerance absorbs boundary-shift-induced tier rebucketing that
+    # correlates but isn't strictly proportional.
+    RESCALE_ABS_TOL = 1e-6
+    RESCALE_REL_TOL = 0.05
     common = sorted(snap_ids & cur_ids)
     for nid in common:
         before = nodes_map[nid]
@@ -278,29 +355,46 @@ def build_severity_diff(snapshot: dict, graph: SupplyChainGraph) -> str:
         tier_b = before.get("tier", "—")
         tier_a = node.dynamic.baseline_tier.value if node.dynamic.baseline_tier else "none"
 
+        cause = ""
         if sev_b is None and sev_a is None:
             delta_str = "0"
         elif sev_b is None or sev_a is None:
             delta_str = "NULL_TRANSITION"
             non_zero_deltas += 1
+            cause = "STRUCTURAL (null transition)"
+            structural_deltas += 1
         else:
             d = sev_a - sev_b
             delta_str = f"{d:+.10f}"
             if abs(d) > 1e-12:
                 non_zero_deltas += 1
+                if rescale_ratio is not None and abs(rescale_ratio - 1.0) > 1e-9:
+                    expected = (rescale_ratio - 1.0) * sev_b
+                    tol = max(RESCALE_ABS_TOL, abs(expected) * RESCALE_REL_TOL)
+                    if abs(d - expected) <= tol:
+                        cause = "RESCALE"
+                        rescale_deltas += 1
+                    else:
+                        cause = "STRUCTURAL"
+                        structural_deltas += 1
+                else:
+                    cause = "STRUCTURAL"
+                    structural_deltas += 1
 
         if tier_b != tier_a:
             tier_changes += 1
 
         lines.append(
             f"| {nid} | {_fmt_float(sev_b, 10)} | {_fmt_float(sev_a, 10)} | "
-            f"{delta_str} | {tier_b} | {tier_a} |"
+            f"{delta_str} | {tier_b} | {tier_a} | {cause} |"
         )
 
     lines.append("")
     lines.append("## Summary")
     lines.append("")
     lines.append(f"- Non-zero severity deltas: **{non_zero_deltas}**")
+    lines.append(f"  - **RESCALE** (fixed_reference change): {rescale_deltas}")
+    lines.append(f"  - **STRUCTURAL** (edge / node changes): {structural_deltas}")
     lines.append(f"- Tier changes: **{tier_changes}**")
     lines.append("")
     if non_zero_deltas == 0 and tier_changes == 0:
