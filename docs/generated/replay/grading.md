@@ -449,3 +449,159 @@ noise / defer. Auto-creation would let a graph grow unaudited.
 
 Data-changes close inside the next ingestion pass; code-changes get
 their own scoped pass with the four-phase blinding discipline (J.1 §10).
+
+---
+
+## Pass K.2 corrections to the Pass K.1 report (§6)
+
+Pass K.2 is a diagnosis pass — no scoring or data changed. These are
+ledger entries only.
+
+### K.2 §6.1 — K.1 tier-change attribution corrected (MISS)
+
+The K.1 report §12 decomposed 13 tier changes as **5 Phase B + 7 RESCALE-
+crossing-boundary + 1 rf_power_semis**. Arithmetic refutes this: pre-K.1
+was 14 moderate / 13 none; post-K.1 is 27 / 0; and 14 + 13 = 27. The
+uniform mechanism was **the moderate boundary collapsing to 0.0** (§1),
+which flipped every previously-`none` node to `moderate` regardless of
+severity delta.
+
+Confirmed at the node level:
+
+- `company:vertiv` (severity 0.0642, Δ 0.0000) — none → moderate, but
+  vertiv appears in NEITHER the 9 RESCALE nor the 7 STRUCTURAL rows of
+  K.1's severity_diff. It changed tier with zero severity delta.
+- `mineral:indium` (severity 0.0739, Δ 0.0000) — same pattern.
+
+Both are 100% boundary-collapse tier changes. The Pass K.1 decomposition
+into a Phase-B / RESCALE / rf_power_semis mix is a **fabricated causal
+explanation for a discrepancy that arose from the mistyped mechanism.**
+
+### K.2 §6.2 — K.1 expectation 6 regraded: PARTIAL HIT → MISS
+
+K.1 §9 marked expectation 6 as PARTIAL HIT. The correct grade is MISS.
+Expectation 6 said "tier changes are confined to design-IP nodes plus
+whatever the §4.4 audit legitimately moves." 13 tier changes actually
+occurred, of which only 4 (synopsys, cadence-adjacent, arm_core_ip, arm)
+are design-IP; the other 9 are the boundary-collapse effect the pass
+did not anticipate.
+
+Under the honest reading, expectation 6 failed.
+
+### K.2 §6.3 — recurrence pattern: unfounded causal decomposition
+
+K.1 §7 explicitly retracted Pass K's fabricated `applied_materials`
+distribution shift as an "unfounded causal explanation for a discrepancy
+that arose from a mistyped baseline." K.1 §12 then produced its own
+unfounded causal decomposition (§6.1 above) in the same report.
+
+**Log as a repeat pattern, not a one-off.** Pattern: a discrepancy is
+observed between an author's mental model and a committed number; the
+author reconciles by inventing a per-node causal story that fits the
+mental model; the mechanism is a bulk effect the author didn't consider.
+
+Guardrail proposal (not implemented): a diff-cause claim in any report
+must be traceable to a specific row in `severity_diff_*.md`'s cause
+column. If a claim decomposes N tier changes, the decomposition must sum
+to N and every subgroup must name its nodes.
+
+### K.2 §6.4 — K.1 audit completeness: framed as complete, was ~54%
+
+K.1 §5.4's audit found 259 edges, of which **119 (~46%)** classified as
+`unclassified` — basis unrecoverable from committed source_notes. The
+audit was framed in the K.1 report as complete ("the point of this
+pass"). Under the honest reading, the audit is **~54% complete**; the
+remaining 46% is basis-unknown.
+
+Queuing 29 rather than inventing them was correct (§4.4 rule).
+Framing the audit as complete was not.
+
+Not a defect to fix; a framing correction. Future audit passes should
+say "N edges classified, M unclassified, X queued" up front rather than
+leading with the queued count.
+
+### K.2 §6.5 — K.1 expectation 8 evidence mismatch
+
+K.1 §8 pre-registration 8 asked: *"Restoring `fixed_reference` to
+1.6711394969476698 returns prior-pass severities to their pre-K values
+within floating-point tolerance for every node whose structure did not
+change."*
+
+**Floating-point tolerance** = ~1e-9 to 1e-12.
+
+**Evidence given** = the RESCALE classifier's 5% relative tolerance
+tagging (K.1 §6.3). 5% ≠ floating-point.
+
+The specified comparison was not run. The RESCALE classifier tags a
+delta as rescale-consistent when the observed movement matches the
+expected `(ratio − 1) × severity_before` within 5% relative — that
+answers "was the movement approximately the size a scale change would
+produce" (a different, looser test).
+
+The spec's original expectation cannot be tested strictly today because
+Phase B re-authoring moves severities as well as Phase C's rescale, so
+"structure unchanged" cannot be isolated on the current diff.
+Recommendation for future rescale-only passes: exclude nodes whose
+structure changed (edge list changed) and check remaining nodes at
+floating-point tolerance.
+
+### K.2 §6.6 — reviewer error on record
+
+During the K.2 review process I initially stated that the derivation had
+failed to declare the unresolved band. **That was wrong.** The
+derivation declares the band correctly in `threshold_analysis.md` (§3.1).
+The actual defect is that the declaration never reaches the config
+(§3.1's confirmed finding).
+
+Reviewer errors belong in the ledger alongside implementer and
+spec-author errors.
+
+### K.2 §6.7 — K.1 §5.2 Cadence pre-K.1 input_share reconciled
+
+K.1 §5.2 gives Cadence's pre-K.1 `input_share` as **0.012** in the
+`eda_tools` bucket table. A review record cited **0.01**. Resolved
+against committed state at commit `fc7ee3e` (`git show
+fc7ee3e:data/ai/edges.json`):
+
+- `cadence → nvidia` `eda_tools` → **0.012** ✓ (K.1 report correct)
+- `cadence → nvidia` `interface_ip` → **0.010** ✓
+
+Both numbers exist; they name different buckets. The review record was
+citing the interface_ip value in the eda_tools context. Reconciled: K.1
+report was right, review-record note was misindexed.
+
+### K.2 §6.8 — cosmetic K.1 report items (not-blocking)
+
+Recorded so a future report does not repeat:
+
+- K.1 §12 named the diff test `test_severity_diff_matches_committed_file`
+  while §3 placed the change in `test_generated_artifacts.py`. Both are
+  correct: the test lives in that file. Consistent naming across sections
+  is a hygiene item.
+- K.1 §4.2 labels a result "§3.3 pre-registration HIT" when it is
+  expectation 2 (about stage-level min_suppliers). Cross-reference typo.
+- K.1 §5.4 header wrote "SHA-25" once where SHA-256 was meant.
+
+### K.2 §6.9 — paper-chokepoint validity claim reframed (regression record)
+
+The original validation claim was "every chokepoint the paper names
+independently lands in `critical`." Current committed
+`threshold_analysis.md`:
+
+- 2 of 7 in `critical`: dysprosium, ASML
+- 2 of 7 in `high`: gallium, TSMC
+- 3 of 7 in `moderate`: CoWoS, HBM, RF & Power Semis
+
+**The claim is currently false and has been since Pass C.** The Pass C F2
+reframe explicitly replaced the tier-landing check with a
+severity-above-median check (`test_paper_chokepoints.py` docstring:
+"reframed in Pass C (F2)") because tier landings are distribution-anchored
+and can move with the graph.
+
+The severity-above-median claim currently holds for 5 of 7 (HBM and RF &
+Power are pinned xfails with byte-identical reasons; K.1 §5 verified
+those reasons unchanged).
+
+Recorded plainly so the paper-vs-model gap is legible in the ledger.
+This is a Pass C decision the project has consciously carried; nothing in
+Pass K.1 or K.2 introduced it.
