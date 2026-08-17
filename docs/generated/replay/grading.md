@@ -582,6 +582,97 @@ Recorded so a future report does not repeat:
   expectation 2 (about stage-level min_suppliers). Cross-reference typo.
 - K.1 §5.4 header wrote "SHA-25" once where SHA-256 was meant.
 
+### K.2.1 §6 ledger additions
+
+Appended by the completion pass K.2.1 (commit will follow this write).
+
+#### K.2.1 §6.1 — K.2 §2 under-delivery
+
+K.2 Diagnosis B was reported all-HIT on the §7 scorecard, but §2.2 asked
+for three computations (full per-node summation table + graph-wide HHI
+inversion count + per-edge queued-29 collision classification) and K.2
+delivered only counts of buckets above 1.0. Scorecard item 6 verified a
+narrow claim — "at least one bucket over 1.0" — while the broader §2.2
+requirement was unmet.
+
+This surfaces a scorecard-design lesson broader than this one instance:
+**a pre-registration item can pass while the section it belongs to is
+incomplete.** Future pass scorecards should include a "delivered in
+full" check alongside per-claim verification, or pre-registration items
+should be authored at the granularity of the requested output rather
+than at the granularity of a single verifiable claim within it.
+
+K.2.1 completes the missing computations in `docs/generated/hhi_blast_radius.md`.
+Full graph exhibits 38 HHI inversions (K.2 worked 1); all 29 queued edges
+classified individually (3 collides / 10 safe / 16 undeterminable).
+
+#### K.2.1 §6.2 — third instance of asserted-precision-without-derivation
+
+K.2 §6.1 retracted Pass K's fabricated `applied_materials` distribution
+shift; K.2 §6.3 flagged the recurrence in K.1's fabricated tier-change
+decomposition; **K.2 itself introduced a third instance** — the D3 cost
+figures "triples if deferred past robotics; six-fold after aerospace" —
+with no committed derivation.
+
+The K.2 numbers are withdrawn in `docs/generated/k2_decisions.md` D3
+(K.2.1 §5 correction). Direction reaffirmed qualitatively; multipliers
+removed.
+
+Pattern is now three-for-three across the K sequence. Guardrail:
+**quantitative claims in a pass report must trace to a committed
+artifact or explicit calculation shown in the report itself.** Where the
+right answer is qualitative, say so; the corrective is honest imprecision,
+not fabricated precision. Recorded across three instances; further recurrences
+should trigger a spec change on report requirements rather than another
+per-instance retraction.
+
+#### K.2.1 §6.3 — chokepoint test status corollary
+
+K.2 §4 established that "5 of 7 chokepoints not in critical" dates to
+Pass C, not K.1. The reassuring corollary K.2 did not record:
+
+Under the current test (`test_paper_chokepoint_severity_above_median`)
+— severity strictly greater than the median scored severity —
+**5 of 7 paper chokepoints PASS.** The 2 that fail (`product:hbm` and
+`product:rf_power_semis`) are **exactly** the 2 pinned xfails, with
+byte-identical SHA-256 reasons.
+
+There are no unpinned model failures on the chokepoint list. The
+regression K.2 §4 walked is real; the model's failure on it is fully
+enumerated in the xfail registry. Nothing silently non-critical.
+
+**Additional forward-looking finding from K.2.1 §4.3:** both currently-
+pinned xfails would XPASS under D4 + D4a (noisy-OR aggregator + `min_suppliers=1`).
+When the fix pass lands D4, retire the SHA-256-pinned reasons rather
+than deleting them silently — the xfails' resolution is the D4 acceptance
+criterion.
+
+#### K.2.1 §6.4 — reviewer correction: K.2 §4 premise was wrong
+
+The K.2 spec §4 opened with "5 of seven remain critical. Establish
+**when** this diverged — was it Pass K.1's boundary movement, or did it
+drift earlier and go unremarked?" The framing carried a hint of "recent
+and unexplained regression."
+
+K.2 §4's git-log walk **corrected the reviewer's premise**: the divergence
+dates to Pass C's F1/F2 changes and was a recorded, deliberate reframe
+(F2: replace "lands in critical" with "severity > median" as the actual
+test). Not silent breakage; a documented decision the project has
+consciously carried.
+
+Reviewer errors belong on the ledger alongside implementer errors and
+spec-author errors. Recorded.
+
+#### K.2.1 §6.5 — Cadence discrepancy resolved against the reviewer
+
+K.2 §6.7 resolved the K.1 §5.2 Cadence value dispute (0.012 vs 0.01):
+**both correct, different buckets** (eda_tools = 0.012, interface_ip =
+0.01). K.1's report was right; the review-record note was misindexed
+across two categories.
+
+Confirming here in the K.2.1 ledger for completeness — no action needed;
+recorded so the resolution is discoverable in one place.
+
 ### K.2 §6.9 — paper-chokepoint validity claim reframed (regression record)
 
 The original validation claim was "every chokepoint the paper names

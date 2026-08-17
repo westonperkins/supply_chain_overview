@@ -91,18 +91,33 @@ boundaries move with the graph, so a "critical" always means "top of the
 current distribution" rather than "top of the 2026 distribution frozen in
 config."
 
-**Cost curve.** This decision gets substantially more expensive after the
-graph triples. Committing to distribution-anchored today then switching to
-absolute later means every prior severity_snapshot / severity_diff /
-grading claim needs a rescale note (see K.1's `fixed_reference`
-experience — the pattern is the same one layer up). Committing to
-absolute today lets the graph grow without severity comparability breaks.
+**Cost curve.** ⚠ **Pass K.2.1 §5 correction.** K.2's D3 originally
+stated "the cost roughly triples if deferred past robotics; six-fold
+after aerospace." **Those numbers were not derived from any committed
+artifact and are withdrawn.** No costing framework exists in the repo
+that produces multipliers for a domain migration; the K.2 reviewer used
+"triple / six-fold" as shorthand for "materially larger, then materially
+larger again." That shorthand should not have appeared as a precision
+claim.
+
+Qualitatively: the switch from distribution-anchored to absolute
+thresholds requires re-baselining every committed severity snapshot,
+re-noting every prior severity_diff, and re-writing every grading
+claim that references a tier. Doing this once (before robotics) is
+work; doing it again (after robotics but before aerospace) is more
+work because the snapshot corpus is larger. **The direction is right;
+the multipliers were not.**
+
+This is the third recorded instance of asserted-precision-without-
+derivation in the K sequence (§6.3 recurrence pattern). Logged for
+the ledger.
 
 **Recommendation: DEFER but flag as time-sensitive.** Before adding
 robotics: pick. Before adding aerospace: definitely pick. Decision needs
 Weston's read on how important cross-domain comparability is vs
-self-calibration honesty; both are defensible. If deferred past robotics
-onboarding, the switch cost roughly triples.
+self-calibration honesty; both are defensible. The switch cost grows
+with the size of the snapshot / grading corpus at switch time — no
+quantitative multiplier committed.
 
 ---
 
@@ -118,18 +133,80 @@ onboarding, the switch cost roughly triples.
 | C max-share | 1.000 | works, loses multi-supplier info |
 | D hybrid per-stage | 1.000 (input_to via B/C) | best-fit, largest cost |
 
-**Recommendation: OPTION B (noisy-OR).** The graph already has the code
-path — `events.combine: noisy_or` — so implementation is small. It has
-the four properties dependency shares need (monotonic, [0,1], no
-summation constraint, coexists with per-stage/per-category). The
-independence assumption is a known caveat that applies equally to HHI.
-Pair with **`min_suppliers_for_concentration: 1`** (see §2.4) — under
-noisy-OR a single supplier at share s contributes s directly, no
-HHI-normalizes-to-1 artefact.
+**Recommendation: OPTION B (noisy-OR) WITH CAVEATS.** ⚠ **Pass K.2.1 §3
+correction.** K.2's D4 recommended noisy-OR without recording its
+principal weakness. Corrected here.
 
-D4 lands before the 29 queued edges get re-authored. The queued
-authoring will worsen the current HHI-inversion problem, so the
-aggregator decision must come first.
+**Saturation is real.** Any single input at share = 1.0 forces noisy-OR
+to 1.0 regardless of every other input. Under dependency semantics such
+inputs are common, not rare — K.1 authored two directly (ndfeb→Nd 1.00,
+arm_core_ip→arm 1.00). Full quantification in
+`docs/generated/aggregator_saturation_analysis.md`:
+
+- **2 of 31 scored nodes saturate today.** Under queued-29 re-authoring
+  at honest dep values, 15 – 20 of 20 non-leaf scored nodes would sit
+  at inbound noisy-OR ≥ 0.99.
+- Median under noisy-OR: 0.1884 (was 0.1949). Number of separating gaps
+  drops from 7 to 6 — three boundaries can still be placed, but the
+  top of the distribution compresses (9 of 20 nodes at ≥ 0.99).
+- **The boundary problem may migrate from the bottom (K.2 §1 moderate
+  collapse) to the top** (compressed critical/high band). Diagnosis A's
+  retry loop addresses the bottom; a top-of-distribution guard may be
+  needed under noisy-OR + queued-29.
+
+**Recommended pairing: B1 (0.95 cap by author convention).** Ban
+`input_share = 1.0` in the authoring convention; cap dep values at
+0.95. Preserves ordering under multi-input stacking (two 0.95 inputs
+give noisy-OR 0.9975, distinct from a single 0.95 at 0.9500), reduces
+top-of-distribution collapse. The 0.95 threshold has no principled
+basis — it is an epsilon choice Weston would need to sign off on.
+
+**Rejected mitigation: B2 (evidentiary bar for = 1.0).** Would require
+per-edge author judgment on whether an input is "truly binary"; that is
+tuning-toward-target risk (§5's warning). Not recommended.
+
+**Rejected mitigation: A (restore HHI summation).** Regresses K.1 §4.1
+and reopens D-J-3.
+
+**Pair with `min_suppliers_for_concentration: 1`** (see D4a below). The
+two changes are not separable — the pairing is load-bearing, not
+convenient.
+
+D4 lands before the 29 queued edges get re-authored.
+
+### D4a — `min_suppliers_for_concentration: 1` pairing
+
+**Complete separability analysis: paired changes are NOT separable.**
+See `aggregator_saturation_analysis.md` §4.4:
+
+- Noisy-OR alone (min_suppliers=2 unchanged) leaves rf_power_semis
+  xfail unresolved (still stage-zeroed as single-source input_to).
+- Min_suppliers=1 alone (HHI unchanged) reintroduces the HHI-normalizes-
+  to-1 artefact for every single-source bucket — the problem the rule
+  was designed to prevent.
+- Together: rf_power_semis unzeroes at raw share 0.900 → noisy-OR reads
+  0.900 (honest signal, not the 1.0 artefact); HBM's memory bucket
+  moves from HHI 0.4402 to noisy-OR 0.744.
+
+**⚠ Material xfail resolution finding not recorded in K.2.** Under D4
++ D4a paired:
+
+- `product:rf_power_semis`: severity 0.0261 → **0.2025** — passes
+  median (0.1884) → XPASS.
+- `product:hbm`: severity 0.1779 → **0.2121** — passes median → XPASS.
+
+**Both currently-pinned xfails resolve** under D4+D4a paired. The K.1
+§5 conditional-xfail mechanism (`strict=False`) reports XPASS as a
+legitimate outcome — this is exactly the state the mechanism was
+built to catch. When D4+D4a lands, `test_paper_chokepoint_severity_above_median[hbm-HBM]`
+and `[rf_power_semis-…]` will both XPASS; SHA-256-pinned reasons need
+retirement rather than deletion (recorded in the fix pass's Phase D
+ledger, not silently deleted).
+
+**Full impact enumeration** in `aggregator_saturation_analysis.md`
+§4.1–§4.3: 13 stage-level and 29 category-level buckets currently
+zeroed. K.2 §2.4.1 said 27 category-level; **actual count is 29**.
+Logged as a K.2 correction in the ledger (§6).
 
 ---
 
