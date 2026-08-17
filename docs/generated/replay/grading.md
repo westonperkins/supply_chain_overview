@@ -663,6 +663,118 @@ consciously carried.
 Reviewer errors belong on the ledger alongside implementer errors and
 spec-author errors. Recorded.
 
+#### K.2.2 §6 ledger additions
+
+Appended by the diagnosis-only pass K.2.2.
+
+**§6.1 — K.2.1 expectation 2 regraded HIT → MISS.** K.2.1 reported
+"HIT DRAMATICALLY" on the claim that 38 buckets were inversion-
+susceptible. The underlying test was circular: raising the smallest
+share of any n≥2 unequal bucket to match the largest always drops
+normalize=true HHI, because normalized HHI is minimized at equal
+shares by construction. K.2.1's number "38" restated "38 currently
+unequal buckets," not an inversion property. Regraded MISS. The NdFeB
+inversion remains real, demonstrated, and — until K.2.2 §2 — was
+unquantified in scope.
+
+Under honest §4.1 dependency authoring (K.2.2 §2), the
+inversion-EXPECTED count is **3**, not 38:
+`product:ndfeb_magnets` (already realised K.1), `company:vertiv`
+input_to, and `company:{openai, xai}` gpu_accelerators. Two orders of
+magnitude below the K.2.1 figure. D4 urgency is real but narrower
+than K.2.1 framed.
+
+**§6.2 — New failure pattern logged: measurements entailed by
+construction.** Distinct from the precision-without-derivation pattern
+(K.2.1 §6.2 recorded 3-for-3 across the K sequence). Both produce
+confident numbers that do not bear weight, by different routes:
+
+- **Precision-without-derivation** — an unsupported figure asserted
+  with more sig-figs than the source provides. Fixable by demanding
+  a derivation.
+- **Circular measurement** — a test whose result is entailed by its
+  construction. Fixable by rewriting the test so it can return no,
+  before running it. K.2.1 §2.2's inversion test is the reference
+  case.
+
+Both patterns share the same failure surface: a report reader takes
+the number as evidence, and it doesn't survive scrutiny.
+
+Proposed guardrail: **any pass-report claim that a metric "shows" a
+phenomenon must state the metric's null hypothesis** — what result
+would refute the claim. If the metric cannot return the refuting
+value, the claim is circular and the metric is not evidence.
+
+**§6.3 — Sequencing fact K.2.1 established but did not state.** The
+10 "safe" queued edges in K.2.1 §2.3 are safe because they are
+sole-supplier buckets. Sole-supplier buckets are exactly the buckets
+currently zeroed by `min_suppliers_for_concentration: 2` (K.2 §2.4).
+**Re-authoring them changes NOTHING for scoring until D4a lands.**
+
+The queued-29 audit's collision analysis treated all 29 edges as
+authoring candidates independent of D4a. That is not what the graph
+does: 10 of them are inert-until-D4a-decides. Their position in the
+queue depends on a decision K.2.1 did not tie to their status.
+
+Recorded so the fix-pass ordering (see D4a §5 recommendation)
+prioritises D4/D4a before re-authoring queued edges whose signal
+depends on D4a's outcome.
+
+**§6.4 — K.2.1 reporting defect (second occurrence).** K.2.1's
+deliverables block listed the 4 changed files under a heading that
+said **"Unchanged."** Same error appeared in K.2's deliverables block.
+Two consecutive reports made the same cosmetic error in the same
+field.
+
+Fix: K.2.2 report §Deliverables uses **"Changed"** as the heading.
+Also add a lint rule for future reports: if a file appears in
+`git diff --name-only <prev>..HEAD`, it MUST NOT appear under any
+"Unchanged" heading in the pass report.
+
+**§6.5 — Reviewer position on record.** The K.2.2 reviewer
+recommended against deciding D4 on K.2.1's evidence alone and called
+for this pass. K.2.2 §2 confirmed the reviewer's circularity
+objection was correct: the actual inversion-expected count is 3, not
+38. The reviewer's urgency framing ("D4 gates every future dep-basis
+authoring; cannot be decided on evidence that assumes its own answer")
+survives.
+
+K.2.1's arithmetic errors surfaced by K.2.2 §4 (K.2.1 used lt_norm =
+lt/10; engine uses log10_1p) further support the reviewer's call —
+K.2.1's specific severity figures were wrong even where its
+qualitative conclusion was right. The pattern strengthens the
+"scrutinise K.2.1 hard" call.
+
+**§6.6 — K.2.1 arithmetic errors: lt_norm.** K.2.1 §4.3 gave xfail
+severity figures under D4+D4a using `lt_norm = lt / 10`. The engine
+uses `log10(lt+1)/log10(26)`. Corrected in
+`xfail_resolution_audit.md` §4.1:
+
+- `product:rf_power_semis` under D4+D4a: **0.2872** (K.2.1 said 0.2025).
+- `product:hbm` under D4 or D4+D4a: **0.3008** (K.2.1 said 0.2121).
+- Median direction: K.2.1 said 0.1949 → 0.1884 (falls). Under
+  consistent log10_1p the median RISES ~0.10 (approximation: 0.1655
+  → 0.2672). The "median falling while nodes rise" paradox K.2.2 §4(3)
+  asked to reconcile is an artefact of K.2.1 mixing correct-baseline
+  (from committed severities) against wrong-approximation.
+
+Qualitative K.2.1 conclusion (both xfails XPASS under D4+D4a) intact,
+by wider margins. Specific K.2.1 numbers are wrong.
+
+**§6.7 — K.2.1 separability claim reframed.** K.2.1 §4.4 stated D4
+and D4a are "NOT separable." K.2.2 §5 shows the two changes are
+technically separable — no shared code path — and each independently
+resolves ONE xfail (D4→HBM, D4a→rf_power). K.2.1's "not separable"
+was outcome-completeness ("neither alone resolves both") dressed as
+technical coupling.
+
+Reframed with recommendation: ship D4 and D4a in **separate commits**,
+in that order. Each xfail's resolution then has a single-change
+provenance in the git history; intermediate state is legible; the
+bundled-blast-radius alternative is available if Weston prefers it,
+recorded as a deliberate choice rather than inherited from K.2.1's
+misframing.
+
 #### K.2.1 §6.5 — Cadence discrepancy resolved against the reviewer
 
 K.2 §6.7 resolved the K.1 §5.2 Cadence value dispute (0.012 vs 0.01):

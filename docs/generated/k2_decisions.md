@@ -161,12 +161,54 @@ give noisy-OR 0.9975, distinct from a single 0.95 at 0.9500), reduces
 top-of-distribution collapse. The 0.95 threshold has no principled
 basis — it is an epsilon choice Weston would need to sign off on.
 
+⚠ **Pass K.2.2 §3.1 correction: B1 is REJECTED.** B1 bends input data
+to fit the model. The standing project rule is the opposite: when data
+and a model constraint conflict, fix the model's resolution and report
+the conflict. K.2.1 recommended B1 while rejecting B2 (evidentiary
+bar) for "tuning-toward-target risk" — B1 carries the identical risk
+with a different mechanism (an author who knows 1.00 is disallowed
+authors against the constraint rather than against the evidence).
+Saturation is a property of the noisy-OR aggregator; it belongs on the
+aggregator side.
+
+**Recommended pairing (K.2.2): noisy-OR with internal ε (=0.01) plus
+count-aware auxiliary signal (share ≥ 0.90 threshold).** See
+`docs/generated/aggregator_saturation_v2.md` §3.2 for the alternative
+comparison.
+
+- ε=0.01 handles saturation without capping authored values (author
+  stays honest at 1.00; aggregator uses 0.99 internally). 0 nodes
+  saturate today vs 2 under plain noisy-OR.
+- Count-aware auxiliary preserves ordering among near-saturated nodes
+  via lexicographic `(scalar, count)`. NdFeB reads (0.9990, 2 binary);
+  arm_core_ip reads (0.9900, 1 binary) — distinguishable where plain
+  noisy-OR ε would read them at the same scalar.
+- Combined: **no top-of-distribution guard needed** (§3.3 verified).
+- Cost: two-value concentration reading is a downstream integration
+  item (cascade, severity formula, reporting need shims).
+
 **Rejected mitigation: B2 (evidentiary bar for = 1.0).** Would require
 per-edge author judgment on whether an input is "truly binary"; that is
-tuning-toward-target risk (§5's warning). Not recommended.
+tuning-toward-target risk. Not recommended.
+
+**Rejected mitigation: bounded RMS.** Fixes saturation by giving up the
+axis's core signal — dilutes concentration for all buckets, not just
+saturated ones. `mineral:gallium` reads 0.4416 under RMS (down from
+HHI 0.9704) — the 98.5% China dominance averaged against 1% Japan.
 
 **Rejected mitigation: A (restore HHI summation).** Regresses K.1 §4.1
 and reopens D-J-3.
+
+⚠ **§2.4 K.2.1 evidence for D4 urgency (38 inversions) is retracted.**
+K.2.1's raise-smallest-to-largest test was circular — normalize=true
+HHI is minimized at equal shares by construction, so raising the
+smallest share of any unequal bucket to match the largest always drops
+HHI to the n-member equal-share floor. The number 38 was
+"38 currently unequal n≥2 buckets." Under honest §4.1 dependency
+authoring measured in `docs/generated/inversion_scope.md` §2.3, the
+inversion-expected count is **3** (NdFeB + Vertiv input_to +
+openai/xai gpu_accelerators). D4 urgency is real but narrower than
+K.2.1 framed.
 
 **Pair with `min_suppliers_for_concentration: 1`** (see D4a below). The
 two changes are not separable — the pairing is load-bearing, not
@@ -188,12 +230,55 @@ See `aggregator_saturation_analysis.md` §4.4:
   0.900 (honest signal, not the 1.0 artefact); HBM's memory bucket
   moves from HHI 0.4402 to noisy-OR 0.744.
 
+⚠ **Pass K.2.2 §5 correction: technically SEPARABLE; outcome-coupled.**
+K.2.1's "NOT separable" was outcome-completeness language dressed as
+technical coupling. Per `xfail_resolution_audit.md` §4.5–§4.6:
+
+- D4 alone resolves **HBM** (noisy-OR turns memory bucket HHI 0.44 into
+  NOR 0.744). Does NOT resolve rf_power (still stage-zeroed).
+- D4a alone resolves **rf_power** (single-source stage unzeroes → HHI 1.0
+  under normalize=true — artefact-heavy but XPASSES).
+- D4 + D4a paired resolves both.
+- Each xfail's resolution traces to ONE of the two changes; the pairing
+  resolves both because the xfails have different named mechanisms.
+
+**Recommended sequence: D4 first, then D4a in a separate commit.** Order
+A per §5(4). Each commit's severity_diff is legible; each xfail's
+resolution is traceable to a single change; neither commit's
+intermediate state misrepresents any node's reading. Order B (D4a
+first) would ship an intermediate state where every single-source
+bucket reads HHI = 1.0 — the exact "cannot distinguish real monopoly
+from unmodelled data" state min_suppliers=2 was designed to prevent.
+
 **⚠ Material xfail resolution finding not recorded in K.2.** Under D4
 + D4a paired:
 
 - `product:rf_power_semis`: severity 0.0261 → **0.2025** — passes
   median (0.1884) → XPASS.
 - `product:hbm`: severity 0.1779 → **0.2121** — passes median → XPASS.
+
+⚠ **Pass K.2.2 §4.1 correction: K.2.1 severity figures used the wrong
+lt_norm.** K.2.1 used `lt_norm = lt / 10 = 0.30`; the engine uses
+`log10(lt+1)/log10(26) = 0.4255` (per
+`backend/app/scoring/engine.py::normalize_lead_time` line 285).
+
+Corrected numbers:
+
+- `product:rf_power_semis` under D4+D4a: **0.2872** (K.2.1 said 0.2025)
+- `product:hbm` under D4 (alone or paired): **0.3008** (K.2.1 said 0.2121)
+- Both xfails still XPASS by wider margins than K.2.1 reported.
+- K.2.1's "median falling from 0.1949 → 0.1884" was an arithmetic error:
+  the K.2.1 baseline used committed values (which use correct log10_1p),
+  while the K.2.1 post-D4+D4a value used lt/10. Under consistent
+  log10_1p the median RISES ~0.10 under D4+D4a — not falls.
+  `xfail_resolution_audit.md` §4.4 has the reconciliation.
+
+Named-mechanism check per §4.2 and §4.3: both xfail resolutions trace
+DIRECTLY to mechanisms named in their own reason strings. rf_power's
+reason names `min_suppliers=2 rule`; D4a ends the condition. HBM's
+reason names `concentration capped at inbound_hhi 0.44`; D4 changes the
+aggregation producing the 0.44. Neither resolution is an unrelated side
+effect.
 
 **Both currently-pinned xfails resolve** under D4+D4a paired. The K.1
 §5 conditional-xfail mechanism (`strict=False`) reports XPASS as a
