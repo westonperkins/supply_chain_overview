@@ -1,0 +1,2820 @@
+{
+  "current": {
+    "hhi_min2": {
+      "label": "hhi_min2",
+      "at_1": 0,
+      "ge_099": 0,
+      "median_scored_sev": 0.1949537138809286,
+      "tier_hist": {
+        "high": 2,
+        "none": 11,
+        "moderate": 16,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 7,
+      "boundaries": {
+        "critical": 0.5096065543117585,
+        "high": 0.4118946228794891,
+        "moderate": 0.13666630472569183
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.08179755775771838,
+        "baseline_severity": 0.026103161404886804,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.4402,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.4402,
+        "baseline_severity": 0.17793654427096184,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.5013850415512465,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.5013850415512465,
+        "baseline_severity": 0.17066830224114674,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.45821127051538846,
+        "baseline_severity": 0.15119338054081047,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5452537926963327
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:gallium",
+          0.4802713494238954
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "company:nvidia",
+          0.35450725887811113
+        ]
+      ],
+      "scored_count": 31
+    },
+    "hhi_min1": {
+      "label": "hhi_min1",
+      "at_1": 19,
+      "ge_099": 19,
+      "median_scored_sev": 0.22025022350781015,
+      "tier_hist": {
+        "high": 2,
+        "none": 8,
+        "moderate": 19,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5096065543117585,
+        "high": 0.4154751389607922,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 1.0,
+        "baseline_severity": 0.3191190803300447,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.4402,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.4402,
+        "baseline_severity": 0.17793654427096184,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.5013850415512465,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.5013850415512465,
+        "baseline_severity": 0.17066830224114674,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 1.0,
+        "baseline_severity": 0.3299643423671152,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5452537926963327
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:gallium",
+          0.4802713494238954
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "company:nvidia",
+          0.36166829104071735
+        ]
+      ],
+      "scored_count": 31
+    },
+    "noisy_or_min2": {
+      "label": "noisy_or_min2",
+      "at_1": 1,
+      "ge_099": 4,
+      "median_scored_sev": 0.20154812477767337,
+      "tier_hist": {
+        "high": 3,
+        "none": 11,
+        "moderate": 15,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.41368488092014066,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.08179755775771838,
+        "baseline_severity": 0.026103161404886804,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 1.0,
+        "baseline_severity": 0.3403936856853811,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.45821127051538846,
+        "baseline_severity": 0.15119338054081047,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "noisy_or_min1": {
+      "label": "noisy_or_min1",
+      "at_1": 2,
+      "ge_099": 6,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.41368488092014066,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 1.0,
+        "baseline_severity": 0.3403936856853811,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 1.0,
+        "baseline_severity": 0.3299643423671152,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_001_min2": {
+      "label": "nor_eps_001_min2",
+      "at_1": 0,
+      "ge_099": 4,
+      "median_scored_sev": 0.20154812477767337,
+      "tier_hist": {
+        "high": 3,
+        "none": 11,
+        "moderate": 15,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.41368488092014066,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.08179755775771838,
+        "baseline_severity": 0.026103161404886804,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.999,
+        "baseline_severity": 0.3400532919996957,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.45821127051538846,
+        "baseline_severity": 0.15119338054081047,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_001_min1": {
+      "label": "nor_eps_001_min1",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.41368488092014066,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.999,
+        "baseline_severity": 0.3400532919996957,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.99,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.99,
+        "baseline_severity": 0.326664698943444,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_005_min2": {
+      "label": "nor_eps_005_min2",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.20154812477767337,
+      "tier_hist": {
+        "high": 3,
+        "none": 11,
+        "moderate": 15,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.40652384875753445,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.08179755775771838,
+        "baseline_severity": 0.026103161404886804,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.995,
+        "baseline_severity": 0.33869171725695413,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.45821127051538846,
+        "baseline_severity": 0.15119338054081047,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5395860007752855
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.47056916039201824
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_005_min1": {
+      "label": "nor_eps_005_min1",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.40652384875753445,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.995,
+        "baseline_severity": 0.33869171725695413,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.95,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.95,
+        "baseline_severity": 0.3134661252487594,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5395860007752855
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.47056916039201824
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "rms_min2": {
+      "label": "rms_min2",
+      "at_1": 0,
+      "ge_099": 0,
+      "median_scored_sev": 0.15119338054081047,
+      "tier_hist": {
+        "moderate": 15,
+        "none": 14,
+        "unscored": 41,
+        "high": 1,
+        "critical": 1
+      },
+      "separating_gaps": 7,
+      "boundaries": {
+        "critical": 0.5041118730402443,
+        "high": 0.39681129278721444,
+        "moderate": 0.10916976963920944
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.08179755775771838,
+        "baseline_severity": 0.026103161404886804,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.38305787204198444,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.38305787204198444,
+        "baseline_severity": 0.15483869606301454,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9513148795220224,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.9513148795220224,
+        "baseline_severity": 0.32382157808784545,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.45821127051538846,
+        "baseline_severity": 0.15119338054081047,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "mineral:dysprosium",
+          0.32434059869356185
+        ],
+        [
+          "product:ndfeb_magnets",
+          0.32382157808784545
+        ],
+        [
+          "mineral:gallium",
+          0.28148927152772857
+        ]
+      ],
+      "scored_count": 31
+    },
+    "rms_min1": {
+      "label": "rms_min1",
+      "at_1": 1,
+      "ge_099": 2,
+      "median_scored_sev": 0.16345303892873847,
+      "tier_hist": {
+        "moderate": 18,
+        "none": 11,
+        "unscored": 41,
+        "high": 1,
+        "critical": 1
+      },
+      "separating_gaps": 4,
+      "boundaries": {
+        "critical": 0.5041118730402443,
+        "high": 0.3996231646239911,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.38305787204198444,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.38305787204198444,
+        "baseline_severity": 0.15483869606301454,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9513148795220224,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.9513148795220224,
+        "baseline_severity": 0.32382157808784545,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 1.0,
+        "baseline_severity": 0.3299643423671152,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "product:arm_core_ip",
+          0.3299643423671152
+        ],
+        [
+          "mineral:dysprosium",
+          0.32434059869356185
+        ],
+        [
+          "product:ndfeb_magnets",
+          0.32382157808784545
+        ]
+      ],
+      "scored_count": 31
+    }
+  },
+  "projected": {
+    "hhi_min2": {
+      "label": "hhi_min2",
+      "at_1": 0,
+      "ge_099": 0,
+      "median_scored_sev": 0.2059460089842008,
+      "tier_hist": {
+        "high": 3,
+        "none": 11,
+        "moderate": 15,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 4,
+      "boundaries": {
+        "critical": 0.5096065543117585,
+        "high": 0.42531801465767877,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.24719443729613316,
+        "baseline_severity": 0.07888446149264491,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.4402,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.5013850415512465,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.5013850415512465,
+        "baseline_severity": 0.17066830224114674,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.4653630667107091,
+        "baseline_severity": 0.1535532182691431,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5452537926963327
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:gallium",
+          0.4802713494238954
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "mineral:copper",
+          0.46417652236262646
+        ]
+      ],
+      "scored_count": 31
+    },
+    "hhi_min1": {
+      "label": "hhi_min1",
+      "at_1": 19,
+      "ge_099": 19,
+      "median_scored_sev": 0.25529526426403576,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.5096065543117585,
+        "high": 0.42531801465767877,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 1.0,
+        "baseline_severity": 0.3191190803300447,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.4402,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.5013850415512465,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.5013850415512465,
+        "baseline_severity": 0.17066830224114674,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 1.0,
+        "baseline_severity": 0.3299643423671152,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5452537926963327
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:gallium",
+          0.4802713494238954
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "mineral:copper",
+          0.46417652236262646
+        ]
+      ],
+      "scored_count": 31
+    },
+    "noisy_or_min2": {
+      "label": "noisy_or_min2",
+      "at_1": 1,
+      "ge_099": 4,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 10,
+        "moderate": 16,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.24719443729613316,
+        "baseline_severity": 0.07888446149264491,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 1.0,
+        "baseline_severity": 0.3403936856853811,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.4653630667107091,
+        "baseline_severity": 0.1535532182691431,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "noisy_or_min1": {
+      "label": "noisy_or_min1",
+      "at_1": 2,
+      "ge_099": 6,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 1.0,
+        "baseline_severity": 0.3403936856853811,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 1.0,
+        "baseline_severity": 0.3299643423671152,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_001_min2": {
+      "label": "nor_eps_001_min2",
+      "at_1": 0,
+      "ge_099": 4,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 10,
+        "moderate": 16,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.24719443729613316,
+        "baseline_severity": 0.07888446149264491,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.999,
+        "baseline_severity": 0.3400532919996957,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.4653630667107091,
+        "baseline_severity": 0.1535532182691431,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_001_min1": {
+      "label": "nor_eps_001_min1",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.999,
+        "baseline_severity": 0.3400532919996957,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.99,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.99,
+        "baseline_severity": 0.326664698943444,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_005_min2": {
+      "label": "nor_eps_005_min2",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 10,
+        "moderate": 16,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 4,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.42787074691679905,
+        "moderate": 0.182609177596221
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.24719443729613316,
+        "baseline_severity": 0.07888446149264491,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.995,
+        "baseline_severity": 0.33869171725695413,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.4653630667107091,
+        "baseline_severity": 0.1535532182691431,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5395860007752855
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.47056916039201824
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "nor_eps_005_min1": {
+      "label": "nor_eps_005_min1",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.42787074691679905,
+        "moderate": 0.1806905485419681
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.995,
+        "baseline_severity": 0.33869171725695413,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.95,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.95,
+        "baseline_severity": 0.3134661252487594,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5395860007752855
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.47056916039201824
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31
+    },
+    "rms_min2": {
+      "label": "rms_min2",
+      "at_1": 0,
+      "ge_099": 0,
+      "median_scored_sev": 0.16345303892873847,
+      "tier_hist": {
+        "moderate": 16,
+        "none": 12,
+        "high": 2,
+        "unscored": 41,
+        "critical": 1
+      },
+      "separating_gaps": 8,
+      "boundaries": {
+        "critical": 0.5041118730402443,
+        "high": 0.42531801465767877,
+        "moderate": 0.14048554761786802
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.24719443729613316,
+        "baseline_severity": 0.07888446149264491,
+        "baseline_tier": "none"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.38305787204198444,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9513148795220224,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.9513148795220224,
+        "baseline_severity": 0.32382157808784545,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.4653630667107091,
+        "baseline_severity": 0.1535532182691431,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "mineral:copper",
+          0.46417652236262646
+        ],
+        [
+          "product:hbm",
+          0.38645950695273107
+        ],
+        [
+          "mineral:dysprosium",
+          0.32434059869356185
+        ]
+      ],
+      "scored_count": 31
+    },
+    "rms_min1": {
+      "label": "rms_min1",
+      "at_1": 1,
+      "ge_099": 2,
+      "median_scored_sev": 0.2106185930178295,
+      "tier_hist": {
+        "moderate": 19,
+        "none": 9,
+        "high": 2,
+        "unscored": 41,
+        "critical": 1
+      },
+      "separating_gaps": 9,
+      "boundaries": {
+        "critical": 0.5041118730402443,
+        "high": 0.42531801465767877,
+        "moderate": 0.18741763872340353
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.38305787204198444,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9513148795220224,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.9513148795220224,
+        "baseline_severity": 0.32382157808784545,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 1.0,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 1.0,
+        "baseline_severity": 0.3299643423671152,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "mineral:copper",
+          0.46417652236262646
+        ],
+        [
+          "product:hbm",
+          0.38645950695273107
+        ],
+        [
+          "product:arm_core_ip",
+          0.3299643423671152
+        ]
+      ],
+      "scored_count": 31
+    }
+  },
+  "projected_override_count": 23,
+  "projected_unmatched_count": 0,
+  "epsilon_current": [
+    {
+      "label": "nor_eps_0.001",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.41368488092014066,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9999,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.9999,
+        "baseline_severity": 0.34035964631681254,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.999,
+        "baseline_severity": 0.32963437802474804,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.001,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:arm_core_ip",
+        "product:cowos_packaging",
+        "product:hbm",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:siemens_energy",
+        "company:ge_vernova",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:vertiv",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.005",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.41368488092014066,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9995,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.9995,
+        "baseline_severity": 0.3402234888425384,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.995,
+        "baseline_severity": 0.3283145206552796,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.005,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "product:hbm",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:siemens_energy",
+        "company:ge_vernova",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:vertiv",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.01",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.41368488092014066,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.999,
+        "baseline_severity": 0.3400532919996957,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.99,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.99,
+        "baseline_severity": 0.326664698943444,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.01,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "product:hbm",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:siemens_energy",
+        "company:ge_vernova",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:vertiv",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.02",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.4118946228794891,
+        "high": 0.17711108045794494,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.998,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.998,
+        "baseline_severity": 0.3397128983140103,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.98,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.98,
+        "baseline_severity": 0.32336505551977285,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5562689982471921
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.485195572287211
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.02,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "product:hbm",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:siemens_energy",
+        "company:ge_vernova",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:vertiv",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.05",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.40652384875753445,
+        "moderate": 0.17711108045794494
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.995,
+        "baseline_severity": 0.33869171725695413,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.95,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.95,
+        "baseline_severity": 0.3134661252487594,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5395860007752855
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.47056916039201824
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.05,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "product:hbm",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:siemens_energy",
+        "company:ge_vernova",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:vertiv",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.1",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.24035304519271536,
+      "tier_hist": {
+        "high": 3,
+        "none": 9,
+        "moderate": 17,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 1,
+      "boundaries": {
+        "critical": 0.3915907780309455,
+        "high": 0.0,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 2,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.08179755775771838,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.23136771276971466,
+        "concentration": 0.7440399999999999,
+        "baseline_severity": 0.30075399000310415,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.99,
+        "outbound_criticality": 0.14241779362806403,
+        "concentration": 0.99,
+        "baseline_severity": 0.3369897488285272,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.45821127051538846,
+        "concentration": 0.9,
+        "baseline_severity": 0.2969679081304037,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:dysprosium",
+          0.5117810049887748
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "mineral:gallium",
+          0.44619180723336377
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.1,
+      "ordering": [
+        "company:asml",
+        "mineral:dysprosium",
+        "mineral:copper",
+        "company:tsmc",
+        "mineral:gallium",
+        "product:ndfeb_magnets",
+        "company:nvidia",
+        "product:cowos_packaging",
+        "product:hbm",
+        "product:arm_core_ip",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:lam_research",
+        "company:samsung",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:applied_materials",
+        "company:arm",
+        "company:synopsys",
+        "company:siemens_energy",
+        "company:ge_vernova",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:vertiv",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    }
+  ],
+  "epsilon_projected": [
+    {
+      "label": "nor_eps_0.001",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9999,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.9999,
+        "baseline_severity": 0.34035964631681254,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.999,
+        "baseline_severity": 0.32963437802474804,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.001,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "product:hbm",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:arm_core_ip",
+        "product:cowos_packaging",
+        "company:ge_vernova",
+        "company:siemens_energy",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:vertiv",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.005",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.9995,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.9995,
+        "baseline_severity": 0.3402234888425384,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.995,
+        "baseline_severity": 0.3283145206552796,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.005,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "product:hbm",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "company:ge_vernova",
+        "company:siemens_energy",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:vertiv",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.01",
+      "at_1": 0,
+      "ge_099": 6,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.999,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.999,
+        "baseline_severity": 0.3400532919996957,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.99,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.99,
+        "baseline_severity": 0.326664698943444,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5618299974044941
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.48763330760307644
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.01,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "product:hbm",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "company:ge_vernova",
+        "company:siemens_energy",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:vertiv",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.02",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 2,
+      "boundaries": {
+        "critical": 0.42787074691679905,
+        "high": 0.182609177596221,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 1,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.998,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.998,
+        "baseline_severity": 0.3397128983140103,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.98,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.98,
+        "baseline_severity": 0.32336505551977285,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5562689982471921
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.485195572287211
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.02,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "product:hbm",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "company:ge_vernova",
+        "company:siemens_energy",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:arm",
+        "company:applied_materials",
+        "company:synopsys",
+        "company:vertiv",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.05",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.27885834847997354,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 3,
+      "boundaries": {
+        "critical": 0.5178454839188712,
+        "high": 0.42787074691679905,
+        "moderate": 0.1806905485419681
+      },
+      "unresolved_bands_count": 0,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.995,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.995,
+        "baseline_severity": 0.33869171725695413,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.95,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.95,
+        "baseline_severity": 0.3134661252487594,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "mineral:dysprosium",
+          0.5395860007752855
+        ],
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "mineral:gallium",
+          0.47056916039201824
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.05,
+      "ordering": [
+        "mineral:dysprosium",
+        "company:asml",
+        "mineral:copper",
+        "mineral:gallium",
+        "company:tsmc",
+        "product:hbm",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "product:arm_core_ip",
+        "company:ge_vernova",
+        "company:siemens_energy",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:samsung",
+        "company:lam_research",
+        "company:kla",
+        "company:sk_hynix",
+        "company:micron",
+        "company:applied_materials",
+        "company:arm",
+        "company:synopsys",
+        "company:vertiv",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    },
+    {
+      "label": "nor_eps_0.1",
+      "at_1": 0,
+      "ge_099": 1,
+      "median_scored_sev": 0.27461108581679156,
+      "tier_hist": {
+        "high": 3,
+        "none": 8,
+        "moderate": 18,
+        "critical": 2,
+        "unscored": 41
+      },
+      "separating_gaps": 1,
+      "boundaries": {
+        "critical": 0.4163256570930474,
+        "high": 0.0,
+        "moderate": 0.0
+      },
+      "unresolved_bands_count": 2,
+      "rf_power": {
+        "id": "product:rf_power_semis",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.24719443729613316,
+        "concentration": 0.9,
+        "baseline_severity": 0.2872071722970403,
+        "baseline_tier": "moderate"
+      },
+      "hbm": {
+        "id": "product:hbm",
+        "inbound_hhi": 0.7440399999999999,
+        "outbound_criticality": 0.9560682189125478,
+        "concentration": 0.9560682189125478,
+        "baseline_severity": 0.38645950695273107,
+        "baseline_tier": "moderate"
+      },
+      "ndfeb": {
+        "id": "product:ndfeb_magnets",
+        "inbound_hhi": 0.99,
+        "outbound_criticality": 0.3766043594749039,
+        "concentration": 0.99,
+        "baseline_severity": 0.3369897488285272,
+        "baseline_tier": "moderate"
+      },
+      "arm_core_ip": {
+        "id": "product:arm_core_ip",
+        "inbound_hhi": 0.9,
+        "outbound_criticality": 0.4653630667107091,
+        "concentration": 0.9,
+        "baseline_severity": 0.2969679081304037,
+        "baseline_tier": "moderate"
+      },
+      "top_5": [
+        [
+          "company:asml",
+          0.5389417591996215
+        ],
+        [
+          "mineral:dysprosium",
+          0.5117810049887748
+        ],
+        [
+          "mineral:copper",
+          0.4967492086381209
+        ],
+        [
+          "company:tsmc",
+          0.46928198688086703
+        ],
+        [
+          "mineral:gallium",
+          0.44619180723336377
+        ]
+      ],
+      "scored_count": 31,
+      "eps": 0.1,
+      "ordering": [
+        "company:asml",
+        "mineral:dysprosium",
+        "mineral:copper",
+        "company:tsmc",
+        "mineral:gallium",
+        "product:hbm",
+        "company:nvidia",
+        "product:ndfeb_magnets",
+        "product:cowos_packaging",
+        "company:ge_vernova",
+        "company:siemens_energy",
+        "product:arm_core_ip",
+        "mineral:neodymium",
+        "product:rf_power_semis",
+        "company:lam_research",
+        "company:kla",
+        "company:samsung",
+        "company:sk_hynix",
+        "company:micron",
+        "company:applied_materials",
+        "company:arm",
+        "company:synopsys",
+        "company:vertiv",
+        "company:cadence",
+        "mineral:indium",
+        "company:tokyo_electron",
+        "company:quanta_services",
+        "company:siemens_eda",
+        "company:nikon",
+        "company:hitachi_high_tech",
+        "company:canon"
+      ]
+    }
+  ]
+}

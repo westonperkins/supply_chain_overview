@@ -210,6 +210,71 @@ inversion-expected count is **3** (NdFeB + Vertiv input_to +
 openai/xai gpu_accelerators). D4 urgency is real but narrower than
 K.2.1 framed.
 
+---
+
+⚠ **Pass M validation — measured evidence supersedes approximation.**
+
+Pass M ran all six candidate aggregators × two `min_suppliers` values
+through the REAL engine via the seam added in
+`backend/app/scoring/engine.py` (`compute_concentration_aggregate`).
+Every K.2.2 §3 recommendation is now re-anchored on measured, not
+approximated, numbers.
+
+**Where K.2.2 approximation matched engine exactly (0% divergence):**
+per-bucket concentration readings including NdFeB under every
+candidate; xfail severities under D4+D4a. K.2.2's arithmetic on
+isolated buckets was right.
+
+**Where K.2.2 approximation was materially wrong:**
+
+- Projected saturation: K.2.2 said "15–20 of 20 non-leaf scored nodes
+  would sit at ≥ 0.99 after queued-29 re-authoring." Engine measured:
+  **6 nodes at ≥ 0.99** (2 at exactly 1.0). K.2.2 was 3–4× too high.
+  Reason: K.2.2 assumed dep values would cluster at 1.0; honest §2.5
+  authoring is 0.75–0.95.
+- Separating gaps under noisy-OR: K.2.2 said 6 (plain) and 5 (ε=0.05).
+  Engine measured: **3 under both** on the current graph.
+  K.2.2 halved.
+
+Both distribution-wide K.2.2 errors overstated the saturation problem
+noisy-OR would introduce. Post-M measurement: **saturation is real but
+narrow.** Plain noisy-OR saturates ndfeb at min_supp=2 (1 node) and
+ndfeb+arm_core_ip at min_supp=1 (2 nodes). ε=0.01 clears both.
+
+**ε plateau confirmed on both graphs.** The tier histogram is stable
+across ε ∈ [0.001, 0.100] on both current and projected graphs. Any
+value in this range produces the same tier assignments. Ordering
+within tiers changes at 7 pair-swaps across ε, but no tier crossing.
+
+**Count-awareness is DEFERRABLE.** No pair of nodes has identical
+severity to full precision on the 31-node scored set. Concentration
+ties exist (ASML/TSMC at 1.0, arm_core_ip/arm at 0.99) but severity
+resolves them via `(1 − sub) × lt_norm`. Downstream ranking operates
+on severity, not concentration. The K.2.2 §5 recommendation to pair
+ε with count-aware ordering is not needed today.
+
+**Revised D4 recommendation (Pass M):**
+
+- **Aggregator: noisy-OR with internal ε.** ε value chosen from the
+  plateau [0.001, 0.100]. Any value works for tier assignment;
+  saturation cushion (nodes at ≥ 0.99) drops from 6 to 1 as ε passes
+  0.010 → 0.020. Not a decision this pass makes.
+- **Pair with min_suppliers=1** (D4a) if the fix pass wants both xfails
+  to XPASS. Engine confirms: under nor_eps_001_min1 both xfails read
+  above the new median 0.2404 (rf_power 0.2872, HBM 0.3008).
+- **Count-aware auxiliary NOT recommended.** Deferrable per §5.3 above.
+  Revisit only if a downstream consumer stops resolving through
+  severity.
+
+**Cost enumeration** (Pass M §5.1): 6 code-changes + 2 data-changes to
+adopt count-awareness. Not "shims." K.2.2's framing understated it.
+
+**Recommended sequencing** (per Pass K.2.2 §5 finding, engine-confirmed):
+ship D4 first, then D4a in separate commits. Under D4 alone (noisy-OR
++ min_supp=2), HBM XPASSES (0.3008 > 0.2015 median); rf_power stays
+xfail (stage-zeroed). Under D4a alone (HHI + min_supp=1), rf_power
+XPASSES (0.3191 > median). Under D4+D4a paired, both XPASS.
+
 **Pair with `min_suppliers_for_concentration: 1`** (see D4a below). The
 two changes are not separable — the pairing is load-bearing, not
 convenient.
