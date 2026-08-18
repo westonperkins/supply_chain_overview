@@ -166,30 +166,63 @@ def derive_thresholds(
             )
         prev = boundaries[name]
 
-    # F1.b — partition sanity guard. If the moderate/none boundary sits
-    # above the median scored severity, the bottom partition is
-    # degenerate (`none` would swallow the majority of scored nodes).
-    # Reroute the boundary to the unresolved-band mechanism rather than
-    # ship a degenerate partition. Pure structural check on the boundary
-    # vs the median — does not reference any node by name and is not
-    # tunable to any tier membership. See spec §F1.b.
+    # F1.b — partition sanity guard with Pass L §1 retry.
+    #
+    # Original F1.b (Pass C) rejected the moderate candidate when its
+    # midpoint sat above the median and hard-set boundaries["moderate"]
+    # = 0.0. K.2 §1 diagnosed this as a veto-without-retry: the F1
+    # size-ordered selection can produce a top-3 all clustered in the
+    # upper distribution, and the guard would fire even when lower
+    # separating gaps existed that would have passed. K.2.2 confirmed
+    # the diagnosis.
+    #
+    # Pass L §1 replaces the veto with a retry: on guard failure,
+    # iterate the remaining unused separating gaps by descending
+    # midpoint and take the first with midpoint ≤ median. The
+    # unresolved-band + boundary=0 path stays as a residual degeneracy
+    # check for distributions where the retry exhausts every candidate.
+    #
+    # Constraint (spec §1.2): the retry is purely structural. It
+    # iterates separating gaps and compares midpoints to a
+    # distributional statistic (median) — no node names, no severity
+    # literals, no tier-count targets, no new tunable.
     scored_sevs = [s for _, s in scored]
     median_scored = median(scored_sevs)
     if boundaries.get("moderate", 0.0) > median_scored:
-        prev_boundary = boundaries.get("high", scored[0][1])
-        unresolved.append(UnresolvedBand(
-            lower=0.0,
-            upper=prev_boundary,
-            tiers=["moderate", "none"],
-            reason=(
-                f"moderate/none boundary {boundaries['moderate']:.5f} sits "
-                f"above the median scored severity {median_scored:.5f} — "
-                f"bottom partition is degenerate (`none` would hold the "
-                f"majority of scored nodes). Rerouted to unresolved band."
-            ),
-        ))
-        boundaries["moderate"] = 0.0
-        boundary_gap["moderate"] = None
+        # Unused separating gaps, ordered by descending midpoint.
+        # `selected_by_midpoint` and `separating` share the same Gap
+        # object references (both derive from `separating`), so
+        # `not in` correctly identifies gaps that were never selected.
+        unused = [g for g in separating if g not in selected_by_midpoint]
+        unused_by_midpoint_desc = sorted(unused, key=lambda g: -g.midpoint)
+        retry_gap: Optional[Gap] = None
+        for candidate in unused_by_midpoint_desc:
+            if candidate.midpoint <= median_scored:
+                retry_gap = candidate
+                break
+
+        if retry_gap is not None:
+            boundaries["moderate"] = retry_gap.midpoint
+            boundary_gap["moderate"] = retry_gap
+        else:
+            # Every separating gap exhausted with no candidate below
+            # median. Fall back to the unresolved-band mechanism as
+            # the residual degeneracy check.
+            prev_boundary = boundaries.get("high", scored[0][1])
+            unresolved.append(UnresolvedBand(
+                lower=0.0,
+                upper=prev_boundary,
+                tiers=["moderate", "none"],
+                reason=(
+                    f"moderate/none boundary {boundaries['moderate']:.5f} sits "
+                    f"above the median scored severity {median_scored:.5f} "
+                    f"and no unused separating gap has a midpoint at or "
+                    f"below the median. Every candidate exhausted; "
+                    f"rerouted to unresolved band."
+                ),
+            ))
+            boundaries["moderate"] = 0.0
+            boundary_gap["moderate"] = None
 
     return ThresholdDerivation(
         scored=scored, gaps=gaps, median_gap=med,

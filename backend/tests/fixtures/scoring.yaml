@@ -244,7 +244,7 @@ thresholds:
   boundaries:
     critical: 0.5096065543117585
     high: 0.4118946228794891
-    moderate: 0.0
+    moderate: 0.13666630472569183
   # An unresolved band is declared when a required boundary has no
   # separating gap. Nodes inside the band still tier normally (backward
   # compatibility) but carry dynamic.tier_ambiguous = true and

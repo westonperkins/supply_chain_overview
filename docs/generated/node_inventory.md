@@ -29,17 +29,17 @@ Graph size: 72 nodes total (31 scored, 41 unscored).
 | product:ndfeb_magnets | product | moderate | 0.17066830 | 0.501385 | 0.501385 | 0.238000 | 0.142418 | inbound | 0.2000 | estimate | 3.0000 | estimate |
 | company:synopsys | company | moderate | 0.15267404 | 0.441527 | 0.000000 | 0.737853 | 0.441527 | outbound | 0.3000 | estimate | 4.0000 | estimate |
 | product:arm_core_ip | product | moderate | 0.15119338 | 0.458211 | 0.000000 | 0.765735 | 0.458211 | outbound | 0.4000 | estimate | 5.0000 | estimate |
-| company:cadence | company | moderate | 0.12213923 | 0.353221 | 0.000000 | 0.590282 | 0.353221 | outbound | 0.3000 | estimate | 4.0000 | estimate |
-| company:arm | company | moderate | 0.09531990 | 0.448045 | 0.392290 | 0.748746 | 0.448045 | outbound | 0.5000 | estimate | 3.0000 | estimate |
-| company:tokyo_electron | company | moderate | 0.09289488 | 0.335882 | 0.000000 | 0.561306 | 0.335882 | outbound | 0.3500 | estimate | 3.0000 | estimate |
-| mineral:indium | mineral | moderate | 0.07385999 | 0.438085 | 0.438085 | 0.021225 | 0.012701 | inbound | 0.5000 | estimate | 2.0000 | estimate |
-| company:vertiv | company | moderate | 0.06422781 | 0.423282 | 0.423282 | 0.344710 | 0.206272 | inbound | 0.5500 | estimate | 2.0000 | estimate |
-| company:quanta_services | company | moderate | 0.03889852 | 0.152367 | 0.000000 | 0.254626 | 0.152367 | outbound | 0.4000 | estimate | 3.0000 | estimate |
-| company:siemens_eda | company | moderate | 0.03663389 | 0.132458 | 0.000000 | 0.221356 | 0.132458 | outbound | 0.3500 | estimate | 3.0000 | estimate |
-| product:rf_power_semis | product | moderate | 0.02610316 | 0.081798 | 0.000000 | 0.136695 | 0.081798 | outbound | 0.2500 | estimate | 3.0000 | estimate |
-| company:nikon | company | moderate | 0.02078119 | 0.083148 | 0.000000 | 0.138952 | 0.083148 | outbound | 0.3500 | estimate | 2.5000 | estimate |
-| company:hitachi_high_tech | company | moderate | 0.00885575 | 0.043772 | 0.000000 | 0.073149 | 0.043772 | outbound | 0.4000 | estimate | 2.0000 | estimate |
-| company:canon | company | moderate | 0.00357153 | 0.017653 | 0.000000 | 0.029501 | 0.017653 | outbound | 0.4000 | estimate | 2.0000 | estimate |
+| company:cadence | company | none | 0.12213923 | 0.353221 | 0.000000 | 0.590282 | 0.353221 | outbound | 0.3000 | estimate | 4.0000 | estimate |
+| company:arm | company | none | 0.09531990 | 0.448045 | 0.392290 | 0.748746 | 0.448045 | outbound | 0.5000 | estimate | 3.0000 | estimate |
+| company:tokyo_electron | company | none | 0.09289488 | 0.335882 | 0.000000 | 0.561306 | 0.335882 | outbound | 0.3500 | estimate | 3.0000 | estimate |
+| mineral:indium | mineral | none | 0.07385999 | 0.438085 | 0.438085 | 0.021225 | 0.012701 | inbound | 0.5000 | estimate | 2.0000 | estimate |
+| company:vertiv | company | none | 0.06422781 | 0.423282 | 0.423282 | 0.344710 | 0.206272 | inbound | 0.5500 | estimate | 2.0000 | estimate |
+| company:quanta_services | company | none | 0.03889852 | 0.152367 | 0.000000 | 0.254626 | 0.152367 | outbound | 0.4000 | estimate | 3.0000 | estimate |
+| company:siemens_eda | company | none | 0.03663389 | 0.132458 | 0.000000 | 0.221356 | 0.132458 | outbound | 0.3500 | estimate | 3.0000 | estimate |
+| product:rf_power_semis | product | none | 0.02610316 | 0.081798 | 0.000000 | 0.136695 | 0.081798 | outbound | 0.2500 | estimate | 3.0000 | estimate |
+| company:nikon | company | none | 0.02078119 | 0.083148 | 0.000000 | 0.138952 | 0.083148 | outbound | 0.3500 | estimate | 2.5000 | estimate |
+| company:hitachi_high_tech | company | none | 0.00885575 | 0.043772 | 0.000000 | 0.073149 | 0.043772 | outbound | 0.4000 | estimate | 2.0000 | estimate |
+| company:canon | company | none | 0.00357153 | 0.017653 | 0.000000 | 0.029501 | 0.017653 | outbound | 0.4000 | estimate | 2.0000 | estimate |
 
 ## B. Unscored nodes (missing required static axes)
 
@@ -107,8 +107,8 @@ Grouped by node type. Each row names which axes are missing.
 |---|---|
 | critical | 2 |
 | high | 2 |
-| moderate | 27 |
-| none | 0 |
+| moderate | 16 |
+| none | 11 |
 | unscored | 41 |
 | **total** | **72** |
 
