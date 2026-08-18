@@ -37,6 +37,81 @@ def compute_hhi(shares: dict[str, float], normalize: bool = True) -> float:
     return sum(v * v for v in shares.values())
 
 
+# --------------------------------------------------------------------------- #
+# Pass M §2 — candidate aggregators for D4 evidence.                          #
+# --------------------------------------------------------------------------- #
+# Additional concentration functions kept behind a `method` parameter that
+# defaults to `hhi` on every caller. Default behaviour is byte-identical to
+# pre-Pass-M — no committed artifact regenerates differently under default.
+# These candidates exist so the scratch validation script in
+# `backend/scripts/aggregator_validation.py` (Pass M §3–§4) can drive the
+# engine's real per-stage / per-category logic with different final
+# aggregations, without a scratch reimplementation of those paths.
+
+def compute_noisy_or(shares: dict[str, float]) -> float:
+    """Noisy-OR aggregation over shares clipped to [0, 1]:
+    `1 - Π(1 - v_i)`. Bounded in [0, 1], monotonic in each input, no
+    summation constraint. Saturates to 1.0 if any single input reaches 1.0.
+    """
+    if not shares:
+        return 0.0
+    p = 1.0
+    for v in shares.values():
+        p *= (1.0 - max(0.0, min(1.0, v)))
+    return 1.0 - p
+
+
+def compute_noisy_or_eps(shares: dict[str, float], eps: float) -> float:
+    """Noisy-OR with an internal epsilon that caps each input at (1 - eps)
+    for combination purposes. Prevents saturation at exactly 1.0 without
+    capping the AUTHORED value.
+
+    K.2.2 §3.2 proposed this to handle the ndfeb → magnets case where two
+    dependencies at 1.00 and 0.90 force plain noisy-OR to saturate.
+    """
+    if not shares:
+        return 0.0
+    cap = 1.0 - eps
+    p = 1.0
+    for v in shares.values():
+        p *= (1.0 - min(cap, max(0.0, v)))
+    return 1.0 - p
+
+
+def compute_bounded_rms(shares: dict[str, float]) -> float:
+    """Root-mean-square of shares: `sqrt(mean(v_i²))`. Stays in [0,1] iff
+    each v_i ≤ 1. Monotonic, no summation constraint. K.2.2 §3.2 rejected
+    this on grounds that it dilutes signal (averages a dominant share
+    against smaller ones); included here so the rejection rests on engine
+    numbers rather than approximation."""
+    if not shares:
+        return 0.0
+    vals = [max(0.0, min(1.0, v)) for v in shares.values()]
+    return math.sqrt(sum(v * v for v in vals) / len(vals))
+
+
+def compute_concentration_aggregate(
+    shares: dict[str, float],
+    method: str = "hhi",
+    normalize: bool = True,
+    eps: float = 0.01,
+) -> float:
+    """Dispatcher over the candidate aggregators. Default `hhi` preserves
+    committed behaviour; the other methods (`noisy_or`, `noisy_or_eps`,
+    `rms`) are the K.2.2 §3.2 candidates the Pass M validation script
+    drives. Any consumer that only calls with the default is byte-identical
+    to pre-Pass-M."""
+    if method == "hhi":
+        return compute_hhi(shares, normalize=normalize)
+    if method == "noisy_or":
+        return compute_noisy_or(shares)
+    if method == "noisy_or_eps":
+        return compute_noisy_or_eps(shares, eps=eps)
+    if method == "rms":
+        return compute_bounded_rms(shares)
+    raise ValueError(f"unknown aggregator method: {method!r}")
+
+
 def hhi_from_derived_shares(derived: Optional[dict], normalize: bool = True) -> float:
     """Legacy blended HHI — kept so before/after is inspectable on the node
     as `combined_hhi`. NOT the inbound_hhi used in scoring anymore.
@@ -67,7 +142,10 @@ def per_stage_hhi(derived: Optional[dict], stage: str, normalize: bool = True) -
 
 
 def compute_stage_hhis(
-    derived: Optional[dict], normalize: bool = True,
+    derived: Optional[dict],
+    normalize: bool = True,
+    method: str = "hhi",
+    eps: float = 0.01,
 ) -> tuple[dict[str, float], dict[str, int]]:
     """Compute per-stage HHIs for every edge type in SUPPLY_EDGE_TYPES that
     has edges present in `derived`. Returns ({stage: hhi}, {stage: n_sources}).
@@ -76,6 +154,9 @@ def compute_stage_hhis(
     rule as per-category HHI one level down (see spec §1). A single-source
     stage under `normalize: true` reads HHI 1.0 by construction, which
     cannot distinguish a real monopoly from unmodelled data.
+
+    Pass M §2 — `method` and `eps` route to `compute_concentration_aggregate`.
+    Default `hhi` preserves committed behaviour byte-identically.
     """
     if not derived:
         return {}, {}
@@ -85,7 +166,9 @@ def compute_stage_hhis(
     for stage_name, shares in derived.items():
         if stage_name not in valid or not shares:
             continue
-        hhis[stage_name] = compute_hhi(shares, normalize=normalize)
+        hhis[stage_name] = compute_concentration_aggregate(
+            shares, method=method, normalize=normalize, eps=eps,
+        )
         counts[stage_name] = len(shares)
     return hhis, counts
 
@@ -94,6 +177,8 @@ def compute_supplies_per_category(
     graph: SupplyChainGraph,
     node_id: str,
     normalize: bool = True,
+    method: str = "hhi",
+    eps: float = 0.01,
 ) -> tuple[dict[str, float], dict[str, int]]:
     """Group the target's incoming `supplies` edges by `supply_category`
     and compute HHI per category. Returns (per_cat_hhi, supplier_counts).
@@ -101,12 +186,18 @@ def compute_supplies_per_category(
     Edges with no `supply_category` land in a `general` sub-bucket. The
     supplier_counts dict lets the caller apply a `min_suppliers` gate
     (see `docs/category_validation_spec.md`) to distinguish a real
-    monopoly from a category we simply haven't finished modelling."""
+    monopoly from a category we simply haven't finished modelling.
+
+    Pass M §2 — `method` and `eps` route to `compute_concentration_aggregate`.
+    Default `hhi` preserves committed behaviour byte-identically.
+    """
     buckets: dict[str, dict[str, float]] = defaultdict(dict)
     for edge in graph.in_edges(node_id, [EdgeType.SUPPLIES]):
         cat = edge.supply_category or "general"
         buckets[cat][edge.source_id] = edge.effective_weight()
-    hhis = {cat: compute_hhi(shares, normalize=normalize)
+    hhis = {cat: compute_concentration_aggregate(
+                shares, method=method, normalize=normalize, eps=eps,
+            )
             for cat, shares in buckets.items()}
     counts = {cat: len(shares) for cat, shares in buckets.items()}
     return hhis, counts
@@ -491,7 +582,15 @@ def _compute_tier_ambiguity(
 # Whole-graph refresh                                                          #
 # --------------------------------------------------------------------------- #
 
-def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
+def refresh_all_derived(
+    graph: SupplyChainGraph,
+    config: ScoringConfig,
+    *,
+    aggregator_method: str = "hhi",
+    aggregator_eps: float = 0.01,
+    min_suppliers_override: Optional[int] = None,
+    stage_min_suppliers_override: Optional[int] = None,
+) -> None:
     """Recompute every derived field on every node.
 
     Order matters:
@@ -506,6 +605,14 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
       4. outbound_criticality  (walk downstream, then normalize by graph max)
       5. concentration   (combine inbound + outbound per config)
       6. current_severity, chokepoint_tier  (from concentration + static axes)
+
+    Pass M §2 — the four keyword-only parameters below let the scratch
+    validation script drive candidate aggregators (`noisy_or`,
+    `noisy_or_eps`, `rms`) and alternative `min_suppliers` values
+    through the REAL engine paths, without a scratch reimplementation
+    of the per-stage / per-category logic. Defaults preserve committed
+    behaviour byte-identically: `aggregator_method="hhi"` routes to
+    `compute_hhi`, and `min_suppliers_override=None` reads from config.
     """
     graph.refresh_derived_shares()
 
@@ -514,15 +621,26 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
     normalize = config.inbound_per_stage_normalize
     per_cat_enabled = config.supplies_per_category_enabled
     per_cat_combine = config.supplies_per_category_combine
-    min_suppliers = config.supplies_min_suppliers_for_concentration
-    stage_min_suppliers = config.stage_min_suppliers_for_concentration
+    min_suppliers = (
+        min_suppliers_override
+        if min_suppliers_override is not None
+        else config.supplies_min_suppliers_for_concentration
+    )
+    stage_min_suppliers = (
+        stage_min_suppliers_override
+        if stage_min_suppliers_override is not None
+        else config.stage_min_suppliers_for_concentration
+    )
 
     for node in graph.nodes.values():
         derived = node.dynamic.derived_shares
 
         # Single source of truth: per-stage HHIs across every SUPPLY_EDGE_TYPES
         # edge type with edges present. Never hardcoded.
-        stage_hhis, stage_counts = compute_stage_hhis(derived, normalize=normalize)
+        stage_hhis, stage_counts = compute_stage_hhis(
+            derived, normalize=normalize,
+            method=aggregator_method, eps=aggregator_eps,
+        )
 
         # Per-category split within `supplies` — replaces the aggregate
         # `supplies` HHI with a per-category combine (default max). Same
@@ -538,7 +656,8 @@ def refresh_all_derived(graph: SupplyChainGraph, config: ScoringConfig) -> None:
         # than pretending we have signal.
         if per_cat_enabled and "supplies" in stage_hhis:
             per_cat, counts = compute_supplies_per_category(
-                graph, node.id, normalize=normalize
+                graph, node.id, normalize=normalize,
+                method=aggregator_method, eps=aggregator_eps,
             )
             single_supplier = sorted(c for c, n in counts.items() if n < min_suppliers)
             contributing = {c: h for c, h in per_cat.items()
