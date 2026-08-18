@@ -99,11 +99,19 @@ def build_inventory(graph: SupplyChainGraph, config: ScoringConfig) -> str:
     # -------- Section A -------- #
     lines.append("## A. Scored nodes (sorted by severity descending)")
     lines.append("")
+    # Pass L §2 — `tier_ambiguous` and `tier_ambiguous_with` are set on
+    # nodes whose baseline severity falls inside an unresolved band
+    # (see compute_tier_ambiguity in engine.py). Before Pass L these
+    # columns were never rendered, so a set flag was silently dropped
+    # at the report boundary even when Phase B's serializer put a band
+    # in config. Emitting them here closes the second of the two
+    # silent-drop paths identified in K.2 §3.1.1.
     headers = [
         "id", "type", "tier", "severity", "concentration",
         "inbound_hhi", "outbound_raw", "outbound_normalized",
         "concentration_axis", "substitutability", "sub_confidence",
         "lead_time_years", "lead_time_confidence",
+        "tier_ambiguous", "tier_ambiguous_with",
     ]
     lines.append("| " + " | ".join(headers) + " |")
     lines.append("|" + "|".join(["---"] * len(headers)) + "|")
@@ -127,6 +135,15 @@ def build_inventory(graph: SupplyChainGraph, config: ScoringConfig) -> str:
 
     for n in scored:
         tier = n.dynamic.baseline_tier.value if n.dynamic.baseline_tier else "none"
+        # Pass L §2 — surface `tier_ambiguous` and `tier_ambiguous_with`.
+        # For nodes outside any band, both read as `false` and `—`.
+        ambig = n.dynamic.tier_ambiguous
+        ambig_with = n.dynamic.tier_ambiguous_with
+        ambig_str = "true" if ambig else "false"
+        if ambig_with:
+            ambig_with_str = ", ".join(ambig_with)
+        else:
+            ambig_with_str = "—"
         row = [
             n.id,
             n.type.value,
@@ -141,6 +158,8 @@ def build_inventory(graph: SupplyChainGraph, config: ScoringConfig) -> str:
             _sv_confidence(n.static.substitutability),
             _fmt_float(_sv_value(n.static.lead_time_years), 4),
             _sv_confidence(n.static.lead_time_years),
+            ambig_str,
+            ambig_with_str,
         ]
         lines.append("| " + " | ".join(row) + " |")
 

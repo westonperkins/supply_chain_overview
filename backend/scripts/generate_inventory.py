@@ -75,6 +75,30 @@ def _load_snapshot_or_first_run(g, c=None):
     return snap
 
 
+def _serialize_unresolved_bands(bands, indent_level: int) -> list[str]:
+    """Pass L §2 — YAML-serialize a list of UnresolvedBand at
+    `indent_level` spaces. Empty list renders inline (`[]`); non-empty
+    renders as a block. Matches the schema the engine reads via
+    `config.threshold_unresolved_bands` (each band has `lower`,
+    `upper`, `tiers`, `reason`)."""
+    prefix = " " * indent_level
+    if not bands:
+        return [f"{prefix}unresolved_bands: []"]
+    lines = [f"{prefix}unresolved_bands:"]
+    child = " " * (indent_level + 2)
+    inner = " " * (indent_level + 4)
+    for band in bands:
+        lines.append(f"{child}- lower: {band.lower!r}")
+        lines.append(f"{child}  upper: {band.upper!r}")
+        lines.append(f"{child}  tiers:")
+        for t in band.tiers:
+            lines.append(f"{child}    - {t}")
+        # Reason string: YAML double-quoted with basic escaping.
+        reason = band.reason.replace("\\", "\\\\").replace('"', '\\"')
+        lines.append(f'{child}  reason: "{reason}"')
+    return lines
+
+
 def _write_boundaries_to_config(derivation):
     """F3 fix (Pass C): the config boundary block is a RENDERING of the
     derivation output, never a parallel hand-entry. This rewrites the
@@ -103,34 +127,90 @@ def _write_boundaries_to_config(derivation):
     out: list[str] = []
     inside_boundaries = False
     boundaries_indent = 0
+    inside_unresolved_bands = False
+    unresolved_bands_indent = 0
+    unresolved_serialized = False
     for line in lines:
         stripped = line.strip()
-        if not inside_boundaries:
-            if stripped.startswith("boundaries:"):
-                inside_boundaries = True
-                boundaries_indent = len(line) - len(line.lstrip())
+
+        # State: inside `unresolved_bands:` block. Consume this line and
+        # any deeper-indented child lines; the fresh serialization was
+        # already emitted when we entered the block.
+        if inside_unresolved_bands:
+            if not stripped:
+                # Blank lines end the block content in a YAML sequence.
+                inside_unresolved_bands = False
+                out.append(line)
+                continue
+            line_indent = len(line) - len(line.lstrip())
+            if line_indent <= unresolved_bands_indent:
+                # Sibling of unresolved_bands ends the block.
+                inside_unresolved_bands = False
+                out.append(line)
+                continue
+            # Child of unresolved_bands — silently drop; replaced by
+            # freshly-serialized content already emitted.
+            continue
+
+        # State: inside `boundaries:` block.
+        if inside_boundaries:
+            if not stripped:
+                out.append(line)
+                continue
+            line_indent = len(line) - len(line.lstrip())
+            if line_indent <= boundaries_indent:
+                # Same-indent sibling ends the block. Fall through to
+                # the not-inside-boundaries handling of this line.
+                inside_boundaries = False
+                # NOTE fall through
+            else:
+                # Deeper indent — rewrite the three boundary lines.
+                for name in ("critical", "high", "moderate"):
+                    if stripped.startswith(f"{name}:"):
+                        indent = line[: len(line) - len(line.lstrip())]
+                        out.append(f"{indent}{name}: {derivation.boundaries[name]!r}")
+                        break
+                else:
+                    out.append(line)
+                continue
+
+        # Not inside a tracked block.
+        if stripped.startswith("boundaries:"):
+            inside_boundaries = True
+            boundaries_indent = len(line) - len(line.lstrip())
             out.append(line)
             continue
-        # Inside boundaries.
-        if not stripped:
-            # Blank lines pass through without changing state.
-            out.append(line)
+        if stripped.startswith("unresolved_bands:"):
+            # Pass L §2 — serialize the derivation's bands here.
+            unresolved_bands_indent = len(line) - len(line.lstrip())
+            # Emit the fresh serialization.
+            for l in _serialize_unresolved_bands(
+                derivation.unresolved_bands, unresolved_bands_indent,
+            ):
+                out.append(l)
+            # If the ORIGINAL line was inline (`unresolved_bands: []`),
+            # nothing follows and we don't need to enter block-consume
+            # mode. If it was a block header (`unresolved_bands:` alone),
+            # consume the child lines.
+            if stripped == "unresolved_bands:":
+                inside_unresolved_bands = True
+            unresolved_serialized = True
             continue
-        line_indent = len(line) - len(line.lstrip())
-        if line_indent <= boundaries_indent:
-            # Same-indent sibling (including `unresolved_bands:`) ends
-            # the boundaries block.
-            inside_boundaries = False
-            out.append(line)
-            continue
-        # Deeper indent — still inside. Rewrite the three boundary lines.
-        for name in ("critical", "high", "moderate"):
-            if stripped.startswith(f"{name}:"):
-                indent = line[: len(line) - len(line.lstrip())]
-                out.append(f"{indent}{name}: {derivation.boundaries[name]!r}")
-                break
-        else:
-            out.append(line)
+
+        out.append(line)
+
+    # Safety net — if config had no `unresolved_bands:` key at all (an
+    # older config), append it at the end of the thresholds block. Not
+    # expected under any current config; recorded here so the writer
+    # is complete rather than partial.
+    if not unresolved_serialized:
+        # Fall back — do not silently drop; raise so the pass author
+        # investigates rather than shipping a partial config.
+        raise RuntimeError(
+            "config/scoring.yaml has no `unresolved_bands:` key to write. "
+            "Add one (empty list is fine) and rerun."
+        )
+
     yaml_path.write_text("\n".join(out))
 
     # Also mirror to the fixture so H1 identity stays clean.
