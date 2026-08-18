@@ -808,3 +808,108 @@ those reasons unchanged).
 Recorded plainly so the paper-vs-model gap is legible in the ledger.
 This is a Pass C decision the project has consciously carried; nothing in
 Pass K.1 or K.2 introduced it.
+
+---
+
+## Pass L ledger additions
+
+Pass L is the first code-changing pass since K.1. Scope was three
+narrow items diagnosed across K.2 and K.2.2. All commits atomic per
+§5 sequencing.
+
+### L.6.1 — Boundary collapse CLOSED
+
+`moderate: 0.0` and the resulting collapse of 27 of 31 scored nodes
+into a single `moderate` tier is resolved. Retry loop replaces F1.b's
+veto: on median-guard failure, iterate unused separating gaps by
+descending midpoint and take the first with midpoint ≤ median.
+Purely structural per spec §1.2.
+
+Committed evidence: `docs/generated/severity_diff_pass_l.md` reports
+0 severity deltas and 11 tier changes on the current distribution.
+New boundaries: critical 0.5096065543117585, high 0.4118946228794891,
+moderate **0.13666630472569183** (was 0.0). K.2 §1 diagnosis was the
+evidence path.
+
+### L.6.2 — `unresolved_bands` serialization gap CLOSED
+
+Both silent-drop paths K.2 §3.1.1 identified are fixed:
+
+- `_write_boundaries_to_config` (`backend/scripts/generate_inventory.py`)
+  now writes `unresolved_bands` from the derivation. `_serialize_unresolved_bands`
+  helper renders empty as inline `[]` and non-empty as a YAML block
+  matching the engine's read schema.
+- `build_inventory` (`backend/app/reporting/inventory.py`) now emits
+  `tier_ambiguous` and `tier_ambiguous_with` as columns on the
+  scored-nodes table.
+
+Zero visible effect on the current committed distribution — Phase A's
+retry produces no band — so the fix is verified by
+`backend/tests/test_unresolved_bands_roundtrip.py` against a synthetic
+distribution that forces one.
+
+### L.6.3 — D2 DECIDED: guard replaced with retry, not deleted
+
+K.2 §D2 asked whether the median guard survives. Pass L §1 chose
+**REPLACE, not DELETE.** The guard stays as a residual degeneracy
+check for distributions where the retry exhausts every candidate. K.2
+§5 recommended this; the K.2.2 review reaffirmed. Recorded here as
+closed.
+
+### L.6.4 — D1 DEFERRED with reasoning
+
+K.2 §D1 asked whether unresolvable boundaries should yield a withheld
+tier or continue to fall back to 0.0. **Deferred.** Once the retry
+loop landed (Phase A), the 0.0 path stops firing on the current
+distribution — the residual case is a distribution that exhausts
+every separating gap without finding one below median, which does not
+exist on the AI graph today.
+
+D1 therefore becomes a robustness question for future graph shapes
+rather than a live defect, and it costs 8 downstream surfaces to
+answer (K.2 §1.3 enumeration). Revisit when a graph actually exhausts
+its candidates; not before.
+
+### L.6.5 — Tier signal was degenerate from K.1 through K.2.2
+
+**Every tier reading committed in the K.1 → K.2.2 window is
+unreliable.** From Pass K.1 to Pass L Phase A, the moderate boundary
+was 0.0 and 27 of 31 scored nodes carried the same tier label.
+
+Anything a report inferred from tier membership during Pass K.1, K.2,
+K.2.1, or K.2.2 must be re-checked against the Pass L snapshot before
+being cited. Specific implicated claims:
+
+- K.1 §6 tier histogram "2 critical / 2 high / 27 moderate / 0 none
+  / 41 unscored" — was a rendering of the collapsed state; NOT a
+  distributional finding.
+- K.2 §4 chokepoint landing table (specifically CoWoS / HBM /
+  RF & Power in `moderate`) — HBM and RF & Power in `moderate`
+  reflected the collapse. Under Pass L: HBM stays `moderate` at
+  0.1779; RF & Power moves to `none` at 0.0261.
+- K.2.1 §6.9 paper-chokepoint validity claim — the tier-landing
+  numbers should be re-quoted against the Pass L snapshot when
+  next cited.
+- K.2.2 §4 median-reconciliation (K.2.1 said 0.1949 → 0.1884) —
+  correct in identifying that K.2.1 mixed lt/10 against log10_1p,
+  but the specific reference values need re-checking against the
+  post-Pass-L median.
+
+### L.6.6 — Reporting-defect recurrence (third occurrence)
+
+K.2 report listed changed files under an "Unchanged" heading.
+K.2.1 report repeated the error. K.2.2 added a correct "Changed"
+heading — and then repeated the "Unchanged" error below it in the
+same report.
+
+This is a **cosmetic reporting recurrence**: three consecutive reports
+made the same error at the same field. The K.2.2 §6.4 proposed
+guardrail (lint rule: if a file appears in `git diff --name-only
+<prev>..HEAD`, it MUST NOT appear under any "Unchanged" heading in
+the pass report) has not been implemented. Pass L would be the fourth
+consecutive occurrence if the fix isn't applied.
+
+**Pass L report explicitly separates Changed from Unchanged and does
+not repeat the error.** Proposed guardrail remains open — a shell
+script or CI check should enforce it before the next report defect
+occurs.
