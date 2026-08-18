@@ -140,7 +140,20 @@ def derive_thresholds(
             boundary_gap[name] = g
         else:
             # No separating gap for this boundary — declare unresolved.
-            upper_boundary = boundaries.get(boundary_names[i - 1], scored[0][1])
+            # Pass L §3(1) — the prior form `boundary_names[i - 1]`
+            # wrapped to `boundary_names[-1]` when i == 0, which
+            # returned `"moderate"`. Harmless only because `boundaries`
+            # was empty at that point and `.get()` fell through to
+            # the default; a future refactor that pre-populates
+            # `boundaries` would have silently looked up critical's
+            # upper bound under the moderate key. Fixed here by
+            # gating explicitly.
+            if i == 0:
+                upper_boundary = scored[0][1]
+            else:
+                upper_boundary = boundaries.get(
+                    boundary_names[i - 1], scored[0][1],
+                )
             unresolved.append(UnresolvedBand(
                 lower=0.0,
                 upper=upper_boundary,
@@ -155,16 +168,18 @@ def derive_thresholds(
             boundaries[name] = 0.0
             boundary_gap[name] = None
 
-    # Strict monotonic guard: boundaries must decrease.
-    prev = float("inf")
-    for name in boundary_names:
-        if boundaries[name] > prev:
-            raise ValueError(
-                f"Derived boundaries not monotonic decreasing: {boundaries}. "
-                f"Separation factor {separation_factor} produced invalid "
-                f"candidate ordering — investigate."
-            )
-        prev = boundaries[name]
+    # Pass L §3(2) — monotonic guard moved to run AFTER the F1.b block
+    # and the Pass L retry, so post-adjustment boundaries are actually
+    # checked. The prior placement (pre-F1.b) never inspected the
+    # values that reached the config. Both the F1.b + retry can only
+    # LOWER the moderate boundary (retry candidates all have midpoints
+    # ≤ median ≤ moderate's original candidate), so the guard cannot
+    # newly fire on the current F1.b + retry path — but that is a
+    # property of the current adjustments, not a property of the guard.
+    # A future adjustment that could raise a boundary would be
+    # correctly caught here.
+    #
+    # (Guard body moved below the F1.b/retry block — see line ~200.)
 
     # F1.b — partition sanity guard with Pass L §1 retry.
     #
@@ -223,6 +238,20 @@ def derive_thresholds(
             ))
             boundaries["moderate"] = 0.0
             boundary_gap["moderate"] = None
+
+    # Pass L §3(2) — strict monotonic guard, moved AFTER F1.b + retry.
+    # The prior placement (pre-F1.b) never inspected the values that
+    # reached the config; any future adjustment that could raise a
+    # boundary here would have escaped the check silently.
+    prev = float("inf")
+    for name in boundary_names:
+        if boundaries[name] > prev:
+            raise ValueError(
+                f"Derived boundaries not monotonic decreasing: {boundaries}. "
+                f"Separation factor {separation_factor} produced invalid "
+                f"candidate ordering — investigate."
+            )
+        prev = boundaries[name]
 
     return ThresholdDerivation(
         scored=scored, gaps=gaps, median_gap=med,
