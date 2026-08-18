@@ -1,5 +1,5 @@
 {
-  "captured_at_pass": "pass_k1",
+  "captured_at_pass": "pass_l",
   "nodes": {
     "mineral:gallium": {
       "severity": 0.4802713494238954,
@@ -10,7 +10,7 @@
     },
     "mineral:indium": {
       "severity": 0.0738599852661949,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.4380853277835588,
       "inbound_hhi": 0.4380853277835588,
       "outbound_criticality": 0.012701008296200793
@@ -59,7 +59,7 @@
     },
     "product:rf_power_semis": {
       "severity": 0.026103161404886804,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.08179755775771838,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.08179755775771838
@@ -255,7 +255,7 @@
     },
     "company:tokyo_electron": {
       "severity": 0.0928948847363427,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.3358821583283415,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.3358821583283415
@@ -360,14 +360,14 @@
     },
     "company:quanta_services": {
       "severity": 0.038898517140345555,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.15236677911939359,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.15236677911939359
     },
     "company:vertiv": {
       "severity": 0.06422781287011319,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.42328230687077245,
       "inbound_hhi": 0.42328230687077245,
       "outbound_criticality": 0.20627244086593324
@@ -444,21 +444,21 @@
     },
     "company:nikon": {
       "severity": 0.020781191903860248,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.08314806318345812,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.08314806318345812
     },
     "company:canon": {
       "severity": 0.0035715303737321492,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.017653165522422437,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.017653165522422437
     },
     "company:hitachi_high_tech": {
       "severity": 0.00885575158894199,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.043771725917505167,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.043771725917505167
@@ -479,21 +479,21 @@
     },
     "company:cadence": {
       "severity": 0.12213922891057317,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.3532212757507802,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.3532212757507802
     },
     "company:siemens_eda": {
       "severity": 0.036633885817943086,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.13245797840654258,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.13245797840654258
     },
     "company:arm": {
       "severity": 0.09531990257454333,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.4480454559907228,
       "inbound_hhi": 0.39229024943310653,
       "outbound_criticality": 0.4480454559907228
