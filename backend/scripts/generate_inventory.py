@@ -79,35 +79,56 @@ def _write_boundaries_to_config(derivation):
     """F3 fix (Pass C): the config boundary block is a RENDERING of the
     derivation output, never a parallel hand-entry. This rewrites the
     three float values in place, preserving comments and every other
-    line of scoring.yaml so the diff is minimal and reviewable."""
+    line of scoring.yaml so the diff is minimal and reviewable.
+
+    Pass L §3(3) — scanner exit fix. The prior exit condition
+    `if line and not line.startswith(" ")` only detected fully-unindented
+    lines, but `unresolved_bands:` sits at the same 2-space indent as
+    `boundaries:`, so the scanner stayed open past the end of the
+    boundaries block. Any line in that span whose stripped form began
+    with `critical:`, `high:`, or `moderate:` would have been silently
+    rewritten. Latent today; would fire the moment Phase B writes
+    structured content under `unresolved_bands:`. Fixed before Phase B
+    per spec §5(1).
+
+    New rule: exit the block when a non-blank line's leading-whitespace
+    count is ≤ the boundaries: line's own indent. Blank lines pass
+    through without changing state. Same-indent siblings (including
+    `unresolved_bands:`) correctly terminate the block.
+    """
     yaml_path = REPO / "config" / "scoring.yaml"
     text = yaml_path.read_text()
     lines = text.split("\n")
 
-    out = []
+    out: list[str] = []
     inside_boundaries = False
+    boundaries_indent = 0
     for line in lines:
         stripped = line.strip()
-        if stripped.startswith("boundaries:"):
-            inside_boundaries = True
+        if not inside_boundaries:
+            if stripped.startswith("boundaries:"):
+                inside_boundaries = True
+                boundaries_indent = len(line) - len(line.lstrip())
             out.append(line)
             continue
-        if inside_boundaries:
-            # An unindented (or top-level) sibling ends the block.
-            if line and not line.startswith(" "):
-                inside_boundaries = False
-                out.append(line)
-                continue
-            # Rewrite the three boundary lines with derivation values.
-            for name in ("critical", "high", "moderate"):
-                prefix = f"    {name}:"
-                if stripped.startswith(f"{name}:"):
-                    indent = line[: len(line) - len(line.lstrip())]
-                    out.append(f"{indent}{name}: {derivation.boundaries[name]!r}")
-                    break
-            else:
-                out.append(line)
-                continue
+        # Inside boundaries.
+        if not stripped:
+            # Blank lines pass through without changing state.
+            out.append(line)
+            continue
+        line_indent = len(line) - len(line.lstrip())
+        if line_indent <= boundaries_indent:
+            # Same-indent sibling (including `unresolved_bands:`) ends
+            # the boundaries block.
+            inside_boundaries = False
+            out.append(line)
+            continue
+        # Deeper indent — still inside. Rewrite the three boundary lines.
+        for name in ("critical", "high", "moderate"):
+            if stripped.startswith(f"{name}:"):
+                indent = line[: len(line) - len(line.lstrip())]
+                out.append(f"{indent}{name}: {derivation.boundaries[name]!r}")
+                break
         else:
             out.append(line)
     yaml_path.write_text("\n".join(out))
