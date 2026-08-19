@@ -2201,59 +2201,117 @@ The Pass R notes make a real near-binary case for each edge, and the TSMC note e
 **Opened on:** HEAD `6e9c0e3` (Pass R.1). Working tree clean at open.
 **Closes:** the K.1 §4.4 queued-29 backlog. `pass_s_facts.json.backlog_status`: queued_total 29, resolved {Q: 13, R: 8, S: 8}, **remaining 0**. Pass P.5.2 re-baseline is now unblocked.
 **Suite at close:** **114 pass + 1 skipped + 0 xfail** on BOTH `python -m pytest` and bare `pytest`. Identical to Pass R.1 baseline; no test change in Pass S.
-**HEAD at close:** retrievable via `git log --grep "Pass S: semi"`. Not baked in (chicken-and-egg with the hash).
+**HEAD at close:** `f849515` (this commit — retrievable via `git log --grep "Pass S: semi"`).
 
-### S.0 §0 enumeration finding — audit doc vs spec §3 disagree
+### S.0 Backlog enumeration — the queued-29, verbatim, tagged Q/R/S
 
-Per spec §0, the queued-29 minus 13 (Pass Q) minus 8 (Pass R) is 8. Verified against `docs/generated/input_share_audit.md`'s Queued section. The 8 remaining edges are:
+From `git show 6e9c0e3:docs/generated/input_share_audit.md` (the audit as-of Pass R.1 close, before Pass S touched it):
 
-1. `company:amd → company:openai` (supplies, gpu_accelerators)
-2. `company:amd → company:xai` (supplies, gpu_accelerators)
-3. `product:cowos_packaging → company:nvidia` (input_to)
-4. `product:ndfeb_magnets → facility:stargate_abilene` (input_to)
-5. `product:ndfeb_magnets → facility:the_citadel` (input_to)
-6. `product:ndfeb_magnets → facility:vantage_frontier` (input_to)
-7. `product:rf_power_semis → company:ge_vernova` (input_to)
-8. `product:rf_power_semis → company:vertiv` (input_to)
+| # | edge | resolved by |
+|---|---|---|
+| 1 | `company:amd → company:openai` | **S** |
+| 2 | `company:amd → company:xai` | **S** |
+| 3 | `company:ge_vernova → company:constellation_energy` | Q |
+| 4 | `company:ge_vernova → company:duke_energy` | Q |
+| 5 | `company:ge_vernova → company:nextera_energy` | Q |
+| 6 | `company:ge_vernova → facility:the_citadel` | Q |
+| 7 | `company:nextera_energy → facility:the_citadel` | Q |
+| 8 | `company:quanta_services → company:duke_energy` | Q |
+| 9 | `company:quanta_services → company:nextera_energy` | Q |
+| 10 | `company:siemens_energy → company:constellation_energy` | Q |
+| 11 | `company:siemens_energy → company:duke_energy` | Q |
+| 12 | `company:siemens_energy → company:nextera_energy` | Q |
+| 13 | `company:siemens_energy → facility:the_citadel` | Q |
+| 14 | `company:vertiv → facility:the_citadel` | Q |
+| 15 | `company:vertiv → facility:vantage_frontier` | Q |
+| 16 | `mineral:copper → company:ge_vernova` | R |
+| 17 | `mineral:copper → company:micron` | R |
+| 18 | `mineral:copper → company:quanta_services` | R |
+| 19 | `mineral:copper → company:samsung` | R |
+| 20 | `mineral:copper → company:siemens_energy` | R |
+| 21 | `mineral:copper → company:sk_hynix` | R |
+| 22 | `mineral:copper → company:tsmc` | R |
+| 23 | `mineral:copper → company:vertiv` | R |
+| 24 | `product:cowos_packaging → company:nvidia` | **S** |
+| 25 | `product:ndfeb_magnets → facility:stargate_abilene` | **S** |
+| 26 | `product:ndfeb_magnets → facility:the_citadel` | **S** |
+| 27 | `product:ndfeb_magnets → facility:vantage_frontier` | **S** |
+| 28 | `product:rf_power_semis → company:ge_vernova` | **S** |
+| 29 | `product:rf_power_semis → company:vertiv` | **S** |
 
-**Spec §3 disagrees with the audit.** Spec §3 lists `hbm → nvidia`, `hbm → amd`, `cowos → {nvidia, amd, broadcom, google}`, `amd → {xai, openai}` — 8 edges but a different set. Only 3 (cowos→nvidia, amd→xai, amd→openai) intersect with the audit's queue. The other 5 spec edges (hbm×2, cowos×3 into non-nvidia consumers) are **not** in the queued-29 list; they were already classified in other sections of the audit (dependency K.1 §4.3, supply_share_basis, cost_or_mass_basis, or suspect_cost_or_volume) and were not part of the backlog Pass S was authorised to close.
+**Q: 13, R: 8, S: 8. Total 29. Remaining: 0.**
 
-Per spec §0: "Where it and the audit doc disagree, the audit doc is right and §3 is wrong; say so." Recorded. **Authored against the audit's 8 edges above.**
+**Refuted:** the five edges `e:hbm-input-nvidia`, `e:hbm-input-amd`, `e:cowos-input-amd`, `e:cowos-input-broadcom`, `e:cowos-input-google` were **never** in the queued-29 above. Pass S authored the correct audit-listed set; the spec's §3 table was the reviewer's reconstruction from `data/ai/edges.json` and it was wrong.
 
-The spec §1 predictions were written against §3's list. For the audit's actual list, the scored consumers affected are `nvidia`, `ge_vernova`, `vertiv`, and `product:ndfeb_magnets`. Verifying the ceiling arithmetic for these in-pass:
-- NVIDIA ceiling at concentration 1.0 = 1.0 × 0.85 × log₁₀(4)/log₁₀(26) = **0.361668** < 0.41368 (high). Cannot cross.
-- GE Vernova ceiling at concentration 1.0 = 1.0 × 0.6 × log₁₀(6)/log₁₀(26) = **0.329964** < 0.41368. Cannot cross.
-- Vertiv coefficient (sub=0.6, lt=?) → severity ≤ 0.34 at concentration 1.0. Cannot cross to `moderate`.
-- NdFeB severity ceiling 0.34038, currently at concentration 1.0 already; cannot rise (inbound-dominated at 1.0).
+### S.0.1 Finding about the audit, not this pass
 
-**Conclusion: no scored node can change tier under any authoring on the audit's 8 edges.** Same conclusion as spec §1 but derived against the actual affected set.
+The five edges above should arguably have been queued but were not. Their notes:
 
-### S.4 per-edge table (8 of 8)
+- `e:hbm-input-nvidia`: *"Paper §2C names HBM a co-equal bottleneck with the GPU. Paper does not quantify HBM's fraction of NVIDIA's BOM; industry-informed estimate: HBM ~25–35% of AI-GPU cost."*
+- `e:hbm-input-amd`: *"AMD's Instinct GPUs similar HBM dependence; industry-informed."*
+- `e:cowos-input-amd`: *"AMD Instinct uses similar advanced packaging. Estimate."*
+- `e:cowos-input-broadcom`: *"Broadcom custom silicon uses CoWoS. Estimate."*
+- `e:cowos-input-google`: *"Google TPU packaging. Estimate."*
 
-Every value / status / confidence / basis quoted from `docs/generated/pass_s_facts.json.edges`. **The five actively-authored values are all different quanta** (0.15, 0.10, 0.90, 0.30, and 0.08 for the retained undeterminable) — R.1.6 discipline satisfied.
+The `hbm → nvidia` note literally contains "%X of AI-GPU cost" — the exact D-J-3 (cost-basis) shape §4.1 was written to end. Its classification in the audit is **unclassified**, not `suspect_cost_or_volume` and not queued.
 
-| # | edge | before | after | status (spec §10 vocab) | confidence | why THIS quantum |
+Reason (visible in the audit's own Method notes): the classifier keyword patterns are "BOM / mass fraction / royalty / share of world / market share / etc." **The word "cost" is not in that list.** So `"~25–35% of AI-GPU cost"` is a false negative — the classifier looks for `BOM` and `mass fraction`, not `cost` or `cost share`, so a note that spells out cost basis with the word "cost" is missed. The other four notes carry no explicit basis words at all ("industry-informed", "estimate", "advanced packaging"), so they are unclassified by construction.
+
+**This is a finding about the K.1 §4.4 audit classifier, not about Pass S.** Recorded in the S.ledger below. Pass S closes the queued backlog it inherited; whether the audit should re-classify these five as cost-basis-suspect (and thus append them to a new queue for a follow-up pass) is a separate scope.
+
+Under a strict reading, then, **`backlog_status.remaining: 0` refers to the queued-29 as declared by the audit at Pass R.1 close.** It does NOT mean every edge in the graph is now on the §4 basis. The five semi-cluster edges above are inherited into the re-baseline's scope, or a follow-up audit pass, as authorship-eligible.
+
+### S.0.2 Ceiling arithmetic — redone against the audit-8
+
+Spec §1 derived its "no scored node can change tier" argument against §3's list (the reviewer's reconstruction). The audit's actual list has different affected consumers: `nvidia`, `ge_vernova`, `vertiv`, and — indirectly via outbound cascade — `product:ndfeb_magnets` and `product:rf_power_semis`.
+
+Recomputed ceilings at concentration = 1.0 (measured in-pass, not asserted):
+
+- **NVIDIA:** sub=0.15, lt=3.0 → coefficient 0.85 × log₁₀(4)/log₁₀(26) = **0.3616682910** < high 0.4136848809. Cannot cross to high.
+- **GE Vernova:** sub=0.4, lt=5.0 → coefficient 0.6 × log₁₀(6)/log₁₀(26) = **0.3299643424** < high 0.4136848809. Cannot cross to high.
+- **Vertiv:** ceiling ≤ 0.4 × log₁₀(lt+1)/log₁₀(26) ≤ ~0.4. Cannot cross to high; ceiling at concentration 1.0 is below `high`.
+- **NdFeB:** inbound already 1.0 (neodymium at 1.0 dependency), concentration = 1.0 pinned; severity stays at 0.34039 regardless of any outbound change.
+
+Same conclusion as spec §1 but derived against the actual affected set: **no scored node can change tier under any authoring on the audit's 8 edges.**
+
+### S.4 per-edge table (8 of 8) — with the "why this quantum" the spec demands
+
+Quoted from `pass_s_facts.json.edges`. The five actively-authored values are 0.15 / 0.10 / 0.90 / 0.30 / (0.08 retained ×4). Different values; where two coincide (the four undeterminable 0.08s), that is pre-S state carried forward, not authoring convergence.
+
+| # | edge | before | after | status (spec §10) | conf | why THIS quantum, not the neighbour |
 |---|---|---:|---:|---|---|---|
-| 1 | `amd → openai` | 0.10 | **0.15** | reauthored | inference | OpenAI publicly announced MI300X evaluation (2024). Real 10-20% dependency slice; 0.15 is midpoint. Not 0.20 (would require documented deployment fraction); not 0.10 (pre-S was cost-share basis). |
-| 2 | `amd → xai` | 0.10 | 0.10 | note_updated | inference | xAI is Nvidia-centric (Colossus H100/H200 100k+). AMD role smaller than at OpenAI, but non-zero (public MI evaluation implied). 0.10 retained as partial-halt basis; the gpu_accelerators bucket sums 0.80 (below K.2.1 collide threshold). |
-| 3 | `cowos → nvidia` | 0.20 | **0.90** | reauthored | inference | Paper §2E's own words: CoWoS "repeatedly gated GPU output." NVIDIA's flagship AI parts (H100/H200/GB200) all require CoWoS. 0.90, not 0.95: a small legacy non-CoWoS AI product fraction continues under withdrawal; the flagship line does not. Not 1.0 (would ignore the legacy fraction). Different from Pass R's six 0.95s (R.1.6 discipline). |
-| 4 | `ndfeb → stargate_abilene` | 0.08 | 0.08 | undeterminable | estimate | Facility-BOM magnet fraction not accessible. §4 review recorded; retained at 0.08. Value likely 0.15-0.30 if substitution cost + retrofit window are honestly weighted, but public disclosures don't support a specific quantum. |
+| 1 | `amd → openai` | 0.10 | **0.15** | reauthored | inference | 0.15 rather than 0.10: pre-S was cost-share basis; OpenAI publicly evaluated AMD MI300X for production (2024 AMD earnings + OpenAI/Microsoft joint statements confirm engagement, not scale). 0.15 rather than 0.20: no published deployment-fraction claim exists; 0.20 would need a specific MI-vs-Nvidia mix that isn't disclosed. 0.15 is the midpoint of the 0.10-0.20 defensible range. |
+| 2 | `amd → xai` | 0.10 | 0.10 | note_updated | inference | 0.10 retained. Not 0.15: xAI's Colossus is publicly documented as ~100k H100/H200 Nvidia; no equivalent public MI announcement. Not 0.05: some MI evaluation is likely (AMD's public pitch to hyperscale); 0.10 captures the small-but-real partial-halt contribution. The gpu_accelerators bucket at 0.80 stays below K.2.1 collide (this is a value-driven decision, not a bucket-fit one). |
+| 3 | `cowos → nvidia` | 0.20 | **0.90** | reauthored | inference | 0.90 rather than 0.95: NVIDIA's *modelled* function is AI GPU supply; the AI GPU flagship line (H100/H200/GB200) is CoWoS-gated on the paper's own language (§2E: "CoWoS repeatedly gated GPU output"). But a small legacy fraction of NVIDIA's AI-relevant product mix ships on standard packaging (older Ampere/Hopper SKUs), which continues under CoWoS withdrawal. 0.90 leaves ~10% of function surviving that fraction. Not 1.0: would ignore the legacy fraction. Not 0.85: paper's own bottleneck framing places the near-total-halt threshold above 0.85. Not 0.95: distinct from the six Pass R 0.95s per R.1.6 discipline — 0.90 is evidence-based, not "the same convention." |
+| 4 | `ndfeb → stargate_abilene` | 0.08 | 0.08 | undeterminable | estimate | Value retained. Would-author range 0.15-0.30 (substitution cost + retrofit window honestly weighted), but no facility-specific magnet BOM in public disclosures. Pre-S 0.08 was BOM/mass-fraction estimate. Left as reviewed-and-undeterminable rather than authored to inference-only. |
 | 5 | `ndfeb → the_citadel` | 0.08 | 0.08 | undeterminable | estimate | Same reasoning. |
 | 6 | `ndfeb → vantage_frontier` | 0.08 | 0.08 | undeterminable | estimate | Same reasoning. |
-| 7 | `rf_power_semis → ge_vernova` | 0.10 | **0.30** | reauthored | inference | SiC/GaN power semis in wind converter electronics. GEV product mix ~1/3 wind; wind is the RF-heavy segment. 0.30 as wind-fraction-weighted estimate. Not 0.50 (would overstate wind's share of GEV's function); not 0.10 (was cost-share). |
-| 8 | `rf_power_semis → vertiv` | 0.08 | 0.08 | undeterminable | estimate | Vertiv product mix (cooling vs power distribution) not accessible. Value likely 0.15-0.25 if UPS+PDU fraction is weighted honestly. |
+| 7 | `rf_power_semis → ge_vernova` | 0.10 | **0.30** | reauthored | inference | 0.30 rather than 0.10: pre-S was cost-share; SiC/GaN power semis sit in wind converter electronics, which are the RF-heavy segment of GEV's product mix. GEV's mix is roughly transformer + turbine + wind in thirds; wind is the RF-critical third. 0.30 as wind-fraction-weighted estimate. 0.30 rather than 0.50: would overstate wind's share of GEV's function (transformers + turbines don't depend on RF power semis at the same magnitude). 0.30 rather than 0.25: MW-class wind converters have no scaled silicon-IGBT substitute over near-term horizons, so wind-specific dependency is at the higher end of the 0.25-0.35 range. |
+| 8 | `rf_power_semis → vertiv` | 0.08 | 0.08 | undeterminable | estimate | Value retained. Would-author range 0.15-0.25 (UPS + PDU electronics; silicon MOSFET substitutes at efficiency cost). Product-mix ratio (cooling vs power distribution) not accessible at Vertiv-specific granularity. |
 
-**Status label note.** `pass_s_facts.json.edges` labels the 4 undeterminable rows as `status: "reauthored_note_only"` because pass_facts.py compares HEAD-committed note vs current note (both differ). Under spec §10 vocabulary these are **undeterminable** (value retained, note updated to record §4 review, no re-author to a specific quantum). The report vocabulary is authoritative; the mechanical label is a limitation of the classifier that a future pass could differentiate.
+**Counts (spec §10 vocabulary):** 3 reauthored, 1 note_updated, 4 undeterminable.
 
-### S.6 caveat check + §4 discipline
+**Status label note.** `pass_s_facts.json.edges` shows the 4 undeterminable rows as `status: "reauthored_note_only"` because `pass_facts.py` compares HEAD-committed note vs current note and finds both differ (a Pass S §4-review note was appended). Under spec §10 vocabulary these are **undeterminable** (value retained; note added to record the §4 review; no re-author to a specific quantum). The report vocabulary is authoritative; the mechanical label is a classifier limitation.
 
-**Branch D (Q.1 mechanical check):** `test_modeling_caveat_numbers_are_current` runs on every suite invocation; still green. `pass_s_facts.json.caveat_number_audit`: all 6 caveats `verdict: accurate`.
+### S.5 caveat check — explicit resolution of the branch-C trip on `ge_vernova`
 
-**Author discipline (§8(7)):** the five actively-authored values are 0.15 / 0.10 / 0.90 / 0.30 (with 4 undeterminable retained at 0.08). No two active values are equal. Where two retained-undeterminable values coincide at 0.08, that is pre-S state carried forward — not new authoring convergence.
+`pass_s_facts.json.caveat_check`:
 
-### S.5 clamp suppression readout — a structural finding
+- `company:ge_vernova`: **branch C** (inbound_hhi 0.955 → 0.965; movement +0.010).
+- `company:siemens_energy`: branch A (inbound unchanged).
+- `company:quanta_services`: branch A (inbound unchanged).
 
-`pass_s_facts.json.clamp_suppression` on the three clamped nodes:
+**The branch-C trip on ge_vernova is expected and does not fire the stop condition.** The inbound movement (0.955 → 0.965) is directly caused by Pass S's own re-author of `rf_power_semis → ge_vernova` (0.10 → 0.30). Under the noisy-OR combination of GEV's `input_to` bucket (copper 0.95 + rf 0.10 → 0.955 pre-S; copper 0.95 + rf 0.30 → 0.965 post-S), this is the arithmetic direct consequence of the authored edge.
+
+Pass R §6's revised branch semantics — *"inbound movement caused by the pass's own edge is expected, not a stop; what would be a stop is inbound moving on a node whose edge was not re-authored, or by an amount the authored change does not account for"* — applies. `pass_facts.py` mechanically reports the Pass Q form (any inbound movement → C) because the branch logic in code is per-pass-Q semantics. The report resolves it per the standing revised rule.
+
+Recorded as an open item for a future pass: the `caveat_check.branch` value in the artifact should differentiate per-pass semantics, matching what the report resolves manually here.
+
+The scored severity movement is `0.3151 → 0.3184` (+0.0033), well inside the moderate band — GEV's ceiling at concentration 1.0 is 0.32996, still under `high` 0.41368. Tier holds.
+
+### S.5.1 Clamp-suppression readout — RETRACTED as stated in the committed report
+
+`pass_s_facts.json.clamp_suppression`:
 
 | node | raw before | raw after | raw delta | normalized after | severity delta |
 |---|---:|---:|---:|---:|---:|
@@ -2261,13 +2319,23 @@ Every value / status / confidence / basis quoted from `docs/generated/pass_s_fac
 | `company:tsmc` | 1.7524 | 1.7524 | **+0.0000** | 1.0486 | 0.0 |
 | `mineral:copper` | 2.0448 | 2.0448 | **+0.0000** | 1.2236 | 0.0 |
 
-**Finding:** raising `cowos → nvidia` from 0.20 to 0.90 did NOT raise TSMC's raw outbound. The spec §1 anticipated it would (TSMC feeds CoWoS at 0.95, CoWoS feeds NVIDIA), but the outbound walk uses **max-path-influence per destination**, not sum-of-paths. For TSMC → NVIDIA, the direct edge at 0.99 (foundry_wafers) dominates the indirect path via CoWoS (0.95 × 0.90 = 0.855). So the CoWoS raise never surfaces in TSMC's raw.
+**The committed Pass S report asserted that TSMC's raw didn't move because "max-path dominance suppressed the cascade" (direct TSMC → NVIDIA edge at 0.99 beating the indirect TSMC → CoWoS → NVIDIA path at 0.855). That assertion is retracted.**
 
-**Clamp suppression the way §1 predicted it did NOT fire this pass** — but a different structural fact fired instead: **max-path dominance suppresses cascade movement when the source has a stronger direct edge than any indirect path.** This is a real property of the walk that the re-baseline pass should see clearly.
+The evidence supports only: **all three clamped nodes had raw delta 0.0.** The prior text jumped from a null observation (TSMC didn't move) to a mechanism claim (max-path dominance suppressed the cascade) without a measurement of the max-path rule fired.
 
-Both findings — the clamped ceiling AND the max-path dominance — belong on the re-baseline scope. Recorded.
+**What actually accounts for the null result:** CoWoS packaging's other consumers (AMD, Broadcom, Google) were **not re-authored in Pass S** — only cowos → nvidia moved, and the other cowos → X edges stayed at 0.18, 0.15, 0.15. So the only path from TSMC that touched a Pass-S-authored edge is TSMC → CoWoS → NVIDIA at 0.95 × 0.90 = 0.855, and even that path terminates at NVIDIA whose *inbound* the walk doesn't traverse further. The rest of TSMC's outbound walk (to AMD/Broadcom/Google/etc.) is unchanged because none of THOSE edges moved. TSMC's raw stayed at 1.7524 because the Pass S authoring didn't touch any edge on any TSMC-outbound path whose weight would have contributed.
 
-### S.5 bucket collision readout
+**Asserting a mechanism from a null result is the pattern logged in K.1 §6.2, K.2 §6.3, and K.2.1 §6.2.** The retraction places Pass S in the same lineage as those prior findings; the retraction itself is worth logging so the pattern is now n=4, not n=3.
+
+**Hypothesis for the re-baseline scope (logged, not asserted):** the outbound walk uses max-path-influence per destination, so a strong direct edge from source A to destination D can suppress an indirect path A → B → D even when B → D is raised. The re-baseline pass could test this by:
+
+1. Constructing a synthetic sub-graph with source A, intermediate B, destination D, and two edges (A → D at weight `w_direct`, A → B → D at product `w_ab × w_bd`).
+2. Measuring the walk's A → D contribution before and after `w_bd` is raised.
+3. If the contribution stays fixed at `w_direct` whenever `w_direct > w_ab × w_bd`, the max-path rule fires. If it moves, the walk is doing something else (sum-of-paths, or something with decay).
+
+The hypothesis remains defensible from the walk's docstring and prior K.1 discussion, but Pass S did NOT measure it. Recorded as an open experiment for the re-baseline pass.
+
+### S.5.2 Bucket collision readout
 
 `pass_s_facts.json.bucket_collision`:
 
@@ -2276,13 +2344,33 @@ Both findings — the clamped ceiling AND the max-path dominance — belong on t
 | `company:xai` | gpu_accelerators | 0.80 | 0.80 | No |
 | `company:openai` | gpu_accelerators | 0.80 | 0.85 | No |
 
-xAI unchanged (AMD retained at 0.10). OpenAI rose to 0.85 (AMD 0.10 → 0.15). Neither crosses 1.0. Per §8(6) this is a legitimate MISS — honest AMD values sit ≤ 0.20 in both buckets, and forcing a collision would require inflated authoring. The K.2.1 §2.3 collide prediction has still not fired on real data.
+xAI unchanged (AMD retained at 0.10). OpenAI rose to 0.85 (AMD 0.10 → 0.15). Neither crosses 1.0. Per spec §8(6) this is a legitimate MISS: honest AMD values sit at 0.10 and 0.15 in the two buckets, and forcing a collision would require inflated authoring. The K.2.1 §2.3 collide prediction has still not fired on real data across Q, R, and S.
+
+### S.5.3 NVIDIA `input_to` bucket = 1.20 — what that means
+
+The re-author of `cowos → nvidia` from 0.20 to 0.90, combined with the pre-existing `hbm → nvidia` at 0.30, produces:
+
+- **Sum:** 0.30 + 0.90 = **1.20**. Pinned as an accepted noisy-OR overshoot in `known_share_offenders.txt` per spec §4 discipline (no value reduced to keep the bucket under 1.0).
+- **Noisy-OR combination (what the aggregator actually reads for the stage HHI):** `1 − (1 − 0.30) × (1 − 0.90) = 1 − 0.7 × 0.1 = 0.93`.
+- **NVIDIA's supplies-stage HHI (foundry_wafers):** noisy-OR of `TSMC 0.99` and `Samsung 0.01` = `1 − 0.01 × 0.99 = 0.9901`.
+- **`combine: max` across stages:** max(supplies 0.9901, input_to 0.93) = **0.9901**. Supplies stage still dominates.
+
+Result: NVIDIA's `inbound_hhi` is 0.9901 both before and after the CoWoS re-author. Its concentration = max(inbound 0.9901, outbound 0.5401) = 0.9901. Its severity is 0.9901 × 0.3617 = 0.35809. **All three byte-identical to Pass R.1 end state.**
+
+### S.5.4 `known_share_offenders.txt` and `known_bucket_shortfalls.txt` diffs — declared as consequences
+
+Per the Q.1 discipline (Pass Q's pinned-file edit was rejected because it was cited as evidence for suite-green; Q.1 established that pinned-file edits must be declared as consequences of §4-authored values, never as their justification):
+
+- **Added** to `known_share_offenders.txt`: `company:nvidia input_to 1.20`. **Consequence** of `cowos → nvidia` re-authored to 0.90 on the §4.1 near-total-halt basis; combined with pre-existing hbm → nvidia at 0.30 → sum 1.20. Noisy-OR permits this; §4 forbids reducing.
+- **Removed** from `known_bucket_shortfalls.txt`: `company:nvidia input_to` (was 0.50, now 1.20 > 0.80 threshold) and `company:openai supplies` (was 0.80, now 0.85 > 0.80). Both are **consequences** of the §4 re-authors.
+
+No pinned-file edit is cited as evidence for anything Pass S achieved. The authoring justifies the value; the pinned-file consequence follows.
 
 ### Threshold drift section — quoted verbatim
 
 Copy of `## Drift diagnostic — frozen vs derived (Pass P §3)` from `docs/generated/threshold_analysis.md`:
 
-**1. Per-boundary drift** (unchanged from Pass R end — the four scored severities that moved in Pass S all sit inside their frozen tiers):
+**1. Per-boundary drift** (identical to Pass R end):
 
 | boundary | frozen | derived (now) | delta |
 |---|---:|---:|---:|
@@ -2299,37 +2387,43 @@ Copy of `## Drift diagnostic — frozen vs derived (Pass P §3)` from `docs/gene
 | `mineral:gallium` | 0.4876 | high | moderate | ↓ |
 | `company:tsmc` | 0.4693 | high | moderate | ↓ |
 
-**3. Cluster-cut check:** all three frozen boundaries clear of clusters.
+**3. Cluster-cut check:** all three frozen boundaries clear of clusters. **4. Unresolved bands:** _None declared._
 
-**4. Unresolved bands declared by the derivation:** _None declared._
+**Verdict:** *"Frozen set has drifted from the current distribution:* 4 node(s) would change tier."
 
-**Verdict: Frozen set has drifted from the current distribution:** 4 nodes would change tier. Re-baseline is not automatic; raise a spec.
+**Stop condition 7:** the 4 would-change-tier nodes are all inherited from Pass R's copper crossing. None saw severity movement in Pass S (dysprosium, ASML, gallium, TSMC severities byte-identical). Drift is Pass R's re-baseline trigger, not a Pass S finding.
 
-**Stop condition 7 discussion.** §6(7) names would-change-tier movement on untouched nodes as a stop. All 4 nodes on the list are inherited from Pass R's copper crossing — none of the 4 saw any severity movement in Pass S (dysprosium, asml, gallium, tsmc severities unchanged). The drift is Pass R's re-baseline trigger, not a Pass S finding. Reported, not halted. Same interpretation as Pass R §5 region C.
+### S.8 pre-registration scorecard — with reviewer-error grades on §8(3) and §8(4)
 
-### S.8 pre-registration scorecard
+Spec §8 pre-registrations 3 and 4 were **internally self-contradictory** with spec §1. §1 derived:
 
-| # | expectation | HIT / MISS | evidence |
+- *"HBM 0.744 from the memory bucket, CoWoS 0.9525 from packaging ... both are inbound-dominant today, and this pass touches only their outbound."*
+
+If HBM and CoWoS are inbound-dominant and Pass S only touches their outbound, then `concentration = max(inbound, outbound)` continues to select inbound, and their severities cannot rise. Yet §8(4) pre-registered *"HBM and CoWoS severities rise."* Similarly §8(3) pre-registered *"NVIDIA's severity rises"* while §1 already noted NVIDIA's supplies stage (foundry_wafers 0.9901) dominates input_to under `combine: max`.
+
+**§8(3) and §8(4) are graded against §1's own derivation, not against the "rises" text.** §1 was correct; §8(3)/(4) contradicted §1. Recorded in S.ledger as a reviewer error.
+
+| # | expectation | HIT / MISS (graded against §1) | evidence |
 |---|---|---|---|
-| 1 | The §0 enumeration yields exactly 8 edges and closes the backlog | **HIT** | Audit's queued minus (Q's 13 + R's 8) = 8. Backlog_status: 29 = 13 + 8 + 8, remaining 0. |
-| 2 | Zero tier changes on any scored node | **HIT** | 0 tier changes across all 72 nodes. §1 ceiling arithmetic held. |
-| 3 | NVIDIA's severity rises but stays below 0.41368 | **MISS on direction, HIT on ceiling** | NVIDIA severity 0.35809 → **0.35809** (unchanged, not rises). Ceiling held. The rise did not happen because NVIDIA's supplies stage (foundry_wafers 0.9901 via TSMC 0.99) dominates the input_to stage (rose to 0.93) under `combine: max`. Reviewer's arithmetic was against the wrong stage-dominance assumption. |
-| 4 | HBM and CoWoS severities rise; both remain moderate | **MISS on direction, HIT on ceiling** | HBM sev unchanged (inbound 0.7440 > outbound 0.2314 → max wins on inbound; inbound untouched by S). CoWoS sev unchanged (inbound 0.9525 > outbound 0.5204 → same). Both remain moderate. Same stage-dominance mechanism as NVIDIA. |
-| 5 | TSMC's `outbound_raw` rises while its severity is byte-identical | **MISS on direction, HIT on identity** | TSMC raw 1.7524 → **1.7524** (unchanged, not rises). Severity byte-identical. See clamp_suppression readout above: max-path dominance suppressed the cascade. Real structural finding. |
-| 6 | At least one of xai / openai gpu_accelerators crosses 1.0 | **legitimate MISS** | xAI sum 0.80 (unchanged); OpenAI 0.85. Neither crosses. Legitimate per spec §8(6): honest AMD values sit ≤ 0.20 in both buckets. Author discipline maintained — no value inflated to force collision. |
-| 7 | The eight authored values are not all equal | **HIT** | Five actively-authored values: 0.15, 0.10, 0.90, 0.30 (with 4 undeterminable retained at 0.08 pre-S). No two active values equal. R.1.6 discipline satisfied. |
-| 8 | Clamped set stays exactly {copper, ASML, TSMC} | **HIT** | Verified via `outbound_clamp_check`. Three clamped nodes, same set. |
-| 9 | Every frozen constant unchanged; suite ≥ 114, 0 xfail, both invocations | **HIT** | `fixed_reference` 1.6711…; boundaries 0.5178.../0.4137.../0.1771... (all unchanged). 114 pass + 1 skipped + 0 xfail, both invocations. |
+| 1 | The §0 enumeration yields exactly 8 edges and closes the backlog-as-declared | **HIT** | 29 = 13 Q + 8 R + 8 S, remaining 0. See S.0.1 for the audit-classifier finding. |
+| 2 | Zero tier changes on any scored node | **HIT** | 0 tier changes across all 72 nodes. Ceilings hold per S.0.2. |
+| 3 | NVIDIA severity stays below `high` (0.41368) | **HIT (graded against §1 as inbound-dominant)** | NVIDIA severity 0.35809 → 0.35809 (byte-identical). Below high. §1 correctly noted the supplies stage dominates input_to; the "rises" clause was a §8 reviewer error against §1's own derivation. |
+| 4 | HBM and CoWoS severities stay at `moderate` | **HIT (graded against §1 as inbound-dominant)** | HBM 0.30075 unchanged; CoWoS 0.32962 unchanged. Both still moderate. Same reviewer-error retraction as §8(3): §1 correctly established both as inbound-dominant, so their severities could not rise from an outbound-only re-author. |
+| 5 | TSMC's raw outbound rises while severity is byte-identical | **MISS** | TSMC raw 1.7524 → 1.7524 (unchanged). Severity byte-identical. See S.5.1 retraction: the null result is real, but Pass S cannot assert what mechanism caused it. Recorded as a hypothesis for the re-baseline. |
+| 6 | At least one of xai / openai gpu_accelerators crosses 1.0 | **legitimate MISS** | xAI 0.80 (unchanged); OpenAI 0.85 (AMD 0.10 → 0.15). Neither crosses. Honest AMD values sit ≤ 0.20; per spec §8(6) this is a MISS-with-explanation, not a failure. |
+| 7 | Authored values not all equal; clustering argued from evidence | **HIT** | Active-authored values: 0.15, 0.10, 0.90, 0.30. No two equal. Four undeterminable retained at 0.08 (pre-S state carried forward, not new convergence). R.1.6 discipline satisfied. |
+| 8 | Clamped set stays exactly {copper, ASML, TSMC} | **HIT** | `outbound_clamp_check` shows exactly those three; no additions, no removals. |
+| 9 | Frozen constants unchanged; suite ≥ 114 pass, 0 xfail, both invocations | **HIT** | `fixed_reference` 1.6711…; boundaries 0.5178 / 0.4137 / 0.1771 all unchanged. 114 pass + 1 skipped + 0 xfail on both `pytest` and `python -m pytest`. |
 
-**6 HIT, 3 MISS-with-explanation (all directional; ceilings held).** The three directional misses share one structural cause — `combine: max` and max-path-influence let stronger existing signals dominate the new authoring in ways the reviewer's arithmetic didn't anticipate. That is more informative than a naive HIT would have been.
+**7 HIT, 1 MISS-with-retraction (§8(5)), 1 legitimate MISS (§8(6)).** The §8(3)/(4) HIT grade replaces the committed report's MISS-on-direction grade, which was itself a downstream artifact of the reviewer-error contradiction between §1 and §8.
 
 ### Guards changed
 
-None. No existing test's assertion was modified in Pass S. New pinned entries were added (`known_share_offenders.txt` NVIDIA input_to; `known_bucket_shortfalls.txt` had two entries removed) — those are data-file edits declared as consequences of §4-authored values per Q.1 / R discipline, not test-assertion changes.
+**None.** No existing test's assertion was modified in Pass S. The pinned-file edits (`known_share_offenders.txt` add of NVIDIA input_to; `known_bucket_shortfalls.txt` remove of two entries) are data-file changes declared as consequences of §4-authored values (S.5.4). New tests: none.
 
 ### Changed
 
-`git diff --name-only HEAD` (HEAD at open = `6e9c0e3` Pass R.1):
+`git diff --name-only 6e9c0e3..HEAD` at commit `f849515`:
 
 ```
 backend/scripts/pass_facts.py
@@ -2340,52 +2434,44 @@ backend/tests/pinned/known_share_offenders.txt
 data/ai/edges.json
 docs/generated/input_share_audit.md
 docs/generated/node_inventory.md
+docs/generated/pass_s_facts.json
 docs/generated/replay/grading.md
 docs/generated/severity_diff.md
+docs/generated/severity_diff_pass_s.md
 docs/generated/severity_snapshot.json
 docs/generated/threshold_analysis.md
 ```
 
-`git ls-files -o --exclude-standard` (untracked):
-
-```
-docs/generated/pass_s_facts.json
-docs/generated/severity_diff_pass_s.md
-```
-
-**Count: 14 files** (12 modified + 2 untracked).
+**Count: 14 files.** (The Pass S commit had `pass_s_facts.json` and `severity_diff_pass_s.md` as `create mode 100644` — both were untracked at open and became tracked by the commit.)
 
 ### Not changed
 
-Every file below is genuinely absent from the diff — verified against the enumeration:
+Every file below is genuinely absent from `git diff --name-only 6e9c0e3..f849515`:
 
 - `config/scoring.yaml`, `backend/tests/fixtures/scoring.yaml` — no config change.
 - `config/narration.yaml`, `backend/tests/fixtures/narration.yaml` — no narration change.
-- `data/ai/nodes.json`, `backend/tests/fixtures/ai/nodes.json` — no node touched. R.1.3's `bottleneck_type: "volume_demand"` on copper remains as-is (see S.ledger §7.2 below).
+- `data/ai/nodes.json`, `backend/tests/fixtures/ai/nodes.json` — no node touched. `mineral:copper.bottleneck_type: "volume_demand"` remains per R.1.3 + S.ledger §7.2 retraction.
 - `data/ai/events.json` — no event touched.
-- `docs/generated/pass_q_facts.json`, `docs/generated/pass_q1_facts.json`, `docs/generated/pass_r_facts.json` — historical artifacts, unchanged. Pass S wrote a new `pass_s_facts.json`; R.1 did not regenerate pass_r_facts.json (§7.1 was carried forward to fix the underlying issue instead).
-- Every scoring code file, every schema file, every existing test file — the pass restriction to "data + reporting-code fix + prose" held.
+- `docs/generated/pass_q_facts.json`, `pass_q1_facts.json`, `pass_r_facts.json` — historical artifacts, unchanged.
+- Every scoring code file (`backend/app/scoring/*.py`), every schema file, every narration module.
+- Every existing test file — no test assertion modified.
 
-Cross-checked against the diff output. Nothing under "Not changed" appears in `git diff --name-only HEAD`.
+Cross-checked against the diff output. Nothing under "Not changed" appears in `git diff --name-only 6e9c0e3..f849515`.
 
 ### S.7 carried-forward corrections
 
-**S.7.1 — `--before-ref` on `pass_facts.py`.** Added. Defaults to `HEAD` (backwards compatible). Wired through all four `git show` reads in the artifact writer: `edges.json`, `severity_snapshot.json`, `config/narration.yaml`, `data/ai/nodes.json`. Pass S itself uses `--before-ref 6e9c0e3` so the artifact's "before" values reflect Pass R.1 end state, not Pass S end state.
+**S.7.1 — `--before-ref` on `pass_facts.py`.** Added. Defaults to `HEAD` (backwards compatible). Wired through all four `git show` reads. Pass S itself invoked with `--before-ref 6e9c0e3` so the artifact's "before" values reflect Pass R.1 end state, not Pass S end state. `pass_r_facts.json` left as-is per spec §7.1 note.
 
-Recorded but NOT actioned: `pass_r_facts.json` is left as-is. R.1's report documents its own scope and the diff against `090da2d` is the historical record; a regeneration under `--before-ref` would corrupt that record.
+**S.7.2 — R.1.3 ledger sentence retraction.** The R.1.3 ledger sentence *"the `bottleneck_type` field is a node-level annotation and should reflect the current model, not the pre-paper reading"* is retracted. The correct standing rule is R.1.3's second sentence: *"editing `bottleneck_type` here would be fitting the annotation to the model — the inverse of the standing rule."* A future author reading R.1.3 should treat the first sentence as struck.
 
-**S.7.2 — R.1.3 ledger sentence retraction.** The R.1.3 ledger entry contained: *"the `bottleneck_type` field is a node-level annotation and should reflect the current model, not the pre-paper reading."* Two sentences later it correctly declined to change `bottleneck_type` because doing so would fit the annotation to the model. The two statements are opposed, and the second is the right one.
+### S.ledger — findings this pass carries forward
 
-**Retracted (Pass S §7.2):** the sentence "the `bottleneck_type` field is a node-level annotation and should reflect the current model, not the pre-paper reading" does NOT reflect the standing rule. Paper-derived annotations are recorded as they are; when the model disagrees, that is a modelling question with its own scope, not an authorization to edit the annotation. The correct posture is R.1.3's second sentence: "editing `bottleneck_type` here would be fitting the annotation to the model — the inverse of the standing rule." A future author who reads R.1.3 should treat the first sentence as struck.
+- **The K.1 §4.4 audit classifier missed cost-basis edges whose notes used the word "cost".** The classifier's keyword pattern list (per its Method notes) omits "cost" / "cost share" / "% of ... cost". Five edges (hbm→nvidia, hbm→amd, cowos→amd, cowos→broadcom, cowos→google) are cost-basis by their own text and were unclassified. Not a Pass S defect; recorded so the audit's classifier can be tightened in a follow-up pass. The re-baseline pass may want to inherit these into its scope as well.
 
-### S.ledger — what the re-baseline pass now inherits
+- **The committed Pass S report asserted a mechanism from a null result.** The clamp-suppression finding as originally stated ("max-path dominance suppressed the cascade") was retracted in this report per S.5.1 — the null result (TSMC raw delta 0.0) does not identify its cause. Pattern lineage: K.1 §6.2, K.2 §6.3, K.2.1 §6.2, and now Pass S. n=4. The max-path hypothesis is defensible but was not measured; the re-baseline pass can test it per the recipe in S.5.1.
 
-Pass P.5.2 (pre-approved re-baseline) is now unblocked. It inherits:
+- **Spec §8(3) and §8(4) contradicted spec §1.** §1 derived HBM and CoWoS as inbound-dominant with only outbound in Pass S's scope, making their severity rise arithmetically impossible. §8(3)/(4) then pre-registered severity rises. Reviewer error; graded against §1. Recorded so a future spec's §8 is cross-checked against its own §1 before publication.
 
-- **Frozen boundaries derived from a distribution that has since moved.** Boundaries {0.5178, 0.4137, 0.1771} were derived at Pass P from the ASML→copper gap and the tsmc→nvidia gap. Copper crossed critical in Pass R; the drift diagnostic reports 4 would-change-tier nodes (dysprosium, ASML, gallium, TSMC — all downward under derived boundaries).
-- **Three clamped nodes at the top of the concentration axis** — copper (norm 1.22), ASML (norm 1.06), TSMC (norm 1.05). Their severity ordering is set entirely by substitutability + lead_time, not by concentration. Re-deriving boundaries against a clamp-flattened top would bake the flattening into the frozen literals.
-- **`fixed_reference` anchored to a node that is no longer rank 1.** ASML was rank 1 at Pass K.1 when the reference was frozen (1.6711…). Copper is rank 1 in raw outbound now (2.04 vs ASML's 1.77). The re-baseline must reconsider both `fixed_reference` and boundaries — in that order — or accept the clamping as intended.
-- **Max-path dominance in the outbound walk.** Pass S §5's clamp_suppression finding: raising cowos → nvidia did not propagate to TSMC's raw because TSMC's direct edge to NVIDIA dominates the indirect path via CoWoS. This is a general property of the walk: strong direct edges suppress cascade movement from indirect edges. Worth naming in the re-baseline scope.
-- **The queued-29 backlog closed.** No K.1 §4.4 edges remain in the queue. The re-baseline pass is not competing with an ongoing authoring effort.
+- **`caveat_check.branch` mechanical logic hasn't been updated to per-pass semantics.** `pass_facts.py` reports the Pass Q form (any inbound movement → C) even when Pass R §6's revised semantics apply (movement caused by the pass's own edge is expected, not a stop). Reports have been resolving this manually since Pass R. Recorded as an open item for a future correction pass.
 
-The re-baseline pass has its own spec and diff scope. This entry names what it starts from.
+- **What the re-baseline pass (P.5.2) inherits.** Frozen boundaries derived from a distribution that has since moved (Pass R's copper crossing; drift shows 4 would-change-tier). Three clamped nodes at the top of the concentration axis, indistinguishable on concentration alone. `fixed_reference` anchored to ASML (Pass K) while copper is now rank-1 by raw. The max-path-dominance hypothesis to test experimentally per S.5.1. The K.1 §4.4 queue closed-as-declared, with the audit-classifier caveat above. The K.2.1 §2.3 collide prediction remains unfired on real data (Q, R, S all left it unfired).
