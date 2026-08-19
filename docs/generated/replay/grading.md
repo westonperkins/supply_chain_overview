@@ -2510,3 +2510,19 @@ Cross-checked against the diff output. Nothing under "Not changed" appears in `g
 - **FR-B is the recommendation; ship decision belongs to Weston.** The evidence that would flip to FR-C (headroom constant 2.5): if a future pass's drift diagnostic still reports would-change-tier movement under FR-B derived boundaries, FR-B is behaving like `graph_max` and FR-C's declared-arbitrariness becomes the safer commit.
 - **Audit-classifier re-run queue ≈ 6 edges** (S.0.1's 5 plus `vertiv→colossus`). Left for its own pass per spec §5.2.
 - **`caveat_check.branch_semantics` field added to `pass_facts.py`.** `original_stop` vs `revised_movement_expected` computed from the pass-tag's edge set. Q through S resolved this by hand; T resolves it in code.
+
+### T.addendum — corrections and revised recommendation
+
+`docs/generated/replay/pass_t_addendum.pdf` (also `.md` in the same directory, and copied to `~/Downloads/`) folds in five follow-up questions, each answered from `pass_t_facts.json` at commit `1dbdd46`. **No scoring change, no data change, no config change** — reporting correction only. Suite unchanged at 117 pass + 1 skipped + 0 xfail.
+
+Findings that changed:
+
+1. **ASML under FR-B derived is `moderate`, not `high`.** The T ledger's *"they stay high"* was wrong; Q9's *"critical → moderate"* was right. ASML moves 2 tiers under FR-B derived, not 1.
+2. **FR-B causes 5 tier changes vs derived, not 2.** Retracted the "net 2 vs 4" claim, which had both count and direction wrong. The 5 movers are dysprosium, ASML, gallium, TSMC, applied_materials.
+3. **AMAT is a real mover.** Outbound-dominant in committed AND FR-B AND FR-C states; its severity drops via the `fixed_reference` compression. Same story under FR-C (moderate → none).
+4. **Q8's flip test was circular** — drift can never report movement under FR-B ship because frozen would equal derived by construction. K.2.2 §6.2 pattern, 5th instance. Replaced with: *"after FR-B ships, does any future pass push a raw outbound above 2.0447548854281186?"* — falsifiable.
+5. **FR-C blast radius fully written down.** 2 tier changes (ASML crit→moderate, AMAT moderate→none); same guards forecast and pinned files as FR-B; copper still rank-1 in raw regardless of `fixed_reference`.
+
+**Revised recommendation: FR-C** (`fixed_reference = 2.5`, boundaries derived at SF=3.0 — critical `0.5247316525037853`, high `0.42320867926942163`, moderate `0.15668443545638666`). ASML and AMAT move the same 2 tiers under both candidates, so those movements don't discriminate. FR-B additionally moves dysprosium, gallium, and TSMC (3 more), and invites the K.1-warning discussion; FR-C avoids both. FR-B remains defensible on the dynamic-range argument alone, but is no longer the recommendation.
+
+Detail (per-node tables, the K.1 warning re-argument, the falsifiable flip test) in the addendum PDF.
