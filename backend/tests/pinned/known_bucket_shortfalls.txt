@@ -40,8 +40,8 @@ company:microsoft	input_to	0.1200000000
 # graph node; landing on exactly 0.80 coincided with the completeness
 # threshold). NextEra `supplies` sum is 0.75 again — pinned shortfall.
 company:nextera_energy	supplies	0.7500000000
-company:nvidia	input_to	0.5000000000
-company:openai	supplies	0.8000000000
+# company:nvidia	input_to	0.5000000000  ← removed by Pass S (dependency-basis re-author lifted this bucket)
+# company:openai	supplies	0.8000000000  ← removed by Pass S (dependency-basis re-author lifted this bucket)
 company:quanta_services	input_to	0.3000000000
 # company:samsung	input_to	0.0900000000  ← removed by Pass R (copper re-author lifted this bucket)
 # company:siemens_energy	input_to	0.5000000000  ← removed by Pass R (copper re-author lifted this bucket)

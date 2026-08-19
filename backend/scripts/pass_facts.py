@@ -95,6 +95,36 @@ PASS_R_NODES_PRIMARY = [
     "company:vertiv",
 ]
 
+
+# Pass S — the final 8 semis/AI-accelerator queued edges (from the
+# `input_share_audit.md` Queued list as-of-Pass-R.1 minus Q's 13 + R's 8).
+PASS_S_EDGE_IDS = [
+    "e:amd-supplies-openai",
+    "e:amd-supplies-xai",
+    "e:cowos-input-nvidia",
+    "e:ndfeb-input-stargate",
+    "e:ndfeb-input-citadel",
+    "e:ndfeb-input-vantage",
+    "e:rf-input-ge_vernova",
+    "e:rf-input-vertiv",
+]
+
+PASS_S_NODES_PRIMARY = [
+    "company:nvidia",
+    "company:amd",
+    "company:openai",
+    "company:xai",
+    "product:cowos_packaging",
+    "product:hbm",
+    "product:ndfeb_magnets",
+    "product:rf_power_semis",
+    "company:ge_vernova",
+    "company:vertiv",
+    "facility:stargate_abilene",
+    "facility:the_citadel",
+    "facility:vantage_frontier",
+]
+
 CAVEAT_CHECK_NODES = [
     "company:ge_vernova",
     "company:siemens_energy",
@@ -106,9 +136,16 @@ def _git(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=REPO).decode("utf-8")
 
 
-def _head_edge_lookup() -> dict:
-    """Parse edges.json at HEAD and return {edge_id: edge_dict}."""
-    text = _git("show", "HEAD:data/ai/edges.json")
+def _head_edge_lookup(before_ref: str = "HEAD") -> dict:
+    """Parse edges.json at `before_ref` and return {edge_id: edge_dict}.
+
+    Pass S §7.1 — `before_ref` was hard-coded to HEAD, which meant that
+    in a correction pass (where HEAD is the pass being corrected) the
+    regenerated artifact compared the pass against itself — the R.1
+    regeneration surfaced that (`input_share_before` values shifted to
+    Pass R's values because HEAD had advanced to Pass R). Callers can
+    now pass an explicit git ref for the "before" side."""
+    text = _git("show", f"{before_ref}:data/ai/edges.json")
     return {e["id"]: e for e in json.loads(text)}
 
 
@@ -213,18 +250,36 @@ def main() -> None:
         ),
     )
     parser.add_argument(
-        "--pass-tag", default="q", choices=["q", "q1", "r"],
+        "--pass-tag", default="q", choices=["q", "q1", "r", "s"],
         help=(
             "Which pass's edge + node sets to track in the artifact. "
-            "Pass Q's 13 power-cluster edges (`q`, `q1`) or Pass R's 8 "
-            "copper edges (`r`). Determines PASS_*_EDGE_IDS + "
-            "PASS_*_NODES_PRIMARY used in the per-edge and nodes_touched "
-            "sections. Default: q for backwards compatibility."
+            "Pass Q's 13 power-cluster edges (`q`, `q1`), Pass R's 8 "
+            "copper edges (`r`), or Pass S's 8 semis-cluster edges "
+            "(`s`). Determines PASS_*_EDGE_IDS + PASS_*_NODES_PRIMARY "
+            "used in the per-edge and nodes_touched sections. Default: "
+            "q for backwards compatibility."
+        ),
+    )
+    parser.add_argument(
+        "--before-ref", default="HEAD",
+        help=(
+            "Git ref for the 'before' side of every diff read "
+            "(edges.json, severity_snapshot.json, nodes.json, "
+            "narration.yaml). Default HEAD. Pass S §7.1: in a "
+            "correction pass HEAD is the pass being corrected, so "
+            "explicit `--before-ref <sha>` lets the artifact compare "
+            "against the true pre-pass state rather than against itself. "
+            "The pass_r artifact suffered from this — R.1 saw HEAD as "
+            "Pass R and reported input_share_before values equal to "
+            "input_share_after (both Pass R end state)."
         ),
     )
     args = parser.parse_args()
 
-    if args.pass_tag == "r":
+    if args.pass_tag == "s":
+        edge_ids = PASS_S_EDGE_IDS
+        primary_nodes = PASS_S_NODES_PRIMARY
+    elif args.pass_tag == "r":
         edge_ids = PASS_R_EDGE_IDS
         primary_nodes = PASS_R_NODES_PRIMARY
     else:
@@ -238,11 +293,11 @@ def main() -> None:
     # is the reproducible-from-git-alone reference; reading the on-disk
     # snapshot risks reading a post-run roll-forward (Pass R rolls the
     # snapshot forward before this artifact is written).
-    snap = json.loads(_git("show", "HEAD:docs/generated/severity_snapshot.json"))
+    snap = json.loads(_git("show", f"{args.before_ref}:docs/generated/severity_snapshot.json"))
     before_nodes = snap["nodes"]
 
     # HEAD edges lookup.
-    head_edges_by_id = _head_edge_lookup()
+    head_edges_by_id = _head_edge_lookup(before_ref=args.before_ref)
     head_edges_list = list(head_edges_by_id.values())
 
     # Score AFTER: current working tree.
@@ -407,11 +462,11 @@ def main() -> None:
     # Pass R §7 — also read the HEAD-committed narration + nodes so
     # `asserted_numbers_before` can be populated (Q.1 open item).
     head_narr = yaml.safe_load(
-        _git("show", "HEAD:config/narration.yaml")
+        _git("show", f"{args.before_ref}:config/narration.yaml")
     ) or {}
     head_caveats_cfg = head_narr.get("modeling_caveats", {})
     head_nodes = {
-        n["id"]: n for n in json.loads(_git("show", "HEAD:data/ai/nodes.json"))
+        n["id"]: n for n in json.loads(_git("show", f"{args.before_ref}:data/ai/nodes.json"))
     }
     caveat_audit = []
     for nid, node in g.nodes.items():
@@ -587,6 +642,104 @@ def main() -> None:
             "outbound_clamped": (norm_val is not None and norm_val > 1.0),
         }
 
+    # -------- Pass S §5 — clamp_suppression --------
+    # For each currently-clamped node: raw before, raw after, normalized
+    # after, and the severity delta. Makes the scenario where raw rises
+    # and severity does not read at a glance. TSMC + CoWoS raise raw
+    # for anything feeding them; the clamped feeders (asml, tsmc) may
+    # gain raw movement that never surfaces in severity.
+    #
+    # `_before` values read from the same `before_ref` used elsewhere,
+    # so the artifact stays reproducible from git.
+    before_edges_raw = json.loads(_git("show", f"{args.before_ref}:data/ai/edges.json"))
+    from app.scoring.engine import _outbound_criticality_raw as _ocr
+    # Score BEFORE graph state so we can compute raw-before.
+    from app.graph import SupplyChainGraph as _SCG
+    import tempfile as _tf
+    with _tf.TemporaryDirectory() as _td:
+        _tdp = Path(_td)
+        (_tdp / "ai").mkdir()
+        (_tdp / "ai" / "edges.json").write_text(json.dumps(before_edges_raw))
+        (_tdp / "ai" / "nodes.json").write_text(
+            _git("show", f"{args.before_ref}:data/ai/nodes.json"),
+        )
+        (_tdp / "ai" / "events.json").write_text(
+            _git("show", f"{args.before_ref}:data/ai/events.json"),
+        )
+        _g_before = _SCG.from_dir(_tdp, domain="ai")
+        _outbound_raw_before = {
+            nid: _ocr(
+                nid, _g_before,
+                c.concentration_outbound_decay,
+                c.concentration_outbound_max_hops,
+                c.concentration_outbound_min_influence,
+                share_field=c.outbound_share_field,
+                fallback=c.outbound_fallback_to_input_share,
+            )
+            for nid in _g_before.nodes
+        }
+    clamp_suppression = []
+    for nid in sorted(nid for nid, rec in _clamp_records.items() if rec["outbound_clamped"]):
+        sev_a = g.nodes[nid].dynamic.baseline_severity
+        sev_b = before_nodes.get(nid, {}).get("severity")
+        clamp_suppression.append({
+            "id": nid,
+            "outbound_raw_before": _outbound_raw_before.get(nid),
+            "outbound_raw_after": _clamp_records[nid]["outbound_raw"],
+            "outbound_raw_delta": (
+                _clamp_records[nid]["outbound_raw"]
+                - (_outbound_raw_before.get(nid) or 0.0)
+            ),
+            "outbound_normalized_after": _clamp_records[nid]["outbound_normalized"],
+            "severity_before": sev_b,
+            "severity_after": sev_a,
+            "severity_delta": (
+                (sev_a or 0.0) - (sev_b or 0.0)
+                if (sev_a is not None or sev_b is not None) else None
+            ),
+        })
+
+    # -------- Pass S §5 — bucket_collision --------
+    # K.2.1 §2.3 collide check. For every gpu_accelerators bucket
+    # (xai, openai currently), sum + members before and after +
+    # whether the sum crossed 1.0. Under noisy-OR crossings are
+    # honest not defects; the field just makes it legible.
+    collision_targets = ["company:xai", "company:openai"]
+    bucket_collision = []
+    for tgt in collision_targets:
+        members_before = [
+            (e["source_id"], e["input_share"])
+            for e in before_edges_raw
+            if e.get("target_id") == tgt
+            and e.get("supply_category") == "gpu_accelerators"
+        ]
+        members_after = [
+            (e["source_id"], e["input_share"])
+            for e in current_edges_list
+            if e.get("target_id") == tgt
+            and e.get("supply_category") == "gpu_accelerators"
+        ]
+        sum_before = sum(v for _, v in members_before)
+        sum_after = sum(v for _, v in members_after)
+        bucket_collision.append({
+            "target": tgt,
+            "supply_category": "gpu_accelerators",
+            "members_before": [{"source": s, "share": v} for s, v in members_before],
+            "members_after": [{"source": s, "share": v} for s, v in members_after],
+            "sum_before": sum_before,
+            "sum_after": sum_after,
+            "crossed_one": sum_after > 1.0,
+        })
+
+    # -------- Pass S §5 — backlog_status --------
+    # Closes the K.1 §4.4 queued-29 backlog. Counts recorded
+    # per-pass so a future reader sees "queue closed by Q + R + S".
+    backlog_status = {
+        "queued_total": 29,
+        "resolved_by_pass": {"Q": 13, "R": 8, "S": 8},
+        "remaining": 0,
+    }
+
     # -------- Pass R §7 — boundary_proximity --------
     # For every scored node, distance to nearest frozen boundary above
     # and below. Lets the next pass inherit a proximity map instead of
@@ -661,6 +814,9 @@ def main() -> None:
         "caveat_check": caveat_facts,
         "caveat_number_audit": caveat_audit,
         "copper_axis_check": copper_axis_check,
+        "clamp_suppression": clamp_suppression,
+        "bucket_collision": bucket_collision,
+        "backlog_status": backlog_status,
         "boundary_proximity": boundary_proximity,
         # Pass R.1 §4 — outbound clamp visibility. Every node, sorted by
         # outbound_raw descending so the ceiling-cluster is at the top.

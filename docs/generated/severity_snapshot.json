@@ -1,12 +1,12 @@
 {
-  "captured_at_pass": "pass_r",
+  "captured_at_pass": "pass_s",
   "nodes": {
     "mineral:gallium": {
       "severity": 0.48763330760307644,
       "tier": "high",
       "concentration": 0.98522425,
       "inbound_hhi": 0.98522425,
-      "outbound_criticality": 0.3804940942526365
+      "outbound_criticality": 0.3883642189008504
     },
     "mineral:indium": {
       "severity": 0.11984398928034516,
@@ -48,7 +48,7 @@
       "tier": "moderate",
       "concentration": 0.9524999999999999,
       "inbound_hhi": 0.9524999999999999,
-      "outbound_criticality": 0.16211790380520175
+      "outbound_criticality": 0.5203774663002178
     },
     "product:ndfeb_magnets": {
       "severity": 0.3403936856853811,
@@ -62,7 +62,7 @@
       "tier": "moderate",
       "concentration": 0.9,
       "inbound_hhi": 0.9,
-      "outbound_criticality": 0.08179755775771838
+      "outbound_criticality": 0.1481098287949607
     },
     "country_region:china": {
       "severity": null,
@@ -95,16 +95,16 @@
     "country_region:south_korea": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.08383078312323342,
+      "concentration": 0.08383122309833844,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.08383078312323342
+      "outbound_criticality": 0.08383122309833844
     },
     "country_region:japan": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.06495637609257163,
+      "concentration": 0.06518420627583145,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.06495637609257163
+      "outbound_criticality": 0.06518420627583145
     },
     "country_region:myanmar": {
       "severity": null,
@@ -165,9 +165,9 @@
     "country_region:canada": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.09743456413885744,
+      "concentration": 0.09777630941374718,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.09743456413885744
+      "outbound_criticality": 0.09777630941374718
     },
     "company:nvidia": {
       "severity": 0.35808777495941424,
@@ -188,7 +188,7 @@
       "tier": "unscored",
       "concentration": 0.98,
       "inbound_hhi": 0.98,
-      "outbound_criticality": 0.07230918527874901
+      "outbound_criticality": 0.09217648668708434
     },
     "company:tsmc": {
       "severity": 0.46928198688086703,
@@ -305,8 +305,8 @@
     "company:openai": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.73,
-      "inbound_hhi": 0.73,
+      "concentration": 0.745,
+      "inbound_hhi": 0.745,
       "outbound_criticality": 0.41887586361195306
     },
     "company:constellation_energy": {
@@ -352,10 +352,10 @@
       "outbound_criticality": 0.1707325122849878
     },
     "company:ge_vernova": {
-      "severity": 0.315115946960595,
+      "severity": 0.31841559038426615,
       "tier": "moderate",
-      "concentration": 0.955,
-      "inbound_hhi": 0.955,
+      "concentration": 0.965,
+      "inbound_hhi": 0.965,
       "outbound_criticality": 0.1819268342116367
     },
     "company:quanta_services": {

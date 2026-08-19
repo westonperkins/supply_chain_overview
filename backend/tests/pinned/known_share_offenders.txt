@@ -24,3 +24,11 @@ product:ndfeb_magnets	input_to	1.9000000000
 # accepted overshoots, matching the K.1 NdFeB precedent above.
 company:ge_vernova	input_to	1.0500000000
 company:siemens_energy	input_to	1.0500000000
+# Pass S §4 — cowos_packaging → nvidia authored 0.20 → 0.90 on the
+# K.1 §4.1 dependency basis (paper §2E: CoWoS "repeatedly gated GPU
+# output"). Combined with the pre-existing HBM → nvidia at 0.30, the
+# input_to bucket sums to 1.20. Under noisy-OR this is honest — the
+# aggregator has no summation constraint — and both authorings pass
+# the §4 near-total-halt test. Pinned as an accepted overshoot,
+# matching the K.1 NdFeB precedent and the Pass R power precedent.
+company:nvidia	input_to	1.2000000000

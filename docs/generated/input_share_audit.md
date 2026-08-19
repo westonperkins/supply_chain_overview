@@ -98,6 +98,43 @@ Pass Q.1 is a correction pass. It revises the Pass Q table above and adds durabl
 
 **Re-baseline trigger recorded.** Copper's severity 0.7097 sits above the frozen critical boundary (0.5178). The frozen critical boundary was originally derived from the ASML→copper gap at Pass P (midpoint 0.5178); copper crossing means the gap that justified the boundary no longer exists. The drift diagnostic in `threshold_analysis.md` reports **4 nodes would change tier** if derived boundaries were adopted (all downward — dysprosium, ASML, gallium, TSMC). This is a re-baseline trigger, NOT a boundary edit: `thresholds.mode` stays `frozen`, no boundary literal was touched. The pre-approved re-baseline pass (Pass P.5.2) is the appropriate place to reconsider what `fixed_reference` normalises against (currently frozen at ASML's Pass K raw value 1.6711, now that copper's raw outbound 2.04 exceeds ASML's 1.77).
 
+## Pass S update (2026-08-19) — queued-29 backlog CLOSED
+
+**8 final semiconductor-cluster edges authored:**
+
+| edge | before | after | status | basis |
+|---|---:|---:|---|---|
+| `company:amd → company:openai` (gpu_accelerators) | 0.10 | **0.15** | reauthored | OpenAI publicly evaluated AMD MI300X (2024). Withdrawal removes ~10-20% of OpenAI's compute function; NVIDIA (0.70) covers the majority. |
+| `company:amd → company:xai` (gpu_accelerators) | 0.10 | 0.10 | note_updated | xAI's Grok training is Nvidia-centric (Colossus 100k+ H100/H200); AMD role smaller than at OpenAI. Value retained on partial-halt basis. |
+| `product:cowos_packaging → company:nvidia` (input_to) | 0.20 | **0.90** | reauthored | Paper §2E: "CoWoS repeatedly gated GPU output." NVIDIA's flagship AI parts (H100/H200/GB200) all require CoWoS. Function halt near-total on the AI GPU line. |
+| `product:ndfeb_magnets → facility:stargate_abilene` (input_to) | 0.08 | 0.08 | undeterminable | Data-centre magnet fraction not accessible at facility-BOM level; substitutable at efficiency cost. Value retained; §4 review recorded. |
+| `product:ndfeb_magnets → facility:the_citadel` (input_to) | 0.08 | 0.08 | undeterminable | Same reasoning. |
+| `product:ndfeb_magnets → facility:vantage_frontier` (input_to) | 0.08 | 0.08 | undeterminable | Same reasoning. |
+| `product:rf_power_semis → company:ge_vernova` (input_to) | 0.10 | **0.30** | reauthored | SiC/GaN RF power semis in wind converter electronics. Wind is ~1/3 of GEV product mix; function halt on new-build wind converters under withdrawal. |
+| `product:rf_power_semis → company:vertiv` (input_to) | 0.08 | 0.08 | undeterminable | Vertiv product mix (cooling vs power distribution) not accessible; RF role substitutable with silicon MOSFETs at efficiency cost. |
+
+**Counts (using spec §10 vocabulary): 3 reauthored, 1 note_updated, 4 undeterminable.** The four `undeterminable` edges appear in `pass_s_facts.json.edges` with `status: "reauthored_note_only"` — this is a labelling mismatch (pass_facts.py doesn't distinguish "note-only-reauthor" from "undeterminable-with-note-added"); the spec vocabulary is the report's, and the artifact label is mechanical. Recorded so a future reader does not read the mechanical label as authoritative for the pass's stated semantic.
+
+**Downstream effects:**
+
+- `product:cowos_packaging`: `outbound_criticality` 0.162 → **0.520** (+0.358). Inbound 0.9525 still dominates; severity **unchanged**.
+- `product:rf_power_semis`: `outbound_criticality` 0.082 → 0.148 (+0.066). Inbound 0.90 still dominates; severity **unchanged**.
+- `company:ge_vernova`: inbound_hhi 0.955 → 0.965 (+0.010); severity 0.3151 → 0.3184 (+0.0033); still `moderate`.
+- `company:amd`: outbound 0.072 → 0.092 (+0.020); still `unscored`.
+- `company:openai`: inbound 0.73 → 0.745 (+0.015); still `unscored`.
+- `company:nvidia`: no change. Its input_to bucket rose from 0.44 to 0.93 (HBM 0.30 + CoWoS 0.90 via noisy-OR), but its supplies-stage HHI is 0.9901 (foundry_wafers from TSMC 0.99) — under `combine: max` across stages the supplies stage still dominates. Inbound / severity / tier all unchanged.
+- **Zero tier changes on any scored node.**
+
+**One bucket sum crossed 1.0 by design:** NVIDIA's `input_to` bucket = HBM 0.30 + CoWoS 0.90 = 1.20. Under noisy-OR this is honest; §4 forbids reducing values to keep buckets under 1.0. Pinned in `known_share_offenders.txt` as an accepted overshoot.
+
+**Two consumer shortfalls closed** as a consequence: NVIDIA `input_to` (0.50 → 1.20) and OpenAI `supplies` (0.80 → 0.85). Removed from `known_bucket_shortfalls.txt` with Pass S notes.
+
+**K.2.1 §2.3 collide check (bucket_collision):** xAI gpu_accelerators sum 0.80 → 0.80 (no change; AMD retained at 0.10). OpenAI gpu_accelerators sum 0.80 → 0.85 (AMD 0.10 → 0.15). Neither crosses 1.0. Predicted MISS per spec §8(6) — legitimate because honest AMD values sit ≤ 0.20 in both buckets; forcing a collision would require inflated authoring.
+
+**Clamp suppression (clamp_suppression):** the three clamped nodes (copper/asml/tsmc) all had **raw outbound delta = +0.0000** under Pass S. The engine's outbound walk uses max-path-influence per destination, so raising `cowos → nvidia` did NOT propagate to TSMC via the TSMC → cowos → nvidia path (max-path 0.95 × 0.90 = 0.855) because TSMC's direct edge to NVIDIA (foundry_wafers 0.99) dominates it. **This falsifies the spec §1 expectation that TSMC's raw would rise — a structural finding about the walk semantics, not a defect.** Recorded in `pass_s_facts.json.clamp_suppression`.
+
+**Backlog CLOSED.** `pass_s_facts.json.backlog_status`: queued_total 29, resolved_by_pass {Q: 13, R: 8, S: 8}, remaining **0**. The K.1 §4.4 queue is empty. The re-baseline pass (Pass P.5.2) is now unblocked.
+
 ## dependency (K.1 §4.3 re-author)  (n = 36)
 
 | source | target | type | category | input_share | note (first 90c) |

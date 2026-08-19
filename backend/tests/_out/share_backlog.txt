@@ -1,4 +1,4 @@
-share-completeness backlog — 31 bucket(s) below 0.95
+share-completeness backlog — 30 bucket(s) below 0.95
 severity    sum edges  node                                   stage         
 FAIL      0.080     1  Colossus                               input_to      
 FAIL      0.080     1  Stargate (Abilene)                     input_to      
@@ -13,7 +13,6 @@ FAIL      0.300     1  Quanta Services                        input_to
 FAIL      0.400     3  Broadcom                               input_to      
 FAIL      0.430     2  AMD                                    input_to      
 FAIL      0.460     3  Marvell                                supplies      
-FAIL      0.500     2  NVIDIA                                 input_to      
 FAIL      0.530     3  Vertiv                                 input_to      
 FAIL      0.600     3  Duke Energy                            supplies      
 FAIL      0.650     5  Copper                                 mines         
@@ -25,9 +24,9 @@ FAIL      0.750     4  Indium                                 mines
 FAIL      0.750     3  NextEra Energy                         supplies      
 FAIL      0.750     4  The Citadel                            supplies      
 FAIL      0.800     2  xAI                                    supplies      
-FAIL      0.800     2  OpenAI                                 supplies      
 warn      0.800     4  Google (Alphabet)                      supplies      
 warn      0.850     4  Microsoft                              supplies      
+warn      0.850     2  OpenAI                                 supplies      
 warn      0.900     4  Gallium                                refines       
 warn      0.900     1  RF & Power Semiconductors              input_to      
 warn      0.930     4  Indium                                 refines       
