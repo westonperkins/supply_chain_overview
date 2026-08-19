@@ -1282,9 +1282,31 @@ class NarrationBuilder:
     # ------------------------------------------------------------------ #
 
     def _build_caveats(self, node: Node) -> list[str]:
+        # Pass O §3 — `static.modeling_caveat` may be either literal
+        # prose (historic shape — one-off, node-specific caveats) OR a
+        # key of the form `caveat:<name>` that resolves via
+        # narration.yaml `modeling_caveats.<name>`. The key convention
+        # exists so a caveat that applies to more than one node lives
+        # in one place; a config error (unknown key) surfaces as a
+        # ValueError rather than a silent skip because the alternative
+        # is a panel that quietly loses a caveat it was authored to
+        # carry.
         caveats: list[str] = []
-        if node.static.modeling_caveat:
-            caveats.append(node.static.modeling_caveat)
+        raw = node.static.modeling_caveat
+        if raw:
+            prefix = NarrationConfig.CAVEAT_KEY_PREFIX
+            if raw.startswith(prefix):
+                key = raw[len(prefix):]
+                resolved = self.config.modeling_caveat(key)
+                if resolved is None:
+                    raise ValueError(
+                        f"{node.id}: modeling_caveat references unknown "
+                        f"narration key '{key}' — add it to "
+                        f"config/narration.yaml modeling_caveats"
+                    )
+                caveats.append(resolved)
+            else:
+                caveats.append(raw)
         return caveats
 
     # ------------------------------------------------------------------ #

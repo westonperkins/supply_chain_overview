@@ -506,5 +506,12 @@
       "outbound_criticality": 0.45821127051538846
     }
   },
-  "fixed_reference": 1.6711394969476698
+  "fixed_reference": 1.6711394969476698,
+  "boundaries": {
+    "critical": 0.5178454839188712,
+    "high": 0.41368488092014066,
+    "moderate": 0.17711108045794494
+  },
+  "aggregator_method": "noisy_or",
+  "aggregator_eps": 0.01
 }

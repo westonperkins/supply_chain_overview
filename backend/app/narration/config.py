@@ -172,3 +172,18 @@ class NarrationConfig:
         adds this so the frontend never composes English in TS — even
         the section labels come from here."""
         return self.raw.get("glance_strip", {})
+
+    # ---------- Pass O §3 modeling-caveat key resolution ------------------
+
+    CAVEAT_KEY_PREFIX = "caveat:"
+
+    def modeling_caveat(self, key: str) -> Optional[str]:
+        """Resolves a caveat key (the part after `caveat:`) to authored
+        prose in `modeling_caveats.<key>`. Returns None if the key is
+        not authored — callers must treat that as a config error (a
+        node references a caveat that does not exist) rather than
+        silently swallowing it."""
+        text = self.raw.get("modeling_caveats", {}).get(key)
+        if text is None:
+            return None
+        return " ".join(text.split())

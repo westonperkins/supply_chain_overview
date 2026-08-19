@@ -302,13 +302,31 @@ def test_glance_paths_seeded_from_distinct_first_hops(
 
 
 def test_modeling_caveats_render(graph, narration_builder):
+    # Pass O §3 — a modeling_caveat may be either literal prose or a
+    # `caveat:<key>` reference that resolves via narration.yaml. Both
+    # shapes must reach the narration payload; a key that resolves to
+    # None is a config error and is asserted separately (below).
+    from backend.app.narration.config import NarrationConfig
+    prefix = NarrationConfig.CAVEAT_KEY_PREFIX
     for node in graph.nodes.values():
-        if not node.static.modeling_caveat:
+        raw = node.static.modeling_caveat
+        if not raw:
             continue
         narr = narration_builder.build(node.id)
-        assert node.static.modeling_caveat in narr["caveats"], (
-            f"{node.id}: modeling_caveat not rendered in narration caveats"
-        )
+        if raw.startswith(prefix):
+            key = raw[len(prefix):]
+            resolved = narration_builder.config.modeling_caveat(key)
+            assert resolved is not None, (
+                f"{node.id}: modeling_caveat key '{key}' has no authored "
+                f"prose in narration.yaml modeling_caveats"
+            )
+            assert resolved in narr["caveats"], (
+                f"{node.id}: resolved caveat for key '{key}' not in narration"
+            )
+        else:
+            assert raw in narr["caveats"], (
+                f"{node.id}: modeling_caveat not rendered in narration caveats"
+            )
 
 
 def test_prose_percentages_match_edge_weights_to_one_decimal(graph, narration_builder):

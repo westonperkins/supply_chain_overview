@@ -373,6 +373,24 @@ disclaimers:
     Not investment advice.
 
 # --------------------------------------------------------------------------- #
+# Modeling caveats — authored prose for reusable node-level caveats            #
+# --------------------------------------------------------------------------- #
+# A node's `static.modeling_caveat` may hold either literal caveat prose
+# (the historic shape) OR a key reference of the form `caveat:<name>` that
+# resolves to a phrase authored below. The key convention exists so a
+# caveat that applies to more than one node lives in one place and any
+# rewording touches one line, not two data rows. Literal text stays valid
+# for one-off, node-specific caveats where a shared name would be
+# manufactured (Pass O §3).
+modeling_caveats:
+  power_thin_input_bucket: >-
+    Inbound concentration is dampened here because the modelled input
+    bucket is incomplete — steel, control electronics, cooling systems
+    and structural composites are not yet in the graph, so the
+    aggregator reads the partial bucket at its raw magnitude rather
+    than assuming completeness.
+
+# --------------------------------------------------------------------------- #
 # Acronym glossary — single source of truth, shared with the paper             #
 # --------------------------------------------------------------------------- #
 

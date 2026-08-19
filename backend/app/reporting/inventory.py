@@ -233,7 +233,16 @@ def snapshot_severity(
     Pass K.1 §5.4 — records `fixed_reference` at capture time so
     `build_severity_diff` can compute the rescale ratio when the
     constant differs between snapshot and current, and separate
-    rescale-induced deltas from structural ones."""
+    rescale-induced deltas from structural ones.
+
+    Pass O §1.1 + §2 — extends the same conditional-capture pattern to
+    the tier boundaries and the aggregator method + ε. The general
+    principle: **anything that can silently change the meaning of a
+    severity number gets captured in the snapshot that severity is
+    compared against.** Pass N Phase A had zero-delta tier changes
+    (arm_core_ip's boundary passed it, not the other way round);
+    Pass N Phase A also changed the aggregator itself. Both were
+    unattributable without snapshot capture."""
     result = {
         "captured_at_pass": captured_at_pass,
         "nodes": {
@@ -247,8 +256,23 @@ def snapshot_severity(
             for n in graph.nodes.values()
         },
     }
-    if config is not None and hasattr(config, "outbound_fixed_reference"):
-        result["fixed_reference"] = config.outbound_fixed_reference
+    if config is not None:
+        if hasattr(config, "outbound_fixed_reference"):
+            result["fixed_reference"] = config.outbound_fixed_reference
+        # Pass O §1.1 — capture the three tier boundaries so a future
+        # diff can distinguish node-caused tier changes from boundary-
+        # caused ones. `chokepoint_thresholds` returns a dict with
+        # critical/high/moderate floats.
+        if hasattr(config, "chokepoint_thresholds"):
+            result["boundaries"] = dict(config.chokepoint_thresholds)
+        # Pass O §2 — capture the aggregator method + ε so a future
+        # diff can flag a method change in the header. Not row-
+        # attributable (a method switch changes every non-zero delta
+        # in principle) but the header should not stay silent about it.
+        if hasattr(config, "inbound_per_stage_method"):
+            result["aggregator_method"] = config.inbound_per_stage_method
+        if hasattr(config, "inbound_per_stage_eps"):
+            result["aggregator_eps"] = config.inbound_per_stage_eps
     return result
 
 
@@ -290,6 +314,34 @@ def build_severity_diff(
     if fr_before is not None and fr_after is not None and fr_after > 0:
         rescale_ratio = fr_before / fr_after
 
+    # Pass O §1 — capture boundaries + aggregator from snapshot vs current
+    # so the classifier can distinguish node-caused tier changes from
+    # boundary-caused ones and the header can flag aggregator changes.
+    boundaries_before = snapshot.get("boundaries") if snapshot else None
+    boundaries_after = (
+        dict(config.chokepoint_thresholds)
+        if config is not None and hasattr(config, "chokepoint_thresholds")
+        else None
+    )
+    boundaries_differ = False
+    if boundaries_before is not None and boundaries_after is not None:
+        for name in ("critical", "high", "moderate"):
+            if boundaries_before.get(name) != boundaries_after.get(name):
+                boundaries_differ = True
+                break
+
+    method_before = snapshot.get("aggregator_method") if snapshot else None
+    method_after = (
+        config.inbound_per_stage_method
+        if config is not None and hasattr(config, "inbound_per_stage_method")
+        else None
+    )
+    method_changed = (
+        method_before is not None
+        and method_after is not None
+        and method_before != method_after
+    )
+
     lines: list[str] = []
     lines.append("# Severity diff — generated")
     lines.append("")
@@ -304,36 +356,87 @@ def build_severity_diff(
                      f"against the current graph.")
     lines.append("")
 
-    # Pass K.1 §5.4 — call out fixed_reference movement in the header so
-    # anyone reading the diff sees the rescale factor before scanning
-    # per-node rows.
-    if fr_before is not None or fr_after is not None:
-        lines.append("## Scale-constant status")
+    # Pass O §1.3 — header now covers fixed_reference AND boundaries AND
+    # aggregator method (renamed from "Scale-constant status"). Every
+    # constant that can silently change the meaning of a severity number
+    # is surfaced before the per-node rows.
+    header_lines_needed = (
+        fr_before is not None or fr_after is not None
+        or boundaries_before is not None or boundaries_after is not None
+        or method_before is not None or method_after is not None
+    )
+    if header_lines_needed:
+        lines.append("## Snapshot vs current — constants and knobs")
         lines.append("")
-        lines.append(f"- `fixed_reference` at snapshot capture: `{fr_before}`")
-        lines.append(f"- `fixed_reference` in current config:    `{fr_after}`")
-        if rescale_ratio is not None and abs(rescale_ratio - 1.0) > 1e-9:
-            lines.append(
-                f"- **Rescale ratio (after / before): "
-                f"`{rescale_ratio:.10f}`** — outbound-dominated nodes "
-                f"are expected to move by approximately this ratio purely "
-                f"from the scale-constant change. Rows whose delta is "
-                f"rescale-consistent are flagged **RESCALE** in the "
-                f"`cause` column; the remainder are **STRUCTURAL** and "
-                f"require a per-node explanation in the pass report."
-            )
-        elif rescale_ratio is not None:
-            lines.append(
-                "- Ratio ≈ 1: the scale constant did not move between "
-                "snapshots, so all non-zero deltas below are STRUCTURAL."
-            )
-        else:
-            lines.append(
-                "- Ratio not computable (snapshot pre-dates K.1's "
-                "capture of `fixed_reference`). Every non-zero delta "
-                "below is treated as UNKNOWN cause — the pass author "
-                "must classify by hand."
-            )
+        # fixed_reference
+        if fr_before is not None or fr_after is not None:
+            lines.append(f"- `fixed_reference` at snapshot capture: `{fr_before}`")
+            lines.append(f"- `fixed_reference` in current config:    `{fr_after}`")
+            if rescale_ratio is not None and abs(rescale_ratio - 1.0) > 1e-9:
+                lines.append(
+                    f"- **Rescale ratio (after / before): "
+                    f"`{rescale_ratio:.10f}`** — outbound-dominated nodes "
+                    f"are expected to move by approximately this ratio purely "
+                    f"from the scale-constant change. Rows whose delta is "
+                    f"rescale-consistent are flagged **RESCALE** in the "
+                    f"`cause` column; the remainder are **STRUCTURAL** and "
+                    f"require a per-node explanation in the pass report."
+                )
+            elif rescale_ratio is not None:
+                lines.append(
+                    "- Ratio ≈ 1: `fixed_reference` did not move between "
+                    "snapshots."
+                )
+            else:
+                lines.append(
+                    "- Rescale ratio not computable (snapshot pre-dates K.1's "
+                    "capture of `fixed_reference`)."
+                )
+        # Pass O §1.3 boundaries (both sets, plus per-name delta)
+        if boundaries_before is not None or boundaries_after is not None:
+            lines.append("")
+            lines.append(f"- Tier boundaries at snapshot capture: `{boundaries_before}`")
+            lines.append(f"- Tier boundaries in current config:    `{boundaries_after}`")
+            if boundaries_before is not None and boundaries_after is not None:
+                if boundaries_differ:
+                    diffs = []
+                    for name in ("critical", "high", "moderate"):
+                        b = boundaries_before.get(name)
+                        a = boundaries_after.get(name)
+                        if b != a:
+                            diffs.append(f"{name}: {b} → {a}")
+                    lines.append(
+                        f"- **Boundaries moved:** {'; '.join(diffs)}. Zero-delta "
+                        f"tier changes below are flagged **BOUNDARY** — the "
+                        f"node did not move, the boundary passed it."
+                    )
+                else:
+                    lines.append(
+                        "- Boundaries unchanged between snapshots — any tier "
+                        "change on a zero-delta row is unexplained."
+                    )
+            elif boundaries_before is None:
+                lines.append(
+                    "- Snapshot pre-dates Pass O's boundary capture. "
+                    "Zero-delta tier changes are flagged **BOUNDARY "
+                    "(unverified)** — the inference is sound but the "
+                    "evidence isn't in the snapshot file."
+                )
+        # Pass O §2 aggregator
+        if method_before is not None or method_after is not None:
+            lines.append("")
+            lines.append(f"- Aggregator method at snapshot: `{method_before}`")
+            lines.append(f"- Aggregator method currently:    `{method_after}`")
+            if method_changed:
+                lines.append(
+                    f"- **Aggregator changed** between snapshots. Every non-"
+                    f"zero delta below is potentially method-attributable; "
+                    f"the classifier does not attempt to distinguish "
+                    f"method-caused deltas from structural ones on a "
+                    f"per-row basis (a method switch changes every node's "
+                    f"inbound in principle). Read the deltas with this in "
+                    f"mind."
+                )
         lines.append("")
 
     snap_ids = set(nodes_map.keys())
@@ -358,11 +461,18 @@ def build_severity_diff(
     tier_changes = 0
     rescale_deltas = 0
     structural_deltas = 0
+    boundary_tier_changes = 0
     # Pass K.1 §5.4 tolerance: consider a delta rescale-consistent if the
     # observed delta matches (ratio − 1) × severity_before within 1e-6
-    # absolute OR 5% relative to expected (whichever larger). 5% relative
-    # tolerance absorbs boundary-shift-induced tier rebucketing that
-    # correlates but isn't strictly proportional.
+    # absolute OR 5% relative to expected (whichever larger).
+    #
+    # Pass O §4 open item: the stated justification for the 5% relative
+    # tolerance ("absorbs boundary-shift-induced tier rebucketing that
+    # correlates but isn't strictly proportional") is unsound — tier
+    # rebucketing does not affect severity, and the classifier operates
+    # on severity deltas only. Logged; not changed here (changing the
+    # value would move the RESCALE/STRUCTURAL classification of historic
+    # rows, which is a separate decision with its own diff).
     RESCALE_ABS_TOL = 1e-6
     RESCALE_REL_TOL = 0.05
     common = sorted(snap_ids & cur_ids)
@@ -375,6 +485,7 @@ def build_severity_diff(
         tier_a = node.dynamic.baseline_tier.value if node.dynamic.baseline_tier else "none"
 
         cause = ""
+        tier_moved = (tier_b != tier_a)
         if sev_b is None and sev_a is None:
             delta_str = "0"
         elif sev_b is None or sev_a is None:
@@ -399,8 +510,24 @@ def build_severity_diff(
                 else:
                     cause = "STRUCTURAL"
                     structural_deltas += 1
+            elif tier_moved:
+                # Pass O §1.2 — zero severity delta + tier changed:
+                # the node did not move; the boundary passed it.
+                # Verified only if snapshot captured boundaries and
+                # they differ from current; otherwise the inference
+                # is sound but unverified in the file.
+                if boundaries_before is None:
+                    cause = "BOUNDARY (unverified)"
+                elif boundaries_differ:
+                    cause = "BOUNDARY"
+                else:
+                    # Boundaries unchanged; a zero-delta tier change is
+                    # unexplained (should not happen — but if it does,
+                    # do not silently classify it).
+                    cause = "UNEXPLAINED (zero delta, tier changed, boundaries same)"
+                boundary_tier_changes += 1
 
-        if tier_b != tier_a:
+        if tier_moved:
             tier_changes += 1
 
         lines.append(
@@ -415,6 +542,7 @@ def build_severity_diff(
     lines.append(f"  - **RESCALE** (fixed_reference change): {rescale_deltas}")
     lines.append(f"  - **STRUCTURAL** (edge / node changes): {structural_deltas}")
     lines.append(f"- Tier changes: **{tier_changes}**")
+    lines.append(f"  - of which **BOUNDARY** (zero severity delta, tier moved because boundary moved): {boundary_tier_changes}")
     lines.append("")
     if non_zero_deltas == 0 and tier_changes == 0:
         lines.append("_No severity or tier movement — this pass did not touch scoring._")

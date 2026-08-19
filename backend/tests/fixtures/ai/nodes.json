@@ -1273,7 +1273,8 @@
       "financial_cushion": {
         "value": 0.65,
         "confidence": "inference"
-      }
+      },
+      "modeling_caveat": "caveat:power_thin_input_bucket"
     }
   },
   {
@@ -1303,7 +1304,8 @@
       "financial_cushion": {
         "value": 0.65,
         "confidence": "inference"
-      }
+      },
+      "modeling_caveat": "caveat:power_thin_input_bucket"
     }
   },
   {

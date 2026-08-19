@@ -1187,3 +1187,138 @@ lists 17 file paths. Cosmetic reporting defect. Actual scope was 17
 files across 6 commits; the "12" was arithmetic sloppiness in the
 prose. Recorded so the discipline of matching prose counts to enumerated
 lists carries into future reports.
+
+## Pass O — diff attribution, snapshot provenance, modeling caveats
+
+Fix pass. Tooling and data only; scoring untouched. Every severity and
+tier is byte-identical to Pass N end state (72 nodes × 5 fields per
+node, all identical against a pre-Pass-O snapshot copy). Suite
+94 → **99 pass** (+5 from the new BOUNDARY-cause / arm_core_ip replay
+tests); 0 xfail.
+
+### O.6.1 Diff attribution: BOUNDARY cause added to per-row classifier
+
+Pass N Phase A shipped a zero-delta tier change on `product:arm_core_ip`
+that the diff generator called `STRUCTURAL` because it had no
+snapshot boundaries to compare against. Same class of defect —
+attributing a boundary movement to node movement — is now
+structurally impossible.
+
+Two changes in `backend/app/reporting/inventory.py`:
+
+- `snapshot_severity` captures `boundaries` (from
+  `config.chokepoint_thresholds`) alongside the existing
+  `fixed_reference`. Same conditional-capture pattern as K.1.
+- `build_severity_diff` per-row classifier gained a fourth branch:
+  zero severity delta + tier changed + snapshot has boundaries that
+  differ → `BOUNDARY`. If the snapshot has no boundaries (pre-Pass-O
+  shape) → `BOUNDARY (unverified)`. If boundaries are equal on both
+  sides → `UNEXPLAINED` (the row must not silently be absorbed into
+  any BOUNDARY bucket — a zero-delta tier change with unchanged
+  boundaries is an invariant violation and the classifier records
+  ignorance rather than manufacture a cause). Summary block gained a
+  sub-count `BOUNDARY (zero severity delta, tier moved because
+  boundary moved): N` under tier changes.
+
+Header block renamed from "Scale-constant status" to "Snapshot vs
+current — constants and knobs" so the section title matches its
+expanded scope (fixed_reference + boundaries + aggregator method).
+
+Synthetic acceptance test —
+`backend/tests/test_diff_attribution.py::test_arm_core_ip_replay_pass_l_to_phase_a_classifies_BOUNDARY` —
+replays the Pass N Phase A transition against the post-O classifier
+using pass_l-shape snapshot (moderate boundary 0.1367) vs post-Phase-A
+config (moderate boundary 0.1771). Classification: **BOUNDARY**, not
+STRUCTURAL. Recorded as the acceptance test per spec §5(5); run as a
+fixture rather than against committed artifacts.
+
+### O.6.2 Snapshot provenance: capture anything that can silently change meaning
+
+Principle recorded so future scoring-adjacent knob changes don't
+recur the arm_core_ip class of defect. **Anything that can silently
+change the meaning of a severity number gets captured in the
+snapshot that severity is compared against.** Pass K.1 §5.4 applied
+this to `fixed_reference`; Pass O extends to tier boundaries
+(§O.6.1) and the aggregator method + ε.
+
+`snapshot_severity` now also captures `aggregator_method` (from
+`config.inbound_per_stage_method`) and `aggregator_eps` (from
+`config.inbound_per_stage_eps`). The diff header states whether the
+method changed and — if it did — notes that every non-zero delta
+below is potentially method-attributable, because a method switch
+changes every node's inbound in principle. Row-level classification
+of method-caused deltas is **not** attempted: it is not computable
+from the snapshot alone (would need the previous method to re-score
+against). Header-level flag only, per spec §2.
+
+Snapshot re-captured under the existing `pass_n_d4a` label rather
+than rolled forward to a new pass name (spec §7 note), so the
+historic `severity_diff_pass_n_d4a.md` roll-forward artifact is not
+overwritten.
+
+### O.6.3 Modeling caveats populated on ge_vernova and siemens_energy; key convention introduced
+
+Two `power/grid_equipment` nodes now carry the caveat that Pass N.1
+§2.5 named:
+
+> Inbound concentration is dampened here because the modelled input
+> bucket is incomplete — steel, control electronics, cooling systems
+> and structural composites are not yet in the graph, so the
+> aggregator reads the partial bucket at its raw magnitude rather
+> than assuming completeness.
+
+Shape decision: `static.modeling_caveat` now accepts EITHER literal
+prose (the historic shape — 4 existing nodes carry literal text) OR
+a key reference `caveat:<name>` that resolves via
+`config/narration.yaml modeling_caveats.<name>`. The two power-layer
+nodes both reference `caveat:power_thin_input_bucket` — one authored
+sentence, two data rows. A key that resolves to `None` is a config
+error (raises `ValueError`) rather than a silent skip; the panel
+must not lose a caveat it was authored to carry.
+
+Only two nodes are populated in this pass. Other thin-graph nodes
+that carry similar coverage caveats today (`company:quanta_services`,
+`company:xai`, `company:openai`) already have literal text on record
+and are not touched; a future pass may migrate them to shared keys if
+their wording converges. Data change scope: two node rows in
+`data/ai/nodes.json`. Fixture synced
+(`backend/tests/fixtures/ai/nodes.json`, `backend/tests/fixtures/narration.yaml`).
+
+### O.6.4 RESCALE_REL_TOL justification is unsound — logged, not fixed
+
+`backend/app/reporting/inventory.py::build_severity_diff` carries
+`RESCALE_REL_TOL = 0.05`. The pre-Pass-O comment justified it as
+"absorbs boundary-shift-induced tier rebucketing that correlates but
+isn't strictly proportional." That justification is unsound: tier
+rebucketing does not affect severity, and the classifier operates
+on severity deltas only. Boundary-shift attribution is now a
+first-class cause (§O.6.1) — it has nothing to do with the rescale
+tolerance.
+
+Value NOT changed in this pass. Changing 0.05 to a different value
+would re-classify a subset of historic rows as RESCALE vs STRUCTURAL,
+which is a separate decision with its own diff scope. Comment
+updated in place to record the unsound-justification finding and
+point out that whatever tolerance the classifier should carry, it is
+independent of boundary movement. Open item.
+
+### O.6.5 `single_supplier_stages` / `operates` comment audit — no change needed
+
+Verified two comment-authorship claims that Pass N updated:
+
+- `backend/app/scoring/engine.py:717–724` — comment on the stage-level
+  `min_suppliers` gate. Still accurate post-D4a: gating produces
+  `single_supplier_stages` for reporting; the aggregator reads only
+  the gated set. `min_suppliers=1` unzeroed some stages (per Pass N
+  Phase B) but the comment doesn't overspecify what the gate zeros
+  out; no drift.
+- `backend/app/schema/enums.py:50–63` — `SUPPLY_EDGE_TYPES` comment
+  states that `operates` participates in cascade propagation but is
+  NOT in `SHARE_INTO_TARGET`, so it does not double-count for inbound
+  HHI. Verified: the share-derivation set the scoring engine reads
+  (in `graph.py`) still excludes `operates`. Comment and behaviour
+  match.
+
+No code change. Recorded so the audit is on file if a future pass
+adds `operates` handling to inbound or removes it from cascade.
+
