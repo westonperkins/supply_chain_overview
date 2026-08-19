@@ -83,25 +83,38 @@ concentration:
       # a listed stage isn't a valid supply edge type, config load
       # raises immediately rather than silently no-op'ing.
       stages: null
-      # `normalize` decides whether shares are divided by their sum before
-      # squaring. When true (legacy), a bucket summing to 0.08 reads as
-      # HHI 1.00 — incompleteness disappears. When false, HHI = sum of
-      # squared raw shares, so an incomplete bucket is dampened in exact
-      # proportion to its shortfall. See
-      # `docs/edge_weight_semantics_report.md` for the audit and
-      # trade-offs. Default true so this flag alone changes no scores.
+      # Pass N §2 — aggregator method. `hhi` was the original mode
+      # (Herfindahl-Hirschman, sum of squared shares). `noisy_or`
+      # replaces it as of Pass N per D4 decision in
+      # `docs/generated/k2_decisions.md`. `noisy_or_eps` and `rms`
+      # remain available as evidence-base functions (see engine.py
+      # docstrings) but are not selected.
+      #
+      # Motivation: `input_share` was redefined in K.1 §4.1 as the
+      # fraction of the consumer's function that ceases if this input
+      # is withdrawn — a dependency-basis quantity with no summation
+      # constraint. HHI is defined over shares that partition a market
+      # and sum to 1. Aggregating dependency shares with HHI produced
+      # the NdFeB inversion (K.1 §4.3): raising Nd 0.60→1.00 and Dy
+      # 0.20→0.90 LOWERED the computed HHI because normalize=true
+      # renormalized them to look balanced. Noisy-OR is bounded [0,1],
+      # monotonic, and requires no summation constraint.
+      method: noisy_or
+      # `normalize` applies to `hhi` only. Under `noisy_or` the
+      # combination is `1 − Π(1 − v_i)` with each input clamped to
+      # [0, 1]; there is nothing to normalize because the formula
+      # does not sum shares. Retained here because a future audit may
+      # want to compare `hhi` under either normalize choice against
+      # noisy_or on the same graph.
       normalize: true
       combine: max            # max | weighted_sum
-      # Stage-level min_suppliers — same reasoning as the per-category
-      # rule one level down (see supplies.per_category below). A stage
-      # bucket with fewer than N distinct modelled sources reads as
-      # HHI 1.0 under `normalize: true` (a single share normalizes to
-      # itself), which cannot distinguish a real monopoly from data we
-      # simply haven't finished modelling. Excluded from the combine and
-      # surfaced in the completeness backlog. If EVERY stage on a node
-      # is single-supplier, inbound_hhi falls to 0 (no reliable signal)
-      # and the node is flagged on dynamic.all_stages_single_supplier.
-      # See docs/outbound_output_share_spec.md §1.
+      # Stage-level min_suppliers — Pass N §2 UNCHANGED at 2 in Phase A.
+      # Rewritten under Pass N Phase B (D4a). The rule's original
+      # justification is HHI-specific — under noisy-OR a single supplier
+      # at share s reads exactly s, so `min_suppliers=1` becomes safe.
+      # Phase A ships D4 (noisy-OR method) ALONE so the aggregator diff
+      # is attributable on its own; Phase B lowers to 1 in a separate
+      # commit. See ⚠ safety note under Pass N Phase B commit.
       min_suppliers_for_concentration: 2
       weights:                # used only when combine = weighted_sum
         mines: 1.0
@@ -242,9 +255,9 @@ thresholds:
   derivation:
     separation_factor: 3.0
   boundaries:
-    critical: 0.5096065543117585
-    high: 0.4118946228794891
-    moderate: 0.13666630472569183
+    critical: 0.5178454839188712
+    high: 0.41368488092014066
+    moderate: 0.17711108045794494
   # An unresolved band is declared when a required boundary has no
   # separating gap. Nodes inside the band still tier normally (backward
   # compatibility) but carry dynamic.tier_ambiguous = true and

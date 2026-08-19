@@ -15,6 +15,14 @@ from .config import ScoringConfig
 def compute_hhi(shares: dict[str, float], normalize: bool = True) -> float:
     """Herfindahl-Hirschman Index.
 
+    Pass N §2 — `compute_hhi` is NO LONGER the default aggregator in the
+    scoring path. `config/scoring.yaml`'s
+    `concentration.inbound.per_stage.method` selects among `hhi`,
+    `noisy_or` (post-N default), `noisy_or_eps`, and `rms` via
+    `compute_concentration_aggregate`. This function stays available
+    for the Pass M validation script and any future audit; it is not
+    reached under the shipped config.
+
     When `normalize=True` (legacy behaviour), shares are divided by their
     sum before squaring, so a bucket summing to 0.08 reads as HHI 1.00 —
     incompleteness is discarded.
@@ -586,8 +594,8 @@ def refresh_all_derived(
     graph: SupplyChainGraph,
     config: ScoringConfig,
     *,
-    aggregator_method: str = "hhi",
-    aggregator_eps: float = 0.01,
+    aggregator_method: Optional[str] = None,
+    aggregator_eps: Optional[float] = None,
     min_suppliers_override: Optional[int] = None,
     stage_min_suppliers_override: Optional[int] = None,
 ) -> None:
@@ -610,11 +618,28 @@ def refresh_all_derived(
     validation script drive candidate aggregators (`noisy_or`,
     `noisy_or_eps`, `rms`) and alternative `min_suppliers` values
     through the REAL engine paths, without a scratch reimplementation
-    of the per-stage / per-category logic. Defaults preserve committed
-    behaviour byte-identically: `aggregator_method="hhi"` routes to
-    `compute_hhi`, and `min_suppliers_override=None` reads from config.
+    of the per-stage / per-category logic.
+
+    Pass N §2 — defaults now read from config rather than hardcoding
+    `"hhi"`. When the caller passes `aggregator_method=None` (default),
+    the method is read from `config.inbound_per_stage_method` — which
+    itself defaults to `"hhi"` if the config key is absent. The Pass M
+    validation script passes explicit overrides and its behaviour is
+    unchanged; production callers now respect the config.
     """
     graph.refresh_derived_shares()
+
+    # Config-selected aggregator (Pass N §2). Explicit override wins.
+    method = (
+        aggregator_method
+        if aggregator_method is not None
+        else config.inbound_per_stage_method
+    )
+    eps = (
+        aggregator_eps
+        if aggregator_eps is not None
+        else config.inbound_per_stage_eps
+    )
 
     outbound_map = compute_outbound_criticality_map(graph, config)
     configured_stages = config.inbound_per_stage_stages  # None → use all
@@ -639,7 +664,7 @@ def refresh_all_derived(
         # edge type with edges present. Never hardcoded.
         stage_hhis, stage_counts = compute_stage_hhis(
             derived, normalize=normalize,
-            method=aggregator_method, eps=aggregator_eps,
+            method=method, eps=eps,
         )
 
         # Per-category split within `supplies` — replaces the aggregate
@@ -657,7 +682,7 @@ def refresh_all_derived(
         if per_cat_enabled and "supplies" in stage_hhis:
             per_cat, counts = compute_supplies_per_category(
                 graph, node.id, normalize=normalize,
-                method=aggregator_method, eps=aggregator_eps,
+                method=method, eps=eps,
             )
             single_supplier = sorted(c for c, n in counts.items() if n < min_suppliers)
             contributing = {c: h for c, h in per_cat.items()

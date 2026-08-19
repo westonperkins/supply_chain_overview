@@ -89,6 +89,29 @@ class ScoringConfig:
         )
 
     @property
+    def inbound_per_stage_method(self) -> str:
+        """Pass N §2 — aggregator method for per-stage and per-category
+        concentration. `hhi` (original) | `noisy_or` (default post-N)
+        | `noisy_or_eps` | `rms`. Default `hhi` preserves pre-N behaviour
+        if the key is absent. `refresh_all_derived` routes this value
+        into `compute_stage_hhis` / `compute_supplies_per_category`."""
+        return (
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("method", "hhi")
+        )
+
+    @property
+    def inbound_per_stage_eps(self) -> float:
+        """Pass N §2 — ε for `noisy_or_eps` method. Unused when method
+        is not `noisy_or_eps`. Default 0.01."""
+        return float(
+            self.raw["concentration"]["inbound"]
+            .get("per_stage", {})
+            .get("eps", 0.01)
+        )
+
+    @property
     def stage_min_suppliers_for_concentration(self) -> int:
         """Minimum distinct sources a stage bucket must have before it
         contributes to the combine. See yaml comment + spec §1."""
