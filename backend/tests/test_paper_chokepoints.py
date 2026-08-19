@@ -22,24 +22,38 @@ scored severities.
 
 Asserts against baseline severity (== current_severity today; see the
 schema gap in test_tier_coherence).
+
+Pass N §4 — both xfails retired. `product:hbm` and
+`product:rf_power_semis` were the model's only two disagreements with
+the paper. D4 (noisy-OR aggregator) resolved HBM by construction — the
+memory-bucket concentration jumped from HHI 0.4402 to noisy-OR 0.7440,
+lifting severity from 0.1779 to 0.3008 which crosses the post-D4 median
+0.2015. D4a (min_suppliers=1) resolved RF & Power — the sole-source
+gallium input_to bucket unzeroed to concentration 0.9, lifting severity
+from 0.0261 to 0.2872 which crosses the post-D4+D4a median 0.2404.
+
+Both resolutions trace to mechanisms named in their own reason strings
+(HBM's reason names "inbound_hhi 0.44 cap"; RF & Power's names the
+"min_suppliers=2 rule zeroes single-source stage buckets"). Neither
+resolves via an unrelated side effect crossing a threshold. See
+`docs/generated/replay/grading.md` Pass N ledger for retirement
+reasoning.
+
+The registry is now empty. `test_xfail_registry_is_pinned` still
+asserts the shape: if a new xfail is added without a pin, the test
+fails; if a pin is added without a matching registry entry, the test
+fails.
 """
 import hashlib
 import statistics
 
 import pytest
 
-# Pass J.1 §3 — pinned SHA-256 of every KNOWN_MISS_XFAIL_REASONS value.
-# A defect that recurred across passes (the report characterising xfails
-# by non-existent function names and calling both misses `moderate` when
-# one is `none`) gets a machine check, not another prose reminder. The
-# hashes below are computed over the exact reason string bytes; a spec
-# change that legitimately edits a reason must update the hash in the
-# SAME commit as the string, and cite the spec authorising the change.
-# Do not update the hash alone — that path defeats the pin.
-KNOWN_MISS_XFAIL_REASON_HASHES = {
-    "product:hbm":             "ba782ac27eb403b643f212083d95ab720175c3518800e21c6aee45764a03db2e",
-    "product:rf_power_semis":  "8186bf40fc6413be215cef6ff983a8cec52ac2c0f7e116ed7e07593d81d3f131",
-}
+# Pass N §4 — the xfail registry is now empty. Both product:hbm and
+# product:rf_power_semis retired when D4+D4a shipped, per §4 retirement
+# reasoning above. The pinning machinery from Pass J.1 stays so a
+# future xfail addition without a spec-cited SHA-256 pin fails loudly.
+KNOWN_MISS_XFAIL_REASON_HASHES: dict[str, str] = {}
 
 PAPER_CHOKEPOINTS = [
     ("company:tsmc",                 "TSMC"),
@@ -54,39 +68,21 @@ PAPER_CHOKEPOINTS = [
 # Per-node xfail reasons — modelling gaps, not test defects. Reviewed
 # each pass; remove the xfail marker when the underlying gap is closed.
 #
-# Both entries are BYTE-IDENTICAL (spec §A4 Pass C) to their pre-pass
-# state — introduced by the generated_inventory_hygiene pass and
-# preserved unchanged. Do not edit their reason strings without a spec
-# change. The three Pass B entries (TSMC / gallium / CoWoS) were
-# DELETED in Pass C because the reframed test no longer coupled to a
-# display tier — all three now pass severity > median.
-KNOWN_MISS_XFAIL_REASONS = {
-    "product:hbm": (
-        "HBM concentration is capped at inbound_hhi 0.44 — three memory "
-        "suppliers (SK Hynix 0.60, Micron 0.21, Samsung 0.19) give a "
-        "moderate HHI that the max combine cannot lift above the critical "
-        "threshold. Would move on either (a) a memory sub-category split "
-        "(hbm vs dram — spec explicitly forbids) or (b) output_share "
-        "populated on HBM → NVIDIA at paper-supported basis."
-    ),
-    "product:rf_power_semis": (
-        "RF & Power reads inbound=0 because gallium is its only modelled "
-        "input_to source and the stage-level min_suppliers=2 rule zeroes "
-        "single-source stage buckets. Outbound alone (0.082) doesn't lift "
-        "severity above moderate. Would move on additional modelled inputs "
-        "(indium, substrate) — a data completeness item."
-    ),
-}
+# Pass N §4 — the two prior entries (product:hbm and
+# product:rf_power_semis) were retired when D4+D4a shipped. Their
+# named mechanisms (HBM's inbound_hhi=0.44 cap, RF & Power's
+# min_suppliers=2 zeroing) both ended by construction under the
+# aggregator and min_suppliers changes. Registry is now empty; ALL
+# seven paper chokepoints pass severity > median.
+KNOWN_MISS_XFAIL_REASONS: dict[str, str] = {}
 
 
 def _param_with_xfail(node_id: str, name: str):
     """Pass K §5 — conditional xfail marker rather than imperative
-    `pytest.xfail()`. The imperative form short-circuits BEFORE the
-    assertion runs, so the test never evaluates whether the gap has
-    closed — an HBM or RF & Power rise above the median would be
-    silently masked. Under `strict=False`, pytest runs the assertion:
+    `pytest.xfail()`. Under `strict=False`, pytest runs the assertion:
     fails → XFAIL, passes → XPASS. An XPASS is a finding that must be
-    closed by a spec decision, never by silently deleting the entry."""
+    closed by a spec decision, never by silently deleting the entry.
+    Pass N §4 closed both prior XPASS entries with retirement reasoning."""
     reason = KNOWN_MISS_XFAIL_REASONS.get(node_id)
     if reason is None:
         return pytest.param(node_id, name)
@@ -107,12 +103,10 @@ def test_paper_chokepoint_severity_above_median(graph, node_id, name):
 
     Threshold-independent by construction — tests severity against a
     severity statistic, so it does not move when display boundaries
-    move. Known misses (HBM, RF & Power) carry their pre-existing
-    reasons — Pass K §5 confirmation: HBM 0.178 (moderate), RF & Power
-    0.026 (none); both below median. Pass K adds scored nodes which
-    moves the median, so the "gap closed?" question must be answered
-    by the assertion each run — hence the conversion from imperative
-    xfail to conditional mark.
+    move. Pass N §4: registry is empty; all seven pass. If a future
+    change causes a chokepoint to slip below the median, add it back
+    to KNOWN_MISS_XFAIL_REASONS with a mechanism-anchored reason and
+    a matching SHA-256 pin in KNOWN_MISS_XFAIL_REASON_HASHES.
     """
     node = graph.nodes.get(node_id)
     assert node is not None, f"paper chokepoint {node_id} ({name}) not in graph"
@@ -141,18 +135,18 @@ def test_paper_chokepoint_severity_above_median(graph, node_id, name):
 def test_xfail_registry_is_pinned():
     """Pass J.1 §3 — the xfail registry is pinned by SHA-256.
 
-    Keys must be exactly the two documented misses; each reason string's
-    SHA-256 must equal the hex constant committed alongside it. If a
-    reason legitimately changes, update the hash in the same commit as
-    the string and cite the spec authorising the change. Do NOT update
-    the hash alone — that path defeats the pin.
+    Pass N §4 retired both prior entries; the registry is now empty
+    and the pinning machinery holds the shape:
 
-    Motivation: the Pass J report characterised these xfails by
-    non-existent function names, and called both misses `moderate` when
-    committed `docs/generated/threshold_analysis.md` shows
-    `product:rf_power_semis` = 0.0261 → `none` (per Pass I.1 review, the
-    same species of defect had recurred). A machine check replaces the
-    fourth prose reminder.
+      - keys of the registry MUST equal keys of the hash constant
+        (an empty registry with an empty hash dict passes this)
+      - each reason string's SHA-256 MUST equal its pinned hex
+
+    If a future xfail is added, the pin (in the same commit as the
+    string) is required. If a hash is added without a matching
+    registry entry, the test fails. Do NOT update a hash alone or
+    add a registry entry alone — the pin is the mechanism preventing
+    silent xfail drift.
     """
     keys_expected = set(KNOWN_MISS_XFAIL_REASON_HASHES.keys())
     keys_actual = set(KNOWN_MISS_XFAIL_REASONS.keys())
