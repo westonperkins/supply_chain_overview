@@ -22,17 +22,26 @@ import yaml
 REPO = Path(__file__).resolve().parents[2]
 
 
-# --- Pass P frozen literals -------------------------------------------------
+# --- Frozen tier-boundary literals ------------------------------------------
 #
-# These are the boundary values in force at Pass P. They match the
+# These are the boundary values currently in force. They match the
 # `thresholds.boundaries` block in `config/scoring.yaml` byte-for-byte.
 # Changing any value here requires an authorizing spec + a re-baseline
 # of committed snapshots + a matching update to the config literal in
 # the same commit.
+#
+# Pass U (FR-C, re-baseline Phase B) — authorizing spec. The triple
+# below is the natural-breaks derivation of the FR-C severity
+# distribution (fixed_reference = 2.5) at separation_factor 3.0, as
+# measured by Pass T (docs/generated/pass_t_facts.json →
+# candidates["FR-C"].derivation_at_3.0) and re-verified byte-identically
+# against the post-change engine in Pass U §4. Prior (Pass P → Pass T)
+# frozen triple was critical 0.5178454839188712 / high
+# 0.41368488092014066 / moderate 0.17711108045794494.
 FROZEN_BOUNDARIES: dict[str, float] = {
-    "critical": 0.5178454839188712,
-    "high":     0.41368488092014066,
-    "moderate": 0.17711108045794494,
+    "critical": 0.5247316525037853,
+    "high":     0.42320867926942163,
+    "moderate": 0.15668443545638666,
 }
 
 

@@ -6,6 +6,9 @@ Spec: docs/scoring_honesty_fixes_spec.md §1.
 import sys
 from pathlib import Path
 
+import pytest
+import yaml
+
 BACKEND = Path(__file__).parent.parent
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
@@ -15,6 +18,7 @@ from app.scoring import ScoringConfig, refresh_all_derived, propagate_event
 from app.schema.enums import ChokepointTier
 
 FIX = Path(__file__).parent / "fixtures"
+REPO = BACKEND.parent
 
 
 def _score_with(axes_mode):
@@ -106,10 +110,19 @@ def test_neutral_mode_still_reachable():
 
 
 # Pass K.1 §5 — frozen scale-constant literal for `fixed_reference`.
-# Restored from Pass H honesty-fixes pass; will not move without an
-# explicit spec authorization and a full re-baseline of committed
-# snapshots. Guarded by test_fixed_reference_is_frozen below.
-_FROZEN_FIXED_REFERENCE = 1.6711394969476698
+# Will not move without an explicit spec authorization and a full
+# re-baseline of committed snapshots. Guarded by
+# test_fixed_reference_is_frozen below.
+#
+# Pass U (FR-C, re-baseline Phase B) — authorizing spec. The constant
+# moved from ASML's honesty-fixes raw outbound (1.6711394969476698) to
+# a declared-arbitrary headroom value of 2.5, chosen above the current
+# graph maximum raw outbound (mineral:copper, 2.0447548854281186) so
+# nothing clamps and near-term growth does not re-clamp. This is the
+# first invocation of this test's docstring clause permitting an
+# authorized change. See config/scoring.yaml's fixed_reference comment
+# block and docs/generated/replay/pass_u_report.pdf §3.
+_FROZEN_FIXED_REFERENCE = 2.5
 
 
 def test_top_outbound_anchor_is_expected_node():
@@ -170,6 +183,30 @@ def test_top_outbound_anchor_is_expected_node():
     )
 
 
+def _assert_fixed_reference_frozen(ref: float) -> None:
+    """Raises AssertionError if `ref` differs from the frozen literal.
+
+    Pass U §4 — extracted from `test_fixed_reference_is_frozen` so a
+    proof-of-guard test can exercise the failure branch without editing
+    any scoring.yaml on disk. Mirrors the shape `test_thresholds_frozen`
+    already uses for the boundaries guard (`_assert_frozen`); before
+    Pass U the boundaries guard proved itself and this one never did."""
+    assert ref == _FROZEN_FIXED_REFERENCE, (
+        f"`fixed_reference` moved from the frozen literal "
+        f"{_FROZEN_FIXED_REFERENCE!r} to {ref!r}. If the change is "
+        f"authorized by a spec, update _FROZEN_FIXED_REFERENCE in the "
+        f"same commit and cite the spec. Do not update the constant "
+        f"alone — the defect this test catches is silent drift, not the "
+        f"value itself."
+    )
+
+
+def _load_fixed_reference(scoring_yaml: Path) -> float:
+    """Read `fixed_reference` straight from a scoring.yaml on disk."""
+    raw = yaml.safe_load(scoring_yaml.read_text())
+    return raw["concentration"]["outbound"]["normalization"]["fixed_reference"]
+
+
 def test_fixed_reference_is_frozen():
     """Pass K.1 §5 — `fixed_reference` is a scale constant.
 
@@ -186,12 +223,51 @@ def test_fixed_reference_is_frozen():
     See `config/scoring.yaml` comment on the constant for detail.
     """
     c = ScoringConfig.load(FIX / "scoring.yaml")
-    ref = c.outbound_fixed_reference
-    assert ref == _FROZEN_FIXED_REFERENCE, (
-        f"`fixed_reference` moved from the frozen literal "
-        f"{_FROZEN_FIXED_REFERENCE!r} to {ref!r}. If the change is "
-        f"authorized by a spec, update _FROZEN_FIXED_REFERENCE in the "
-        f"same commit and cite the spec. Do not update the constant "
-        f"alone — the defect this test catches is silent drift, not the "
-        f"value itself."
+    _assert_fixed_reference_frozen(c.outbound_fixed_reference)
+
+
+def test_config_fixed_reference_is_frozen():
+    """Pass U §4 — guard the COMMITTED config, not only the fixture.
+
+    Gap this closes: `test_fixed_reference_is_frozen` above reads
+    `FIX / scoring.yaml` (the test fixture). Since Pass K.1 froze the
+    constant, nothing had ever asserted that `config/scoring.yaml` — the
+    file the engine and the generator actually load — carries the frozen
+    value. The two were kept in sync by hand; if the real config drifted
+    while the fixture stayed put, the freeze stayed green. This reads the
+    repo config directly."""
+    ref = _load_fixed_reference(REPO / "config" / "scoring.yaml")
+    _assert_fixed_reference_frozen(ref)
+
+
+def test_config_and_fixture_fixed_reference_agree():
+    """Pass U §4 — the sync itself is now checked, not assumed.
+
+    `test_fixtures_and_data_are_content_identical` asserts whole-file
+    identity, but that guard lives in a different module and compares
+    entire files; this one pins the specific invariant Pass K.1 cares
+    about (the two `fixed_reference` values agree) so a drift is
+    reported against the constant by name."""
+    repo_ref = _load_fixed_reference(REPO / "config" / "scoring.yaml")
+    fix_ref = _load_fixed_reference(FIX / "scoring.yaml")
+    assert repo_ref == fix_ref, (
+        f"`fixed_reference` differs between config/scoring.yaml "
+        f"({repo_ref!r}) and backend/tests/fixtures/scoring.yaml "
+        f"({fix_ref!r}). The fixture must mirror the committed config; "
+        f"update both in the same commit."
     )
+
+
+def test_guard_actually_fails_when_fixed_reference_drifts():
+    """Pass U §4 proof-of-guard (spec §4.6: prove it, don't assert it).
+
+    Feed `_assert_fixed_reference_frozen` a drifted value. If the guard
+    silently accepts it the whole freeze is theatre. The boundaries
+    guard has had this proof since Pass P (`_assert_frozen`); the
+    `fixed_reference` guard never did until Pass U."""
+    drifted = _FROZEN_FIXED_REFERENCE + 1e-9
+    with pytest.raises(AssertionError) as exc_info:
+        _assert_fixed_reference_frozen(drifted)
+    msg = str(exc_info.value)
+    assert "fixed_reference" in msg
+    assert "spec" in msg

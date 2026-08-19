@@ -216,27 +216,36 @@ concentration:
     #               Scores are comparable across runs and graph edits.
     #               Values above 1.0 are clamped so [0, 1] holds.
     #
-    # `fixed_reference` re-derived under the honesty-fixes-pass default
-    # config (share_field: input_share, missing_static_axes: unscored)
-    # and committed here so it no longer moves. See report §3 for full
-    # top-10 raw-outbound table and the identity of the reference node.
+    # `fixed_reference` is a declared-arbitrary headroom constant
+    # (Pass U / FR-C). It is deliberately NOT equal to any node's raw
+    # outbound; it is chosen ABOVE the current graph maximum so nothing
+    # clamps and near-term growth does not re-clamp. See the frozen block
+    # on the value below and docs/generated/replay/pass_u_report.pdf §3.
     normalization:
       mode: fixed
       # ------------------------------------------------------------------
       # Pass K.1 §2 (DECIDED: Option A) — FROZEN SCALE CONSTANT.
+      # Pass U (FR-C, re-baseline Phase B) — re-authored value + basis.
       #
-      # This value is a permanent scale constant, restored from Pass K's
-      # unauthorized re-derivation. Its purpose is exactly to make
-      # `fixed` mode NOT behave like `graph_max`; re-deriving it each pass
-      # collapses the two modes into one and destroys cross-pass severity
-      # comparability. That collapse was what Pass K silently did:
+      # This value is a permanent scale constant. Its purpose is exactly
+      # to make `fixed` mode NOT behave like `graph_max`; re-deriving it
+      # each pass collapses the two modes into one and destroys cross-pass
+      # severity comparability. That collapse was what Pass K silently did:
       # `outbound_criticality = raw / fixed_reference` with fixed_reference
       # re-derived from the same graph — always 1.0 at the ranking-1 node,
       # regardless of graph edits.
       #
-      # The value below is the ASML raw outbound as of the honesty-fixes
-      # pass (docs/scoring_honesty_fixes_spec.md §3). It is deliberately
-      # NOT the current graph's max; that's the point.
+      # The value below is a DECLARED-ARBITRARY HEADROOM CONSTANT. It is
+      # deliberately NOT equal to any node's raw outbound — no node
+      # produces 2.5. It is chosen ABOVE the current graph maximum raw
+      # outbound (mineral:copper, 2.0447548854281186) so that (a) nothing
+      # clamps under `fixed` normalization and (b) near-term authoring
+      # growth does not push a node back over 1.0 and re-clamp. Prior to
+      # Pass U the constant was ASML's raw outbound from the honesty-fixes
+      # pass (1.6711394969476698); Pass T measured that this clamped the
+      # top three outbound nodes (copper, ASML, TSMC) at 1.0 and flattened
+      # the concentration axis. FR-C trades that flattening for one step of
+      # separation-factor headroom (accepted cost, Pass U §0).
       #
       # Changing this value requires an explicit spec authorization and a
       # full re-baseline of committed severity snapshots. It is guarded by
@@ -245,7 +254,7 @@ concentration:
       # to reflect a new #1 node — that is graph_max mode wearing fixed's
       # name.
       # ------------------------------------------------------------------
-      fixed_reference: 1.6711394969476698
+      fixed_reference: 2.5
   combine:
     # `max` — a node is severe if EITHER axis is high. Averaging would wash
     # ASML out; do not switch to weighted_sum without a reason.
@@ -320,9 +329,9 @@ thresholds:
   derivation:
     separation_factor: 3.0
   boundaries:
-    critical: 0.5178454839188712
-    high: 0.41368488092014066
-    moderate: 0.17711108045794494
+    critical: 0.5247316525037853
+    high: 0.42320867926942163
+    moderate: 0.15668443545638666
   # An unresolved band is declared when a required boundary has no
   # separating gap. Nodes inside the band still tier normally (backward
   # compatibility) but carry dynamic.tier_ambiguous = true and

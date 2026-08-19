@@ -2526,3 +2526,39 @@ Findings that changed:
 **Revised recommendation: FR-C** (`fixed_reference = 2.5`, boundaries derived at SF=3.0 — critical `0.5247316525037853`, high `0.42320867926942163`, moderate `0.15668443545638666`). ASML and AMAT move the same 2 tiers under both candidates, so those movements don't discriminate. FR-B additionally moves dysprosium, gallium, and TSMC (3 more), and invites the K.1-warning discussion; FR-C avoids both. FR-B remains defensible on the dynamic-range argument alone, but is no longer the recommendation.
 
 Detail (per-node tables, the K.1 warning re-argument, the falsifiable flip test) in the addendum PDF.
+
+---
+
+## Pass U — Re-baseline Phase B: ship FR-C (constant change)
+
+Report: `docs/generated/replay/pass_u_report.pdf` (also `.md` in the same directory, and copied to `~/Downloads/`). Facts artifact: `docs/generated/pass_u_facts.json`. Roll-forward diff: `docs/generated/severity_diff_pass_u.md`.
+
+**Decision, one sentence:** Ship FR-C — `fixed_reference` `1.6711394969476698 → 2.5` (declared-arbitrary headroom above copper's raw `2.0447548854281186`) and the three tier boundaries re-derived at SF=3.0 to `0.5247316525037853 / 0.42320867926942163 / 0.15668443545638666`, with both guard literals moved and snapshots re-baselined in the same commit; no edge, node, formula, aggregator, or code-path change.
+
+### U.scorecard (§8 pre-registrations)
+
+| # | expectation | HIT/MISS |
+|---|---|---|
+| 1 | FR-C derivation reproduces the three boundary literals byte-identically post-change | HIT |
+| 2 | Exactly two scored nodes change tier: ASML critical→moderate, AMAT moderate→none | HIT |
+| 3 | ASML ≈ 0.3817813806 and AMAT ≈ 0.1347260127 to Pass T precision | HIT |
+| 4 | TSMC dominant axis flips outbound→inbound; sev 0.4692819869→0.4646359779; tier holds | HIT |
+| 5 | Copper stays critical; dysprosium, gallium, NVIDIA byte-identical | HIT |
+| 6 | Clamped set empty; copper normalized = 0.8179019542 | HIT |
+| 7 | Tier histogram = 2 / 2 / 16 / 11 / 41 | HIT |
+| 8 | Drift diagnostic reports 0 would-change-tier at close | HIT (uninformative by construction) |
+| 9 | Both proof-of-guard tests still fail for the right reason after the literals move | HIT |
+| 10 | config and fixture in sync on `fixed_reference` at open | HIT |
+
+**10 HIT, 0 MISS.**
+
+### U.ledger
+
+- **FR-C shipped; first invocation of `test_fixed_reference_is_frozen`'s authorized-change clause.** `fixed_reference` → 2.5, a headroom constant that equals no node's raw outbound; the K.1 `graph_max` warning does not engage. Mode stayed `frozen`; `derived` never committed. Boundaries re-derived byte-identically to Pass T's FR-C measurement AND to the committed literals.
+- **Exactly two tier changes, both from the constant, neither structural.** ASML critical→moderate (2 tiers, clamp release — its outbound un-clamped from 1.0 to 0.7084); applied_materials moderate→none (1 tier, clean rescale by 0.6684557988). All other movement is inbound-unchanged (18 nodes, delta 0) or clean rescale (10 nodes). Zero unexplained deltas.
+- **Clamped set emptied** (`{copper, ASML, TSMC}` → ∅); copper normalized 0.8179019542. TSMC's dominant axis flipped outbound→inbound (severity barely moved, −0.0046, because inbound 0.990 ≈ the old clamped 1.0).
+- **§4 guard gap closed.** Since Pass K.1 the `fixed_reference` freeze guarded only the fixture, not the committed config. Three new tests in `test_unscored.py` now (1) guard `config/scoring.yaml` directly, (2) check config↔fixture agreement, (3) prove the guard fails on a drifted value. Config and fixture were in sync at open (`guard_sync.at_open.in_sync = true`).
+- **`RESCALE_REL_TOL` stressed, not fixed (O.6.4).** First real stress. The diff classifier mislabels the pre-U clamped set `{copper, ASML, TSMC}` as `STRUCTURAL` — not a tolerance problem: the classifier's rescale model has no notion of clamping, so it can't predict the delta of a node that was clamped in the snapshot. Recorded per §7; unchanged.
+- **FR-B flip test retired** (FR-B not shipped). Replaced by the FR-C watch condition: *does any future pass push a node's raw outbound above `2.5`, re-introducing a clamp?* Current headroom `2.5 − 2.0448 = 0.4553`.
+- **Next-at-risk map (U9):** KLA (`+0.0219584227`) and Lam Research (`+0.0248885133`) hold `moderate` by the thinnest margins above the boundary; AMAT sits the same `0.0219584227` below it in `none`.
+- **Suite:** 120 passed, 1 skipped, 0 xfail — both invocations. Was 117 + 3 new §4 guard tests. The 1 skip is `test_config_boundaries_equal_derivation` (asserted only under `mode: derived`).

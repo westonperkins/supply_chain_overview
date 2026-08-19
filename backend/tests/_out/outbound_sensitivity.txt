@@ -1,6 +1,8 @@
-Removing the single highest-outbound node (Copper, id=mineral:copper, score=1.000) and renormalizing changes:
+Removing the single highest-outbound node (Copper, id=mineral:copper, score=0.818) and renormalizing changes:
 
-  1 node(s) shift tier.
+  3 node(s) shift tier.
 
 Changed:
   mineral:copper                        critical → high     
+  company:asml                          moderate → critical 
+  company:applied_materials                 none → moderate 
