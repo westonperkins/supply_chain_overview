@@ -84,3 +84,37 @@ Not a pass/fail gate — the model test is severity > median scored severity.
 
 _None — every required boundary landed on a separating gap._
 
+## Drift diagnostic — frozen vs derived (Pass P §3)
+
+The boundaries above are FROZEN literals (see `config/scoring.yaml` `thresholds.mode: frozen`). This section reports what the natural-breaks derivation says NOW, so a re-baseline is a decision instead of an accident. No boundary listed here is being written to config; the drift is measured, not applied.
+
+### 1. Per-boundary drift
+
+| boundary | frozen | derived (now) | delta |
+|---|---:|---:|---:|
+| critical | 0.5178454839 | 0.5178454839 | +0.0000000000 |
+| high | 0.4136848809 | 0.4136848809 | +0.0000000000 |
+| moderate | 0.1771110805 | 0.1771110805 | +0.0000000000 |
+
+### 2. Would-change-tier under derived boundaries
+
+**0 nodes would change tier.** Frozen boundaries and the current derivation agree on every scored node's tier.
+
+### 3. Cluster-cut check
+
+For each frozen boundary, distance to the nearest scored severity above and below, compared against the median adjacent gap. A boundary whose nearest neighbour is closer than the median gap is cutting through a tight cluster — the named cost of freezing, made measurable.
+
+| boundary | value | nearest above | Δ above | nearest below | Δ below | inside a cluster? |
+|---|---:|---|---:|---|---:|---|
+| critical | 0.5178454839 | company:asml (0.5389417592) | +0.0210962753 | mineral:copper (0.4967492086) | +0.0210962753 | no (nearest 0.0210962753 ≥ median gap 0.0133607067) |
+| high | 0.4136848809 | company:tsmc (0.4692819869) | +0.0555971060 | company:nvidia (0.3580877750) | +0.0555971060 | no (nearest 0.0555971060 ≥ median gap 0.0133607067) |
+| moderate | 0.1771110805 | company:applied_materials (0.2015481248) | +0.0244370443 | company:synopsys (0.1526740361) | +0.0244370443 | no (nearest 0.0244370443 ≥ median gap 0.0133607067) |
+
+### 4. Unresolved bands declared by the derivation
+
+_None declared._ The derivation found separating gaps for every required boundary under the current distribution.
+
+### Verdict
+
+**Frozen set still fits the distribution.** No node would change tier under the derived boundaries, no frozen boundary sits inside a tight cluster, and no unresolved band is declared. A re-baseline would produce identical tiers today.
+

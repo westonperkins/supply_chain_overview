@@ -1322,3 +1322,100 @@ Verified two comment-authorship claims that Pass N updated:
 No code change. Recorded so the audit is on file if a future pass
 adds `operates` handling to inbound or removes it from cascade.
 
+## Pass P — D3 decided: tier boundaries frozen as absolute constants
+
+Fix pass. Config mechanism + a diagnostic. No scoring change; every
+severity and every tier is byte-identical to Pass O end state. Suite
+99 → **110 pass** (+4 boundary-guard, +7 drift-diagnostic); 0 xfail.
+Graph shape: 72 nodes / 259 edges / 31 scored. China material-flow
+reach: 35. `fixed_reference`: 1.6711394969476698 (unchanged).
+
+### P.5.1 D3 decided — boundaries frozen
+
+Tier boundaries stopped being live-derived on every generator run.
+`thresholds.mode: frozen` in `config/scoring.yaml` is now the default;
+`_write_boundaries_to_config` is a no-op under frozen; the natural-
+breaks derivation is retained as a diagnostic and feeds the drift
+section in `docs/generated/threshold_analysis.md`.
+
+Three reasons on the record (spec §0):
+1. **Precedent.** `fixed_reference` was frozen for the same class of
+   silent-drift defect (Pass K.1 §2, §5.4); Pass P applies the same
+   pattern to the same problem.
+2. **The scale is already AI-anchored.** `fixed_reference` is ASML's
+   raw outbound from THIS graph; every future domain divides by it.
+   Concentration was already absolute; relative tiers sat inconsistently
+   on top of a half-absolute foundation.
+3. **Boundaries were unstable from internal change alone.** Pass N's
+   aggregator switch alone moved critical 0.5096→0.5178, high
+   0.4119→0.4137, moderate 0.1367→0.1771 — no new domain, no new
+   nodes. Adding robotics or aerospace would have moved them far more.
+
+Decision was taken at 72 nodes rather than deferred until after the
+29 queued re-authors, because D3 is time-sensitive before robotics
+onboarding and the value of freezing now exceeds the value of a
+one-time cleaner baseline. See P.5.2 for the pre-approved re-baseline.
+
+### P.5.2 Re-baseline expected after the 29 re-authors — pre-approved in principle
+
+The 29 queued re-authors will move severities on HBM, CoWoS, copper,
+and RF Power — real movement in the middle of the distribution.
+Freezing at today's values means baselining on numbers already known
+to be wrong. This is accepted; the re-baseline pass is **pre-approved
+in principle** but still requires its own spec + diff scope + a
+snapshot re-capture (the movement from today's frozen boundaries to
+whatever the re-baseline chooses must be diffable, so the diff
+generator can attribute it to `mode: derived` + the 29 re-authors,
+not to node movement).
+
+Recorded so the next author does not treat the re-baseline as
+unauthorized boundary drift. The mechanism (`mode: derived`) is
+retained specifically for this pass; committed output under
+`mode: derived` outside the re-baseline flow is a defect and the
+guard test in `test_thresholds_frozen.py` catches it.
+
+### P.5.3 K.2 §3.3 closed — generated boundary values can no longer commit without a human decision point
+
+Pass K.2 §3.3 logged that `moderate: 0.0` reached committed config
+via `generate_inventory.py` without any human decision point — a
+side-effect write path from a documentation-generation script.
+Under `mode: frozen`, that path no longer exists for boundaries:
+the writer is inert, and any change to a boundary literal must be
+edited by hand under an authorizing spec, with the guard test
+updated in the same commit. Closed.
+
+`unresolved_bands` gets the same treatment: under frozen the
+derivation may still SIGNAL a band via the drift section, but
+`_write_boundaries_to_config` does not touch the config's
+`unresolved_bands` list. A live band under frozen boundaries is a
+drift signal, not a config truth.
+
+### P.5.4 Snapshot provenance principle extended — capture + freeze
+
+Pass O established that anything which can silently change the
+meaning of a severity number gets captured in the snapshot
+(`fixed_reference`, `boundaries`, aggregator method + ε). Pass P
+extends the treatment for boundaries specifically: **captured in
+the snapshot AND frozen in config AND guarded by a test**, the
+same treatment `fixed_reference` receives. The drift diagnostic
+becomes the third leg: capture makes past state legible, freezing
+makes current state stable, drift reporting makes the divergence
+visible so the next re-baseline is a decision instead of an
+accident.
+
+### P.5.5 Frozen-with-drift-reporting is now a pattern (n=2)
+
+`fixed_reference` (Pass K.1) and now tier boundaries (Pass P) have
+both moved from live-derived to frozen-with-drift-reporting. The
+pattern:
+- committed literal + inline comment naming what changes require
+- guard test that fails on drift
+- diagnostic that keeps running so drift is measurable, not silent
+- write path is inert under frozen; a `derived` mode exists for the
+  pre-approved re-baseline
+
+If a third value ever fits the same shape (a scoring input that
+depends on distribution shape and where silent drift changes the
+meaning of every downstream number), it is worth naming the pattern
+and factoring the shared machinery. At n=2 the code duplication is
+tolerable; at n=3 it is a refactor worth doing.

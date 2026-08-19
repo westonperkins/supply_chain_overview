@@ -283,6 +283,20 @@ class ScoringConfig:
             .get("separation_factor", 3.0)
         )
 
+    # Pass P §1 — D3 decided. `frozen` is the new default: boundaries are
+    # read from the committed literals and never rewritten by tooling.
+    # `derived` retains the pre-P behaviour (re-derive on every run,
+    # write into config as a side effect) for the pre-approved
+    # re-baseline pass. Any other value is a config error.
+    @property
+    def threshold_mode(self) -> str:
+        mode = self.raw.get("thresholds", {}).get("mode", "frozen")
+        if mode not in ("frozen", "derived"):
+            raise ValueError(
+                f"thresholds.mode must be 'frozen' or 'derived'; got {mode!r}"
+            )
+        return mode
+
     @property
     def threshold_unresolved_bands(self) -> list[dict]:
         return list(self.raw.get("thresholds", {}).get("unresolved_bands", []) or [])

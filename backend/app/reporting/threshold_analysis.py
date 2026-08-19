@@ -23,14 +23,36 @@ def _hash_content(content: str) -> str:
     return hashlib.sha256(content.encode("utf-8")).hexdigest()
 
 
+# Pass P §3 — tier lookup used by the drift section. Same lower-bound
+# convention as the scoring engine's tier derivation: a severity gets
+# the first tier whose boundary it meets or exceeds.
+def _tier_of(severity: float, boundaries: dict[str, float]) -> str:
+    if severity >= boundaries.get("critical", float("inf")):
+        return "critical"
+    if severity >= boundaries.get("high", float("inf")):
+        return "high"
+    if severity >= boundaries.get("moderate", float("inf")):
+        return "moderate"
+    return "none"
+
+
 def build_threshold_analysis(
     derivation: ThresholdDerivation,
     inventory_content: str,
     scored_count: int,
     unscored_count: int,
     chokepoint_landing: Optional[list[tuple[str, str, Optional[float], str]]] = None,
+    frozen_boundaries: Optional[dict[str, float]] = None,
+    mode: str = "derived",
 ) -> str:
-    """Return the docs/generated/threshold_analysis.md contents."""
+    """Return the docs/generated/threshold_analysis.md contents.
+
+    Pass P §3 — under `mode == 'frozen'` and when `frozen_boundaries`
+    is supplied, a drift section is appended. The derivation still
+    runs (via the caller) and is rendered here as before; the drift
+    section compares the derivation to the frozen set so a re-baseline
+    becomes a deliberate decision instead of something noticed by
+    accident three passes later."""
     lines: list[str] = []
     lines.append("# Threshold analysis — generated")
     lines.append("")
@@ -135,4 +157,220 @@ def build_threshold_analysis(
             lines.append("")
     lines.append("")
 
+    # -------- Pass P §3 — drift section (frozen mode only) -------- #
+    if mode == "frozen" and frozen_boundaries is not None:
+        lines.extend(_build_drift_section(derivation, frozen_boundaries))
+
     return "\n".join(lines) + "\n"
+
+
+def _build_drift_section(
+    derivation: ThresholdDerivation,
+    frozen: dict[str, float],
+) -> list[str]:
+    """Pass P §3 — drift diagnostic.
+
+    Four measurements plus a verdict line, all of them derived from
+    quantities the derivation already carries:
+
+      1. Where the natural-breaks derivation would place each boundary
+         now vs where the frozen literal sits.
+      2. Every node whose tier would change if the derivation were
+         adopted, named and directed.
+      3. Cluster-cut check — is any frozen boundary sitting inside a
+         cluster tighter than the median adjacent gap? A boundary that
+         cuts through near-identical severities is the named cost of
+         freezing, made measurable.
+      4. Whether the derivation declares any unresolved band under the
+         current distribution (which under frozen mode does not reach
+         config, so it is a drift signal not a config truth).
+
+    All four feed the verdict line so the answer to "does the frozen
+    set still fit the distribution?" is a single sentence rather than
+    a table someone must interpret."""
+    out: list[str] = []
+    out.append("## Drift diagnostic — frozen vs derived (Pass P §3)")
+    out.append("")
+    out.append(
+        "The boundaries above are FROZEN literals (see `config/scoring.yaml` "
+        "`thresholds.mode: frozen`). This section reports what the natural-"
+        "breaks derivation says NOW, so a re-baseline is a decision instead "
+        "of an accident. No boundary listed here is being written to config; "
+        "the drift is measured, not applied."
+    )
+    out.append("")
+
+    # -------- (1) per-boundary drift -------- #
+    out.append("### 1. Per-boundary drift")
+    out.append("")
+    out.append("| boundary | frozen | derived (now) | delta |")
+    out.append("|---|---:|---:|---:|")
+    derived = derivation.boundaries
+    for name in ("critical", "high", "moderate"):
+        f = frozen.get(name)
+        d = derived.get(name)
+        if f is None or d is None:
+            out.append(f"| {name} | — | — | — |")
+            continue
+        out.append(f"| {name} | {f:.10f} | {d:.10f} | {d - f:+.10f} |")
+    out.append("")
+
+    # -------- (2) would-change-tier list -------- #
+    out.append("### 2. Would-change-tier under derived boundaries")
+    out.append("")
+    changed: list[tuple[str, float, str, str]] = []
+    for nid, sev in derivation.scored:
+        t_frozen = _tier_of(sev, frozen)
+        t_derived = _tier_of(sev, derived)
+        if t_frozen != t_derived:
+            changed.append((nid, sev, t_frozen, t_derived))
+    if not changed:
+        out.append(
+            "**0 nodes would change tier.** Frozen boundaries and the "
+            "current derivation agree on every scored node's tier."
+        )
+    else:
+        out.append(
+            f"**{len(changed)} nodes would change tier** if the derived "
+            f"boundaries were adopted."
+        )
+        out.append("")
+        out.append("| id | severity | frozen tier | derived tier | direction |")
+        out.append("|---|---:|---|---|---|")
+        for nid, sev, tf, td in changed:
+            # Direction: up if the derived tier is more severe.
+            severity_rank = {"none": 0, "moderate": 1, "high": 2, "critical": 3}
+            direction = "↑" if severity_rank[td] > severity_rank[tf] else "↓"
+            out.append(f"| {nid} | {sev:.10f} | {tf} | {td} | {direction} |")
+    out.append("")
+
+    # -------- (3) cluster-cut check -------- #
+    out.append("### 3. Cluster-cut check")
+    out.append("")
+    out.append(
+        "For each frozen boundary, distance to the nearest scored "
+        "severity above and below, compared against the median adjacent "
+        "gap. A boundary whose nearest neighbour is closer than the "
+        "median gap is cutting through a tight cluster — the named "
+        "cost of freezing, made measurable."
+    )
+    out.append("")
+    out.append(
+        "| boundary | value | nearest above | Δ above | nearest below | "
+        "Δ below | inside a cluster? |"
+    )
+    out.append("|---|---:|---|---:|---|---:|---|")
+    median_gap = derivation.median_gap
+    scored_by_sev = sorted(derivation.scored, key=lambda kv: kv[1])
+    for name in ("critical", "high", "moderate"):
+        b = frozen.get(name)
+        if b is None:
+            out.append(f"| {name} | — | — | — | — | — | — |")
+            continue
+        # Nearest severity strictly above the boundary.
+        above = next(((nid, sev) for nid, sev in scored_by_sev if sev > b), None)
+        # Nearest severity strictly below the boundary (largest such).
+        below_candidates = [(nid, sev) for nid, sev in scored_by_sev if sev < b]
+        below = below_candidates[-1] if below_candidates else None
+        above_str = f"{above[0]} ({above[1]:.10f})" if above else "—"
+        below_str = f"{below[0]} ({below[1]:.10f})" if below else "—"
+        d_above = f"{above[1] - b:+.10f}" if above else "—"
+        d_below = f"{b - below[1]:+.10f}" if below else "—"
+        # Cluster-cut flag: either nearest neighbour tighter than median.
+        min_dist = None
+        if above is not None:
+            min_dist = above[1] - b
+        if below is not None:
+            db = b - below[1]
+            min_dist = db if min_dist is None else min(min_dist, db)
+        if min_dist is None:
+            flag = "—"
+        elif min_dist < median_gap:
+            flag = f"**YES** (nearest {min_dist:.10f} < median gap {median_gap:.10f})"
+        else:
+            flag = f"no (nearest {min_dist:.10f} ≥ median gap {median_gap:.10f})"
+        out.append(
+            f"| {name} | {b:.10f} | {above_str} | {d_above} | "
+            f"{below_str} | {d_below} | {flag} |"
+        )
+    out.append("")
+
+    # -------- (4) unresolved band declaration -------- #
+    out.append("### 4. Unresolved bands declared by the derivation")
+    out.append("")
+    if not derivation.unresolved_bands:
+        out.append(
+            "_None declared._ The derivation found separating gaps for "
+            "every required boundary under the current distribution."
+        )
+    else:
+        out.append(
+            f"**{len(derivation.unresolved_bands)} band(s) declared.** "
+            f"Under frozen mode these are NOT written to config "
+            f"(`thresholds.unresolved_bands` stays empty); the declaration "
+            f"here is a drift signal that the current distribution has "
+            f"less structure than the frozen boundaries assume."
+        )
+        for band in derivation.unresolved_bands:
+            out.append(
+                f"- span [{band.lower:.10f}, {band.upper:.10f}], "
+                f"tiers {' / '.join(band.tiers)} — {band.reason}"
+            )
+    out.append("")
+
+    # -------- Verdict line -------- #
+    out.append("### Verdict")
+    out.append("")
+    cluster_cuts = _count_cluster_cuts(frozen, derivation)
+    would_change = len(changed)
+    band_count = len(derivation.unresolved_bands)
+    if would_change == 0 and cluster_cuts == 0 and band_count == 0:
+        out.append(
+            "**Frozen set still fits the distribution.** No node would "
+            "change tier under the derived boundaries, no frozen boundary "
+            "sits inside a tight cluster, and no unresolved band is "
+            "declared. A re-baseline would produce identical tiers today."
+        )
+    else:
+        pieces: list[str] = []
+        if would_change:
+            pieces.append(f"{would_change} node(s) would change tier")
+        if cluster_cuts:
+            pieces.append(f"{cluster_cuts} boundary(-ies) inside tight clusters")
+        if band_count:
+            pieces.append(f"{band_count} unresolved band(s) declared")
+        out.append(
+            f"**Frozen set has drifted from the current distribution:** "
+            + "; ".join(pieces) + ". A re-baseline is not automatic — "
+            "raise a spec if the drift warrants updating the frozen "
+            "literals."
+        )
+    out.append("")
+    return out
+
+
+def _count_cluster_cuts(
+    frozen: dict[str, float], derivation: ThresholdDerivation
+) -> int:
+    """How many frozen boundaries sit inside a cluster tighter than
+    the median adjacent gap. Same logic as the table above, in a
+    scalar form so the verdict line stays a single sentence."""
+    median_gap = derivation.median_gap
+    if median_gap <= 0:
+        return 0
+    scored = sorted(derivation.scored, key=lambda kv: kv[1])
+    cuts = 0
+    for name in ("critical", "high", "moderate"):
+        b = frozen.get(name)
+        if b is None:
+            continue
+        min_dist: Optional[float] = None
+        for _, sev in scored:
+            d = abs(sev - b)
+            if sev == b:
+                continue
+            if min_dist is None or d < min_dist:
+                min_dist = d
+        if min_dist is not None and min_dist < median_gap:
+            cuts += 1
+    return cuts

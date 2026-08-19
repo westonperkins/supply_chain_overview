@@ -99,11 +99,19 @@ def _serialize_unresolved_bands(bands, indent_level: int) -> list[str]:
     return lines
 
 
-def _write_boundaries_to_config(derivation):
+def _write_boundaries_to_config(derivation, mode: str = "derived"):
     """F3 fix (Pass C): the config boundary block is a RENDERING of the
     derivation output, never a parallel hand-entry. This rewrites the
     three float values in place, preserving comments and every other
     line of scoring.yaml so the diff is minimal and reviewable.
+
+    Pass P §2 — under `mode: frozen` this function is a no-op. The
+    frozen boundaries live in `config/scoring.yaml` as the single
+    source of truth and the writer must not touch them; the derivation
+    still runs in `main()` but only feeds the drift diagnostic (see
+    `build_threshold_analysis`'s drift section). Under `derived` the
+    Pass C rewrite path runs unchanged so the pre-approved re-baseline
+    pass (§5.2) can produce a fresh config without reverting code.
 
     Pass L §3(3) — scanner exit fix. The prior exit condition
     `if line and not line.startswith(" ")` only detected fully-unindented
@@ -120,6 +128,12 @@ def _write_boundaries_to_config(derivation):
     through without changing state. Same-indent siblings (including
     `unresolved_bands:`) correctly terminate the block.
     """
+    if mode == "frozen":
+        # Pass P §2 — writer is intentionally inert under frozen mode.
+        # A callable no-op is preferred over conditionally skipping the
+        # call at the call site: if a future entry-point starts writing
+        # boundaries, the frozen guard is centralised here.
+        return
     yaml_path = REPO / "config" / "scoring.yaml"
     text = yaml_path.read_text()
     lines = text.split("\n")
@@ -234,15 +248,22 @@ def main():
     # First pass: score to get severities (independent of tier boundaries).
     g, c = score()
 
-    # Derive from committed severities.
+    # Derive from committed severities. Under Pass P `mode: frozen` the
+    # derivation is a DIAGNOSTIC only — its output feeds the drift
+    # section of threshold_analysis.md and never reaches
+    # `config/scoring.yaml` (see `_write_boundaries_to_config`). Under
+    # `mode: derived` it retains the pre-P behaviour: write the fresh
+    # boundaries into config, then re-score so tiers reflect them.
     severities = [(nid, n.dynamic.baseline_severity) for nid, n in g.nodes.items()]
     derivation = derive_thresholds(severities, c.threshold_separation_factor)
 
-    # F3: write derived boundaries into config so config IS the rendering
-    # of the derivation. Then re-score so tiers reflect the freshly
-    # written boundaries.
-    _write_boundaries_to_config(derivation)
-    g, c = score()
+    mode = c.threshold_mode
+    _write_boundaries_to_config(derivation, mode=mode)
+    if mode == "derived":
+        # Re-score with the freshly-written boundaries. Skipped under
+        # frozen because the writer wrote nothing; a second score() call
+        # would produce byte-identical output.
+        g, c = score()
 
     inventory = build_inventory(g, c)
     (GENERATED / "node_inventory.md").write_text(inventory)
@@ -252,6 +273,8 @@ def main():
     analysis = build_threshold_analysis(
         derivation, inventory, scored_count, unscored_count,
         chokepoint_landing=_chokepoint_landing(g),
+        frozen_boundaries=(c.chokepoint_thresholds if mode == "frozen" else None),
+        mode=mode,
     )
     (GENERATED / "threshold_analysis.md").write_text(analysis)
 

@@ -264,21 +264,47 @@ missing_static_axes:
   legacy_substitutability: 0.5
   legacy_lead_time_years: 1.0
 
-# Tier thresholds — DERIVED by
-# `backend/app/scoring/thresholds.py::derive_thresholds` from the shape
-# of the current severity distribution. No boundary value here is
-# hand-written; each is the midpoint of a separating gap between
-# adjacent sorted severities. Regenerate via:
-#     python backend/scripts/generate_inventory.py
-# See docs/generated/threshold_analysis.md for the full derivation
-# (input hash, gap list, median gap, which gap each boundary came from).
+# Tier thresholds — FROZEN ABSOLUTE CONSTANTS as of Pass P (D3 decided).
 #
-# `separation_factor` is the ONLY tunable — a gap is separating when its
-# size is at least this many times the median adjacent gap. Do NOT tune
-# this to produce a target tier membership; if the derivation cannot
-# find enough separating gaps, unresolved_bands is populated below and
-# nodes in those spans carry dynamic.tier_ambiguous = true.
+# Pass P §0 froze the three boundary values below. They are no longer
+# re-derived from the current distribution on every run; the natural-
+# breaks derivation in `backend/app/scoring/thresholds.py` still runs,
+# but only as a DIAGNOSTIC (see the drift section in
+# docs/generated/threshold_analysis.md). Changing any value here
+# requires:
+#   1. An authorizing pass spec that names the reason for the movement.
+#   2. Updating both this literal AND the guard test in
+#      backend/tests/test_thresholds_frozen.py in the same commit.
+#   3. A full re-baseline of committed snapshots (severity_snapshot.json)
+#      so the diff against a stale snapshot doesn't attribute the
+#      boundary movement to node movement.
+#
+# Reasoning (spec §0):
+#   - `fixed_reference` is already frozen (Pass K.1) — the same pattern
+#     applied to the same class of silent-drift problem.
+#   - Tiers must not depend on what else is in the graph. Adding
+#     robotics or aerospace must not recolour every AI node.
+#   - Pass N's aggregator switch alone moved these values ~1-25% —
+#     internal change was already enough to prove the derived-per-run
+#     shape unstable.
+#
+# The accepted cost (spec §0): frozen lines will eventually cut through
+# dense clusters as the graph grows — a real cost mitigated (not
+# eliminated) by the drift diagnostic. If the drift report shows
+# would-change-tier movement, the correct response is an authorized
+# re-baseline pass, NOT tuning the literals in-place.
+#
+# `separation_factor` remains a config parameter because the derivation
+# is still used as a diagnostic. Do NOT tune it to produce a target
+# tier membership under `mode: derived` either.
+#
+# `mode: derived` is retained for the eventual re-baseline pass and
+# for one-off experiments. Its output is not committed under any
+# routine flow.
 thresholds:
+  # Pass P — DEFAULT is `frozen`. `derived` runs the natural-breaks
+  # writer as before; kept for the pre-approved re-baseline (spec §5.2).
+  mode: frozen
   derivation:
     separation_factor: 3.0
   boundaries:
@@ -289,6 +315,11 @@ thresholds:
   # separating gap. Nodes inside the band still tier normally (backward
   # compatibility) but carry dynamic.tier_ambiguous = true and
   # dynamic.tier_ambiguous_with = <other tier>.
+  #
+  # Pass P §2 — under `mode: frozen` the derivation may still SIGNAL an
+  # unresolved band (via the drift section in threshold_analysis.md),
+  # but this list stays empty. A live band under frozen boundaries would
+  # be a drift signal, not a config truth.
   unresolved_bands: []
 
 # Cascade / propagation configuration
