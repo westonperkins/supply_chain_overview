@@ -16,7 +16,7 @@ Comparison of prior-pass state `pass_n_d4` against the current graph.
 | company:amazon | — | — | 0 | unscored | unscored |  |
 | company:amd | — | — | 0 | unscored | unscored |  |
 | company:applied_materials | 0.2015481248 | 0.2015481248 | +0.0000000000 | moderate | moderate |  |
-| company:arm | 0.1363617105 | 0.1363617105 | +0.0000000000 | none | none |  |
+| company:arm | 0.1363617105 | 0.2106185930 | +0.0742568825 | none | moderate | STRUCTURAL |
 | company:asml | 0.5389417592 | 0.5389417592 | +0.0000000000 | critical | critical |  |
 | company:broadcom | — | — | 0 | unscored | unscored |  |
 | company:cadence | 0.1221392289 | 0.1221392289 | +0.0000000000 | none | none |  |
@@ -39,7 +39,7 @@ Comparison of prior-pass state `pass_n_d4` against the current graph.
 | company:nikon | 0.0207811919 | 0.0207811919 | +0.0000000000 | none | none |  |
 | company:nvidia | 0.3580877750 | 0.3580877750 | +0.0000000000 | moderate | moderate |  |
 | company:openai | — | — | 0 | unscored | unscored |  |
-| company:quanta_services | 0.0388985171 | 0.0388985171 | +0.0000000000 | none | none |  |
+| company:quanta_services | 0.0388985171 | 0.0765885793 | +0.0376900621 | none | none | STRUCTURAL |
 | company:samsung | 0.2835434725 | 0.2835434725 | +0.0000000000 | moderate | moderate |  |
 | company:siemens_eda | 0.0366338858 | 0.0366338858 | +0.0000000000 | none | none |  |
 | company:siemens_energy | 0.1517835975 | 0.1517835975 | +0.0000000000 | none | none |  |
@@ -80,18 +80,18 @@ Comparison of prior-pass state `pass_n_d4` against the current graph.
 | mineral:gallium | 0.4876333076 | 0.4876333076 | +0.0000000000 | high | high |  |
 | mineral:indium | 0.1198439893 | 0.1198439893 | +0.0000000000 | none | none |  |
 | mineral:neodymium | 0.2950795735 | 0.2950795735 | +0.0000000000 | moderate | moderate |  |
-| product:arm_core_ip | 0.1511933805 | 0.1511933805 | +0.0000000000 | none | none |  |
+| product:arm_core_ip | 0.1511933805 | 0.3299643424 | +0.1787709618 | none | moderate | STRUCTURAL |
 | product:cowos_packaging | 0.3296191633 | 0.3296191633 | +0.0000000000 | moderate | moderate |  |
 | product:hbm | 0.3007539900 | 0.3007539900 | +0.0000000000 | moderate | moderate |  |
 | product:ndfeb_magnets | 0.3403936857 | 0.3403936857 | +0.0000000000 | moderate | moderate |  |
-| product:rf_power_semis | 0.0261031614 | 0.0261031614 | +0.0000000000 | none | none |  |
+| product:rf_power_semis | 0.0261031614 | 0.2872071723 | +0.2611040109 | none | moderate | STRUCTURAL |
 
 ## Summary
 
-- Non-zero severity deltas: **0**
+- Non-zero severity deltas: **4**
   - **RESCALE** (fixed_reference change): 0
-  - **STRUCTURAL** (edge / node changes): 0
-- Tier changes: **0**
+  - **STRUCTURAL** (edge / node changes): 4
+- Tier changes: **3**
 
-_No severity or tier movement — this pass did not touch scoring._
+_Severity moved. The pass author must explain each delta in the pass report._
 

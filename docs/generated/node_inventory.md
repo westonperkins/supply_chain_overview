@@ -16,27 +16,27 @@ Graph size: 72 nodes total (31 scored, 41 unscored).
 | company:tsmc | company | high | 0.46928199 | 1.000000 | 0.990100 | 1.752394 | 1.000000 | outbound | 0.0500 | hard | 4.0000 | estimate | false | — |
 | company:nvidia | company | moderate | 0.35808777 | 0.990100 | 0.990100 | 0.902620 | 0.540123 | inbound | 0.1500 | estimate | 3.0000 | estimate | false | — |
 | product:ndfeb_magnets | product | moderate | 0.34039369 | 1.000000 | 1.000000 | 0.238000 | 0.142418 | inbound | 0.2000 | estimate | 3.0000 | estimate | false | — |
+| product:arm_core_ip | product | moderate | 0.32996434 | 1.000000 | 1.000000 | 0.765735 | 0.458211 | inbound | 0.4000 | estimate | 5.0000 | estimate | false | — |
 | product:cowos_packaging | product | moderate | 0.32961916 | 0.952500 | 0.952500 | 0.270922 | 0.162118 | inbound | 0.1000 | estimate | 2.5000 | estimate | false | — |
 | product:hbm | product | moderate | 0.30075399 | 0.744040 | 0.744040 | 0.386648 | 0.231368 | inbound | 0.0500 | hard | 3.0000 | estimate | false | — |
 | mineral:neodymium | mineral | moderate | 0.29507957 | 0.919000 | 0.919000 | 0.719552 | 0.430576 | inbound | 0.3500 | estimate | 4.0000 | estimate | false | — |
+| product:rf_power_semis | product | moderate | 0.28720717 | 0.900000 | 0.900000 | 0.136695 | 0.081798 | inbound | 0.2500 | estimate | 3.0000 | estimate | false | — |
 | company:samsung | company | moderate | 0.28354347 | 0.951985 | 0.951985 | 0.146828 | 0.087861 | inbound | 0.3000 | estimate | 3.0000 | estimate | false | — |
 | company:lam_research | company | moderate | 0.27163045 | 0.911988 | 0.000000 | 1.524058 | 0.911988 | outbound | 0.3000 | estimate | 3.0000 | estimate | false | — |
 | company:kla | company | moderate | 0.26724708 | 0.966291 | 0.000000 | 1.614808 | 0.966291 | outbound | 0.3500 | estimate | 3.0000 | estimate | false | — |
 | company:sk_hynix | company | moderate | 0.24035305 | 0.869050 | 0.869050 | 0.710595 | 0.425216 | inbound | 0.3500 | estimate | 3.0000 | estimate | false | — |
 | company:micron | company | moderate | 0.22186435 | 0.869050 | 0.869050 | 0.157605 | 0.094310 | inbound | 0.4000 | estimate | 3.0000 | estimate | false | — |
+| company:arm | company | moderate | 0.21061859 | 0.990000 | 0.990000 | 0.748746 | 0.448045 | inbound | 0.5000 | estimate | 3.0000 | estimate | false | — |
 | company:applied_materials | company | moderate | 0.20154812 | 0.676689 | 0.000000 | 1.130842 | 0.676689 | outbound | 0.3000 | estimate | 3.0000 | estimate | false | — |
 | company:synopsys | company | none | 0.15267404 | 0.441527 | 0.000000 | 0.737853 | 0.441527 | outbound | 0.3000 | estimate | 4.0000 | estimate | false | — |
 | company:siemens_energy | company | none | 0.15178360 | 0.460000 | 0.460000 | 0.285318 | 0.170733 | inbound | 0.4000 | estimate | 5.0000 | estimate | false | — |
-| product:arm_core_ip | product | none | 0.15119338 | 0.458211 | 0.000000 | 0.765735 | 0.458211 | outbound | 0.4000 | estimate | 5.0000 | estimate | false | — |
 | company:ge_vernova | company | none | 0.13693520 | 0.415000 | 0.415000 | 0.304025 | 0.181927 | inbound | 0.4000 | estimate | 5.0000 | estimate | false | — |
-| company:arm | company | none | 0.13636171 | 0.640960 | 0.640960 | 0.748746 | 0.448045 | inbound | 0.5000 | estimate | 3.0000 | estimate | false | — |
 | company:cadence | company | none | 0.12213923 | 0.353221 | 0.000000 | 0.590282 | 0.353221 | outbound | 0.3000 | estimate | 4.0000 | estimate | false | — |
 | mineral:indium | mineral | none | 0.11984399 | 0.710830 | 0.710830 | 0.021225 | 0.012701 | inbound | 0.5000 | estimate | 2.0000 | estimate | false | — |
 | company:tokyo_electron | company | none | 0.09289488 | 0.335882 | 0.000000 | 0.561306 | 0.335882 | outbound | 0.3500 | estimate | 3.0000 | estimate | false | — |
+| company:quanta_services | company | none | 0.07658858 | 0.300000 | 0.300000 | 0.254626 | 0.152367 | inbound | 0.4000 | estimate | 3.0000 | estimate | false | — |
 | company:vertiv | company | none | 0.06867641 | 0.452600 | 0.452600 | 0.344710 | 0.206272 | inbound | 0.5500 | estimate | 2.0000 | estimate | false | — |
-| company:quanta_services | company | none | 0.03889852 | 0.152367 | 0.000000 | 0.254626 | 0.152367 | outbound | 0.4000 | estimate | 3.0000 | estimate | false | — |
 | company:siemens_eda | company | none | 0.03663389 | 0.132458 | 0.000000 | 0.221356 | 0.132458 | outbound | 0.3500 | estimate | 3.0000 | estimate | false | — |
-| product:rf_power_semis | product | none | 0.02610316 | 0.081798 | 0.000000 | 0.136695 | 0.081798 | outbound | 0.2500 | estimate | 3.0000 | estimate | false | — |
 | company:nikon | company | none | 0.02078119 | 0.083148 | 0.000000 | 0.138952 | 0.083148 | outbound | 0.3500 | estimate | 2.5000 | estimate | false | — |
 | company:hitachi_high_tech | company | none | 0.00885575 | 0.043772 | 0.000000 | 0.073149 | 0.043772 | outbound | 0.4000 | estimate | 2.0000 | estimate | false | — |
 | company:canon | company | none | 0.00357153 | 0.017653 | 0.000000 | 0.029501 | 0.017653 | outbound | 0.4000 | estimate | 2.0000 | estimate | false | — |
@@ -107,8 +107,8 @@ Grouped by node type. Each row names which axes are missing.
 |---|---|
 | critical | 2 |
 | high | 3 |
-| moderate | 11 |
-| none | 15 |
+| moderate | 14 |
+| none | 12 |
 | unscored | 41 |
 | **total** | **72** |
 
