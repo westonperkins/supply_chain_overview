@@ -1988,3 +1988,208 @@ Cross-checked against `git diff --name-only HEAD` output. No file listed under "
 - **Copper caveat re-visited.** The `mineral:copper` caveat's `0.29` numeral was flagged stale in Q.1.2 (correctly — 0.29 was the pre-Pass-N HHI-normalize=false reading, while noisy-OR gives 0.70 for the refining stage). Post-Q.1 the numeral was removed. Pass R notes: 0.29 sits within 0.008 of copper's outbound_criticality **before** Pass R (0.2815) — the Q.1 branch-D audit's axis-blind comparison rejected it as "stale vs inbound/outbound/concentration" without recognising that 0.29 was a coincidental near-match to outbound. The removal was still the right call (the numeral referred to the refining STAGE HHI, not outbound_criticality — the coincidence was spurious). Recorded so a future audit does not over-tune the tolerance based on the appearance of near-matches to axis values.
 
 - **Pinned-file discipline.** Pass R's edits to `known_bucket_shortfalls.txt` (6 removals) and `known_share_offenders.txt` (2 additions) are declared here as *consequences* of the §4-authored copper values, not motives. No copper value was selected to close a shortfall or provoke an overshoot. The Q.1 discipline (Pass Q's pinned-file edit was rejected because it was cited as suite-green evidence rather than as a downstream effect) is followed here: the edits are recorded in the report as effects, and the value choices are justified independently on the §4 basis.
+
+## Pass R.1 — correction pass following Pass R review
+
+**Type:** Correction. One reporting-code defect, one data-field correction (confidence flags), one new artifact block, four ledger entries. **Zero scoring change** — every severity, tier, inbound, outbound, concentration byte-identical to Pass R end state.
+
+**Opened on:** HEAD `090da2d` (Pass R). Working tree clean at open.
+**Suite at close:** **114 pass + 1 skipped + 0 xfail** under BOTH `python -m pytest` and bare `pytest`. Pass R added 1 test; Pass R.1 adds 3 (`test_pass_facts_bucket_sum.py`) → 111 → 114.
+**HEAD at close:** retrievable via `git log --grep "Pass R\.1"`. Not baked in (chicken-and-egg with the hash — same practice as Q.1 and Q).
+
+### R.1.0 Provenance
+
+At open:
+
+```
+$ git log --oneline -3
+090da2d Pass R: copper re-author (8 of 29). Region C — re-baseline trigger.
+40b38fb Pass Q.1: correction pass following Pass Q review (6 items)
+bf5e748 Pass Q: dependency re-author, power/electrical cluster (13 of 29)
+
+$ git status --short
+(empty)
+
+$ git rev-parse HEAD
+090da2dc256f4ef744baf968936d030d42e99355
+```
+
+Working tree clean; HEAD as expected.
+
+### R.1.1 — the `_bucket_sum` correction
+
+**The Pass R report quoted wrong bucket sums for the four fab-consumer copper edges.** Corrected values:
+
+| edge | Pass R reported (wrong) | Pass R.1 corrected |
+|---|---:|---:|
+| `e:copper-input-tsmc` | 5.18 | **0.95** |
+| `e:copper-input-sk_hynix` | 4.40 | **0.95** |
+| `e:copper-input-micron` | 3.21 | **0.95** |
+| `e:copper-input-samsung` | 5.27 | **0.98** |
+
+The four non-fab edges (`siemens`, `ge_vernova`, `quanta`, `vertiv`) were correct in the Pass R report: 1.05, 1.05, 0.30, 0.53 respectively. These are correct-by-accident — see below.
+
+**Cause.** `backend/scripts/pass_facts.py::_bucket_sum` filtered by category with:
+```python
+if getattr(e, "supply_category", None) == category or (
+    isinstance(e, dict) and e.get("supply_category") == category
+):
+```
+`getattr(dict, "supply_category", None)` returns `None` for every dict edge, because dicts don't have `supply_category` as an *attribute* — only as a *key*. When the caller passed `category=None` (correct for `input_to`, which carries no `supply_category`), the `None == None` short-circuit matched every edge into the target regardless of its actual `supply_category` key. The `or`-branch made this worse: even if the dict branch would've filtered correctly on its own, the getattr-branch clobbered it.
+
+The four fab consumers have MANY supplies-stage edges into them (ASML, applied_materials, lam_research, kla, etc. — each in a distinct supply_category). The buggy filter summed all of them together with copper. TSMC's true single-member bucket sum of 0.95 came out as 5.18.
+
+The four non-fab consumers (siemens_energy, ge_vernova, quanta_services, vertiv) have NO supplies-stage edges into them (they are suppliers themselves) — only input_to edges. So the buggy filter's "match everything into target" happened to equal the true bucket sum by chance.
+
+**Fix.** Normalized each edge to a single access path per iteration (dict → keys, object → attributes) and dropped the `or`-branch. `_bucket_members` was already correct (used `and` with dict-key access), which is why the artifact's `bucket_members` field disagreed with `bucket_sum` — the two functions had different filter semantics, and that inconsistency is what made the defect visible.
+
+**Proof-of-guard added.** `backend/tests/test_pass_facts_bucket_sum.py` — 3 tests:
+- `test_single_member_bucket_sum_equals_input_share` — the invariant the defect violated. Fires against pre-fix behaviour, passes after.
+- `test_bucket_sum_respects_category_key` — sanity: a real category filter matches only its own members.
+- `test_bucket_sum_none_category_is_not_a_wildcard` — the specific R.1.1 defect: `category=None` matches only edges whose `supply_category` key is None.
+
+### R.1.2 — confidence flags
+
+Per Q.1.5 discipline (flag must match note claim), 7 copper edges' confidence set to `inference`:
+
+| edge | note claim | pre-R.1 | post-R.1 |
+|---|---|---|---|
+| `e:copper-input-tsmc` | "inference on the exact quantum" | estimate | **inference** |
+| `e:copper-input-sk_hynix` | "same reasoning as ... TSMC" (inherits) | estimate | **inference** |
+| `e:copper-input-micron` | "same reasoning as ... TSMC / SK Hynix" (inherits) | estimate | **inference** |
+| `e:copper-input-samsung` | "same reasoning as ..." (inherits) | estimate | **inference** |
+| `e:copper-input-siemens` | "inference on the exact quantum" | estimate | **inference** |
+| `e:copper-input-ge_vernova` | "same reasoning as ... Siemens Energy" (inherits) | estimate | **inference** |
+| `e:copper-input-quanta` | "inference on the specific quantum" | estimate | **inference** |
+| `e:copper-input-vertiv` | *(undeterminable — no re-author happened; note describes what was NOT authored)* | estimate | **estimate** (unchanged) |
+
+Vertiv left at `estimate` per Q.1 discipline: undeterminable edges are left untouched (no re-author happened → nothing to align).
+
+Zero scoring effect — `confidence` is not read by the engine. Narration `confidence_hedges.inference` still renders "on the order of "; no narration test moved.
+
+### R.1.4 — clamp visibility + re-baseline scope note
+
+`pass_facts.py` now emits `outbound_clamp_check`: for every node, `{outbound_raw, outbound_normalized, outbound_clamped}` where `outbound_normalized = outbound_raw / fixed_reference` and `outbound_clamped = normalized > 1.0`. Sorted by raw descending so the ceiling-cluster is at the top.
+
+**Nodes with `outbound_clamped: true` (from the regenerated artifact):**
+
+| node | outbound_raw | ÷ 1.6711394969… | committed outbound_criticality |
+|---|---:|---:|---:|
+| `mineral:copper` | 2.0447548854 | 1.2236 | **1.0 (clamped)** |
+| `company:asml` | 1.7709769847 | 1.0597 | **1.0 (clamped)** |
+| `company:tsmc` | 1.7523935657 | 1.0486 | **1.0 (clamped)** |
+
+Exactly three, matching pre-registration §7(4). These three are indistinguishable on the concentration axis — their severity ordering is set entirely by substitutability + lead_time. Copper ranks first because 17y × 0.2 sub beats ASML's 5y × 0.02 sub, not because copper is more concentrated.
+
+**Consequence for the re-baseline pass (P.5.2), on the record:** re-deriving tier boundaries against a distribution whose top three points are clamp-flattened would bake the flattening into the frozen literals. `fixed_reference` (currently 1.6711…) must be reconsidered *before or alongside* boundaries, not after. This is the outbound-axis analogue of the Pass M/N saturation problem — surfaced here at the artifact level so the re-baseline pass sees it in one field.
+
+### R.1.7 pre-registration scorecard
+
+| # | expectation | HIT / MISS | evidence |
+|---|---|---|---|
+| 1 | Corrected fab bucket sums: 0.95 / 0.95 / 0.95 / 0.98 | **HIT** | Regenerated `pass_r_facts.json.edges` — tsmc/sk_hynix/micron `bucket_sum_after: 0.95`; samsung 0.98. Verified against edges.json: samsung bucket = copper 0.95 + indium 0.03 = 0.98. |
+| 2 | Non-fab bucket sums unchanged by the fix | **HIT** | siemens 1.05 (was 1.05); ge_vernova 1.05 (was 1.05); quanta 0.30 (was 0.30); vertiv 0.53 (was 0.53). Confirmed correct-by-accident because those consumers have no supplies-stage edges into them. |
+| 3 | Zero scoring movement on every node | **HIT** | Direct scoring probe: 0 mismatches vs committed `severity_snapshot.json` (Pass R end) across severity/inbound/outbound/concentration/tier for all 72 nodes. |
+| 4 | `outbound_clamped: true` on exactly copper, asml, tsmc | **HIT** | Exactly three; no more, no fewer. Fresh regeneration confirms. |
+| 5 | Single-member bucket invariant test fails against pre-fix and passes after | **HIT** | `test_single_member_bucket_sum_equals_input_share` proven by the fixture design (0.95 + 0.99 + 0.55 + 0.80 = 3.29 pre-fix; 0.95 post-fix). Also verified in-vivo by regenerating against the real graph. |
+| 6 | Suite ≥ 112 pass, 0 xfail, both invocations | **HIT (with headroom)** | **114 pass, 1 skipped, 0 xfail** — added 3 tests (`test_pass_facts_bucket_sum.py`) vs the spec's expected +1. Both invocations return identically. |
+| 7 | Every frozen constant unchanged | **HIT** | `fixed_reference` 1.6711394969476698; boundaries 0.5178.../0.4137.../0.1771... (all unchanged). Guard tests still green. |
+
+**7 HIT, 0 MISS.**
+
+### Guards changed
+
+None. No existing test's assertion was modified in Pass R.1. The three new tests in `backend/tests/test_pass_facts_bucket_sum.py` are additions, not modifications.
+
+This heading is introduced per the R.1.5 proposed standing rule — a pass that modifies an existing test's assertion lists it here with the authorizing reason. This pass modifies none; the empty section is itself the point of the heading (an honest zero rather than absence).
+
+### Changed
+
+`git diff --name-only HEAD` (HEAD at open = `090da2d` Pass R):
+
+```
+backend/scripts/pass_facts.py
+backend/tests/fixtures/ai/edges.json
+data/ai/edges.json
+docs/generated/pass_r_facts.json
+```
+
+`git ls-files -o --exclude-standard` (untracked):
+
+```
+backend/tests/test_pass_facts_bucket_sum.py
+```
+
+`docs/generated/replay/grading.md` will be modified by this section — total **6 files** in the Pass R.1 commit (5 modified + 1 untracked).
+
+### Not changed
+
+Every file below is genuinely absent from `git diff --name-only HEAD` — verified against the enumeration:
+
+- `config/scoring.yaml`, `backend/tests/fixtures/scoring.yaml` — no config change (comment or key).
+- `config/narration.yaml`, `backend/tests/fixtures/narration.yaml` — no narration change; `power_thin_input_bucket` rewording still deferred to a narration-copy pass (Pass R §6 note).
+- `data/ai/nodes.json`, `backend/tests/fixtures/ai/nodes.json` — no node touched. `mineral:copper.bottleneck_type: "volume_demand"` remains as-is per R.1.3 (see ledger).
+- `docs/generated/severity_snapshot.json`, `docs/generated/severity_diff.md`, `docs/generated/severity_diff_pass_r.md` — no roll-forward invoked; still labelled `pass_r`; scoring byte-identical so `severity_diff.md` regenerates to the same content.
+- `docs/generated/threshold_analysis.md`, `docs/generated/node_inventory.md`, `docs/generated/input_share_audit.md` — no severity or edge-value change so all machine-generated artifacts stay identical; the audit doc is manual and Pass R.1 makes no data claim that would need documenting there.
+- `docs/generated/pass_q_facts.json`, `docs/generated/pass_q1_facts.json` — historical Pass Q / Q.1 artifacts, unchanged. Pass R.1 only regenerates `pass_r_facts.json`.
+- Every scoring code file, every schema file, every existing test file — the pass restriction to "reporting-code fix + data-field correction + prose" held.
+
+Cross-checked against the diff output. No file listed under "Not changed" appears in `git diff --name-only HEAD`.
+
+### `pass_r_facts.json` regeneration diff scope
+
+Per §6 stop condition 5, the regenerated `pass_r_facts.json` diffs vs the committed one only in fields that Pass R.1 is authorized to move. Enumeration:
+
+- **§1 fix**: 8 edges' `bucket_sum_before` + `bucket_sum_after`. The 4 fab bucket sums move; the 4 non-fab were already correct.
+- **§2 fix**: 7 edges' `confidence` (estimate → inference); vertiv unchanged.
+- **§4 addition**: new top-level key `outbound_clamp_check`.
+- **Natural HEAD-advance consequences** (Pass R.1's HEAD is Pass R rather than Pass Q.1, so the `git show HEAD:...` reads in pass_facts.py return different baselines):
+  - `head_sha_at_open`: `40b38fbe3aba...` → `090da2dc256f...`
+  - Each edge's `input_share_before` shifts from Pass Q.1's value to Pass R's value (the current input_share). Consequently the 8 edges now have `input_share_before == input_share_after`, which flips the `status` field from `reauthored_value`/`reauthored_note_only` to `undeterminable` per pass_facts.py's status logic. **The status label reads "undeterminable" in the artifact but does NOT mean Pass R.1 undid the Pass R re-author** — the values are unchanged from Pass R end state; the label is a mechanical consequence of HEAD advancing past the pass whose changes it was labelling. Recorded here so no future reader misinterprets the label.
+  - `nodes_touched.*_before` fields shift to Pass R end values for the same reason.
+- `commit_shape_o_p` and `commit_shas_o_p`: unchanged (Pass O and Pass P still separate commits back).
+
+No unexplained field moved. Stop condition 5 satisfied under the natural-HEAD-advance interpretation; a strict literal reading would fire, but every diff traces to a spec-mandated action or a HEAD advance.
+
+### R.1.3 ledger — the paper contradiction, recorded
+
+`data/ai/nodes.json`, `mineral:copper`:
+- `bottleneck_type: "volume_demand"` (unchanged).
+- notes: *"NOT a concentration problem per paper — a volume/demand story."* (unchanged).
+
+Post-Pass-R, copper is the highest-severity node in the graph, scored by a formula whose first term is concentration. The model asserts the opposite of what the node's own paper-derived annotation says.
+
+The contradiction is real and it is now recorded. Copper's outbound concentration is a genuine structural fact — feeding four fabs and four power OEMs at near-binary dependency IS "dangerously depended-upon" even if inbound supply is diversified — so the two claims may both be true of different axes. The paper is a hypothesis document per Pass N.6.7 and no longer an independent check. But the `bottleneck_type` field is a node-level annotation and should reflect the current model, not the pre-paper reading.
+
+The scale-axis gap already logged in `config/scoring.yaml` ("concentration absorbing risk it cannot represent") is the same open item at maximum visibility now. Whether `bottleneck_type` should move, or whether a scale axis is needed, is a modelling decision with its own scope — **no data change in Pass R.1**. Editing `bottleneck_type` here would be fitting the annotation to the model — the inverse of the standing rule.
+
+### R.1.4 ledger — the clamp, and what it does to the re-baseline
+
+Three nodes at `outbound_criticality = 1.0` after clamping: copper (raw 2.04, normalized 1.22), asml (raw 1.77, normalized 1.06), tsmc (raw 1.75, normalized 1.05). See the `outbound_clamp_check` block in `pass_r_facts.json` for the full readout.
+
+**This is the outbound-axis analogue of the Pass M/N saturation problem** — surfaced here via clamping rather than via noisy-OR. The three clamped nodes are indistinguishable on the concentration axis; their severity ordering is set entirely by substitutability + lead_time.
+
+**Re-baseline scope (P.5.2), on the record:**
+- `fixed_reference` (currently frozen at 1.6711394969476698, = ASML's Pass K raw outbound) must be reconsidered *before or alongside* the tier boundaries. Re-deriving boundaries against a clamp-flattened distribution would bake the flattening in.
+- Copper is the new rank-1 anchor by raw (2.04). If `fixed_reference` were re-anchored to copper's raw, ASML would fall to 0.866 normalized, tsmc to 0.857 — the three would become distinguishable again and the concentration axis would recover its dynamic range at the top.
+- Alternatively the re-baseline could keep `fixed_reference` and accept the clamping as intended behaviour (per the config comment: "clamped to 1.0 so a future node exceeding the reference saturates rather than breaks the [0, 1] contract"). Either is defensible; both need explicit consideration in the re-baseline spec.
+
+### R.1.5 ledger — guards rewritten by the pass that invalidated them (pattern, not defect)
+
+Pass R modified three test files, each carrying a guard its own change broke:
+
+- `backend/tests/test_unscored.py` — `test_asml_is_rank_one_in_raw_outbound` renamed to `test_top_outbound_anchor_is_expected_node` and re-pointed at copper. Defensible on its own: the Pass K.1 docstring framed ASML's rank as a *structural claim about the graph*, and that claim is now false.
+- `backend/tests/test_generated_artifacts.py` — `test_config_boundaries_equal_derivation` scoped to `mode: derived` and now skipped under `mode: frozen`. This is a **latent Pass P defect that Pass R surfaced**: Pass P made `frozen` the default while that test kept asserting config-equals-derivation, and it only kept passing because the two coincidentally agreed until copper crossed. Attribution: Pass P, not Pass R.
+- `backend/tests/test_threshold_drift.py` — drift assertions updated for 4 would-change-tier nodes. Defensible: the drift diagnostic's contract is that it reports whatever the derivation says, and Pass R's data change legitimately moved the derivation.
+
+**The pattern:** three guards in one pass, each rewritten by the change it was guarding, none flagged as a category in the Pass R report. Two frozen values (`fixed_reference` in Pass K.1; boundaries in Pass P) carry explicit "update the guard in the same commit, citing the authorizing spec" rules with dedicated guard-test files. These three carried no such rule.
+
+**Proposed standing rule (recommendation, not implemented):** a pass that modifies an existing test's assertion — as opposed to adding a test — lists it under a dedicated **Guards changed** heading in its report, with per-test authorizing reason. Renaming counts as modifying. This section is introduced in Pass R.1's own report to demonstrate the shape.
+
+### R.1.6 ledger — the 0.95 coincidence with K.2.2 B1
+
+Six edges in Pass R were authored at exactly 0.95. K.2.2 §3.1 rejected mitigation B1 — a 0.95 authoring cap — on the grounds that it bends input data to fit the model, per `docs/generated/k2_decisions.md`: "an author who knows 1.00 is disallowed authors against the constraint rather than against the evidence."
+
+The Pass R notes make a real near-binary case for each edge, and the TSMC note explicitly says the exact quantum is undetermined between 0.90, 0.95, and 1.0. I do not conclude the value was cap-driven — but six independent function-halt judgments landing on the number the project explicitly rejected is a coincidence that belongs on the record, not discovered later.
+
+**Recorded:** the values stand; the coincidence is acknowledged; a future pass that authors additional near-binary dependencies should either (a) vary the quantum on evidence rather than defaulting to 0.95, or (b) state plainly that 0.95 is being used as a convention — in which case K.2.2 §3.1's rejection of B1 needs revisiting on its merits rather than by default.

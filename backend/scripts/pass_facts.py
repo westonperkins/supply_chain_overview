@@ -113,29 +113,50 @@ def _head_edge_lookup() -> dict:
 
 
 def _bucket_sum(
-    edges_by_id: dict, target: str, category: str, current_edges: list,
+    _unused, target: str, category, current_edges: list,
 ) -> float:
-    """Sum input_share across every edge into `target` under `category`.
-    Used to check the K.2.1 §2.3 collision claim (bucket sums crossing
-    1.0 under noisy-OR are honest, not defects)."""
+    """Sum input_share across every edge into `target` whose
+    supply_category equals `category`.
+
+    `category=None` matches ONLY edges with no supply_category
+    (e.g. `input_to`) — NOT "any bucket". Pass R.1 §1 correction:
+    the prior implementation used
+    `getattr(e, "supply_category", None) == category or ...` on a
+    list of dicts, and since a dict does not have `supply_category`
+    as an *attribute* (only as a *key*), `getattr` returned its
+    default `None` for every dict edge. When the caller passed
+    `category=None` (correct for `input_to`), the `None == None`
+    short-circuit fired on every edge into the target regardless
+    of its actual `supply_category` key. This inflated the four
+    `copper → fab` input_to bucket sums by summing every supplies-
+    stage edge into the fab as well (e.g. TSMC's `bucket_sum_after`
+    was reported as 5.18 rather than 0.95).
+
+    Fix: normalize each edge to a single access path per iteration
+    (attribute for objects, key for dicts) and drop the `or`-branch
+    entirely. `_bucket_members` was already correct; the two now
+    agree.
+    """
     total = 0.0
-    # current_edges may be a graph.edges dict OR a list of dicts.
     if isinstance(current_edges, dict):
         it = current_edges.values()
     else:
         it = current_edges
     for e in it:
-        if getattr(e, "target_id", None) == target or (
-            isinstance(e, dict) and e.get("target_id") == target
-        ):
-            if getattr(e, "supply_category", None) == category or (
-                isinstance(e, dict) and e.get("supply_category") == category
-            ):
-                v = getattr(e, "input_share", None)
-                if v is None and isinstance(e, dict):
-                    v = e.get("input_share")
-                if v is not None:
-                    total += float(v)
+        if isinstance(e, dict):
+            e_target = e.get("target_id")
+            e_cat = e.get("supply_category")
+            e_share = e.get("input_share")
+        else:
+            e_target = getattr(e, "target_id", None)
+            e_cat = getattr(e, "supply_category", None)
+            e_share = getattr(e, "input_share", None)
+        if e_target != target:
+            continue
+        if e_cat != category:
+            continue
+        if e_share is not None:
+            total += float(e_share)
     return total
 
 
@@ -535,6 +556,37 @@ def main() -> None:
     else:
         copper_axis_check = None
 
+    # -------- Pass R.1 §4 — outbound clamp visibility --------
+    # Emit for every node: raw outbound (pre-normalization walk value),
+    # normalized (raw / fixed_reference), and clamped (True when
+    # normalized > 1.0). Under `outbound.normalization: fixed` the
+    # engine clamps to 1.0, so several nodes may share
+    # `outbound_criticality = 1.0` while their RAW values differ
+    # substantially. This flattens the top of the concentration
+    # distribution; the re-baseline pass (P.5.2) needs to see it
+    # before it re-derives boundaries.
+    from app.scoring.engine import _outbound_criticality_raw
+    outbound_raw_map = {
+        nid: _outbound_criticality_raw(
+            nid, g,
+            c.concentration_outbound_decay,
+            c.concentration_outbound_max_hops,
+            c.concentration_outbound_min_influence,
+            share_field=c.outbound_share_field,
+            fallback=c.outbound_fallback_to_input_share,
+        )
+        for nid in g.nodes
+    }
+    _fixed_ref = c.outbound_fixed_reference
+    _clamp_records = {}
+    for nid, raw_val in outbound_raw_map.items():
+        norm_val = raw_val / _fixed_ref if _fixed_ref and _fixed_ref > 0 else None
+        _clamp_records[nid] = {
+            "outbound_raw": raw_val,
+            "outbound_normalized": norm_val,
+            "outbound_clamped": (norm_val is not None and norm_val > 1.0),
+        }
+
     # -------- Pass R §7 — boundary_proximity --------
     # For every scored node, distance to nearest frozen boundary above
     # and below. Lets the next pass inherit a proximity map instead of
@@ -610,6 +662,14 @@ def main() -> None:
         "caveat_number_audit": caveat_audit,
         "copper_axis_check": copper_axis_check,
         "boundary_proximity": boundary_proximity,
+        # Pass R.1 §4 — outbound clamp visibility. Every node, sorted by
+        # outbound_raw descending so the ceiling-cluster is at the top.
+        "outbound_clamp_check": [
+            {"id": nid, **_clamp_records[nid]}
+            for nid in sorted(
+                _clamp_records, key=lambda k: -_clamp_records[k]["outbound_raw"]
+            )
+        ],
         "suite": suite,
     }
     out_path = REPO / "docs" / "generated" / args.output_name

@@ -1,5 +1,5 @@
 {
-  "head_sha_at_open": "40b38fbe3aba54c24fec48270100cf353c51ef2c",
+  "head_sha_at_open": "090da2dc256f4ef744baf968936d030d42e99355",
   "commit_shape_o_p": "two",
   "commit_shas_o_p": {
     "pass_o": "f0dd482",
@@ -28,15 +28,15 @@
       "source": "mineral:copper",
       "target": "company:tsmc",
       "supply_category": null,
-      "input_share_before": 0.08,
+      "input_share_before": 0.95,
       "input_share_after": 0.95,
-      "status": "reauthored_value",
-      "confidence": "estimate",
+      "status": "undeterminable",
+      "confidence": "inference",
       "bucket_members": [
         "mineral:copper"
       ],
-      "bucket_sum_before": 4.309999999999999,
-      "bucket_sum_after": 5.18,
+      "bucket_sum_before": 0.95,
+      "bucket_sum_after": 0.95,
       "sole_supplier_bucket": true
     },
     {
@@ -44,15 +44,15 @@
       "source": "mineral:copper",
       "target": "company:sk_hynix",
       "supply_category": null,
-      "input_share_before": 0.08,
+      "input_share_before": 0.95,
       "input_share_after": 0.95,
-      "status": "reauthored_value",
-      "confidence": "estimate",
+      "status": "undeterminable",
+      "confidence": "inference",
       "bucket_members": [
         "mineral:copper"
       ],
-      "bucket_sum_before": 3.5300000000000002,
-      "bucket_sum_after": 4.399999999999999,
+      "bucket_sum_before": 0.95,
+      "bucket_sum_after": 0.95,
       "sole_supplier_bucket": true
     },
     {
@@ -60,15 +60,15 @@
       "source": "mineral:copper",
       "target": "company:micron",
       "supply_category": null,
-      "input_share_before": 0.08,
+      "input_share_before": 0.95,
       "input_share_after": 0.95,
-      "status": "reauthored_value",
-      "confidence": "estimate",
+      "status": "undeterminable",
+      "confidence": "inference",
       "bucket_members": [
         "mineral:copper"
       ],
-      "bucket_sum_before": 2.34,
-      "bucket_sum_after": 3.21,
+      "bucket_sum_before": 0.95,
+      "bucket_sum_after": 0.95,
       "sole_supplier_bucket": true
     },
     {
@@ -76,16 +76,16 @@
       "source": "mineral:copper",
       "target": "company:samsung",
       "supply_category": null,
-      "input_share_before": 0.06,
+      "input_share_before": 0.95,
       "input_share_after": 0.95,
-      "status": "reauthored_value",
-      "confidence": "estimate",
+      "status": "undeterminable",
+      "confidence": "inference",
       "bucket_members": [
         "mineral:copper",
         "mineral:indium"
       ],
-      "bucket_sum_before": 4.379999999999999,
-      "bucket_sum_after": 5.27,
+      "bucket_sum_before": 0.98,
+      "bucket_sum_after": 0.98,
       "sole_supplier_bucket": false
     },
     {
@@ -93,15 +93,15 @@
       "source": "mineral:copper",
       "target": "company:siemens_energy",
       "supply_category": null,
-      "input_share_before": 0.4,
+      "input_share_before": 0.95,
       "input_share_after": 0.95,
-      "status": "reauthored_value",
-      "confidence": "estimate",
+      "status": "undeterminable",
+      "confidence": "inference",
       "bucket_members": [
         "mineral:copper",
         "product:rf_power_semis"
       ],
-      "bucket_sum_before": 0.5,
+      "bucket_sum_before": 1.05,
       "bucket_sum_after": 1.05,
       "sole_supplier_bucket": false
     },
@@ -110,15 +110,15 @@
       "source": "mineral:copper",
       "target": "company:ge_vernova",
       "supply_category": null,
-      "input_share_before": 0.35,
+      "input_share_before": 0.95,
       "input_share_after": 0.95,
-      "status": "reauthored_value",
-      "confidence": "estimate",
+      "status": "undeterminable",
+      "confidence": "inference",
       "bucket_members": [
         "mineral:copper",
         "product:rf_power_semis"
       ],
-      "bucket_sum_before": 0.44999999999999996,
+      "bucket_sum_before": 1.05,
       "bucket_sum_after": 1.05,
       "sole_supplier_bucket": false
     },
@@ -129,8 +129,8 @@
       "supply_category": null,
       "input_share_before": 0.3,
       "input_share_after": 0.3,
-      "status": "reauthored_note_only",
-      "confidence": "estimate",
+      "status": "undeterminable",
+      "confidence": "inference",
       "bucket_members": [
         "mineral:copper"
       ],
@@ -145,7 +145,7 @@
       "supply_category": null,
       "input_share_before": 0.15,
       "input_share_after": 0.15,
-      "status": "reauthored_note_only",
+      "status": "undeterminable",
       "confidence": "estimate",
       "bucket_members": [
         "mineral:copper",
@@ -161,31 +161,31 @@
     {
       "id": "company:ge_vernova",
       "in_primary_touched_set": true,
-      "inbound_hhi_before": 0.4149999999999999,
+      "inbound_hhi_before": 0.955,
       "inbound_hhi_after": 0.955,
       "outbound_before": 0.1819268342116367,
       "outbound_after": 0.1819268342116367,
-      "concentration_before": 0.4149999999999999,
+      "concentration_before": 0.955,
       "concentration_after": 0.955,
       "dominant_axis_before": "inbound",
       "dominant_axis_after": "inbound",
-      "severity_before": 0.13693520208235277,
+      "severity_before": 0.315115946960595,
       "severity_after": 0.315115946960595,
-      "tier_before": "none",
+      "tier_before": "moderate",
       "tier_after": "moderate"
     },
     {
       "id": "company:micron",
       "in_primary_touched_set": true,
-      "inbound_hhi_before": 0.86905,
+      "inbound_hhi_before": 0.95,
       "inbound_hhi_after": 0.95,
       "outbound_before": 0.09431015321309122,
       "outbound_after": 0.09431015321309122,
-      "concentration_before": 0.86905,
+      "concentration_before": 0.95,
       "concentration_after": 0.95,
       "dominant_axis_before": "inbound",
       "dominant_axis_after": "inbound",
-      "severity_before": 0.22186434940866026,
+      "severity_before": 0.24253050105083399,
       "severity_after": 0.24253050105083399,
       "tier_before": "moderate",
       "tier_after": "moderate"
@@ -225,31 +225,31 @@
     {
       "id": "company:siemens_energy",
       "in_primary_touched_set": true,
-      "inbound_hhi_before": 0.45999999999999996,
+      "inbound_hhi_before": 0.955,
       "inbound_hhi_after": 0.955,
       "outbound_before": 0.1707325122849878,
       "outbound_after": 0.1707325122849878,
-      "concentration_before": 0.45999999999999996,
+      "concentration_before": 0.955,
       "concentration_after": 0.955,
       "dominant_axis_before": "inbound",
       "dominant_axis_after": "inbound",
-      "severity_before": 0.15178359748887296,
+      "severity_before": 0.315115946960595,
       "severity_after": 0.315115946960595,
-      "tier_before": "none",
+      "tier_before": "moderate",
       "tier_after": "moderate"
     },
     {
       "id": "company:sk_hynix",
       "in_primary_touched_set": true,
-      "inbound_hhi_before": 0.86905,
+      "inbound_hhi_before": 0.95,
       "inbound_hhi_after": 0.95,
       "outbound_before": 0.4252155935001507,
       "outbound_after": 0.4252155935001507,
-      "concentration_before": 0.86905,
+      "concentration_before": 0.95,
       "concentration_after": 0.95,
       "dominant_axis_before": "inbound",
       "dominant_axis_after": "inbound",
-      "severity_before": 0.24035304519271536,
+      "severity_before": 0.2627413761384035,
       "severity_after": 0.2627413761384035,
       "tier_before": "moderate",
       "tier_after": "moderate"
@@ -287,117 +287,37 @@
       "tier_after": "none"
     },
     {
-      "id": "country_region:chile",
-      "in_primary_touched_set": false,
-      "inbound_hhi_before": 0.0,
-      "inbound_hhi_after": 0.0,
-      "outbound_before": 0.11572925413488373,
-      "outbound_after": 0.23835984032471821,
-      "concentration_before": 0.11572925413488373,
-      "concentration_after": 0.23835984032471821,
-      "dominant_axis_before": "outbound",
-      "dominant_axis_after": "outbound",
-      "severity_before": null,
-      "severity_after": null,
-      "tier_before": "unscored",
-      "tier_after": "unscored"
-    },
-    {
-      "id": "country_region:china",
-      "in_primary_touched_set": false,
-      "inbound_hhi_before": 0.0,
-      "inbound_hhi_after": 0.0,
-      "outbound_before": 0.855336796504046,
-      "outbound_after": 0.9402990408866656,
-      "concentration_before": 0.855336796504046,
-      "concentration_after": 0.9402990408866656,
-      "dominant_axis_before": "outbound",
-      "dominant_axis_after": "outbound",
-      "severity_before": null,
-      "severity_after": null,
-      "tier_before": "unscored",
-      "tier_after": "unscored"
-    },
-    {
-      "id": "country_region:drc",
-      "in_primary_touched_set": false,
-      "inbound_hhi_before": 0.0,
-      "inbound_hhi_after": 0.0,
-      "outbound_before": 0.06017921215013954,
-      "outbound_after": 0.12394711696885347,
-      "concentration_before": 0.06017921215013954,
-      "concentration_after": 0.12394711696885347,
-      "dominant_axis_before": "outbound",
-      "dominant_axis_after": "outbound",
-      "severity_before": null,
-      "severity_after": null,
-      "tier_before": "unscored",
-      "tier_after": "unscored"
-    },
-    {
-      "id": "country_region:peru",
-      "in_primary_touched_set": false,
-      "inbound_hhi_before": 0.0,
-      "inbound_hhi_after": 0.0,
-      "outbound_before": 0.06017921215013954,
-      "outbound_after": 0.12394711696885347,
-      "concentration_before": 0.06017921215013954,
-      "concentration_after": 0.12394711696885347,
-      "dominant_axis_before": "outbound",
-      "dominant_axis_after": "outbound",
-      "severity_before": null,
-      "severity_after": null,
-      "tier_before": "unscored",
-      "tier_after": "unscored"
-    },
-    {
-      "id": "country_region:usa",
-      "in_primary_touched_set": false,
-      "inbound_hhi_before": 0.0,
-      "inbound_hhi_after": 0.0,
-      "outbound_before": 0.09827188835896969,
-      "outbound_after": 0.14015437930173735,
-      "concentration_before": 0.09827188835896969,
-      "concentration_after": 0.14015437930173735,
-      "dominant_axis_before": "outbound",
-      "dominant_axis_after": "outbound",
-      "severity_before": null,
-      "severity_after": null,
-      "tier_before": "unscored",
-      "tier_after": "unscored"
-    },
-    {
       "id": "mineral:copper",
       "in_primary_touched_set": true,
       "inbound_hhi_before": 0.699934564,
       "inbound_hhi_after": 0.699934564,
-      "outbound_before": 0.2815234614691293,
+      "outbound_before": 1.0,
       "outbound_after": 1.0,
-      "concentration_before": 0.699934564,
+      "concentration_before": 1.0,
       "concentration_after": 1.0,
-      "dominant_axis_before": "inbound",
+      "dominant_axis_before": "outbound",
       "dominant_axis_after": "outbound",
-      "severity_before": 0.4967492086381209,
+      "severity_before": 0.7097080701362833,
       "severity_after": 0.7097080701362833,
-      "tier_before": "high",
+      "tier_before": "critical",
       "tier_after": "critical"
     }
   ],
   "caveat_check": [
     {
       "id": "company:ge_vernova",
-      "branch": "C",
-      "reason": "inbound_hhi moved \u2014 stop condition (spec \u00a75 branch C)",
-      "inbound_hhi_before": 0.4149999999999999,
+      "branch": "A",
+      "reason": "inbound_hhi unchanged AND inbound still the dominant axis",
+      "inbound_hhi_before": 0.955,
       "inbound_hhi_after": 0.955,
       "outbound_before": 0.1819268342116367,
       "outbound_after": 0.1819268342116367
     },
     {
       "id": "company:siemens_energy",
-      "branch": "C",
-      "reason": "inbound_hhi moved \u2014 stop condition (spec \u00a75 branch C)",
-      "inbound_hhi_before": 0.45999999999999996,
+      "branch": "A",
+      "reason": "inbound_hhi unchanged AND inbound still the dominant axis",
+      "inbound_hhi_before": 0.955,
       "inbound_hhi_after": 0.955,
       "outbound_before": 0.1707325122849878,
       "outbound_after": 0.1707325122849878
@@ -483,13 +403,13 @@
   "copper_axis_check": {
     "inbound_before": 0.699934564,
     "inbound_after": 0.699934564,
-    "outbound_before": 0.2815234614691293,
+    "outbound_before": 1.0,
     "outbound_after": 1.0,
-    "concentration_before": 0.699934564,
+    "concentration_before": 1.0,
     "concentration_after": 1.0,
-    "severity_before": 0.4967492086381209,
+    "severity_before": 0.7097080701362833,
     "severity_after": 0.7097080701362833,
-    "tier_before": "high",
+    "tier_before": "critical",
     "tier_after": "critical",
     "region": "C",
     "region_thresholds": {
@@ -778,22 +698,456 @@
       "distance_above": 0.1735395500842128
     }
   ],
+  "outbound_clamp_check": [
+    {
+      "id": "mineral:copper",
+      "outbound_raw": 2.0447548854281186,
+      "outbound_normalized": 1.223569240726376,
+      "outbound_clamped": true
+    },
+    {
+      "id": "company:asml",
+      "outbound_raw": 1.770976984672585,
+      "outbound_normalized": 1.0597421627023165,
+      "outbound_clamped": true
+    },
+    {
+      "id": "company:tsmc",
+      "outbound_raw": 1.7523935656701093,
+      "outbound_normalized": 1.0486219545829953,
+      "outbound_clamped": true
+    },
+    {
+      "id": "company:kla",
+      "outbound_raw": 1.614807665219884,
+      "outbound_normalized": 0.9662913647659721,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:china",
+      "outbound_raw": 1.5713708661677188,
+      "outbound_normalized": 0.9402990408866656,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:lam_research",
+      "outbound_raw": 1.5240583926946587,
+      "outbound_normalized": 0.9119875363357433,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:applied_materials",
+      "outbound_raw": 1.1308419667019443,
+      "outbound_normalized": 0.6766891505870234,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:nvidia",
+      "outbound_raw": 0.9026200751146629,
+      "outbound_normalized": 0.5401225192530577,
+      "outbound_clamped": false
+    },
+    {
+      "id": "product:arm_core_ip",
+      "outbound_raw": 0.7657349521048389,
+      "outbound_normalized": 0.45821127051538846,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:arm",
+      "outbound_raw": 0.7487464579340258,
+      "outbound_normalized": 0.4480454559907228,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:synopsys",
+      "outbound_raw": 0.7378525313367162,
+      "outbound_normalized": 0.44152659468847527,
+      "outbound_clamped": false
+    },
+    {
+      "id": "mineral:neodymium",
+      "outbound_raw": 0.7195523330515995,
+      "outbound_normalized": 0.4305758641728349,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:sk_hynix",
+      "outbound_raw": 0.7105945730161467,
+      "outbound_normalized": 0.4252155935001507,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:constellation_energy",
+      "outbound_raw": 0.7104224095564553,
+      "outbound_normalized": 0.4251125719032069,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:mp_materials",
+      "outbound_raw": 0.7037382672438428,
+      "outbound_normalized": 0.42111282064077726,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:lynas",
+      "outbound_raw": 0.7026152155337656,
+      "outbound_normalized": 0.42044079313372085,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:xai",
+      "outbound_raw": 0.7,
+      "outbound_normalized": 0.41887586361195306,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:openai",
+      "outbound_raw": 0.7,
+      "outbound_normalized": 0.41887586361195306,
+      "outbound_clamped": false
+    },
+    {
+      "id": "mineral:dysprosium",
+      "outbound_raw": 0.6475970997464396,
+      "outbound_normalized": 0.3875182777555515,
+      "outbound_clamped": false
+    },
+    {
+      "id": "mineral:gallium",
+      "outbound_raw": 0.6358587092609103,
+      "outbound_normalized": 0.3804940942526365,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:cadence",
+      "outbound_raw": 0.590282025069373,
+      "outbound_normalized": 0.3532212757507802,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:tokyo_electron",
+      "outbound_raw": 0.5613059411025222,
+      "outbound_normalized": 0.3358821583283415,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:chile",
+      "outbound_raw": 0.3983325436527765,
+      "outbound_normalized": 0.23835984032471821,
+      "outbound_clamped": false
+    },
+    {
+      "id": "product:hbm",
+      "outbound_raw": 0.3866477231279139,
+      "outbound_normalized": 0.23136771276971466,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:vertiv",
+      "outbound_raw": 0.34471002306286364,
+      "outbound_normalized": 0.20627244086593324,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:ge_vernova",
+      "outbound_raw": 0.30402511820571665,
+      "outbound_normalized": 0.1819268342116367,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:kachin",
+      "outbound_raw": 0.2918876577830758,
+      "outbound_normalized": 0.1746638496165087,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:siemens_energy",
+      "outbound_raw": 0.28531784469254634,
+      "outbound_normalized": 0.1707325122849878,
+      "outbound_clamped": false
+    },
+    {
+      "id": "product:cowos_packaging",
+      "outbound_raw": 0.27092163221123555,
+      "outbound_normalized": 0.16211790380520175,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:quanta_services",
+      "outbound_raw": 0.25462614260912014,
+      "outbound_normalized": 0.15236677911939359,
+      "outbound_clamped": false
+    },
+    {
+      "id": "product:ndfeb_magnets",
+      "outbound_raw": 0.238,
+      "outbound_normalized": 0.14241779362806403,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:usa",
+      "outbound_raw": 0.23421751892131829,
+      "outbound_normalized": 0.14015437930173735,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:siemens_eda",
+      "outbound_raw": 0.22135575940101487,
+      "outbound_normalized": 0.13245797840654258,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:drc",
+      "outbound_raw": 0.20713292269944378,
+      "outbound_normalized": 0.12394711696885347,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:peru",
+      "outbound_raw": 0.20713292269944378,
+      "outbound_normalized": 0.12394711696885347,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:broadcom",
+      "outbound_raw": 0.175,
+      "outbound_normalized": 0.10471896590298826,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:canada",
+      "outbound_raw": 0.1628267485003257,
+      "outbound_normalized": 0.09743456413885744,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:nextera_energy",
+      "outbound_raw": 0.16039014932345438,
+      "outbound_normalized": 0.09597651758958867,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:micron",
+      "outbound_raw": 0.15760542199758293,
+      "outbound_normalized": 0.09431015321309122,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:samsung",
+      "outbound_raw": 0.14682793641804068,
+      "outbound_normalized": 0.08786096952781103,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:south_korea",
+      "outbound_raw": 0.1400929327372895,
+      "outbound_normalized": 0.08383078312323342,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:nikon",
+      "outbound_raw": 0.13895201248057726,
+      "outbound_normalized": 0.08314806318345812,
+      "outbound_clamped": false
+    },
+    {
+      "id": "product:rf_power_semis",
+      "outbound_raw": 0.13669512952278146,
+      "outbound_normalized": 0.08179755775771838,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:amd",
+      "outbound_raw": 0.12083873551142447,
+      "outbound_normalized": 0.07230918527874901,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:japan",
+      "outbound_raw": 0.1085511656668838,
+      "outbound_normalized": 0.06495637609257163,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:mountain_pass",
+      "outbound_raw": 0.10348566679187991,
+      "outbound_normalized": 0.0619252114984393,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:malaysia",
+      "outbound_raw": 0.0865216865531411,
+      "outbound_normalized": 0.05177406596587098,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:lynas_malaysia",
+      "outbound_raw": 0.0865216865531411,
+      "outbound_normalized": 0.05177406596587098,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:myanmar",
+      "outbound_raw": 0.08623805565989993,
+      "outbound_normalized": 0.051604342915366086,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:australia",
+      "outbound_raw": 0.08623805565989993,
+      "outbound_normalized": 0.051604342915366086,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:vistra",
+      "outbound_raw": 0.07826237921249263,
+      "outbound_normalized": 0.04683174525851287,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:hitachi_high_tech",
+      "outbound_raw": 0.07314866003031087,
+      "outbound_normalized": 0.043771725917505167,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:marvell",
+      "outbound_raw": 0.06999999999999999,
+      "outbound_normalized": 0.0418875863611953,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:brazil",
+      "outbound_raw": 0.04311902782994997,
+      "outbound_normalized": 0.025802171457683043,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:serra_verde",
+      "outbound_raw": 0.04311902782994997,
+      "outbound_normalized": 0.025802171457683043,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:talen_energy",
+      "outbound_raw": 0.034999999999999996,
+      "outbound_normalized": 0.02094379318059765,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:duke_energy",
+      "outbound_raw": 0.034999999999999996,
+      "outbound_normalized": 0.02094379318059765,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:canon",
+      "outbound_raw": 0.029500902150674982,
+      "outbound_normalized": 0.017653165522422437,
+      "outbound_clamped": false
+    },
+    {
+      "id": "mineral:indium",
+      "outbound_raw": 0.021225156614841173,
+      "outbound_normalized": 0.012701008296200793,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:taiwan",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:netherlands",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:intel",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:google",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:amazon",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:microsoft",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "company:meta",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:colossus",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:stargate_abilene",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:vantage_frontier",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:the_citadel",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "facility:three_mile_island",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    },
+    {
+      "id": "country_region:germany",
+      "outbound_raw": 0.0,
+      "outbound_normalized": 0.0,
+      "outbound_clamped": false
+    }
+  ],
   "suite": {
     "python_m_pytest": {
       "invocation": "python -m pytest backend/tests/ -q --tb=no",
-      "passed": 111,
+      "passed": 114,
       "failed": 0,
       "xfail": 0,
       "exit_code": 0,
-      "tail": "111 passed, 1 skipped in 0.68s"
+      "tail": "114 passed, 1 skipped in 0.68s"
     },
     "bare_pytest": {
       "invocation": "pytest backend/tests/ -q --tb=no",
-      "passed": 111,
+      "passed": 114,
       "failed": 0,
       "xfail": 0,
       "exit_code": 0,
-      "tail": "111 passed, 1 skipped in 0.66s"
+      "tail": "114 passed, 1 skipped in 0.67s"
     }
   }
 }

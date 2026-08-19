@@ -1231,7 +1231,7 @@
     "target_id": "company:tsmc",
     "type": "input_to",
     "static": {
-      "confidence": "estimate",
+      "confidence": "inference",
       "source_note": "[Pass R \u00a74 dependency-basis re-author.] Copper is the interconnect metallization at every M1+ layer of leading-edge nodes (damascene process, IBM 1997 onward). No drop-in substitute at scale; aluminum is obsolete for advanced nodes, and cobalt/ruthenium/tungsten are being researched for specific layers but do not replace bulk M1+ copper interconnects. Under \u00a74.1: withdrawal of copper halts leading-edge chip production entirely \u2014 a function-halt event, not a cost event. Response window: no scaled substitute in any realistic horizon (>10y). Prior value 0.08 was BOM-fraction of chip cost (~2-4% copper). Confidence: estimate on the near-total halt, inference on the exact quantum (0.95 vs 0.90 vs 1.0 not distinguished by available sources)."
     },
     "input_share": 0.95,
@@ -1243,7 +1243,7 @@
     "target_id": "company:sk_hynix",
     "type": "input_to",
     "static": {
-      "confidence": "estimate",
+      "confidence": "inference",
       "source_note": "[Pass R \u00a74 dependency-basis re-author.] Same reasoning as copper \u2192 TSMC: HBM/DRAM production uses copper damascene interconnects at every M1+ layer. Function-halt on withdrawal; no scaled substitute. Prior value 0.08 was BOM-fraction. Confidence: estimate."
     },
     "input_share": 0.95,
@@ -1255,7 +1255,7 @@
     "target_id": "company:micron",
     "type": "input_to",
     "static": {
-      "confidence": "estimate",
+      "confidence": "inference",
       "source_note": "[Pass R \u00a74 dependency-basis re-author.] Same reasoning as copper \u2192 TSMC / SK Hynix: DRAM production requires copper interconnects; no scaled substitute. Function-halt on withdrawal. Prior value 0.08 was BOM-fraction. Confidence: estimate."
     },
     "input_share": 0.95,
@@ -1267,7 +1267,7 @@
     "target_id": "company:samsung",
     "type": "input_to",
     "static": {
-      "confidence": "estimate",
+      "confidence": "inference",
       "source_note": "[Pass R \u00a74 dependency-basis re-author.] Same reasoning as copper \u2192 TSMC / SK Hynix / Micron: Samsung's foundry + memory production requires copper interconnects; no scaled substitute. Function-halt on withdrawal. Prior value 0.06 was BOM-fraction. Confidence: estimate."
     },
     "input_share": 0.95,
@@ -1279,7 +1279,7 @@
     "target_id": "company:siemens_energy",
     "type": "input_to",
     "static": {
-      "confidence": "estimate",
+      "confidence": "inference",
       "source_note": "[Pass R \u00a74 dependency-basis re-author.] HV grid transformers and synchronous generator windings are copper-dominant with no scaled substitute at grid voltage class. Aluminum windings exist for lower-voltage distribution transformers but do not replace GSU/transmission-class equipment or grid-scale generators. Under \u00a74.1: withdrawal halts new-build/refresh of grid transformers, gas turbines, and generator sets; installed base continues operating. Response window: >10y for substitute technology at scale. Prior value 0.40 was mass-fraction (transformers are ~15-25% copper by mass). Confidence: estimate on the near-total halt for new-build, inference on the exact quantum."
     },
     "input_share": 0.95,
@@ -1291,7 +1291,7 @@
     "target_id": "company:ge_vernova",
     "type": "input_to",
     "static": {
-      "confidence": "estimate",
+      "confidence": "inference",
       "source_note": "[Pass R \u00a74 dependency-basis re-author.] Same reasoning as copper \u2192 Siemens Energy: HV transformer + generator + wind (5-6 t Cu/MW in generators + collection) function halts on copper withdrawal for new-build/refresh; installed base continues. Prior value 0.35 was mass-fraction weighted across product mix. Confidence: estimate."
     },
     "input_share": 0.95,
@@ -1303,7 +1303,7 @@
     "target_id": "company:quanta_services",
     "type": "input_to",
     "static": {
-      "confidence": "estimate",
+      "confidence": "inference",
       "source_note": "[Pass R \u00a74 dependency-basis re-author, value retained.] Quanta's largest business is HV overhead transmission-line construction, which uses aluminum conductor steel-reinforced (ACSR) \u2014 copper is not the transmission-line conductor at HV grid scale, contrary to a common assumption. Copper is used in substation switchgear/busbar and in MV/LV distribution. Under \u00a74.1: withdrawal of copper impairs Quanta's substation build + distribution work (~partial halt) but does NOT halt HV transmission construction. Value 0.30 retained as consistent with partial-halt function loss across Quanta's mixed portfolio. Confidence: estimate on the direction (transmission-vs-substation split), inference on the specific quantum."
     },
     "input_share": 0.3,
