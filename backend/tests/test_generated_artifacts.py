@@ -199,16 +199,35 @@ def test_config_boundaries_equal_derivation():
     """F3 fix (Pass C): the config boundary block IS the rendering of the
     derivation output. Load committed config boundaries, freshly derive
     from the committed inventory, assert equality to full float
-    precision. Mismatch fails naming both values so the fix path is
-    obvious: `python backend/scripts/generate_inventory.py` will rewrite
-    the config from the derivation."""
+    precision.
+
+    Pass P §1 introduced `thresholds.mode: frozen` which decouples the
+    committed boundaries from the current derivation on purpose — the
+    drift diagnostic in `threshold_analysis.md` (Pass P §3) is the
+    authoritative source for that divergence, and requiring config ==
+    derivation under frozen mode would fire on every legitimate data
+    change that moved a severity. Pass R crossed copper into critical
+    under frozen mode; the derivation would now place the boundaries
+    differently, and the drift section reports it — this test moves
+    to only fire under `mode: derived` (i.e. the pre-approved re-
+    baseline pass) where the equality is the actual contract."""
     from app.scoring.thresholds import derive_thresholds
     from app.scoring import ScoringConfig
+
+    cfg = ScoringConfig.load(REPO / "config" / "scoring.yaml")
+    if cfg.threshold_mode == "frozen":
+        # Under frozen the equality is not the contract; the drift
+        # diagnostic surfaces the divergence instead. Skip rather than
+        # xfail (spec Pass P §4(1) also forbids xfail leakage).
+        import pytest
+        pytest.skip(
+            "thresholds.mode: frozen — config/derivation equality is "
+            "not asserted; see threshold_analysis.md drift diagnostic."
+        )
 
     snap = json.loads((GENERATED / "severity_snapshot.json").read_text())
     severities = [(nid, v["severity"]) for nid, v in snap["nodes"].items()]
 
-    cfg = ScoringConfig.load(REPO / "config" / "scoring.yaml")
     factor = cfg.threshold_separation_factor
     derivation = derive_thresholds(severities, factor)
 

@@ -69,6 +69,35 @@ Pass Q.1 is a correction pass. It revises the Pass Q table above and adds durabl
 - `pytest.ini` added at repo root pinning `testpaths = backend/tests` and `pythonpath = backend`. Pre-Q.1, `pytest backend/tests` gave 3 failed / 107 passed while `python -m pytest` gave 110 passed — invocation-dependent suite state that no pass had caught because no pass was ever red. Both invocations now return identically.
 - `backend/scripts/pass_facts.py` `aggregator` block split into `eps_configured` (what the config carries) and `eps_applied` (`None` unless method consumes eps). The suite block now records both invocations with `exit_code`; the fragile passed-count scraper is widened to search-anywhere.
 
+## Pass R update (2026-08-18)
+
+**8 copper → X edges re-authored on the §4 dependency basis:**
+
+| edge | before | after | status | basis |
+|---|---:|---:|---|---|
+| `mineral:copper → company:tsmc` | 0.08 | **0.95** | reauthored_value | Damascene copper interconnect at every M1+ leading-edge layer; no scaled substitute; function-halt on withdrawal. |
+| `mineral:copper → company:sk_hynix` | 0.08 | **0.95** | reauthored_value | Same reasoning as TSMC — HBM/DRAM fabs use copper interconnects. |
+| `mineral:copper → company:micron` | 0.08 | **0.95** | reauthored_value | Same reasoning. |
+| `mineral:copper → company:samsung` | 0.06 | **0.95** | reauthored_value | Same reasoning; Samsung's foundry + memory production. |
+| `mineral:copper → company:siemens_energy` | 0.40 | **0.95** | reauthored_value | HV grid transformers + synchronous generator windings; aluminum only substitutes at lower-voltage distribution class. |
+| `mineral:copper → company:ge_vernova` | 0.35 | **0.95** | reauthored_value | Same class as Siemens; wind adds 5-6 t Cu/MW in generator + collection. |
+| `mineral:copper → company:quanta_services` | 0.30 | 0.30 | reauthored_note_only | HV overhead transmission is aluminum (ACSR); copper is substation + MV/LV distribution. Value retained on partial-halt basis. |
+| `mineral:copper → company:vertiv` | 0.15 | 0.15 | undeterminable | Mixed cooling / power-dist product portfolio; facility-BOM not accessible. Left at pre-R value with a Pass R undeterminable note; the 0.15 is likely low but no defensible target quantum. |
+
+**Downstream effects (region C — copper crossed to critical):**
+
+- `mineral:copper`: severity 0.4967 → **0.7097** (high → critical); outbound_criticality 0.28 → **1.0** (saturated); inbound_hhi unchanged (this pass touches no `mines`/`refines` edge). Copper is the new rank-1 anchor in raw outbound, ahead of ASML.
+- `company:ge_vernova`: inbound_hhi 0.415 → **0.955**; severity 0.137 → **0.315**; tier **none → moderate**.
+- `company:siemens_energy`: inbound_hhi 0.46 → **0.955**; severity 0.152 → **0.315**; tier **none → moderate**.
+- `company:sk_hynix`, `company:micron`: inbound_hhi 0.869 → 0.95 (input_to stage now dominates supplies-stage); severity rose within tier; still `moderate`.
+- `company:tsmc`, `company:samsung`: unchanged. Their supplies-stage HHI (~0.99, ~0.952) already dominated the input_to stage under `combine: max`, so raising copper in input_to did not move the aggregated inbound.
+
+**Two bucket sums now exceed 1.0 by design** (noisy-OR has no summation constraint): NextEra was returned to 0.75 in Q.1; `ge_vernova/input_to` sum = 1.05 and `siemens_energy/input_to` sum = 1.05 are added to `known_share_offenders.txt` as accepted overshoots (spec §4 forbids reducing to keep buckets under 1.0).
+
+**Six consumer `input_to` shortfalls closed** as a consequence: tsmc, sk_hynix, micron, samsung, ge_vernova, siemens_energy all crossed the 0.80 completeness threshold. Removed from `known_bucket_shortfalls.txt` with Pass R notes; the removal is a consequence of §4-authored copper values, not a suite-fix motive.
+
+**Re-baseline trigger recorded.** Copper's severity 0.7097 sits above the frozen critical boundary (0.5178). The frozen critical boundary was originally derived from the ASML→copper gap at Pass P (midpoint 0.5178); copper crossing means the gap that justified the boundary no longer exists. The drift diagnostic in `threshold_analysis.md` reports **4 nodes would change tier** if derived boundaries were adopted (all downward — dysprosium, ASML, gallium, TSMC). This is a re-baseline trigger, NOT a boundary edit: `thresholds.mode` stays `frozen`, no boundary literal was touched. The pre-approved re-baseline pass (Pass P.5.2) is the appropriate place to reconsider what `fixed_reference` normalises against (currently frozen at ASML's Pass K raw value 1.6711, now that copper's raw outbound 2.04 exceeds ASML's 1.77).
+
 ## dependency (K.1 §4.3 re-author)  (n = 36)
 
 | source | target | type | category | input_share | note (first 90c) |

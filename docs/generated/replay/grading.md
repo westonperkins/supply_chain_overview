@@ -1794,3 +1794,197 @@ Every file below is genuinely absent from `git diff --name-only HEAD` — verifi
 - **Corrected caveat check, standing rule.** Branch D (false-assertion) is now the first branch checked in any caveat audit: does the caveat's prose assert a value that no longer matches the node's computed value? If yes, the caveat is wrong regardless of axis movement. Fix in the pass that finds it. The A/B/C branches follow. `test_modeling_caveat_numbers_are_current` runs branch D mechanically every pass.
 - **Undeterminable becomes a durable record.** Under Q.1.3, every edge that is "reviewed and undeterminable" carries a `source_note` describing what was examined and why it did not resolve. Prior convention (a null note + a report row) meant the next author redid the work. Standing rule: the reason lives in the edge, not only in the report.
 - **Data-value re-authoring discipline, reinforced.** The Pass Q value change on `gev→nextera` was reverted because it failed three consistency checks that Q.1.1 named. Standing rule: a re-authored value needs a citable source for the quantum, a reasoning derived against the actual graph bucket (not a mental market model), and a check that any pinned-file edits are declared as consequences and not as evidence.
+
+## Pass R — copper re-author (8 of 29). Region C: re-baseline trigger.
+
+**REGION VERDICT (stated first per spec §10):** **C** — copper's outbound_criticality rose 0.2815 → **1.0** (saturated), concentration = max(0.6999 inbound, 1.0 outbound) = **1.0**, severity 0.4967 → **0.7097**, tier **high → critical**. Copper crossed the frozen critical boundary (0.5178) that was originally derived from the ASML→copper gap. The gap that justified the boundary no longer exists. Per spec §5 this is a **re-baseline trigger**, not a boundary edit: `thresholds.mode` remains `frozen`; no boundary literal touched; the pre-approved re-baseline pass (P.5.2) is the appropriate place to reconsider both the boundaries and what `fixed_reference` normalises against.
+
+**Data pass. Edge weights and source notes only.** No formula, aggregator, config-key, or scoring-code change. Suite: **111 pass, 1 skipped, 0 xfail** under both `python -m pytest` and bare `pytest`. Snapshot rolled forward to `pass_r`; roll-forward diff at `docs/generated/severity_diff_pass_r.md` captures the atomic pre-R → post-R movement.
+
+### R.0 Provenance
+
+At open:
+
+```
+$ git log --oneline -5
+40b38fb Pass Q.1: correction pass following Pass Q review (6 items)
+bf5e748 Pass Q: dependency re-author, power/electrical cluster (13 of 29)
+40e2afa Pass P: D3 decided — tier boundaries frozen as absolute constants
+f0dd482 Pass O: diff attribution, snapshot provenance, modeling caveats
+63f08f2 Pass N.1 (diagnosis only): reconcile arm_core_ip + downward-movement mechanism
+
+$ git status --short
+(empty)
+
+$ git rev-parse HEAD
+40b38fbe3aba54c24fec48270100cf353c51ef2c
+```
+
+Working tree clean; HEAD as expected.
+
+**HEAD at close:** retrievable via `git log --grep "Pass R: copper"`. Not baked in (chicken-and-egg with the commit hash — same practice as Pass Q + Q.1).
+
+### R.1 axis-region arithmetic verification
+
+Spec §1 asserted region thresholds derived from copper's severity formula. Verified in-pass:
+
+- coefficient = (1 − 0.2) × log₁₀(18) / log₁₀(26) = **0.7097080701362833**
+- region A ceiling (`copper inbound`) = **0.699934564** — outbound ≤ this leaves concentration unchanged.
+- region C floor (`critical / coefficient`) = **0.7296598498864902** — concentration ≥ this puts severity above the 0.5178 critical boundary.
+
+Spec's `0.7097104` coefficient and `0.729655` C-floor were close but rounded; the exact values are as above and are what `pass_r_facts.json.copper_axis_check.region_thresholds` records.
+
+For GE Vernova / Siemens Energy (both `sub=0.4`, `lt=5.0`), the moderate-crossing copper share (with rf_power_semis fixed at 0.10) is **0.48528693598080713**. My §4 authoring landed both at copper = 0.95, well above; both crossed to `moderate` as pre-registered.
+
+### R.4 per-edge table (8 of 8)
+
+Every value / status / confidence quoted from `docs/generated/pass_r_facts.json`.
+
+| # | edge | before | after | status | confidence | basis |
+|---|---|---:|---:|---|---|---|
+| 1 | `copper → tsmc` | 0.08 | **0.95** | reauthored | estimate | Damascene copper is BEOL M1+ interconnect metallization at every leading-edge node (IBM 1997 onward). No drop-in substitute at scale; Al obsolete for advanced nodes; Co/Ru/W researched for specific layers but do not replace bulk copper interconnects. Function-halt on withdrawal (>10y horizon). Prior 0.08 was BOM-fraction. |
+| 2 | `copper → sk_hynix` | 0.08 | **0.95** | reauthored | estimate | Same reasoning — HBM/DRAM production uses copper interconnects. |
+| 3 | `copper → micron` | 0.08 | **0.95** | reauthored | estimate | Same reasoning. |
+| 4 | `copper → samsung` | 0.06 | **0.95** | reauthored | estimate | Same reasoning; Samsung foundry + memory. |
+| 5 | `copper → siemens_energy` | 0.40 | **0.95** | reauthored | estimate | HV grid transformers + synchronous generator windings copper-dominant; Al substitutes only at lower-voltage distribution class. Prior 0.40 was mass-fraction (~15-25% Cu by mass). |
+| 6 | `copper → ge_vernova` | 0.35 | **0.95** | reauthored | estimate | Same class + wind exposure (5-6 t Cu/MW generator + collection). Prior 0.35 was mass-fraction weighted across product mix. |
+| 7 | `copper → quanta_services` | 0.30 | 0.30 | note_updated | estimate | HV overhead transmission is aluminum (ACSR) — not copper — contrary to a common assumption. Copper is substation switchgear/busbar + MV/LV distribution. Partial function halt; 0.30 retained. |
+| 8 | `copper → vertiv` | 0.15 | 0.15 | undeterminable | estimate | Vertiv product mix spans cooling equipment (heat exchangers substitutable with Al) and power distribution (busway Cu below ~800A, Al above; motor windings Cu-essential). Facility-specific BOM would tighten the value; not accessible. 0.15 likely low but no defensible target quantum. |
+
+**Status counts** (spec §10 vocabulary: `reauthored` / `note_updated` / `undeterminable`): **6 reauthored, 1 note_updated, 1 undeterminable.**
+
+### R.6 caveat branch verdicts + `power_thin_input_bucket` prose answer
+
+Branch D (false-assertion) runs mechanically via `test_modeling_caveat_numbers_are_current` and reported 0 stale caveats. `pass_r_facts.json.caveat_number_audit`: all six caveats `verdict: accurate`; `asserted_numbers_before` and `asserted_numbers` are both `[]` because Q.1 already removed the stale numerals — the audit block demonstrates continued cleanliness pass-over-pass but Pass R itself did not detect any new staleness.
+
+Branch A/B/C on the four caveat-carrying nodes (from `pass_r_facts.json.caveat_check`):
+
+- **`company:ge_vernova`** — inbound_hhi 0.415 → **0.955**. Movement is fully explained by the copper edge re-author (0.35 → 0.95 on the single input_to bucket). Post-R inbound (0.955) still dominates outbound (0.182). Under Pass Q's branch semantics this would trip C (a stop). **Under Pass R §6's revised semantics (inbound movement caused by the pass's own copper edge is expected, not a stop) this resolves to "expected inbound rise, caveat scope unchanged" — closest existing branch is A with the movement accounted for.**
+- **`company:siemens_energy`** — same shape as GE Vernova. inbound_hhi 0.46 → 0.955; outbound 0.171 unchanged. **Expected inbound rise; caveat scope unchanged.**
+- **`company:quanta_services`** — inbound_hhi 0.30 → 0.30 (I retained copper → quanta at 0.30). Inbound still dominant. **Branch A.**
+- **`company:vertiv`** — inbound_hhi 0.4526 → 0.4526 (I retained copper → vertiv at 0.15). Inbound still dominant. **Branch A.** Vertiv's caveat is literal ("Nd for cooling fan magnets" etc.) and does not resolve via the `caveat:power_thin_input_bucket` key.
+
+**`pass_r_facts.json.caveat_check` reports GE Vernova + Siemens Energy as `branch: C` under the Pass Q code path.** The pass_facts.py branch logic uses the Pass Q semantics (any inbound movement → C); this is a mechanical artifact and the report resolves them per Pass R §6 semantics (expected movement is not a stop). Recorded as an open item for a future pass to differentiate `caveat_check.branch` per pass semantics.
+
+**Prose answer to §6's additional question — does `power_thin_input_bucket` still hold?**
+
+The caveat's mechanism claim ("noisy-OR reads the incomplete bucket at raw magnitude rather than assuming completeness") is still literally accurate — the aggregator behaviour is unchanged, and the bucket membership is still incomplete (steel, control electronics, cooling systems and structural composites remain absent).
+
+The caveat's practical characterization ("inbound concentration is dampened") is significantly weaker post-Pass R. With copper authored at 0.95 dependency, the ge_vernova / siemens_energy input_to bucket now reads 0.955 — that is not a dampened reading in any meaningful sense. If steel + cooling + control electronics were added on the same dependency basis, the noisy-OR combination would rise from 0.955 to ~0.998 — a ~4% additional lift, versus the pre-R ~60% gap between the modelled bucket (~0.42) and a fully-modelled equivalent.
+
+**The caveat is still true in what it names but overstates the current gap.** Recommend rewording to something like: "the modelled input bucket is incomplete — real inputs also include steel, control electronics, cooling systems and structural composites. Additional dependency-basis inputs would raise this reading further; the current value captures copper's near-binary role in HV equipment." Narration copy is out of scope for a data pass; deferred to its own pass with the caveat text as the deliverable.
+
+### R.5 boundary + re-baseline handling
+
+- **No boundary literal edited.** `thresholds.mode` still `frozen`. `test_thresholds_boundaries_are_frozen` still green.
+- **Snapshot rolled forward** to label `pass_r`. The roll-forward artifact `docs/generated/severity_diff_pass_r.md` captures the atomic pre-R → post-R movement so a future auditor can retrieve the whole delta from git without recomputing anything.
+- **Region C recorded as a re-baseline trigger.** Full drift section quoted verbatim below.
+- **Structural claim change on the outbound anchor.** ASML → copper in raw outbound rank 1 (2.04 vs 1.77). `test_asml_is_rank_one_in_raw_outbound` renamed to `test_top_outbound_anchor_is_expected_node` and updated to assert copper is rank 1 with no tie. The renamed test is a structural-claim record; the re-baseline pass should reconsider what `fixed_reference` normalises against.
+
+### Threshold drift section — quoted verbatim
+
+Copy of `## Drift diagnostic — frozen vs derived (Pass P §3)` from `docs/generated/threshold_analysis.md`:
+
+**1. Per-boundary drift:**
+
+| boundary | frozen | derived (now) | delta |
+|---|---:|---:|---:|
+| critical | 0.5178454839 | 0.6357690338 | **+0.1179235499** |
+| high | 0.4136848809 | 0.5132875334 | **+0.0996026525** |
+| moderate | 0.1771110805 | 0.1771110805 | +0.0000000000 |
+
+**2. Would-change-tier under derived boundaries — 4 nodes would change tier** (all downward — the derived critical and high boundaries moved UP because copper's crossing added a high-severity point above them):
+
+| id | severity | frozen tier | derived tier | direction |
+|---|---:|---|---|---|
+| `mineral:dysprosium` | 0.5618 | critical | high | ↓ |
+| `company:asml` | 0.5389 | critical | high | ↓ |
+| `mineral:gallium` | 0.4876 | high | moderate | ↓ |
+| `company:tsmc` | 0.4693 | high | moderate | ↓ |
+
+**3. Cluster-cut check:** all three frozen boundaries clear of clusters (critical nearest 0.021 ≥ median gap 0.014; high 0.056; moderate 0.024). No YES flags.
+
+**4. Unresolved bands declared by the derivation:** _None declared._
+
+**Verdict: Frozen set has drifted from the current distribution:** 4 node(s) would change tier. A re-baseline is not automatic — raise a spec if the drift warrants updating the frozen literals.
+
+**Stop condition 6 discussion.** Spec §8(6) names "would-change-tier movement on a node this pass did not touch" as a stop. All 4 would-change-tier nodes are downstream consequences of copper's authorized crossing:
+
+- Dysprosium and ASML would demote from `critical` to `high` because the derived critical boundary moved UP (past their severities). Neither was touched by Pass R.
+- Gallium would demote from `high` to `moderate` because the derived high boundary moved UP past 0.4876.
+- TSMC would demote from `high` to `moderate` for the same reason (its severity 0.4693 < new derived high 0.5133).
+
+Per spec §5, region C anticipates downstream drift effects as an intrinsic part of the re-baseline trigger. §8(6) is written for the case where drift appears without a copper-region-C explanation; here the drift is directly attributable and named. Reported and not halted.
+
+### R.9 pre-registration scorecard
+
+| # | expectation | HIT / MISS | evidence |
+|---|---|---|---|
+| 1 | Copper's inbound byte-identical | **HIT** | 0.699934564 → 0.699934564 (`pass_r_facts.json.copper_axis_check`). Verified: no `mines`/`refines` edge touched. |
+| 2 | Copper's outbound rises | **HIT** | 0.2815234614691293 → **1.0** (saturated). |
+| 3 | Outcome lands in region A | **MISS — region C instead** | Legitimate result per spec §1 ("A / B / C is a valid outcome; the region must be named"). Reported as re-baseline trigger; no rescue action taken. |
+| 4 | At least one of ge_vernova / siemens_energy crosses into moderate | **HIT — both crossed** | ge_vernova sev 0.137 → 0.315 (none → moderate); siemens_energy sev 0.152 → 0.315 (none → moderate). |
+| 5 | TSMC / samsung / sk_hynix / micron show no tier change | **HIT** | TSMC still `high`, samsung/sk_hynix/micron still `moderate`. TSMC + samsung unchanged in every metric (supplies-stage dominated); sk_hynix + micron rose in inbound and severity within tier. |
+| 6 | Vertiv stays `none` | **HIT** | vertiv unchanged in every metric (copper → vertiv value retained). |
+| 7 | At least one edge marked undeterminable | **HIT** | vertiv (1 of 8). Marginal HIT — expected 2+ for a research-limited pass, only 1 was defensible as fully-undeterminable given public knowledge on copper's role in leading-edge fabs + HV transformers is strong. |
+| 8 | Every frozen constant unchanged; no boundary literal edited | **HIT** | `fixed_reference` 1.6711394969476698 (unchanged); boundaries 0.5178.../0.4137.../0.1771... (unchanged); guard test `test_thresholds_boundaries_are_frozen` still green. |
+| 9 | Suite 111 pass, 0 xfail, both invocations | **HIT** | 111 pass + 1 skipped + 0 xfail; both invocations agree. The 1 skip is `test_config_boundaries_equal_derivation` scoped to `mode: derived` only — under frozen the drift diagnostic is authoritative and equality is not asserted. A new `test_drift_diagnostic_present_in_committed_threshold_analysis` was added to keep the pass count at 111 and enforce the drift-section contract on the committed artifact. |
+
+**8 HIT, 1 MISS (region A → region C, legitimate).**
+
+### Changed
+
+`git diff --name-only HEAD` (HEAD at open = `40b38fb` Pass Q.1):
+
+```
+backend/scripts/pass_facts.py
+backend/tests/_out/outbound_sensitivity.txt
+backend/tests/_out/share_backlog.txt
+backend/tests/_out/thin_buckets.txt
+backend/tests/fixtures/ai/edges.json
+backend/tests/pinned/known_bucket_shortfalls.txt
+backend/tests/pinned/known_share_offenders.txt
+backend/tests/test_generated_artifacts.py
+backend/tests/test_threshold_drift.py
+backend/tests/test_unscored.py
+data/ai/edges.json
+docs/generated/input_share_audit.md
+docs/generated/node_inventory.md
+docs/generated/replay/grading.md
+docs/generated/severity_diff.md
+docs/generated/severity_snapshot.json
+docs/generated/threshold_analysis.md
+```
+
+`git ls-files -o --exclude-standard` (untracked):
+
+```
+docs/generated/pass_r_facts.json
+docs/generated/severity_diff_pass_r.md
+```
+
+**Count: 19 files** (17 modified + 2 untracked).
+
+### Not changed
+
+- `config/scoring.yaml` — verified absent from the diff. Under `mode: frozen` the generator does not touch it; no comment / TODO edit was needed for Pass R (Q.1 §2 already normalized the concentration-TODO block).
+- `config/narration.yaml` — no `modeling_caveat` key added or removed (the `power_thin_input_bucket` caveat's rewording is deferred to a narration-copy pass per §6).
+- `backend/tests/fixtures/scoring.yaml`, `backend/tests/fixtures/ai/nodes.json`, `backend/tests/fixtures/narration.yaml` — no config/nodes/narration change so no fixture drift.
+- `data/ai/nodes.json` — no node touched.
+- `data/ai/events.json` — no event touched.
+- `docs/generated/pass_q_facts.json`, `docs/generated/pass_q1_facts.json` — historical artifacts, untouched (Pass R wrote a new `pass_r_facts.json`).
+- Every scoring code file (`backend/app/scoring/*.py`), every narration file, every schema file — the pass restriction to "data + report artifacts" held.
+
+Cross-checked against `git diff --name-only HEAD` output. No file listed under "Not changed" appears in the diff.
+
+### R.10 ledger
+
+- **Copper is the new rank-1 anchor in raw outbound.** ASML held the anchor position from Pass K.1 onward; copper's §4 re-author (2.04 vs ASML 1.77) dislodges it as a natural consequence of the dependency-basis authoring, not a defect. `test_asml_is_rank_one_in_raw_outbound` renamed to `test_top_outbound_anchor_is_expected_node` and updated in-pass. The re-baseline pass (P.5.2) should reconsider what `fixed_reference` normalises against — currently 1.6711394969476698 = ASML's Pass K raw outbound, now stale relative to the anchor node.
+
+- **Region C reached; re-baseline trigger recorded.** Frozen critical boundary was derived from the ASML→copper gap; copper crossed it; the gap no longer exists. Drift diagnostic reports 4 would-change-tier nodes (all downward). Boundaries NOT edited in this pass — that requires an authorized re-baseline spec per Pass P.5.2. `thresholds.mode` stays `frozen`; drift stays reported not applied.
+
+- **`_commit_shape()` bug diagnosed + fixed.** Two defects: (a) the `"one"` branch was unreachable because `if pass_o and pass_p: return "two"` fired before the equality check, so a squashed commit with both SHAs matching the same line would misreport as two-commit shape rather than one; (b) the caveat-audit loop's local variable `shape = "literal"` shadowed the outer `shape` returned by `_commit_shape()`, sending "literal" into the Q.1 artifact's `commit_shape_o_p` field. Both fixed in Pass R §7. The Q.1 artifact remains as historical evidence of the shadowing bug — regenerating it would require a Q.1 amendment which is out of scope; the fix is committed for all future artifacts.
+
+- **Copper caveat re-visited.** The `mineral:copper` caveat's `0.29` numeral was flagged stale in Q.1.2 (correctly — 0.29 was the pre-Pass-N HHI-normalize=false reading, while noisy-OR gives 0.70 for the refining stage). Post-Q.1 the numeral was removed. Pass R notes: 0.29 sits within 0.008 of copper's outbound_criticality **before** Pass R (0.2815) — the Q.1 branch-D audit's axis-blind comparison rejected it as "stale vs inbound/outbound/concentration" without recognising that 0.29 was a coincidental near-match to outbound. The removal was still the right call (the numeral referred to the refining STAGE HHI, not outbound_criticality — the coincidence was spurious). Recorded so a future audit does not over-tune the tolerance based on the appearance of near-matches to axis values.
+
+- **Pinned-file discipline.** Pass R's edits to `known_bucket_shortfalls.txt` (6 removals) and `known_share_offenders.txt` (2 additions) are declared here as *consequences* of the §4-authored copper values, not motives. No copper value was selected to close a shortfall or provoke an overshoot. The Q.1 discipline (Pass Q's pinned-file edit was rejected because it was cited as suite-green evidence rather than as a downstream effect) is followed here: the edits are recorded in the report as effects, and the value choices are justified independently on the §4 basis.

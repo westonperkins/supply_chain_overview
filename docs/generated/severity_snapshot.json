@@ -1,5 +1,5 @@
 {
-  "captured_at_pass": "pass_n_d4a",
+  "captured_at_pass": "pass_r",
   "nodes": {
     "mineral:gallium": {
       "severity": 0.48763330760307644,
@@ -30,11 +30,11 @@
       "outbound_criticality": 0.3875182777555515
     },
     "mineral:copper": {
-      "severity": 0.4967492086381209,
-      "tier": "high",
-      "concentration": 0.699934564,
+      "severity": 0.7097080701362833,
+      "tier": "critical",
+      "concentration": 1.0,
       "inbound_hhi": 0.699934564,
-      "outbound_criticality": 0.2815234614691293
+      "outbound_criticality": 1.0
     },
     "product:hbm": {
       "severity": 0.30075399000310415,
@@ -67,9 +67,9 @@
     "country_region:china": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.855336796504046,
+      "concentration": 0.9402990408866656,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.855336796504046
+      "outbound_criticality": 0.9402990408866656
     },
     "country_region:taiwan": {
       "severity": null,
@@ -81,9 +81,9 @@
     "country_region:usa": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.09827188835896969,
+      "concentration": 0.14015437930173735,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.09827188835896969
+      "outbound_criticality": 0.14015437930173735
     },
     "country_region:netherlands": {
       "severity": null,
@@ -144,23 +144,23 @@
     "country_region:chile": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.11572925413488373,
+      "concentration": 0.23835984032471821,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.11572925413488373
+      "outbound_criticality": 0.23835984032471821
     },
     "country_region:drc": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.06017921215013954,
+      "concentration": 0.12394711696885347,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.06017921215013954
+      "outbound_criticality": 0.12394711696885347
     },
     "country_region:peru": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.06017921215013954,
+      "concentration": 0.12394711696885347,
       "inbound_hhi": 0.0,
-      "outbound_criticality": 0.06017921215013954
+      "outbound_criticality": 0.12394711696885347
     },
     "country_region:canada": {
       "severity": null,
@@ -212,17 +212,17 @@
       "outbound_criticality": 0.0
     },
     "company:sk_hynix": {
-      "severity": 0.24035304519271536,
+      "severity": 0.2627413761384035,
       "tier": "moderate",
-      "concentration": 0.86905,
-      "inbound_hhi": 0.86905,
+      "concentration": 0.95,
+      "inbound_hhi": 0.95,
       "outbound_criticality": 0.4252155935001507
     },
     "company:micron": {
-      "severity": 0.22186434940866026,
+      "severity": 0.24253050105083399,
       "tier": "moderate",
-      "concentration": 0.86905,
-      "inbound_hhi": 0.86905,
+      "concentration": 0.95,
+      "inbound_hhi": 0.95,
       "outbound_criticality": 0.09431015321309122
     },
     "company:asml": {
@@ -345,17 +345,17 @@
       "outbound_criticality": 0.02094379318059765
     },
     "company:siemens_energy": {
-      "severity": 0.15178359748887296,
-      "tier": "none",
-      "concentration": 0.45999999999999996,
-      "inbound_hhi": 0.45999999999999996,
+      "severity": 0.315115946960595,
+      "tier": "moderate",
+      "concentration": 0.955,
+      "inbound_hhi": 0.955,
       "outbound_criticality": 0.1707325122849878
     },
     "company:ge_vernova": {
-      "severity": 0.13693520208235277,
-      "tier": "none",
-      "concentration": 0.4149999999999999,
-      "inbound_hhi": 0.4149999999999999,
+      "severity": 0.315115946960595,
+      "tier": "moderate",
+      "concentration": 0.955,
+      "inbound_hhi": 0.955,
       "outbound_criticality": 0.1819268342116367
     },
     "company:quanta_services": {

@@ -71,6 +71,30 @@ PASS_Q_NODES_PRIMARY = [
     "facility:vantage_frontier",
 ]
 
+# Pass R — the 8 copper→X edges.
+PASS_R_EDGE_IDS = [
+    "e:copper-input-tsmc",
+    "e:copper-input-sk_hynix",
+    "e:copper-input-micron",
+    "e:copper-input-samsung",
+    "e:copper-input-siemens",
+    "e:copper-input-ge_vernova",
+    "e:copper-input-quanta",
+    "e:copper-input-vertiv",
+]
+
+PASS_R_NODES_PRIMARY = [
+    "mineral:copper",
+    "company:tsmc",
+    "company:sk_hynix",
+    "company:micron",
+    "company:samsung",
+    "company:siemens_energy",
+    "company:ge_vernova",
+    "company:quanta_services",
+    "company:vertiv",
+]
+
 CAVEAT_CHECK_NODES = [
     "company:ge_vernova",
     "company:siemens_energy",
@@ -126,19 +150,34 @@ def _bucket_members(
 
 
 def _commit_shape() -> tuple[str, dict]:
-    """Return (shape, {'pass_o': sha_or_null, 'pass_p': sha_or_null})."""
+    """Return (shape, {'pass_o': sha_or_null, 'pass_p': sha_or_null}).
+
+    Pass R §7 correction — prior implementation had two bugs:
+      (a) `if pass_o and pass_p: return "two"` fired BEFORE the
+          equality check, so a squashed commit (same SHA matching
+          both "Pass O" and "Pass P" tokens) was misreported as
+          two commits rather than one. The `"one"` branch was
+          therefore unreachable.
+      (b) The colon-less token `"Pass O"` matches any commit
+          message containing that substring; using `"Pass O:"`
+          (the actual title prefix) is safer against future
+          commit-message variations.
+    Equality is now checked first; a matching SHA is a squashed
+    commit ("one") regardless of how many lines it appears on.
+    """
     log = _git("log", "--oneline", "-20").strip().splitlines()
     pass_o = next(
-        (line.split()[0] for line in log if "Pass O" in line and "N.1" not in line),
+        (line.split()[0] for line in log
+         if "Pass O:" in line and "N.1" not in line),
         None,
     )
     pass_p = next(
-        (line.split()[0] for line in log if "Pass P" in line), None,
+        (line.split()[0] for line in log if "Pass P:" in line), None,
     )
     if pass_o and pass_p:
+        if pass_o == pass_p:
+            return "one", {"pass_o": pass_o, "pass_p": pass_p}
         return "two", {"pass_o": pass_o, "pass_p": pass_p}
-    if pass_o == pass_p and pass_o is not None:
-        return "one", {"pass_o": pass_o, "pass_p": pass_p}
     return "other", {"pass_o": pass_o, "pass_p": pass_p}
 
 
@@ -152,16 +191,33 @@ def main() -> None:
             "Pass Q.1 and so on for subsequent correction passes."
         ),
     )
+    parser.add_argument(
+        "--pass-tag", default="q", choices=["q", "q1", "r"],
+        help=(
+            "Which pass's edge + node sets to track in the artifact. "
+            "Pass Q's 13 power-cluster edges (`q`, `q1`) or Pass R's 8 "
+            "copper edges (`r`). Determines PASS_*_EDGE_IDS + "
+            "PASS_*_NODES_PRIMARY used in the per-edge and nodes_touched "
+            "sections. Default: q for backwards compatibility."
+        ),
+    )
     args = parser.parse_args()
+
+    if args.pass_tag == "r":
+        edge_ids = PASS_R_EDGE_IDS
+        primary_nodes = PASS_R_NODES_PRIMARY
+    else:
+        edge_ids = PASS_Q_EDGE_IDS
+        primary_nodes = PASS_Q_NODES_PRIMARY
 
     head_sha = _git("rev-parse", "HEAD").strip()
     shape, shape_shas = _commit_shape()
 
-    # Score BEFORE: from pass_n_d4a snapshot on disk (which still
-    # represents Pass Q open — Passes O and P did not roll forward).
-    snap = json.load(
-        open(REPO / "docs" / "generated" / "severity_snapshot.json")
-    )
+    # Score BEFORE: `git show HEAD:docs/generated/severity_snapshot.json`
+    # is the reproducible-from-git-alone reference; reading the on-disk
+    # snapshot risks reading a post-run roll-forward (Pass R rolls the
+    # snapshot forward before this artifact is written).
+    snap = json.loads(_git("show", "HEAD:docs/generated/severity_snapshot.json"))
     before_nodes = snap["nodes"]
 
     # HEAD edges lookup.
@@ -180,7 +236,7 @@ def main() -> None:
 
     # -------- per-edge before/after --------
     edges_facts = []
-    for eid in PASS_Q_EDGE_IDS:
+    for eid in edge_ids:
         e_before = head_edges_by_id.get(eid)
         e_after_graph = g.edges.get(eid)
         e_after_json = next(
@@ -229,7 +285,7 @@ def main() -> None:
 
     # -------- per-node before/after --------
     nodes_facts = []
-    all_involved_ids = set(PASS_Q_NODES_PRIMARY)
+    all_involved_ids = set(primary_nodes)
     # Add any node whose metrics moved so the artifact records the
     # cascade footprint honestly (spec §7 stop-condition sweep needs
     # this readable in one place).
@@ -272,7 +328,7 @@ def main() -> None:
         dom_axis = lambda i, o: "inbound" if (i or 0) >= (o or 0) else "outbound"
         nodes_facts.append({
             "id": nid,
-            "in_primary_touched_set": nid in PASS_Q_NODES_PRIMARY,
+            "in_primary_touched_set": nid in primary_nodes,
             "inbound_hhi_before": b.get("inbound_hhi"),
             "inbound_hhi_after": inb_a,
             "outbound_before": b.get("outbound_criticality"),
@@ -327,23 +383,54 @@ def main() -> None:
         (REPO / "config" / "narration.yaml").read_text()
     ) or {}
     caveats_cfg = narr_raw.get("modeling_caveats", {})
+    # Pass R §7 — also read the HEAD-committed narration + nodes so
+    # `asserted_numbers_before` can be populated (Q.1 open item).
+    head_narr = yaml.safe_load(
+        _git("show", "HEAD:config/narration.yaml")
+    ) or {}
+    head_caveats_cfg = head_narr.get("modeling_caveats", {})
+    head_nodes = {
+        n["id"]: n for n in json.loads(_git("show", "HEAD:data/ai/nodes.json"))
+    }
     caveat_audit = []
     for nid, node in g.nodes.items():
         raw_cav = node.static.modeling_caveat
         if not raw_cav:
             continue
+        # Pass R §7 — local shape variable renamed to avoid shadowing
+        # `shape` from `_commit_shape()`; that shadowing sent "literal"
+        # into the Q.1 artifact's `commit_shape_o_p` field.
         if raw_cav.startswith("caveat:"):
             text = " ".join(
                 (caveats_cfg.get(raw_cav[len('caveat:'):], "")).split()
             )
-            shape = "key"
+            caveat_shape = "key"
         else:
             text = raw_cav
-            shape = "literal"
+            caveat_shape = "literal"
         numbers = [
             float(m) for m in _CAVEAT_DECIMAL_RE.findall(text)
             if 0.0 <= float(m) <= 1.0
         ]
+        # `asserted_numbers_before` — decimals in the HEAD-committed
+        # caveat prose, resolved the same way. Lets the artifact
+        # DEMONSTRATE branch-D detection rather than only report a
+        # clean post-fix state.
+        head_static = (head_nodes.get(nid) or {}).get("static") or {}
+        head_cav = head_static.get("modeling_caveat")
+        if head_cav:
+            if head_cav.startswith("caveat:"):
+                head_text = " ".join(
+                    (head_caveats_cfg.get(head_cav[len('caveat:'):], "")).split()
+                )
+            else:
+                head_text = head_cav
+            numbers_before = [
+                float(m) for m in _CAVEAT_DECIMAL_RE.findall(head_text)
+                if 0.0 <= float(m) <= 1.0
+            ]
+        else:
+            numbers_before = []
         candidate_values = [
             node.dynamic.inbound_hhi,
             node.dynamic.outbound_criticality,
@@ -356,8 +443,9 @@ def main() -> None:
         ]
         caveat_audit.append({
             "id": nid,
-            "caveat_shape": shape,
+            "caveat_shape": caveat_shape,
             "asserted_numbers": numbers,
+            "asserted_numbers_before": numbers_before,
             "current_inbound_hhi": node.dynamic.inbound_hhi,
             "current_outbound_criticality": node.dynamic.outbound_criticality,
             "current_concentration": node.dynamic.concentration,
@@ -406,6 +494,81 @@ def main() -> None:
         ),
     }
 
+    # -------- Pass R §7 — copper_axis_check --------
+    import math
+    copper = g.nodes.get("mineral:copper")
+    copper_before = before_nodes.get("mineral:copper", {})
+    if copper is not None:
+        inb_a = copper.dynamic.inbound_hhi
+        out_a = copper.dynamic.outbound_criticality
+        conc_a = copper.dynamic.concentration
+        sev_a = copper.dynamic.baseline_severity
+        b_lower = inb_a  # region A ceiling = current inbound
+        crit_boundary = c.chokepoint_thresholds.get("critical", 0.0)
+        sub = copper.static.substitutability.value if copper.static.substitutability else 0.0
+        lt = copper.static.lead_time_years.value if copper.static.lead_time_years else 0.0
+        coef = (1.0 - sub) * math.log10(lt + 1.0) / math.log10(26)
+        c_lower = crit_boundary / coef if coef > 0 else float("inf")
+        if out_a <= b_lower:
+            region = "A"
+        elif conc_a < c_lower:
+            region = "B"
+        else:
+            region = "C"
+        copper_axis_check = {
+            "inbound_before": copper_before.get("inbound_hhi"),
+            "inbound_after": inb_a,
+            "outbound_before": copper_before.get("outbound_criticality"),
+            "outbound_after": out_a,
+            "concentration_before": copper_before.get("concentration"),
+            "concentration_after": conc_a,
+            "severity_before": copper_before.get("severity"),
+            "severity_after": sev_a,
+            "tier_before": copper_before.get("tier"),
+            "tier_after": (
+                copper.dynamic.baseline_tier.value
+                if copper.dynamic.baseline_tier is not None else "unscored"
+            ),
+            "region": region,
+            "region_thresholds": {"b_lower": b_lower, "c_lower": c_lower},
+        }
+    else:
+        copper_axis_check = None
+
+    # -------- Pass R §7 — boundary_proximity --------
+    # For every scored node, distance to nearest frozen boundary above
+    # and below. Lets the next pass inherit a proximity map instead of
+    # rediscovering situations like copper's boundary-anchor position
+    # node by node.
+    boundaries_sorted = sorted(c.chokepoint_thresholds.items(), key=lambda kv: kv[1])
+    boundary_proximity = []
+    for nid, node in g.nodes.items():
+        sev = node.dynamic.baseline_severity
+        if sev is None:
+            continue
+        below = None
+        below_v = None
+        above = None
+        above_v = None
+        for name, v in boundaries_sorted:
+            if v <= sev and (below_v is None or v > below_v):
+                below, below_v = name, v
+            if v > sev and (above_v is None or v < above_v):
+                above, above_v = name, v
+        boundary_proximity.append({
+            "id": nid,
+            "severity": sev,
+            "tier": (
+                node.dynamic.baseline_tier.value
+                if node.dynamic.baseline_tier is not None else "unscored"
+            ),
+            "nearest_boundary_below": below,
+            "distance_below": (sev - below_v) if below_v is not None else None,
+            "nearest_boundary_above": above,
+            "distance_above": (above_v - sev) if above_v is not None else None,
+        })
+    boundary_proximity.sort(key=lambda r: -r["severity"])
+
     # -------- output --------
     out = {
         "head_sha_at_open": head_sha,
@@ -445,6 +608,8 @@ def main() -> None:
         "nodes_touched": nodes_facts,
         "caveat_check": caveat_facts,
         "caveat_number_audit": caveat_audit,
+        "copper_axis_check": copper_axis_check,
+        "boundary_proximity": boundary_proximity,
         "suite": suite,
     }
     out_path = REPO / "docs" / "generated" / args.output_name

@@ -1,13 +1,9 @@
-share-completeness backlog — 37 bucket(s) below 0.95
+share-completeness backlog — 31 bucket(s) below 0.95
 severity    sum edges  node                                   stage         
-FAIL      0.080     1  TSMC                                   input_to      
-FAIL      0.080     1  SK Hynix                               input_to      
-FAIL      0.080     1  Micron                                 input_to      
 FAIL      0.080     1  Colossus                               input_to      
 FAIL      0.080     1  Stargate (Abilene)                     input_to      
 FAIL      0.080     1  Vantage Frontier                       input_to      
 FAIL      0.080     1  The Citadel                            input_to      
-FAIL      0.090     2  Samsung Electronics                    input_to      
 FAIL      0.120     1  Amazon                                 input_to      
 FAIL      0.120     1  Microsoft                              input_to      
 FAIL      0.120     1  Meta                                   input_to      
@@ -16,10 +12,8 @@ FAIL      0.300     2  Constellation Energy                   supplies
 FAIL      0.300     1  Quanta Services                        input_to      
 FAIL      0.400     3  Broadcom                               input_to      
 FAIL      0.430     2  AMD                                    input_to      
-FAIL      0.450     2  GE Vernova                             input_to      
 FAIL      0.460     3  Marvell                                supplies      
 FAIL      0.500     2  NVIDIA                                 input_to      
-FAIL      0.500     2  Siemens Energy                         input_to      
 FAIL      0.530     3  Vertiv                                 input_to      
 FAIL      0.600     3  Duke Energy                            supplies      
 FAIL      0.650     5  Copper                                 mines         

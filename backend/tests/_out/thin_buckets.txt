@@ -2,17 +2,17 @@ thin-bucket census — 13 single-edge bucket(s)
 
 won max  bucket  node                                   stage         
 yes       1.000  ARM Core IP                            supplies      
+yes       0.950  Micron                                 input_to      
 yes       0.300  Quanta Services                        input_to      
 yes       0.900  RF & Power Semiconductors              input_to      
+yes       0.950  SK Hynix                               input_to      
 no        0.120  Amazon                                 input_to      
 no        0.080  Colossus                               input_to      
 no        0.120  Meta                                   input_to      
-no        0.080  Micron                                 input_to      
 no        0.120  Microsoft                              input_to      
-no        0.080  SK Hynix                               input_to      
 no        0.080  Stargate (Abilene)                     input_to      
-no        0.080  TSMC                                   input_to      
+no        0.950  TSMC                                   input_to      
 no        0.080  The Citadel                            input_to      
 no        0.080  Vantage Frontier                       input_to      
 
-nodes whose inbound_hhi is decided by a single-edge bucket: 3
+nodes whose inbound_hhi is decided by a single-edge bucket: 5

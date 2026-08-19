@@ -15,3 +15,12 @@ mineral:neodymium	refines	1.1000000000
 # incompatible with dependency-basis authoring for co-critical inputs.
 # Logged for the formula pass; not a data defect to reconcile here.
 product:ndfeb_magnets	input_to	1.9000000000
+# Pass R §4 — copper re-author on the dependency basis lifted the two
+# power-equipment consumers' input_to buckets past 1.0. Both are
+# co-critical: copper (0.95 dependency-halt on new-build) plus
+# rf_power_semis (0.10). Under noisy-OR this is honest — the aggregator
+# has no summation constraint — and Pass Q §3 / Pass R §4 both
+# prohibit reducing a value to keep a bucket under 1.0. Pinned as
+# accepted overshoots, matching the K.1 NdFeB precedent above.
+company:ge_vernova	input_to	1.0500000000
+company:siemens_energy	input_to	1.0500000000

@@ -112,16 +112,31 @@ def test_neutral_mode_still_reachable():
 _FROZEN_FIXED_REFERENCE = 1.6711394969476698
 
 
-def test_asml_is_rank_one_in_raw_outbound():
-    """Pass K.1 §5 rewrite — ASML remaining #1 in raw outbound is a
-    structural claim about the graph, not a claim about `fixed_reference`.
-    The two were coupled in Pass K by an "assert fixed_reference == ASML
-    raw" check; that check was the exact re-derivation defect §2 Option A
-    exists to prevent. It is deleted here.
+def test_top_outbound_anchor_is_expected_node():
+    """Pass K.1 §5 rewrite — the load-bearing outbound-side node in the
+    graph is asserted structurally so that if the ranking becomes
+    silently ambiguous (rank-1 tie, unexpected node dislodges the
+    anchor) the test fires.
 
-    What survives: ASML is the load-bearing outbound-side node in the
-    graph; if it slips off rank 1 or another node ties, the ranking is
-    silently ambiguous. Guard that structural fact independently."""
+    Pass K.1 originally asserted `ranked[0] == asml`. Pass R
+    re-authored `copper → {tsmc, sk_hynix, micron, samsung,
+    ge_vernova, siemens_energy}` from cost-basis (0.06-0.40) to
+    dependency-basis (0.95 — copper damascene interconnects are a
+    function-halt for leading-edge fabs; HV transformer + generator
+    windings are copper-dominant for the power OEMs). The natural
+    consequence: copper's raw outbound (2.04) now exceeds ASML's
+    (1.77). Copper is the new rank-1 anchor.
+
+    This is a structural claim change, not a defect. The re-baseline
+    pass pre-approved in Pass P.5.2 will need to reconsider what
+    `fixed_reference` normalises against (currently frozen at ASML's
+    Pass K raw value 1.6711…). That decision is out of scope for the
+    copper data pass and out of scope for this test — this test only
+    records the current structural fact.
+
+    The invariant survives: exactly one node is rank 1, no ties.
+    Updates to the expected anchor need a matching update to this
+    test in the same commit, citing the authorizing spec."""
     from app.scoring.engine import _outbound_criticality_raw
     g = SupplyChainGraph.from_dir(FIX, domain="ai")
     c = ScoringConfig.load(FIX / "scoring.yaml")
@@ -140,8 +155,18 @@ def test_asml_is_rank_one_in_raw_outbound():
     }
     ranked = sorted(raw.items(), key=lambda kv: -kv[1])
 
-    assert ranked[0][0] == "company:asml", (
-        f"ASML no longer rank 1 in raw outbound. Actual top-5: {ranked[:5]}"
+    # Pass R — anchor moved from ASML to copper. Anchor changes go
+    # here plus a ledger entry in docs/generated/replay/grading.md.
+    expected_anchor = "mineral:copper"
+    assert ranked[0][0] == expected_anchor, (
+        f"{expected_anchor} no longer rank 1 in raw outbound. Actual "
+        f"top-5: {ranked[:5]}. If the anchor genuinely moved, update "
+        f"this test and record the change in grading.md; do not silently "
+        f"accommodate."
+    )
+    # No tie at rank 1 — an ambiguous ranking is a structural defect.
+    assert ranked[0][1] > ranked[1][1], (
+        f"rank-1 tie in raw outbound: {ranked[:2]}"
     )
 
 

@@ -198,3 +198,45 @@ def test_cluster_cut_flag_fires_when_boundary_sits_inside_tight_cluster():
     # and 0.008 below n:cluster_top (0.31); both < median 0.05.
     assert "**YES**" in md
     assert "boundary(-ies) inside tight clusters" in md
+
+
+# ------------------------------------------------------------------------ #
+# Pass R — committed-artifact contract for the drift section.               #
+# ------------------------------------------------------------------------ #
+
+
+def test_drift_diagnostic_present_in_committed_threshold_analysis():
+    """Pass R — under `mode: frozen` (the current committed state), the
+    drift diagnostic must be present in the committed
+    `docs/generated/threshold_analysis.md` — the section is the
+    authoritative record of the frozen-vs-derived divergence and
+    replaces the pre-Pass-P `test_config_boundaries_equal_derivation`
+    equality assertion (which is scoped to `mode: derived` post-Pass-R).
+
+    Structural check on the committed artifact rather than a
+    programmatic re-generation, so a stale artifact + drifted config
+    fail visibly here rather than in the semantics."""
+    from pathlib import Path
+    REPO = Path(__file__).resolve().parents[2]
+    text = (REPO / "docs" / "generated" / "threshold_analysis.md").read_text()
+    for header in (
+        "## Drift diagnostic — frozen vs derived",
+        "### 1. Per-boundary drift",
+        "### 2. Would-change-tier under derived boundaries",
+        "### 3. Cluster-cut check",
+        "### 4. Unresolved bands declared by the derivation",
+        "### Verdict",
+    ):
+        assert header in text, (
+            f"drift diagnostic missing '{header}' in committed "
+            f"threshold_analysis.md — regenerate: "
+            f"`python backend/scripts/generate_inventory.py`"
+        )
+    # Verdict line — exactly one of the two forms must be present.
+    verdicts = (
+        "**Frozen set still fits the distribution.**",
+        "**Frozen set has drifted from the current distribution:**",
+    )
+    assert any(v in text for v in verdicts), (
+        "drift diagnostic verdict line missing from committed artifact"
+    )
