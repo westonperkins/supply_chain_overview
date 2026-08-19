@@ -275,6 +275,38 @@ ship D4 first, then D4a in separate commits. Under D4 alone (noisy-OR
 xfail (stage-zeroed). Under D4a alone (HHI + min_supp=1), rf_power
 XPASSES (0.3191 > median). Under D4+D4a paired, both XPASS.
 
+---
+
+## ✅ D4 DECIDED — Pass N (2026-08-18)
+
+**Shipped as plain noisy-OR, ε rejected on implementation review.** See
+Pass N §1.1: `compute_noisy_or_eps` only prevents the single-input-
+at-1.0 case; a bucket of many mid-range inputs still combines toward
+0.999 and ε does nothing there. As a 1.0 guard it is a milder form of
+the B1 author-cap K.2.2 rejected as tuning-toward-target. Pass M
+measured saturation as small (1–2 nodes, zero severity-level ties);
+not a problem worth building machinery ahead of.
+
+Config change: `concentration.inbound.per_stage.method: noisy_or`
+in commit `e74bb55`; snapshot rolled forward pass_n_d4 in `e85c58f`.
+
+## ✅ D4a DECIDED — Pass N (2026-08-18)
+
+**Shipped as min_suppliers=1 at both stage and per-category levels.**
+Safe only under noisy-OR — hard-linked in config comments. Accepted
+cost: thin-graph nodes (quanta_services, xai, openai) read as more
+concentrated; part of that concentration is modelling incompleteness
+tracked on the completeness backlog.
+
+Config change: both `min_suppliers_for_concentration: 1` values in
+commit `6b83d31`; snapshot rolled forward pass_n_d4a in `6c699fe`.
+
+## ✅ Both xfails RETIRED — Pass N Phase C (commit `694e382`)
+
+Registry empty. `test_xfail_registry_is_pinned` asserts empty-shape
+invariant. Both retirements traced to mechanisms named in their own
+reason strings (§N.6.3 grading ledger).
+
 **Pair with `min_suppliers_for_concentration: 1`** (see D4a below). The
 two changes are not separable — the pairing is load-bearing, not
 convenient.

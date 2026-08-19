@@ -969,3 +969,122 @@ resolution; count-aware deferrable per §5 test.
 
 **Pass M does not decide D4.** The evidence is now in a shape the
 decision can rest on.
+
+---
+
+## Pass N ledger — the fix
+
+Pass N is the fix pass. D4 shipped as plain noisy-OR (no ε); D4a
+shipped as `min_suppliers=1`; both xfails retired. Six commits in
+three phases.
+
+### N.6.1 D4 decided and shipped: noisy-OR, ε rejected on implementation review
+
+Both K.2.2 and Pass M recommended pairing noisy-OR with an internal
+ε=0.01. **Rejected on implementation review**, on two grounds:
+
+1. `compute_noisy_or_eps` caps each *input* at `1 − eps` before
+   combining. It prevents the single-input-at-1.0 case only. A bucket
+   of many mid-range inputs still combines toward 0.999; ε does
+   nothing there. It is not a saturation guard; it is a 1.0 guard.
+2. As a 1.0 guard it is a milder form of the B1 author-cap K.2.2
+   itself rejected as tuning-toward-target. Better located (inside
+   the engine, one place, authored value stays honest) but the same
+   kind of adjustment.
+
+Pass M measured the problem as small: 1 node at exactly 1.0 under
+D4 + min_supp=2, 2 nodes at 1.0 under D4 + D4a, zero severity-level
+ties across the 31-node scored set. Saturation exists and is not
+producing observable downstream effect.
+
+Ship plain noisy-OR. Pre-registered expected saturation. If a future
+distribution produces real ordering breaks at the severity level, add
+ε then, with evidence. Do not build the machinery ahead of the need.
+
+A recommendation overturned by reading the code it proposed. Recorded
+so a future author can see the reasoning.
+
+### N.6.2 D4a decided and shipped: min_suppliers 2 → 1 (safe only under noisy-OR)
+
+Stage-level and per-category values both lowered. Comment blocks
+rewritten with dependency-semantics reasoning and an explicit ⚠
+safety note: **`min_suppliers=1` is safe ONLY under noisy-OR**. If
+a future config switches `method` back to `hhi`, the value must
+revert to 2 — Pass M measured `hhi_min1` producing 19 nodes at
+concentration 1.0 and retry-exhaust boundary collapse. The two
+config keys must stay in lockstep.
+
+Accepted cost: thin-graph nodes named in the scoring.yaml TODO
+(`quanta_services`, `xai`, `openai`) now read as more concentrated
+under min_suppliers=1. Part of the concentration is modelling
+incompleteness rather than real risk. The completeness backlog
+tracks these explicitly; the artefact stays visible.
+
+Pre-existing `all_stages_single_supplier` fallback branch is now
+unreachable under min_supp=1. **Retained, not deleted** — reachable
+under any future config raising the threshold.
+
+### N.6.3 Both xfails retired
+
+`product:hbm` and `product:rf_power_semis` — the model's only two
+disagreements with the paper. Both resolved when D4+D4a shipped:
+
+- **HBM**: memory-bucket concentration jumped HHI 0.4402 → noisy-OR
+  0.7440 (D4 by construction). Severity 0.1779 → 0.3008, crosses
+  post-D4 median 0.2015 → XPASS. Reason string explicitly named
+  "inbound_hhi 0.44 cap" — the aggregator change ends that mechanism
+  directly.
+- **RF & Power**: sole-source gallium input_to bucket unzeroed (D4a).
+  Severity 0.0261 → 0.2872, crosses post-D4+D4a median 0.2404 →
+  XPASS. Reason string explicitly named "min_suppliers=2 rule zeroes
+  single-source stage buckets" — the rule change ends that mechanism
+  directly.
+
+Neither resolves via unrelated side effect crossing a threshold. Both
+mechanisms are named in their own reason strings. Aggregator was
+chosen on grounds independent of the xfails (HHI is mathematically
+wrong for shares that don't sum to 1 regardless of any xfail movement).
+
+Registry now empty. Pinning machinery (Pass J.1 §3) retained;
+`test_xfail_registry_is_pinned` asserts the empty-shape invariant.
+
+### N.6.4 HHI/dependency incompatibility CLOSED
+
+Opened K.1 §4.3 (NdFeB inversion: raising Nd 0.60→1.00 and Dy
+0.20→0.90 LOWERED the computed HHI). Diagnosed across K.2 / K.2.1
+/ K.2.2. Measured in Pass M. **Fixed in Pass N by shipping noisy-OR**,
+which is bounded [0,1], monotonic, and requires no summation
+constraint — the properties dependency-basis shares actually need.
+
+### N.6.5 The 29 queued re-authors are UNBLOCKED
+
+They were paused pending D4. With D4 shipped they are free to
+proceed. Each still needs the research K.1 §4.4 identified per edge;
+the unblocking is on the aggregator dependency, not on the research
+itself. Ordering per K.2.2 §6.3: the 10 "safe" queued edges are all
+sole-supplier buckets; under Pass N D4a they now contribute to
+concentration (they didn't before), so their honest re-author matters.
+
+### N.6.6 Two-level `min_suppliers` fallback asymmetry logged
+
+Pre-existing open item surfaced by Pass N Phase B. When ALL stages on
+a node are single-supplier, the stage-level rule sets `inbound = 0.0`;
+when all supplies-categories on a node are single-supplier, the
+per-category rule falls back to the aggregate reading. **Two opposite
+responses to the same condition one level apart.** Not introduced by
+Pass N; logged, not fixed. See config/scoring.yaml comment on the
+category-level `min_suppliers_for_concentration` block for the note.
+
+### N.6.7 Paper is no longer an independent check on the model
+
+After this pass the model agrees with the paper everywhere (7 of 7
+chokepoints pass severity > median). The paper is a hypothesis
+document, not ground truth — agreement with it is not validation.
+Having evaluated six aggregator candidates in Pass M and shipped the
+one whose recommendation was independent of the xfail outcomes, the
+resolution is accepted as genuine (§N.6.3 named-mechanism check). But
+the paper no longer provides an independent check on the model
+going forward.
+
+**Real validation still waits on live ingestion and the two-lane
+prediction log** — recorded per Pass N §1.3.
