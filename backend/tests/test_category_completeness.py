@@ -20,9 +20,15 @@ _OUT = Path(__file__).parent / "_out"
 _OUT.mkdir(exist_ok=True)
 
 
-def _single_supplier_categories(graph):
+def _single_supplier_categories(graph, threshold: int):
     """Return {(node_id, node_name): [(category, single_supplier_id), …]}
-    for every (target, supply_category) bucket with < 2 modelled suppliers."""
+    for every (target, supply_category) bucket with < `threshold` modelled
+    suppliers.
+
+    Pass N §3 — `threshold` now reads from config
+    (`supplies_min_suppliers_for_concentration`, D4a lowered to 1) so
+    the test stays in lockstep with the engine.
+    """
     buckets: dict[tuple[str, str], list[str]] = defaultdict(list)
     for edge in graph.edges.values():
         if edge.type != EdgeType.SUPPLIES:
@@ -31,7 +37,7 @@ def _single_supplier_categories(graph):
         buckets[(edge.target_id, cat)].append(edge.source_id)
     rows = defaultdict(list)
     for (tgt_id, cat), sources in buckets.items():
-        if len(sources) < 2:
+        if len(sources) < threshold:
             node = graph.nodes[tgt_id]
             rows[(tgt_id, node.name)].append((cat, sources[0]))
     return dict(rows)
@@ -54,10 +60,16 @@ def _write_gaps(rows):
                 f.write(f"{name[:38]:<38} {cat:<20} {src:<30}\n")
 
 
-def test_every_single_supplier_category_is_in_backlog(graph):
+def test_every_single_supplier_category_is_in_backlog(graph, config):
     """A single-supplier category must never contribute to concentration
-    signal — it belongs in the completeness backlog, not in the tier."""
-    rows = _single_supplier_categories(graph)
+    signal — it belongs in the completeness backlog, not in the tier.
+
+    Pass N §3 — threshold reads from config to stay in lockstep with
+    the engine. Under min_supp=1 (post-D4a) no category qualifies and
+    both backlog and engine flag zero — the test passes trivially.
+    """
+    threshold = config.supplies_min_suppliers_for_concentration
+    rows = _single_supplier_categories(graph, threshold=threshold)
     _write_gaps(rows)
 
     # For every node that has ANY single-supplier categories, the engine

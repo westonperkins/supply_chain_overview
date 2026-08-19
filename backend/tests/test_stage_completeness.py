@@ -14,9 +14,17 @@ _OUT = Path(__file__).parent / "_out"
 _OUT.mkdir(exist_ok=True)
 
 
-def _single_supplier_stages(graph):
+def _single_supplier_stages(graph, threshold: int):
     """{(target_id, stage_name): [source_id]} where the stage bucket has
-    fewer than 2 modelled sources."""
+    fewer than `threshold` modelled sources.
+
+    Pass N §3 — `threshold` now reads from config
+    (`stage_min_suppliers_for_concentration`, D4a lowered to 1) rather
+    than being hardcoded 2. Under threshold=1 no bucket qualifies
+    (every bucket with at least one source passes), so the backlog is
+    empty on the current graph and the engine flags nothing —
+    consistent behaviour.
+    """
     # Match the scoring engine's read: derived_shares only tracks
     # SHARE_INTO_TARGET types (mines / refines / supplies / input_to /
     # component_of). `operates` is a SUPPLY_EDGE_TYPE for cascade purposes
@@ -28,7 +36,7 @@ def _single_supplier_stages(graph):
         if edge.type.value not in share_types:
             continue
         buckets[(edge.target_id, edge.type.value)].append(edge.source_id)
-    return {k: v for k, v in buckets.items() if len(v) < 2}
+    return {k: v for k, v in buckets.items() if len(v) < threshold}
 
 
 def _write_gaps(rows, graph):
@@ -45,10 +53,20 @@ def _write_gaps(rows, graph):
             f.write(f"{name[:38]:<38} {stage:<14} {sources[0]:<30}\n")
 
 
-def test_every_single_supplier_stage_is_in_backlog(graph):
-    """Every stage bucket with < 2 sources must be recorded on the node's
-    dynamic.single_supplier_stages and written to the backlog."""
-    rows = _single_supplier_stages(graph)
+def test_every_single_supplier_stage_is_in_backlog(graph, config):
+    """Every stage bucket with < stage_min_suppliers sources must be
+    recorded on the node's dynamic.single_supplier_stages and written
+    to the backlog.
+
+    Pass N §3 — threshold reads from config to stay in lockstep with
+    the engine. Under min_supp=1 (post-D4a) no bucket qualifies and
+    both the backlog and the engine flag zero — the test passes
+    trivially. Threshold hardcoded at 2 pre-N would have marked
+    every 1-supplier bucket while the engine (respecting config)
+    marked none, producing a stale-test failure.
+    """
+    threshold = config.stage_min_suppliers_for_concentration
+    rows = _single_supplier_stages(graph, threshold=threshold)
     _write_gaps(rows, graph)
 
     mismatches = []
