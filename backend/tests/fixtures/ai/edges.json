@@ -1536,9 +1536,10 @@
     "target_id": "company:nextera_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q §4 dependency-basis re-author.] GE Vernova is the #1 US onshore wind turbine OEM (GE Renewable Energy legacy). NextEra Energy Resources is the largest US wind operator (~30+ GW installed capacity, publicly disclosed). NextEra's wind fleet composition carries material GE exposure that exceeds a generic three-way grid-equipment split (Siemens Energy + GE Vernova + Hitachi Energy). Under §4.1: withdrawal of GE Vernova would impair NextEra's fleet growth AND service AND parts availability over a 3-5 year substitution horizon (turbine platform lock-in). Value 0.25 → 0.30 reflects the wind-specific over-index vs the generic grid-equipment dependency. Confidence: estimate on the direction, inference on the specific quantum; no single sourced document reference."
     },
-    "input_share": 0.25,
+    "input_share": 0.3,
     "output_share": null,
     "supply_category": "power_equipment"
   },
@@ -1611,7 +1612,8 @@
     "target_id": "company:nextera_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q §4 dependency-basis re-author, value retained.] NextEra Energy is publicly identified as Quanta Services' largest single customer (Quanta 10-K customer-concentration disclosures over multiple years). Quanta is the leading specialty utility construction contractor in North America for high-voltage transmission line construction, substation build, and renewable interconnection — the specific work NextEra's wind + solar buildout depends on. Under §4.1: withdrawal of Quanta would materially delay NextEra's new-generation interconnection over a 1-3 year window; alternatives (MYR Group, Primoris) exist but at capacity constraints. Value 0.30 retained — consistent with named-largest-customer + leading-contractor position within a modest-competitor market. Confidence: inference. NOTE ON supply_category: this edge is labelled `power_equipment` in the schema; Quanta is a construction contractor rather than an equipment manufacturer, so the category is a semantic approximation. Pass Q §4 rule prohibits creating or subdividing supply_category to change tier or relieve a bucket sum; recorded here so a future authoring pass can consider whether a distinct `utility_construction` category is warranted (out of scope for Q)."
     },
     "input_share": 0.3,
     "output_share": null,
@@ -1816,7 +1818,8 @@
     "target_id": "facility:the_citadel",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q §4 dependency-basis re-author, value retained.] Paper §4B names 'Vertiv (leader)' in data centre cooling equipment. Hyperscale AI training facilities like The Citadel are cooling-critical — thermal shutdown of the training cluster occurs within hours of adequate cooling loss, and the cooling equipment class (chillers, CDUs, rack-mount cooling) is not fungible with any non-cooling class. Under §4.1: withdrawal of Vertiv would cause partial function loss over the substitution window (~months for equipment procurement + install; alternatives include Schneider Electric, Johnson Controls, Trane, STULZ). Value 0.35 retained — consistent with paper-named class leader with active competitors. Confidence: estimate (paper-named class role); the specific within-class share at The Citadel is inference and would tighten with a facility-specific cooling BOM."
     },
     "input_share": 0.35,
     "output_share": null,

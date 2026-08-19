@@ -1419,3 +1419,159 @@ depends on distribution shape and where silent drift changes the
 meaning of every downstream number), it is worth naming the pattern
 and factoring the shared machinery. At n=2 the code duplication is
 tolerable; at n=3 it is a refactor worth doing.
+
+## Pass Q — dependency re-author, power/electrical cluster (13 of 29)
+
+Data pass. Edge weights only. 3 of 13 power-cluster edges re-authored
+on the K.1 §4.1 dependency basis; 10 left as reviewed-and-undeterminable
+with specific reasons. No scoring code change, no config change, no
+formula or aggregator change. Every severity byte-identical to Pass P
+end state. 110 pass, 0 xfail.
+
+### Q.0 Provenance
+
+At pass open:
+
+```
+$ git log --oneline -5
+40e2afa Pass P: D3 decided — tier boundaries frozen as absolute constants
+f0dd482 Pass O: diff attribution, snapshot provenance, modeling caveats
+63f08f2 Pass N.1 (diagnosis only): reconcile arm_core_ip + downward-movement mechanism
+f3f8e4d Pass N ledger + k2_decisions D4/D4a marked DECIDED
+694e382 Pass N Phase C: retire both xfails
+
+$ git status --short
+(empty)
+
+$ git rev-parse HEAD
+40e2afa330cfebf5aacd32deb885088f650edb82
+
+$ git diff --name-only HEAD
+(empty)
+```
+
+**Commit shape finding: two commits.** Pass O (`f0dd482`) and Pass P
+(`40e2afa`) each have a recoverable diff in history. Per-pass file
+attribution is retrievable from `git show <sha>` for either commit.
+Working tree at open is empty; HEAD is as expected.
+
+**HEAD at close:** the SHA of the commit carrying this Pass Q section is retrievable via `git log --oneline -1 --grep "Pass Q"`. Not baked in as a literal here because doing so would require an `--amend` cycle to make the literal match the commit it names (chicken-and-egg with the commit hash). Open SHA + `git log` on the branch is the authoritative record.
+
+### Q.4.baseline — verified state at open
+
+Cross-checked against §2 of the spec via inline scoring probe; every
+row matched byte-for-byte:
+
+| item | verified value |
+|---|---|
+| nodes / edges / scored | 72 / 259 / 31 |
+| tier histogram | 2 critical / 3 high / 14 moderate / 12 none / 41 unscored |
+| boundaries (frozen) | 0.5178454839188712 / 0.41368488092014066 / 0.17711108045794494 |
+| `thresholds.mode` | `frozen` |
+| `fixed_reference` | 1.6711394969476698 |
+| aggregator method / eps | `noisy_or` / 0.01 config-carried, not applied under `noisy_or` |
+| `min_suppliers_for_concentration` (stage + category) | 1 |
+| snapshot label | `pass_n_d4a` (unchanged; Pass Q did not roll forward) |
+| suite | 110 pass, 0 xfail |
+
+### Q.8 pre-registration scorecard
+
+| # | expectation | HIT / MISS | evidence |
+|---|---|---|---|
+| 1 | `inbound_hhi` on `ge_vernova` and `siemens_energy` byte-identical | **HIT** | `pass_q_facts.json` caveat_check: ge_vernova 0.4149999999999999 → 0.4149999999999999; siemens_energy 0.45999999999999996 → 0.45999999999999996. Full float equality. |
+| 2 | Both power caveats resolve to branch A | **HIT** | ge_vernova branch=A, siemens_energy branch=A, quanta_services branch=A. All: "inbound_hhi unchanged AND inbound still the dominant axis." |
+| 3 | `outbound_criticality` rises on at least one of ge_vernova / siemens_energy / quanta_services / vertiv | **HIT** | ge_vernova outbound 0.1819268342116367 → 0.19473684861108456 (+0.0128). Siemens/quanta/vertiv outbound unchanged (no edges of those three re-authored on value). |
+| 4 | At least one consumer bucket sum crosses 1.0 after re-authoring, and no value was reduced to prevent it | **MISS (outcome), author discipline maintained** | No bucket crossed 1.0 — the highest post-Q bucket sum among the 4 affected consumers is NextEra `power_equipment` at 0.80 (0.75 → 0.80). This is because 10 of 13 edges were left undeterminable; the K.2.1 §2.3 collision case (siemens → nextera authored high) did not fire because that edge was undeterminable, not because a value was reduced to prevent it. Author discipline was maintained: `bucket_sum_before` = `bucket_sum_after` for every consumer bucket except NextEra's; NextEra's rose 0.75 → 0.80 (from the honest §4-basis re-author of GE Vernova's wind exposure, not from reduction anywhere). If a subsequent pass authors any of the remaining undeterminable edges honestly high, the K.2.1 collision may fire then — recorded so the next author does not treat it as unexpected. |
+| 5 | Zero severity movement on constellation_energy, duke_energy, nextera_energy | **HIT** | All three unscored (severity None) both before and after. Their concentrations may have moved (nextera inbound_hhi 0.58 → 0.608) but severity remains `null` and tier remains `unscored` — no severity movement is possible on an unscored node. |
+| 6 | Every frozen constant unchanged | **HIT** | `fixed_reference` 1.6711394969476698 unchanged; boundaries {0.5178454839188712, 0.41368488092014066, 0.17711108045794494} unchanged; guard test `test_thresholds_boundaries_are_frozen` still green. |
+| 7 | Suite ≥ 110 pass, 0 xfail | **HIT** | 110 pass, 0 xfail. Two transient failures during Q were expected and closed inside the pass: `test_node_inventory_matches_committed_file` (regenerated `node_inventory.md`) and `test_no_stage_bucket_sums_below_0_80` (removed `nextera_energy/supplies` from the pinned shortfall list, which it exited by moving to 0.80). |
+| 8 | At least one edge is marked undeterminable rather than all 13 re-authored | **HIT** | 10 of 13 marked undeterminable in `pass_q_facts.json`. The 3 re-authored are named with specific public-knowledge sources (GE Vernova's US onshore wind #1 position; Quanta's public 10-K NextEra concentration; paper §4B naming Vertiv as data-centre cooling leader). |
+
+**7 HIT, 1 MISS (outcome, not discipline).**
+
+### Per-edge table (13 of 13)
+
+Every value, status, and confidence quoted from `docs/generated/pass_q_facts.json` (spec §6 mechanical artifact).
+
+| # | edge | before | after | status | confidence | basis (see full source_note in edges.json for the 3 reauthored; see below for the 10 undeterminable) |
+|---|---|---:|---:|---|---|---|
+| 1 | `ge_vernova → constellation_energy` | 0.15 | 0.15 | undeterminable | estimate | Constellation's fleet is nuclear-heavy (12 reactors); non-nuclear side (gas peakers, transformers) uses GE and Siemens equipment. Cannot decompose Constellation's function attributable specifically to GE Vernova without published fleet composition + reactor-vs-peaker function share. Left at pre-Q 0.15. |
+| 2 | `ge_vernova → duke_energy` | 0.20 | 0.20 | undeterminable | estimate | Duke's grid-equipment dependency spans transformers, generators, switchgear across fossil + nuclear + renewables. Substitutable among GE / Siemens Energy / Hitachi Energy but published Duke-specific mix not accessible. Left at pre-Q 0.20. |
+| 3 | `ge_vernova → nextera_energy` | 0.25 | **0.30** | **reauthored_value** | estimate | GE Vernova is #1 US onshore wind turbine OEM (public knowledge). NextEra Energy Resources is largest US wind operator (~30 GW installed). NextEra's wind fleet composition carries material GE exposure over-indexing the generic three-way grid-equipment split. §4.1: withdrawal impairs fleet growth + service + parts over 3-5y horizon (platform lock-in). |
+| 4 | `ge_vernova → facility:the_citadel` | 0.15 | 0.15 | undeterminable | estimate | Facility-specific on-site power equipment mix (backup gensets, UPS, transformer sizing) not accessible. Left at pre-Q 0.15. |
+| 5 | `nextera_energy → facility:the_citadel` | 0.10 | 0.10 | undeterminable | estimate | Whether the Citadel is Texas-served (ERCOT) or elsewhere, and NextEra's share of its grid supply, not published. **Sole-supplier bucket** (`power_generation`, 1 modelled member) — under `min_suppliers=1` (Pass N D4a) this now contributes; noted for the record. Left at pre-Q 0.10. |
+| 6 | `quanta_services → duke_energy` | 0.20 | 0.20 | undeterminable | estimate | Duke's construction-services dependency on Quanta specifically (vs MYR, Primoris, in-house) not published. Left at pre-Q 0.20. |
+| 7 | `quanta_services → nextera_energy` | 0.30 | 0.30 | **reauthored_note_only** | estimate | NextEra publicly identified as Quanta's largest customer (Quanta 10-K customer-concentration disclosures over multiple years). Value 0.30 retained as consistent with named-largest-customer + leading utility construction contractor position. See NOTE in source_note about `supply_category` semantic approximation (Quanta is construction contractor, currently labelled `power_equipment`). |
+| 8 | `siemens_energy → constellation_energy` | 0.15 | 0.15 | undeterminable | estimate | Same reasoning as edge 1: Constellation nuclear-heavy, Siemens exposure on non-nuclear side not decomposable from public disclosures. Left at pre-Q 0.15. |
+| 9 | `siemens_energy → duke_energy` | 0.20 | 0.20 | undeterminable | estimate | Same reasoning as edge 2. Left at pre-Q 0.20. |
+| 10 | `siemens_energy → nextera_energy` | 0.20 | 0.20 | undeterminable | estimate | K.2.1 §2.3 collision candidate — a §4-basis high author here (~0.30-0.35) would cross the 1.0 bucket sum. Left undeterminable rather than authored to relieve or provoke the collision; noise-OR permits the collision but the value should come from evidence, not from testing the aggregator. Left at pre-Q 0.20. |
+| 11 | `siemens_energy → facility:the_citadel` | 0.15 | 0.15 | undeterminable | estimate | Same reasoning as edge 4. Left at pre-Q 0.15. |
+| 12 | `vertiv → facility:the_citadel` | 0.35 | 0.35 | **reauthored_note_only** | estimate | Paper §4B explicitly names "Vertiv (leader)" in data-centre cooling. Hyperscale AI training facilities are cooling-critical (thermal shutdown in hours without adequate cooling). Withdrawal causes partial function loss over ~months substitution window (Schneider, Johnson Controls, Trane, STULZ as alternatives). Value 0.35 retained as consistent with paper-named class leader with active competitors. **Sole-supplier bucket** (`cooling`, 1 modelled member) — under `min_suppliers=1` contributes; noted. |
+| 13 | `vertiv → facility:vantage_frontier` | 0.20 | 0.20 | undeterminable | estimate | Pre-existing source_note "Same rationale." refers to Vertiv's other facility edges. Facility-specific Vertiv share at Vantage Frontier not decomposable without published cooling BOM. **Sole-supplier bucket** (`cooling`, 1 modelled member) under `min_suppliers=1`. Left at pre-Q 0.20. |
+
+**Data changes:** 1 value change (edge 3), 2 source-note additions (edges 7, 12), 10 edges untouched. Fixture `backend/tests/fixtures/ai/edges.json` synced.
+
+**`supply_category` observation.** Actual categories from `data/ai/edges.json`: 11 edges `power_equipment`, 1 `power_generation` (edge 5), 2 `cooling` (edges 12–13). The spec §3 table's descriptive labels ("grid/generation equipment", "site power", "grid construction/services", "site power/cooling") do not appear as `supply_category` values in the data; the spec was descriptive per its own §3 note. Reported as required.
+
+### Q.5 caveat branch verdicts
+
+Quoted from `pass_q_facts.json`:
+
+- `company:ge_vernova` → **branch A**. inbound_hhi 0.4149999999999999 → 0.4149999999999999 (byte-identical). Post-Q outbound_criticality 0.19473684861108456 < inbound_hhi 0.4149999999999999. Inbound still the dominant axis. Caveat stands, unchanged.
+- `company:siemens_energy` → **branch A**. inbound_hhi 0.45999999999999996 → 0.45999999999999996 (byte-identical). Post-Q outbound_criticality 0.1707325122849878 (unchanged) < inbound_hhi 0.45999999999999996. Inbound still dominant. Caveat stands, unchanged.
+- `company:quanta_services` → **branch A**. inbound_hhi 0.30000000000000004 → 0.30000000000000004 (byte-identical). Post-Q outbound_criticality 0.15236677911939359 (unchanged) < inbound_hhi 0.30000000000000004. Inbound still dominant. Caveat stands, unchanged. (Quanta's literal caveat is on the record from a prior pass — "Inbound HHI reads 1.0 because copper is the only modelled input. Real inputs include steel, transformers, labour and permits — Quanta is not single-sourced to the degree the number suggests." — its literal text does not resolve through the narration key convention but the branch check applies identically.)
+
+### Threshold drift section — quoted verbatim
+
+Copy of `## Drift diagnostic — frozen vs derived (Pass P §3)` from `docs/generated/threshold_analysis.md`:
+
+**1. Per-boundary drift** — all three deltas `+0.0000000000`. Frozen and derived agree.
+
+**2. Would-change-tier under derived boundaries** — **0 nodes would change tier.** Frozen boundaries and the current derivation agree on every scored node's tier.
+
+**3. Cluster-cut check** — all three boundaries clear of clusters: critical Δ nearest 0.0210962753 ≥ median gap 0.0133607067; high Δ 0.0555971060; moderate Δ 0.0244370443. No YES flags.
+
+**4. Unresolved bands** — _None declared._
+
+**Verdict** — **Frozen set still fits the distribution.** No node would change tier under the derived boundaries, no frozen boundary sits inside a tight cluster, and no unresolved band is declared. A re-baseline would produce identical tiers today.
+
+**Stop condition 7 clear.** No would-change-tier movement on any node this pass did not touch — because no node's severity moved at all this pass.
+
+### Changed
+
+`git diff --name-only HEAD` — 7 modified files:
+
+```
+backend/tests/_out/share_backlog.txt
+backend/tests/fixtures/ai/edges.json
+backend/tests/pinned/known_bucket_shortfalls.txt
+data/ai/edges.json
+docs/generated/input_share_audit.md
+docs/generated/node_inventory.md
+docs/generated/threshold_analysis.md
+```
+
+`git ls-files -o --exclude-standard` — 2 untracked files:
+
+```
+backend/scripts/pass_facts.py
+docs/generated/pass_q_facts.json
+```
+
+`docs/generated/replay/grading.md` will be modified by this Pass Q section — count 8 modified + 2 untracked = **10 files** in the Pass Q commit.
+
+**Not changed** — files genuinely absent from the diff:
+
+- `config/scoring.yaml` and `backend/tests/fixtures/scoring.yaml` — verified untouched via `git diff --name-only HEAD config/scoring.yaml` (empty output). The Pass P `mode: frozen` short-circuit in `_write_boundaries_to_config` held; the generator did not touch the config.
+- `docs/generated/severity_snapshot.json` — no roll-forward invoked; still labelled `pass_n_d4a` post-Q.
+- `docs/generated/severity_diff.md` — regenerated in-place by the generator run but byte-identical to its pre-Q state (Non-zero severity deltas: **0**; Tier changes: **0**; BOUNDARY: **0**). Not in `git diff --name-only`.
+- Every scoring code file (`backend/app/scoring/*.py`), every narration file, every schema file, every test file.
+- `data/ai/nodes.json` — no node touched.
+
+Cross-check: every file listed above under "Not changed" is genuinely absent from the `git diff --name-only HEAD` output shown. The failure mode this section exists to catch (changed files leaking under an Unchanged heading) has occurred in prior reports; verified against the diff before submission this time.
+
+### Q.6 mechanical artifact — `docs/generated/pass_q_facts.json`
+
+Written by `backend/scripts/pass_facts.py`. Contains, at full float precision: HEAD SHA, commit shape (two — Pass O and Pass P separately committed), graph shape, boundaries, threshold_mode, fixed_reference, aggregator, per-edge before/after with status/confidence/bucket-sums/sole-supplier flag, per-node before/after with dominant-axis, caveat check with branch verdicts, and suite counts. The report above **quotes** this artifact rather than re-computing values from memory.
+
+Current suite field in the artifact: `{"passed": 110, "failed": 0, "xfail": 0, "tail": "110 passed in 0.66s"}`. Known fragility for future passes: the `passed`/`failed` scraper uses `^(\d+)\s+passed` and only fires when the pytest tail begins with the passed count. If a future run has failing tests the pytest tail begins with the failure count instead (`"N failed, M passed in ..."`) and the numeric fields would silently misreport. Recorded as an open item — the `tail` field is authoritative regardless; the scalar fields are convenience.
