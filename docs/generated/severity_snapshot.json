@@ -1,60 +1,60 @@
 {
-  "captured_at_pass": "pass_l",
+  "captured_at_pass": "pass_n_d4",
   "nodes": {
     "mineral:gallium": {
-      "severity": 0.4802713494238954,
+      "severity": 0.48763330760307644,
       "tier": "high",
-      "concentration": 0.97035,
-      "inbound_hhi": 0.97035,
+      "concentration": 0.98522425,
+      "inbound_hhi": 0.98522425,
       "outbound_criticality": 0.3804940942526365
     },
     "mineral:indium": {
-      "severity": 0.0738599852661949,
+      "severity": 0.11984398928034516,
       "tier": "none",
-      "concentration": 0.4380853277835588,
-      "inbound_hhi": 0.4380853277835588,
+      "concentration": 0.71083,
+      "inbound_hhi": 0.71083,
       "outbound_criticality": 0.012701008296200793
     },
     "mineral:neodymium": {
-      "severity": 0.22025022350781015,
+      "severity": 0.295079573540301,
       "tier": "moderate",
-      "concentration": 0.6859504132231404,
-      "inbound_hhi": 0.6859504132231404,
+      "concentration": 0.919,
+      "inbound_hhi": 0.919,
       "outbound_criticality": 0.4305758641728349
     },
     "mineral:dysprosium": {
-      "severity": 0.5452537926963327,
+      "severity": 0.5618299974044941,
       "tier": "critical",
-      "concentration": 0.9609842172336045,
-      "inbound_hhi": 0.9609842172336045,
+      "concentration": 0.9901989999999999,
+      "inbound_hhi": 0.9901989999999999,
       "outbound_criticality": 0.3875182777555515
     },
     "mineral:copper": {
-      "severity": 0.2069508732517402,
-      "tier": "moderate",
-      "concentration": 0.29159999999999997,
-      "inbound_hhi": 0.29159999999999997,
+      "severity": 0.4967492086381209,
+      "tier": "high",
+      "concentration": 0.699934564,
+      "inbound_hhi": 0.699934564,
       "outbound_criticality": 0.2815234614691293
     },
     "product:hbm": {
-      "severity": 0.17793654427096184,
+      "severity": 0.30075399000310415,
       "tier": "moderate",
-      "concentration": 0.4402,
-      "inbound_hhi": 0.4402,
+      "concentration": 0.7440399999999999,
+      "inbound_hhi": 0.7440399999999999,
       "outbound_criticality": 0.23136771276971466
     },
     "product:cowos_packaging": {
-      "severity": 0.31318146222245224,
+      "severity": 0.3296191632783268,
       "tier": "moderate",
-      "concentration": 0.9049999999999999,
-      "inbound_hhi": 0.9049999999999999,
+      "concentration": 0.9524999999999999,
+      "inbound_hhi": 0.9524999999999999,
       "outbound_criticality": 0.16211790380520175
     },
     "product:ndfeb_magnets": {
-      "severity": 0.17066830224114674,
+      "severity": 0.3403936856853811,
       "tier": "moderate",
-      "concentration": 0.5013850415512465,
-      "inbound_hhi": 0.5013850415512465,
+      "concentration": 1.0,
+      "inbound_hhi": 1.0,
       "outbound_criticality": 0.14241779362806403
     },
     "product:rf_power_semis": {
@@ -170,59 +170,59 @@
       "outbound_criticality": 0.09743456413885744
     },
     "company:nvidia": {
-      "severity": 0.35450725887811113,
+      "severity": 0.35808777495941424,
       "tier": "moderate",
-      "concentration": 0.9802,
-      "inbound_hhi": 0.9802,
+      "concentration": 0.9901,
+      "inbound_hhi": 0.9901,
       "outbound_criticality": 0.5401225192530577
     },
     "company:broadcom": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5155709342560554,
-      "inbound_hhi": 0.5155709342560554,
+      "concentration": 0.64096,
+      "inbound_hhi": 0.64096,
       "outbound_criticality": 0.10471896590298826
     },
     "company:amd": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5155709342560554,
-      "inbound_hhi": 0.5155709342560554,
+      "concentration": 0.64096,
+      "inbound_hhi": 0.64096,
       "outbound_criticality": 0.07230918527874901
     },
     "company:tsmc": {
       "severity": 0.46928198688086703,
       "tier": "high",
       "concentration": 1.0,
-      "inbound_hhi": 0.98015,
+      "inbound_hhi": 0.99009975,
       "outbound_criticality": 1.0
     },
     "company:samsung": {
-      "severity": 0.2745663535758076,
+      "severity": 0.2835434725087978,
       "tier": "moderate",
-      "concentration": 0.9218447097234975,
-      "inbound_hhi": 0.9218447097234975,
+      "concentration": 0.951985,
+      "inbound_hhi": 0.951985,
       "outbound_criticality": 0.08786096952781103
     },
     "company:intel": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.9218447097234975,
-      "inbound_hhi": 0.9218447097234975,
+      "concentration": 0.951985,
+      "inbound_hhi": 0.951985,
       "outbound_criticality": 0.0
     },
     "company:sk_hynix": {
-      "severity": 0.21119985670433936,
+      "severity": 0.24035304519271536,
       "tier": "moderate",
-      "concentration": 0.763640149937526,
-      "inbound_hhi": 0.763640149937526,
+      "concentration": 0.86905,
+      "inbound_hhi": 0.86905,
       "outbound_criticality": 0.4252155935001507
     },
     "company:micron": {
-      "severity": 0.1949537138809286,
+      "severity": 0.22186434940866026,
       "tier": "moderate",
-      "concentration": 0.763640149937526,
-      "inbound_hhi": 0.763640149937526,
+      "concentration": 0.86905,
+      "inbound_hhi": 0.86905,
       "outbound_criticality": 0.09431015321309122
     },
     "company:asml": {
@@ -263,57 +263,57 @@
     "company:marvell": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5155709342560554,
-      "inbound_hhi": 0.5155709342560554,
+      "concentration": 0.64096,
+      "inbound_hhi": 0.64096,
       "outbound_criticality": 0.0418875863611953
     },
     "company:google": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5,
-      "inbound_hhi": 0.5,
+      "concentration": 0.5968,
+      "inbound_hhi": 0.5968,
       "outbound_criticality": 0.0
     },
     "company:amazon": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.29085872576177285,
-      "inbound_hhi": 0.29085872576177285,
+      "concentration": 0.6724,
+      "inbound_hhi": 0.6724,
       "outbound_criticality": 0.0
     },
     "company:microsoft": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.2941176470588236,
-      "inbound_hhi": 0.2941176470588236,
+      "concentration": 0.6251500000000001,
+      "inbound_hhi": 0.6251500000000001,
       "outbound_criticality": 0.0
     },
     "company:meta": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.3571428571428572,
-      "inbound_hhi": 0.3571428571428572,
+      "concentration": 0.55375,
+      "inbound_hhi": 0.55375,
       "outbound_criticality": 0.0
     },
     "company:xai": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.78125,
-      "inbound_hhi": 0.78125,
+      "concentration": 0.73,
+      "inbound_hhi": 0.73,
       "outbound_criticality": 0.41887586361195306
     },
     "company:openai": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.78125,
-      "inbound_hhi": 0.78125,
+      "concentration": 0.73,
+      "inbound_hhi": 0.73,
       "outbound_criticality": 0.41887586361195306
     },
     "company:constellation_energy": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5,
-      "inbound_hhi": 0.5,
+      "concentration": 0.4251125719032069,
+      "inbound_hhi": 0.2775000000000001,
       "outbound_criticality": 0.4251125719032069
     },
     "company:vistra": {
@@ -333,29 +333,29 @@
     "company:nextera_energy": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.3422222222222222,
-      "inbound_hhi": 0.3422222222222222,
+      "concentration": 0.58,
+      "inbound_hhi": 0.58,
       "outbound_criticality": 0.09597651758958867
     },
     "company:duke_energy": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.3333333333333333,
-      "inbound_hhi": 0.3333333333333333,
+      "concentration": 0.4879999999999999,
+      "inbound_hhi": 0.4879999999999999,
       "outbound_criticality": 0.02094379318059765
     },
     "company:siemens_energy": {
-      "severity": 0.22437575280963837,
-      "tier": "moderate",
-      "concentration": 0.6800000000000002,
-      "inbound_hhi": 0.6800000000000002,
+      "severity": 0.15178359748887296,
+      "tier": "none",
+      "concentration": 0.45999999999999996,
+      "inbound_hhi": 0.45999999999999996,
       "outbound_criticality": 0.1707325122849878
     },
     "company:ge_vernova": {
-      "severity": 0.21590259438835932,
-      "tier": "moderate",
-      "concentration": 0.654320987654321,
-      "inbound_hhi": 0.654320987654321,
+      "severity": 0.13693520208235277,
+      "tier": "none",
+      "concentration": 0.4149999999999999,
+      "inbound_hhi": 0.4149999999999999,
       "outbound_criticality": 0.1819268342116367
     },
     "company:quanta_services": {
@@ -366,10 +366,10 @@
       "outbound_criticality": 0.15236677911939359
     },
     "company:vertiv": {
-      "severity": 0.06422781287011319,
+      "severity": 0.06867640728930377,
       "tier": "none",
-      "concentration": 0.42328230687077245,
-      "inbound_hhi": 0.42328230687077245,
+      "concentration": 0.4526,
+      "inbound_hhi": 0.4526,
       "outbound_criticality": 0.20627244086593324
     },
     "company:mp_materials": {
@@ -410,29 +410,29 @@
     "facility:colossus": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5,
-      "inbound_hhi": 0.5,
+      "concentration": 0.2689750000000001,
+      "inbound_hhi": 0.2689750000000001,
       "outbound_criticality": 0.0
     },
     "facility:stargate_abilene": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5,
-      "inbound_hhi": 0.5,
+      "concentration": 0.23050000000000004,
+      "inbound_hhi": 0.23050000000000004,
       "outbound_criticality": 0.0
     },
     "facility:vantage_frontier": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.52,
-      "inbound_hhi": 0.52,
+      "concentration": 0.235,
+      "inbound_hhi": 0.235,
       "outbound_criticality": 0.0
     },
     "facility:the_citadel": {
       "severity": null,
       "tier": "unscored",
-      "concentration": 0.5,
-      "inbound_hhi": 0.5,
+      "concentration": 0.2775000000000001,
+      "inbound_hhi": 0.2775000000000001,
       "outbound_criticality": 0.0
     },
     "facility:three_mile_island": {
@@ -472,7 +472,7 @@
     },
     "company:synopsys": {
       "severity": 0.15267403613821648,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.44152659468847527,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.44152659468847527
@@ -492,15 +492,15 @@
       "outbound_criticality": 0.13245797840654258
     },
     "company:arm": {
-      "severity": 0.09531990257454333,
+      "severity": 0.13636171048556364,
       "tier": "none",
-      "concentration": 0.4480454559907228,
-      "inbound_hhi": 0.39229024943310653,
+      "concentration": 0.64096,
+      "inbound_hhi": 0.64096,
       "outbound_criticality": 0.4480454559907228
     },
     "product:arm_core_ip": {
       "severity": 0.15119338054081047,
-      "tier": "moderate",
+      "tier": "none",
       "concentration": 0.45821127051538846,
       "inbound_hhi": 0.0,
       "outbound_criticality": 0.45821127051538846
