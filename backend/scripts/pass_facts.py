@@ -422,6 +422,31 @@ def main() -> None:
         })
 
     # -------- caveat check (§5) --------
+    # Pass T §5.1 — branch semantics distinction. Pass Q's original
+    # rule was "any inbound movement → C = stop". Pass R §6 revised
+    # this: movement caused by the current pass's own authored edge
+    # (i.e. a copper input_to raise flowing into GEV's inbound_hhi)
+    # is EXPECTED, not a stop. Q, Q.1, R, R.1, and S all resolved this
+    # by hand in their reports. Pass T pins the mechanical distinction
+    # in the artifact so future passes don't have to.
+    #
+    # Attribution rule: an authored edge is deemed to explain the
+    # target's inbound movement when the edge is in this pass's
+    # tracked `edge_ids` AND its target is the caveat node. That is
+    # a conservative attribution — it will miss cascade paths but
+    # will not falsely credit unauthored edges. When it fires the
+    # branch is still labelled "C" for compatibility, but `branch_
+    # semantics` is set to "revised_movement_expected" so callers
+    # can distinguish it from an unexplained C.
+    edge_ids_set = set(edge_ids)
+    passtag_edges_targeting = {}
+    for eid in edge_ids_set:
+        e = head_edges_by_id.get(eid) or next(
+            (e for e in current_edges_list if e.get("id") == eid), None,
+        )
+        if e is not None:
+            passtag_edges_targeting.setdefault(e.get("target_id"), []).append(eid)
+
     caveat_facts = []
     for nid in CAVEAT_CHECK_NODES:
         n = g.nodes[nid]
@@ -432,21 +457,35 @@ def main() -> None:
         out_b = b["outbound_criticality"]
         if inb_a != inb_b:
             branch = "C"
-            reason = "inbound_hhi moved — stop condition (spec §5 branch C)"
+            attributing = passtag_edges_targeting.get(nid, [])
+            if attributing:
+                branch_semantics = "revised_movement_expected"
+                reason = (
+                    f"inbound_hhi moved — attributable to this pass's "
+                    f"authored edge(s) {attributing}; per Pass R §6 "
+                    f"revised semantics this is EXPECTED, not a stop"
+                )
+            else:
+                branch_semantics = "original_stop"
+                reason = "inbound_hhi moved — stop condition (Pass Q original branch C)"
         elif (inb_a or 0) >= (out_a or 0):
             branch = "A"
+            branch_semantics = "original_stop"
             reason = "inbound_hhi unchanged AND inbound still the dominant axis"
         else:
             branch = "B"
+            branch_semantics = "original_stop"
             reason = "inbound_hhi unchanged BUT outbound now ≥ inbound; caveat is scope-stale"
         caveat_facts.append({
             "id": nid,
             "branch": branch,
+            "branch_semantics": branch_semantics,
             "reason": reason,
             "inbound_hhi_before": inb_b,
             "inbound_hhi_after": inb_a,
             "outbound_before": out_b,
             "outbound_after": out_a,
+            "attributing_pass_edges": passtag_edges_targeting.get(nid, []),
         })
 
     # -------- caveat number audit (Pass Q.1 §2) --------

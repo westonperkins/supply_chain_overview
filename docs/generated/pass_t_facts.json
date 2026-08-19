@@ -1,0 +1,4903 @@
+{
+  "head_sha_at_open": null,
+  "committed_state_summary": {
+    "n_nodes": 72,
+    "n_edges": 259,
+    "n_scored": 31,
+    "boundaries_frozen": {
+      "critical": 0.5178454839188712,
+      "high": 0.41368488092014066,
+      "moderate": 0.17711108045794494
+    },
+    "fixed_reference_frozen": 1.6711394969476698,
+    "threshold_mode": "frozen",
+    "aggregator_method": "noisy_or",
+    "aggregator_eps_configured": 0.01,
+    "aggregator_eps_applied": null
+  },
+  "raw_outbound_per_node": {
+    "mineral:gallium": 0.6490107854064419,
+    "mineral:indium": 0.021225156614841173,
+    "mineral:neodymium": 0.7195523330515995,
+    "mineral:dysprosium": 0.6475970997464396,
+    "mineral:copper": 2.0447548854281186,
+    "product:hbm": 0.3866477231279139,
+    "product:cowos_packaging": 0.869623337255849,
+    "product:ndfeb_magnets": 0.238,
+    "product:rf_power_semis": 0.24751218478541614,
+    "country_region:china": 1.5713708661677188,
+    "country_region:taiwan": 0.0,
+    "country_region:usa": 0.23421751892131829,
+    "country_region:netherlands": 0.0,
+    "country_region:south_korea": 0.14009366799706519,
+    "country_region:japan": 0.10893190168472612,
+    "country_region:myanmar": 0.08623805565989993,
+    "country_region:kachin": 0.2918876577830758,
+    "country_region:malaysia": 0.0865216865531411,
+    "country_region:australia": 0.08623805565989993,
+    "country_region:brazil": 0.04311902782994997,
+    "country_region:chile": 0.3983325436527765,
+    "country_region:drc": 0.20713292269944378,
+    "country_region:peru": 0.20713292269944378,
+    "country_region:canada": 0.1633978525270892,
+    "company:nvidia": 0.9026200751146629,
+    "company:broadcom": 0.175,
+    "company:amd": 0.1540397675926577,
+    "company:tsmc": 1.7523935656701093,
+    "company:samsung": 0.14682793641804068,
+    "company:intel": 0.0,
+    "company:sk_hynix": 0.7105945730161467,
+    "company:micron": 0.15760542199758293,
+    "company:asml": 1.770976984672585,
+    "company:applied_materials": 1.1308419667019443,
+    "company:lam_research": 1.5240583926946587,
+    "company:kla": 1.614807665219884,
+    "company:tokyo_electron": 0.5613059411025222,
+    "company:marvell": 0.06999999999999999,
+    "company:google": 0.0,
+    "company:amazon": 0.0,
+    "company:microsoft": 0.0,
+    "company:meta": 0.0,
+    "company:xai": 0.7,
+    "company:openai": 0.7,
+    "company:constellation_energy": 0.7104224095564553,
+    "company:vistra": 0.07826237921249263,
+    "company:talen_energy": 0.034999999999999996,
+    "company:nextera_energy": 0.16039014932345438,
+    "company:duke_energy": 0.034999999999999996,
+    "company:siemens_energy": 0.28531784469254634,
+    "company:ge_vernova": 0.30402511820571665,
+    "company:quanta_services": 0.25462614260912014,
+    "company:vertiv": 0.34471002306286364,
+    "company:mp_materials": 0.7037382672438428,
+    "company:lynas": 0.7026152155337656,
+    "facility:mountain_pass": 0.10348566679187991,
+    "facility:serra_verde": 0.04311902782994997,
+    "facility:lynas_malaysia": 0.0865216865531411,
+    "facility:colossus": 0.0,
+    "facility:stargate_abilene": 0.0,
+    "facility:vantage_frontier": 0.0,
+    "facility:the_citadel": 0.0,
+    "facility:three_mile_island": 0.0,
+    "company:nikon": 0.13895201248057726,
+    "company:canon": 0.029500902150674982,
+    "company:hitachi_high_tech": 0.07314866003031087,
+    "country_region:germany": 0.0,
+    "company:synopsys": 0.7378525313367162,
+    "company:cadence": 0.590282025069373,
+    "company:siemens_eda": 0.22135575940101487,
+    "company:arm": 0.7487464579340258,
+    "product:arm_core_ip": 0.7657349521048389
+  },
+  "committed_scored": {
+    "mineral:gallium": {
+      "severity": 0.48763330760307644,
+      "tier": "high",
+      "concentration": 0.98522425,
+      "inbound_hhi": 0.98522425,
+      "outbound_criticality": 0.3883642189008504
+    },
+    "mineral:indium": {
+      "severity": 0.11984398928034516,
+      "tier": "none",
+      "concentration": 0.71083,
+      "inbound_hhi": 0.71083,
+      "outbound_criticality": 0.012701008296200793
+    },
+    "mineral:neodymium": {
+      "severity": 0.295079573540301,
+      "tier": "moderate",
+      "concentration": 0.919,
+      "inbound_hhi": 0.919,
+      "outbound_criticality": 0.4305758641728349
+    },
+    "mineral:dysprosium": {
+      "severity": 0.5618299974044941,
+      "tier": "critical",
+      "concentration": 0.9901989999999999,
+      "inbound_hhi": 0.9901989999999999,
+      "outbound_criticality": 0.3875182777555515
+    },
+    "mineral:copper": {
+      "severity": 0.7097080701362833,
+      "tier": "critical",
+      "concentration": 1.0,
+      "inbound_hhi": 0.699934564,
+      "outbound_criticality": 1.0
+    },
+    "product:hbm": {
+      "severity": 0.30075399000310415,
+      "tier": "moderate",
+      "concentration": 0.7440399999999999,
+      "inbound_hhi": 0.7440399999999999,
+      "outbound_criticality": 0.23136771276971466
+    },
+    "product:cowos_packaging": {
+      "severity": 0.3296191632783268,
+      "tier": "moderate",
+      "concentration": 0.9524999999999999,
+      "inbound_hhi": 0.9524999999999999,
+      "outbound_criticality": 0.5203774663002178
+    },
+    "product:ndfeb_magnets": {
+      "severity": 0.3403936856853811,
+      "tier": "moderate",
+      "concentration": 1.0,
+      "inbound_hhi": 1.0,
+      "outbound_criticality": 0.14241779362806403
+    },
+    "product:rf_power_semis": {
+      "severity": 0.2872071722970403,
+      "tier": "moderate",
+      "concentration": 0.9,
+      "inbound_hhi": 0.9,
+      "outbound_criticality": 0.1481098287949607
+    },
+    "country_region:china": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.9402990408866656,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.9402990408866656
+    },
+    "country_region:taiwan": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.0,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.0
+    },
+    "country_region:usa": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.14015437930173735,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.14015437930173735
+    },
+    "country_region:netherlands": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.0,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.0
+    },
+    "country_region:south_korea": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.08383122309833844,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.08383122309833844
+    },
+    "country_region:japan": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.06518420627583145,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.06518420627583145
+    },
+    "country_region:myanmar": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.051604342915366086,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.051604342915366086
+    },
+    "country_region:kachin": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.1746638496165087,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.1746638496165087
+    },
+    "country_region:malaysia": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.05177406596587098,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.05177406596587098
+    },
+    "country_region:australia": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.051604342915366086,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.051604342915366086
+    },
+    "country_region:brazil": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.025802171457683043,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.025802171457683043
+    },
+    "country_region:chile": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.23835984032471821,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.23835984032471821
+    },
+    "country_region:drc": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.12394711696885347,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.12394711696885347
+    },
+    "country_region:peru": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.12394711696885347,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.12394711696885347
+    },
+    "country_region:canada": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.09777630941374718,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.09777630941374718
+    },
+    "company:nvidia": {
+      "severity": 0.35808777495941424,
+      "tier": "moderate",
+      "concentration": 0.9901,
+      "inbound_hhi": 0.9901,
+      "outbound_criticality": 0.5401225192530577
+    },
+    "company:broadcom": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.95,
+      "inbound_hhi": 0.95,
+      "outbound_criticality": 0.10471896590298826
+    },
+    "company:amd": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.98,
+      "inbound_hhi": 0.98,
+      "outbound_criticality": 0.09217648668708434
+    },
+    "company:tsmc": {
+      "severity": 0.46928198688086703,
+      "tier": "high",
+      "concentration": 1.0,
+      "inbound_hhi": 0.99009975,
+      "outbound_criticality": 1.0
+    },
+    "company:samsung": {
+      "severity": 0.2835434725087978,
+      "tier": "moderate",
+      "concentration": 0.951985,
+      "inbound_hhi": 0.951985,
+      "outbound_criticality": 0.08786096952781103
+    },
+    "company:intel": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.951985,
+      "inbound_hhi": 0.951985,
+      "outbound_criticality": 0.0
+    },
+    "company:sk_hynix": {
+      "severity": 0.2627413761384035,
+      "tier": "moderate",
+      "concentration": 0.95,
+      "inbound_hhi": 0.95,
+      "outbound_criticality": 0.4252155935001507
+    },
+    "company:micron": {
+      "severity": 0.24253050105083399,
+      "tier": "moderate",
+      "concentration": 0.95,
+      "inbound_hhi": 0.95,
+      "outbound_criticality": 0.09431015321309122
+    },
+    "company:asml": {
+      "severity": 0.5389417591996215,
+      "tier": "critical",
+      "concentration": 1.0,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 1.0
+    },
+    "company:applied_materials": {
+      "severity": 0.20154812477767337,
+      "tier": "moderate",
+      "concentration": 0.6766891505870234,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.6766891505870234
+    },
+    "company:lam_research": {
+      "severity": 0.2716304489433973,
+      "tier": "moderate",
+      "concentration": 0.9119875363357433,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.9119875363357433
+    },
+    "company:kla": {
+      "severity": 0.26724707676765,
+      "tier": "moderate",
+      "concentration": 0.9662913647659721,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.9662913647659721
+    },
+    "company:tokyo_electron": {
+      "severity": 0.0928948847363427,
+      "tier": "none",
+      "concentration": 0.3358821583283415,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.3358821583283415
+    },
+    "company:marvell": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.64096,
+      "inbound_hhi": 0.64096,
+      "outbound_criticality": 0.0418875863611953
+    },
+    "company:google": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.30000000000000004,
+      "inbound_hhi": 0.30000000000000004,
+      "outbound_criticality": 0.0
+    },
+    "company:amazon": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.35,
+      "inbound_hhi": 0.35,
+      "outbound_criticality": 0.0
+    },
+    "company:microsoft": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.30000000000000004,
+      "inbound_hhi": 0.30000000000000004,
+      "outbound_criticality": 0.0
+    },
+    "company:meta": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.30000000000000004,
+      "inbound_hhi": 0.30000000000000004,
+      "outbound_criticality": 0.0
+    },
+    "company:xai": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.73,
+      "inbound_hhi": 0.73,
+      "outbound_criticality": 0.41887586361195306
+    },
+    "company:openai": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.745,
+      "inbound_hhi": 0.745,
+      "outbound_criticality": 0.41887586361195306
+    },
+    "company:constellation_energy": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.4251125719032069,
+      "inbound_hhi": 0.2775000000000001,
+      "outbound_criticality": 0.4251125719032069
+    },
+    "company:vistra": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.04683174525851287,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.04683174525851287
+    },
+    "company:talen_energy": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.02094379318059765,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.02094379318059765
+    },
+    "company:nextera_energy": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.58,
+      "inbound_hhi": 0.58,
+      "outbound_criticality": 0.09597651758958867
+    },
+    "company:duke_energy": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.4879999999999999,
+      "inbound_hhi": 0.4879999999999999,
+      "outbound_criticality": 0.02094379318059765
+    },
+    "company:siemens_energy": {
+      "severity": 0.315115946960595,
+      "tier": "moderate",
+      "concentration": 0.955,
+      "inbound_hhi": 0.955,
+      "outbound_criticality": 0.1707325122849878
+    },
+    "company:ge_vernova": {
+      "severity": 0.31841559038426615,
+      "tier": "moderate",
+      "concentration": 0.965,
+      "inbound_hhi": 0.965,
+      "outbound_criticality": 0.1819268342116367
+    },
+    "company:quanta_services": {
+      "severity": 0.07658857927921074,
+      "tier": "none",
+      "concentration": 0.30000000000000004,
+      "inbound_hhi": 0.30000000000000004,
+      "outbound_criticality": 0.15236677911939359
+    },
+    "company:vertiv": {
+      "severity": 0.06867640728930377,
+      "tier": "none",
+      "concentration": 0.4526,
+      "inbound_hhi": 0.4526,
+      "outbound_criticality": 0.20627244086593324
+    },
+    "company:mp_materials": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.42111282064077726,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.42111282064077726
+    },
+    "company:lynas": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.42044079313372085,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.42044079313372085
+    },
+    "facility:mountain_pass": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.0619252114984393,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.0619252114984393
+    },
+    "facility:serra_verde": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.025802171457683043,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.025802171457683043
+    },
+    "facility:lynas_malaysia": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.05177406596587098,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.05177406596587098
+    },
+    "facility:colossus": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.2689750000000001,
+      "inbound_hhi": 0.2689750000000001,
+      "outbound_criticality": 0.0
+    },
+    "facility:stargate_abilene": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.23050000000000004,
+      "inbound_hhi": 0.23050000000000004,
+      "outbound_criticality": 0.0
+    },
+    "facility:vantage_frontier": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.235,
+      "inbound_hhi": 0.235,
+      "outbound_criticality": 0.0
+    },
+    "facility:the_citadel": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.35,
+      "inbound_hhi": 0.35,
+      "outbound_criticality": 0.0
+    },
+    "facility:three_mile_island": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.0,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.0
+    },
+    "company:nikon": {
+      "severity": 0.020781191903860248,
+      "tier": "none",
+      "concentration": 0.08314806318345812,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.08314806318345812
+    },
+    "company:canon": {
+      "severity": 0.0035715303737321492,
+      "tier": "none",
+      "concentration": 0.017653165522422437,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.017653165522422437
+    },
+    "company:hitachi_high_tech": {
+      "severity": 0.00885575158894199,
+      "tier": "none",
+      "concentration": 0.043771725917505167,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.043771725917505167
+    },
+    "country_region:germany": {
+      "severity": null,
+      "tier": "unscored",
+      "concentration": 0.0,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.0
+    },
+    "company:synopsys": {
+      "severity": 0.15267403613821648,
+      "tier": "none",
+      "concentration": 0.44152659468847527,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.44152659468847527
+    },
+    "company:cadence": {
+      "severity": 0.12213922891057317,
+      "tier": "none",
+      "concentration": 0.3532212757507802,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.3532212757507802
+    },
+    "company:siemens_eda": {
+      "severity": 0.036633885817943086,
+      "tier": "none",
+      "concentration": 0.13245797840654258,
+      "inbound_hhi": 0.0,
+      "outbound_criticality": 0.13245797840654258
+    },
+    "company:arm": {
+      "severity": 0.2106185930178295,
+      "tier": "moderate",
+      "concentration": 0.99,
+      "inbound_hhi": 0.99,
+      "outbound_criticality": 0.4480454559907228
+    },
+    "product:arm_core_ip": {
+      "severity": 0.3299643423671152,
+      "tier": "moderate",
+      "concentration": 1.0,
+      "inbound_hhi": 1.0,
+      "outbound_criticality": 0.45821127051538846
+    }
+  },
+  "candidates": [
+    {
+      "id": "FR-A",
+      "label": "Status quo (ASML anchor, frozen K.1 value)",
+      "fixed_reference": 1.6711394969476698,
+      "clamp_enabled": true,
+      "n_clamped": 3,
+      "n_flipped_dominant_axis": 0,
+      "n_tier_changes_under_frozen": 0,
+      "n_tier_changes_under_derived": 4,
+      "severity_min": 0.0035715303737321497,
+      "severity_max": 0.7097080701362833,
+      "severity_median": 0.2716304489433972,
+      "tier_histogram_frozen": {
+        "high": 2,
+        "none": 10,
+        "moderate": 16,
+        "critical": 3,
+        "unscored": 41
+      },
+      "tier_histogram_derived": {
+        "moderate": 18,
+        "none": 10,
+        "high": 2,
+        "critical": 1,
+        "unscored": 41
+      },
+      "derivation_at_3.0": {
+        "boundaries": {
+          "critical": 0.6357690337703887,
+          "high": 0.5132875334013489,
+          "moderate": 0.17711108045794494
+        },
+        "median_gap": 0.01314369863620454,
+        "separating_threshold": 0.039431095908613614,
+        "n_separating_gaps": 4,
+        "unresolved_bands": [],
+        "scored_sorted": [
+          {
+            "id": "mineral:copper",
+            "severity": 0.7097080701362833
+          },
+          {
+            "id": "mineral:dysprosium",
+            "severity": 0.5618299974044941
+          },
+          {
+            "id": "company:asml",
+            "severity": 0.5389417591996214
+          },
+          {
+            "id": "mineral:gallium",
+            "severity": 0.4876333076030765
+          },
+          {
+            "id": "company:tsmc",
+            "severity": 0.46928198688086703
+          },
+          {
+            "id": "company:nvidia",
+            "severity": 0.35808777495941424
+          },
+          {
+            "id": "product:ndfeb_magnets",
+            "severity": 0.3403936856853811
+          },
+          {
+            "id": "product:arm_core_ip",
+            "severity": 0.3299643423671152
+          },
+          {
+            "id": "product:cowos_packaging",
+            "severity": 0.3296191632783268
+          },
+          {
+            "id": "company:ge_vernova",
+            "severity": 0.31841559038426615
+          },
+          {
+            "id": "company:siemens_energy",
+            "severity": 0.315115946960595
+          },
+          {
+            "id": "product:hbm",
+            "severity": 0.30075399000310415
+          },
+          {
+            "id": "mineral:neodymium",
+            "severity": 0.295079573540301
+          },
+          {
+            "id": "product:rf_power_semis",
+            "severity": 0.28720717229704024
+          },
+          {
+            "id": "company:samsung",
+            "severity": 0.28354347250879774
+          },
+          {
+            "id": "company:lam_research",
+            "severity": 0.2716304489433972
+          },
+          {
+            "id": "company:kla",
+            "severity": 0.2672470767676501
+          },
+          {
+            "id": "company:sk_hynix",
+            "severity": 0.26274137613840354
+          },
+          {
+            "id": "company:micron",
+            "severity": 0.24253050105083396
+          },
+          {
+            "id": "company:arm",
+            "severity": 0.2106185930178295
+          },
+          {
+            "id": "company:applied_materials",
+            "severity": 0.20154812477767337
+          },
+          {
+            "id": "company:synopsys",
+            "severity": 0.15267403613821648
+          },
+          {
+            "id": "company:cadence",
+            "severity": 0.12213922891057317
+          },
+          {
+            "id": "mineral:indium",
+            "severity": 0.11984398928034516
+          },
+          {
+            "id": "company:tokyo_electron",
+            "severity": 0.09289488473634272
+          },
+          {
+            "id": "company:quanta_services",
+            "severity": 0.07658857927921074
+          },
+          {
+            "id": "company:vertiv",
+            "severity": 0.06867640728930377
+          },
+          {
+            "id": "company:siemens_eda",
+            "severity": 0.03663388581794309
+          },
+          {
+            "id": "company:nikon",
+            "severity": 0.020781191903860248
+          },
+          {
+            "id": "company:hitachi_high_tech",
+            "severity": 0.00885575158894199
+          },
+          {
+            "id": "company:canon",
+            "severity": 0.0035715303737321497
+          }
+        ],
+        "gaps": [
+          {
+            "upper_id": "mineral:copper",
+            "upper_sev": 0.7097080701362833,
+            "lower_id": "mineral:dysprosium",
+            "lower_sev": 0.5618299974044941,
+            "size": 0.1478780727317892,
+            "midpoint": 0.6357690337703887,
+            "is_separating": true
+          },
+          {
+            "upper_id": "mineral:dysprosium",
+            "upper_sev": 0.5618299974044941,
+            "lower_id": "company:asml",
+            "lower_sev": 0.5389417591996214,
+            "size": 0.022888238204872735,
+            "midpoint": 0.5503858783020578,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:asml",
+            "upper_sev": 0.5389417591996214,
+            "lower_id": "mineral:gallium",
+            "lower_sev": 0.4876333076030765,
+            "size": 0.0513084515965449,
+            "midpoint": 0.5132875334013489,
+            "is_separating": true
+          },
+          {
+            "upper_id": "mineral:gallium",
+            "upper_sev": 0.4876333076030765,
+            "lower_id": "company:tsmc",
+            "lower_sev": 0.46928198688086703,
+            "size": 0.018351320722209463,
+            "midpoint": 0.47845764724197176,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:tsmc",
+            "upper_sev": 0.46928198688086703,
+            "lower_id": "company:nvidia",
+            "lower_sev": 0.35808777495941424,
+            "size": 0.11119421192145279,
+            "midpoint": 0.41368488092014066,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:nvidia",
+            "upper_sev": 0.35808777495941424,
+            "lower_id": "product:ndfeb_magnets",
+            "lower_sev": 0.3403936856853811,
+            "size": 0.017694089274033153,
+            "midpoint": 0.34924073032239766,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:ndfeb_magnets",
+            "upper_sev": 0.3403936856853811,
+            "lower_id": "product:arm_core_ip",
+            "lower_sev": 0.3299643423671152,
+            "size": 0.010429343318265893,
+            "midpoint": 0.33517901402624817,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:arm_core_ip",
+            "upper_sev": 0.3299643423671152,
+            "lower_id": "product:cowos_packaging",
+            "lower_sev": 0.3296191632783268,
+            "size": 0.0003451790887883943,
+            "midpoint": 0.329791752822721,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:cowos_packaging",
+            "upper_sev": 0.3296191632783268,
+            "lower_id": "company:ge_vernova",
+            "lower_sev": 0.31841559038426615,
+            "size": 0.011203572894060654,
+            "midpoint": 0.3240173768312965,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:ge_vernova",
+            "upper_sev": 0.31841559038426615,
+            "lower_id": "company:siemens_energy",
+            "lower_sev": 0.315115946960595,
+            "size": 0.0032996434236711725,
+            "midpoint": 0.31676576867243056,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:siemens_energy",
+            "upper_sev": 0.315115946960595,
+            "lower_id": "product:hbm",
+            "lower_sev": 0.30075399000310415,
+            "size": 0.014361956957490818,
+            "midpoint": 0.30793496848184954,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:hbm",
+            "upper_sev": 0.30075399000310415,
+            "lower_id": "mineral:neodymium",
+            "lower_sev": 0.295079573540301,
+            "size": 0.005674416462803145,
+            "midpoint": 0.29791678177170255,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:neodymium",
+            "upper_sev": 0.295079573540301,
+            "lower_id": "product:rf_power_semis",
+            "lower_sev": 0.28720717229704024,
+            "size": 0.007872401243260774,
+            "midpoint": 0.29114337291867065,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:rf_power_semis",
+            "upper_sev": 0.28720717229704024,
+            "lower_id": "company:samsung",
+            "lower_sev": 0.28354347250879774,
+            "size": 0.0036636997882424915,
+            "midpoint": 0.28537532240291896,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:samsung",
+            "upper_sev": 0.28354347250879774,
+            "lower_id": "company:lam_research",
+            "lower_sev": 0.2716304489433972,
+            "size": 0.011913023565400527,
+            "midpoint": 0.27758696072609745,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:lam_research",
+            "upper_sev": 0.2716304489433972,
+            "lower_id": "company:kla",
+            "lower_sev": 0.2672470767676501,
+            "size": 0.0043833721757471356,
+            "midpoint": 0.26943876285552365,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:kla",
+            "upper_sev": 0.2672470767676501,
+            "lower_id": "company:sk_hynix",
+            "lower_sev": 0.26274137613840354,
+            "size": 0.004505700629246545,
+            "midpoint": 0.26499422645302684,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:sk_hynix",
+            "upper_sev": 0.26274137613840354,
+            "lower_id": "company:micron",
+            "lower_sev": 0.24253050105083396,
+            "size": 0.02021087508756958,
+            "midpoint": 0.25263593859461875,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:micron",
+            "upper_sev": 0.24253050105083396,
+            "lower_id": "company:arm",
+            "lower_sev": 0.2106185930178295,
+            "size": 0.03191190803300445,
+            "midpoint": 0.22657454703433172,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:arm",
+            "upper_sev": 0.2106185930178295,
+            "lower_id": "company:applied_materials",
+            "lower_sev": 0.20154812477767337,
+            "size": 0.009070468240156143,
+            "midpoint": 0.20608335889775142,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:applied_materials",
+            "upper_sev": 0.20154812477767337,
+            "lower_id": "company:synopsys",
+            "lower_sev": 0.15267403613821648,
+            "size": 0.048874088639456886,
+            "midpoint": 0.17711108045794494,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:synopsys",
+            "upper_sev": 0.15267403613821648,
+            "lower_id": "company:cadence",
+            "lower_sev": 0.12213922891057317,
+            "size": 0.030534807227643304,
+            "midpoint": 0.13740663252439483,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:cadence",
+            "upper_sev": 0.12213922891057317,
+            "lower_id": "mineral:indium",
+            "lower_sev": 0.11984398928034516,
+            "size": 0.002295239630228013,
+            "midpoint": 0.12099160909545917,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:indium",
+            "upper_sev": 0.11984398928034516,
+            "lower_id": "company:tokyo_electron",
+            "lower_sev": 0.09289488473634272,
+            "size": 0.026949104544002442,
+            "midpoint": 0.10636943700834395,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:tokyo_electron",
+            "upper_sev": 0.09289488473634272,
+            "lower_id": "company:quanta_services",
+            "lower_sev": 0.07658857927921074,
+            "size": 0.016306305457131978,
+            "midpoint": 0.08474173200777674,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:quanta_services",
+            "upper_sev": 0.07658857927921074,
+            "lower_id": "company:vertiv",
+            "lower_sev": 0.06867640728930377,
+            "size": 0.007912171989906971,
+            "midpoint": 0.07263249328425725,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:vertiv",
+            "upper_sev": 0.06867640728930377,
+            "lower_id": "company:siemens_eda",
+            "lower_sev": 0.03663388581794309,
+            "size": 0.03204252147136068,
+            "midpoint": 0.05265514655362343,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:siemens_eda",
+            "upper_sev": 0.03663388581794309,
+            "lower_id": "company:nikon",
+            "lower_sev": 0.020781191903860248,
+            "size": 0.015852693914082845,
+            "midpoint": 0.02870753886090167,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:nikon",
+            "upper_sev": 0.020781191903860248,
+            "lower_id": "company:hitachi_high_tech",
+            "lower_sev": 0.00885575158894199,
+            "size": 0.011925440314918259,
+            "midpoint": 0.014818471746401118,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:hitachi_high_tech",
+            "upper_sev": 0.00885575158894199,
+            "lower_id": "company:canon",
+            "lower_sev": 0.0035715303737321497,
+            "size": 0.00528422121520984,
+            "midpoint": 0.006213640981337069,
+            "is_separating": false
+          }
+        ]
+      },
+      "moved_under_frozen": [],
+      "moved_under_derived": [
+        {
+          "id": "mineral:gallium",
+          "severity_committed": 0.48763330760307644,
+          "severity_candidate": 0.4876333076030765,
+          "tier_committed": "high",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "mineral:dysprosium",
+          "severity_committed": 0.5618299974044941,
+          "severity_candidate": 0.5618299974044941,
+          "tier_committed": "critical",
+          "tier_candidate": "high"
+        },
+        {
+          "id": "company:tsmc",
+          "severity_committed": 0.46928198688086703,
+          "severity_candidate": 0.46928198688086703,
+          "tier_committed": "high",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "company:asml",
+          "severity_committed": 0.5389417591996215,
+          "severity_candidate": 0.5389417591996214,
+          "tier_committed": "critical",
+          "tier_candidate": "high"
+        }
+      ],
+      "cluster_cut_derived": [
+        {
+          "boundary": "critical",
+          "value": 0.6357690337703887,
+          "nearest_below": 0.5618299974044941,
+          "distance_below": 0.0739390363658946,
+          "nearest_above": 0.7097080701362833,
+          "distance_above": 0.0739390363658946,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.01314369863620454
+        },
+        {
+          "boundary": "high",
+          "value": 0.5132875334013489,
+          "nearest_below": 0.4876333076030765,
+          "distance_below": 0.025654225798272423,
+          "nearest_above": 0.5389417591996214,
+          "distance_above": 0.02565422579827248,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.01314369863620454
+        },
+        {
+          "boundary": "moderate",
+          "value": 0.17711108045794494,
+          "nearest_below": 0.15267403613821648,
+          "distance_below": 0.024437044319728457,
+          "nearest_above": 0.20154812477767337,
+          "distance_above": 0.02443704431972843,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.01314369863620454
+        }
+      ],
+      "separation_factor_sweep": [
+        {
+          "separation_factor": 2.0,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5132875334013489,
+            "moderate": 0.22657454703433172
+          },
+          "tier_histogram": {
+            "moderate": 16,
+            "none": 12,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 8,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 2.5,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5132875334013489,
+            "moderate": 0.17711108045794494
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 10,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.0,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5132875334013489,
+            "moderate": 0.17711108045794494
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 10,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.5,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5132875334013489,
+            "moderate": 0.17711108045794494
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 10,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 4.0,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.41368488092014066,
+            "moderate": 0.0
+          },
+          "tier_histogram": {
+            "high": 4,
+            "moderate": 26,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 2,
+          "n_unresolved_bands": 1,
+          "unresolved_bands": [
+            {
+              "lower": 0.0,
+              "upper": 0.41368488092014066,
+              "tiers": [
+                "moderate",
+                "none"
+              ],
+              "reason": "no separating gap \u2265 0.05257 for the moderate/none boundary"
+            }
+          ]
+        }
+      ],
+      "node_matrix": [
+        {
+          "id": "company:applied_materials",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.1308419667019443,
+          "outbound_normalized": 0.6766891505870234,
+          "clamped": false,
+          "outbound_criticality": 0.6766891505870234,
+          "concentration": 0.6766891505870234,
+          "dominant_axis": "outbound",
+          "severity": 0.20154812477767337,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:arm",
+          "inbound_hhi": 0.99,
+          "outbound_raw": 0.7487464579340258,
+          "outbound_normalized": 0.4480454559907228,
+          "clamped": false,
+          "outbound_criticality": 0.4480454559907228,
+          "concentration": 0.99,
+          "dominant_axis": "inbound",
+          "severity": 0.2106185930178295,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:asml",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.770976984672585,
+          "outbound_normalized": 1.0597421627023165,
+          "clamped": true,
+          "outbound_criticality": 1.0,
+          "concentration": 1.0,
+          "dominant_axis": "outbound",
+          "severity": 0.5389417591996214,
+          "severity_delta_vs_committed": -1.1102230246251565e-16,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "company:cadence",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.590282025069373,
+          "outbound_normalized": 0.3532212757507802,
+          "clamped": false,
+          "outbound_criticality": 0.3532212757507802,
+          "concentration": 0.3532212757507802,
+          "dominant_axis": "outbound",
+          "severity": 0.12213922891057317,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:canon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.029500902150674982,
+          "outbound_normalized": 0.017653165522422437,
+          "clamped": false,
+          "outbound_criticality": 0.017653165522422437,
+          "concentration": 0.017653165522422437,
+          "dominant_axis": "outbound",
+          "severity": 0.0035715303737321497,
+          "severity_delta_vs_committed": 4.336808689942018e-19,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:ge_vernova",
+          "inbound_hhi": 0.965,
+          "outbound_raw": 0.30402511820571665,
+          "outbound_normalized": 0.1819268342116367,
+          "clamped": false,
+          "outbound_criticality": 0.1819268342116367,
+          "concentration": 0.965,
+          "dominant_axis": "inbound",
+          "severity": 0.31841559038426615,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:hitachi_high_tech",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.07314866003031087,
+          "outbound_normalized": 0.043771725917505167,
+          "clamped": false,
+          "outbound_criticality": 0.043771725917505167,
+          "concentration": 0.043771725917505167,
+          "dominant_axis": "outbound",
+          "severity": 0.00885575158894199,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:kla",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.614807665219884,
+          "outbound_normalized": 0.9662913647659721,
+          "clamped": false,
+          "outbound_criticality": 0.9662913647659721,
+          "concentration": 0.9662913647659721,
+          "dominant_axis": "outbound",
+          "severity": 0.2672470767676501,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:lam_research",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.5240583926946587,
+          "outbound_normalized": 0.9119875363357433,
+          "clamped": false,
+          "outbound_criticality": 0.9119875363357433,
+          "concentration": 0.9119875363357433,
+          "dominant_axis": "outbound",
+          "severity": 0.2716304489433972,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:micron",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.15760542199758293,
+          "outbound_normalized": 0.09431015321309122,
+          "clamped": false,
+          "outbound_criticality": 0.09431015321309122,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.24253050105083396,
+          "severity_delta_vs_committed": -2.7755575615628914e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:nikon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.13895201248057726,
+          "outbound_normalized": 0.08314806318345812,
+          "clamped": false,
+          "outbound_criticality": 0.08314806318345812,
+          "concentration": 0.08314806318345812,
+          "dominant_axis": "outbound",
+          "severity": 0.020781191903860248,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:nvidia",
+          "inbound_hhi": 0.9901,
+          "outbound_raw": 0.9026200751146629,
+          "outbound_normalized": 0.5401225192530577,
+          "clamped": false,
+          "outbound_criticality": 0.5401225192530577,
+          "concentration": 0.9901,
+          "dominant_axis": "inbound",
+          "severity": 0.35808777495941424,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:quanta_services",
+          "inbound_hhi": 0.30000000000000004,
+          "outbound_raw": 0.25462614260912014,
+          "outbound_normalized": 0.15236677911939359,
+          "clamped": false,
+          "outbound_criticality": 0.15236677911939359,
+          "concentration": 0.30000000000000004,
+          "dominant_axis": "inbound",
+          "severity": 0.07658857927921074,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:samsung",
+          "inbound_hhi": 0.951985,
+          "outbound_raw": 0.14682793641804068,
+          "outbound_normalized": 0.08786096952781103,
+          "clamped": false,
+          "outbound_criticality": 0.08786096952781103,
+          "concentration": 0.951985,
+          "dominant_axis": "inbound",
+          "severity": 0.28354347250879774,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:siemens_eda",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.22135575940101487,
+          "outbound_normalized": 0.13245797840654258,
+          "clamped": false,
+          "outbound_criticality": 0.13245797840654258,
+          "concentration": 0.13245797840654258,
+          "dominant_axis": "outbound",
+          "severity": 0.03663388581794309,
+          "severity_delta_vs_committed": 6.938893903907228e-18,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:siemens_energy",
+          "inbound_hhi": 0.955,
+          "outbound_raw": 0.28531784469254634,
+          "outbound_normalized": 0.1707325122849878,
+          "clamped": false,
+          "outbound_criticality": 0.1707325122849878,
+          "concentration": 0.955,
+          "dominant_axis": "inbound",
+          "severity": 0.315115946960595,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:sk_hynix",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.7105945730161467,
+          "outbound_normalized": 0.4252155935001507,
+          "clamped": false,
+          "outbound_criticality": 0.4252155935001507,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.26274137613840354,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:synopsys",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.7378525313367162,
+          "outbound_normalized": 0.44152659468847527,
+          "clamped": false,
+          "outbound_criticality": 0.44152659468847527,
+          "concentration": 0.44152659468847527,
+          "dominant_axis": "outbound",
+          "severity": 0.15267403613821648,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tokyo_electron",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.5613059411025222,
+          "outbound_normalized": 0.3358821583283415,
+          "clamped": false,
+          "outbound_criticality": 0.3358821583283415,
+          "concentration": 0.3358821583283415,
+          "dominant_axis": "outbound",
+          "severity": 0.09289488473634272,
+          "severity_delta_vs_committed": 1.3877787807814457e-17,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tsmc",
+          "inbound_hhi": 0.99009975,
+          "outbound_raw": 1.7523935656701093,
+          "outbound_normalized": 1.0486219545829953,
+          "clamped": true,
+          "outbound_criticality": 1.0,
+          "concentration": 1.0,
+          "dominant_axis": "outbound",
+          "severity": 0.46928198688086703,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "company:vertiv",
+          "inbound_hhi": 0.4526,
+          "outbound_raw": 0.34471002306286364,
+          "outbound_normalized": 0.20627244086593324,
+          "clamped": false,
+          "outbound_criticality": 0.20627244086593324,
+          "concentration": 0.4526,
+          "dominant_axis": "inbound",
+          "severity": 0.06867640728930377,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:copper",
+          "inbound_hhi": 0.699934564,
+          "outbound_raw": 2.0447548854281186,
+          "outbound_normalized": 1.223569240726376,
+          "clamped": true,
+          "outbound_criticality": 1.0,
+          "concentration": 1.0,
+          "dominant_axis": "outbound",
+          "severity": 0.7097080701362833,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:dysprosium",
+          "inbound_hhi": 0.9901989999999999,
+          "outbound_raw": 0.6475970997464396,
+          "outbound_normalized": 0.3875182777555515,
+          "clamped": false,
+          "outbound_criticality": 0.3875182777555515,
+          "concentration": 0.9901989999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.5618299974044941,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:gallium",
+          "inbound_hhi": 0.98522425,
+          "outbound_raw": 0.6490107854064419,
+          "outbound_normalized": 0.3883642189008504,
+          "clamped": false,
+          "outbound_criticality": 0.3883642189008504,
+          "concentration": 0.98522425,
+          "dominant_axis": "inbound",
+          "severity": 0.4876333076030765,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "mineral:indium",
+          "inbound_hhi": 0.71083,
+          "outbound_raw": 0.021225156614841173,
+          "outbound_normalized": 0.012701008296200793,
+          "clamped": false,
+          "outbound_criticality": 0.012701008296200793,
+          "concentration": 0.71083,
+          "dominant_axis": "inbound",
+          "severity": 0.11984398928034516,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:neodymium",
+          "inbound_hhi": 0.919,
+          "outbound_raw": 0.7195523330515995,
+          "outbound_normalized": 0.4305758641728349,
+          "clamped": false,
+          "outbound_criticality": 0.4305758641728349,
+          "concentration": 0.919,
+          "dominant_axis": "inbound",
+          "severity": 0.295079573540301,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:arm_core_ip",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.7657349521048389,
+          "outbound_normalized": 0.45821127051538846,
+          "clamped": false,
+          "outbound_criticality": 0.45821127051538846,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3299643423671152,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:cowos_packaging",
+          "inbound_hhi": 0.9524999999999999,
+          "outbound_raw": 0.869623337255849,
+          "outbound_normalized": 0.5203774663002178,
+          "clamped": false,
+          "outbound_criticality": 0.5203774663002178,
+          "concentration": 0.9524999999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.3296191632783268,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:hbm",
+          "inbound_hhi": 0.7440399999999999,
+          "outbound_raw": 0.3866477231279139,
+          "outbound_normalized": 0.23136771276971466,
+          "clamped": false,
+          "outbound_criticality": 0.23136771276971466,
+          "concentration": 0.7440399999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.30075399000310415,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:ndfeb_magnets",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.238,
+          "outbound_normalized": 0.14241779362806403,
+          "clamped": false,
+          "outbound_criticality": 0.14241779362806403,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3403936856853811,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:rf_power_semis",
+          "inbound_hhi": 0.9,
+          "outbound_raw": 0.24751218478541614,
+          "outbound_normalized": 0.1481098287949607,
+          "clamped": false,
+          "outbound_criticality": 0.1481098287949607,
+          "concentration": 0.9,
+          "dominant_axis": "inbound",
+          "severity": 0.28720717229704024,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        }
+      ]
+    },
+    {
+      "id": "FR-B",
+      "label": "Re-anchor to copper's current raw",
+      "fixed_reference": 2.0447548854281186,
+      "clamp_enabled": true,
+      "n_clamped": 0,
+      "n_flipped_dominant_axis": 1,
+      "n_tier_changes_under_frozen": 2,
+      "n_tier_changes_under_derived": 5,
+      "severity_min": 0.0029189442287809544,
+      "severity_max": 0.7097080701362833,
+      "severity_median": 0.26274137613840354,
+      "tier_histogram_frozen": {
+        "high": 3,
+        "none": 11,
+        "moderate": 15,
+        "critical": 2,
+        "unscored": 41
+      },
+      "tier_histogram_derived": {
+        "moderate": 18,
+        "none": 11,
+        "high": 1,
+        "critical": 1,
+        "unscored": 41
+      },
+      "derivation_at_3.0": {
+        "boundaries": {
+          "critical": 0.6357690337703887,
+          "high": 0.5247316525037853,
+          "moderate": 0.18767003183519004
+        },
+        "median_gap": 0.012079839909976093,
+        "separating_threshold": 0.03623951972992828,
+        "n_separating_gaps": 6,
+        "unresolved_bands": [],
+        "scored_sorted": [
+          {
+            "id": "mineral:copper",
+            "severity": 0.7097080701362833
+          },
+          {
+            "id": "mineral:dysprosium",
+            "severity": 0.5618299974044941
+          },
+          {
+            "id": "mineral:gallium",
+            "severity": 0.4876333076030765
+          },
+          {
+            "id": "company:asml",
+            "severity": 0.4667813528278457
+          },
+          {
+            "id": "company:tsmc",
+            "severity": 0.4646359778902497
+          },
+          {
+            "id": "company:nvidia",
+            "severity": 0.35808777495941424
+          },
+          {
+            "id": "product:ndfeb_magnets",
+            "severity": 0.3403936856853811
+          },
+          {
+            "id": "product:arm_core_ip",
+            "severity": 0.3299643423671152
+          },
+          {
+            "id": "product:cowos_packaging",
+            "severity": 0.3296191632783268
+          },
+          {
+            "id": "company:ge_vernova",
+            "severity": 0.31841559038426615
+          },
+          {
+            "id": "company:siemens_energy",
+            "severity": 0.315115946960595
+          },
+          {
+            "id": "product:hbm",
+            "severity": 0.30075399000310415
+          },
+          {
+            "id": "mineral:neodymium",
+            "severity": 0.295079573540301
+          },
+          {
+            "id": "product:rf_power_semis",
+            "severity": 0.28720717229704024
+          },
+          {
+            "id": "company:samsung",
+            "severity": 0.28354347250879774
+          },
+          {
+            "id": "company:sk_hynix",
+            "severity": 0.26274137613840354
+          },
+          {
+            "id": "company:micron",
+            "severity": 0.24253050105083396
+          },
+          {
+            "id": "company:lam_research",
+            "severity": 0.2219984287788592
+          },
+          {
+            "id": "company:kla",
+            "severity": 0.21841598159904535
+          },
+          {
+            "id": "company:arm",
+            "severity": 0.2106185930178295
+          },
+          {
+            "id": "company:applied_materials",
+            "severity": 0.16472147065255058
+          },
+          {
+            "id": "company:synopsys",
+            "severity": 0.1247776023264372
+          },
+          {
+            "id": "mineral:indium",
+            "severity": 0.11984398928034516
+          },
+          {
+            "id": "company:cadence",
+            "severity": 0.09982208186114974
+          },
+          {
+            "id": "company:quanta_services",
+            "severity": 0.07658857927921074
+          },
+          {
+            "id": "company:tokyo_electron",
+            "severity": 0.07592123244385854
+          },
+          {
+            "id": "company:vertiv",
+            "severity": 0.06867640728930377
+          },
+          {
+            "id": "company:siemens_eda",
+            "severity": 0.0299401820498489
+          },
+          {
+            "id": "company:nikon",
+            "severity": 0.016984075123957366
+          },
+          {
+            "id": "company:hitachi_high_tech",
+            "severity": 0.007237638291466645
+          },
+          {
+            "id": "company:canon",
+            "severity": 0.0029189442287809544
+          }
+        ],
+        "gaps": [
+          {
+            "upper_id": "mineral:copper",
+            "upper_sev": 0.7097080701362833,
+            "lower_id": "mineral:dysprosium",
+            "lower_sev": 0.5618299974044941,
+            "size": 0.1478780727317892,
+            "midpoint": 0.6357690337703887,
+            "is_separating": true
+          },
+          {
+            "upper_id": "mineral:dysprosium",
+            "upper_sev": 0.5618299974044941,
+            "lower_id": "mineral:gallium",
+            "lower_sev": 0.4876333076030765,
+            "size": 0.07419668980141764,
+            "midpoint": 0.5247316525037853,
+            "is_separating": true
+          },
+          {
+            "upper_id": "mineral:gallium",
+            "upper_sev": 0.4876333076030765,
+            "lower_id": "company:asml",
+            "lower_sev": 0.4667813528278457,
+            "size": 0.020851954775230774,
+            "midpoint": 0.47720733021546113,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:asml",
+            "upper_sev": 0.4667813528278457,
+            "lower_id": "company:tsmc",
+            "lower_sev": 0.4646359778902497,
+            "size": 0.002145374937596034,
+            "midpoint": 0.4657086653590477,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:tsmc",
+            "upper_sev": 0.4646359778902497,
+            "lower_id": "company:nvidia",
+            "lower_sev": 0.35808777495941424,
+            "size": 0.10654820293083545,
+            "midpoint": 0.41136187642483196,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:nvidia",
+            "upper_sev": 0.35808777495941424,
+            "lower_id": "product:ndfeb_magnets",
+            "lower_sev": 0.3403936856853811,
+            "size": 0.017694089274033153,
+            "midpoint": 0.34924073032239766,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:ndfeb_magnets",
+            "upper_sev": 0.3403936856853811,
+            "lower_id": "product:arm_core_ip",
+            "lower_sev": 0.3299643423671152,
+            "size": 0.010429343318265893,
+            "midpoint": 0.33517901402624817,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:arm_core_ip",
+            "upper_sev": 0.3299643423671152,
+            "lower_id": "product:cowos_packaging",
+            "lower_sev": 0.3296191632783268,
+            "size": 0.0003451790887883943,
+            "midpoint": 0.329791752822721,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:cowos_packaging",
+            "upper_sev": 0.3296191632783268,
+            "lower_id": "company:ge_vernova",
+            "lower_sev": 0.31841559038426615,
+            "size": 0.011203572894060654,
+            "midpoint": 0.3240173768312965,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:ge_vernova",
+            "upper_sev": 0.31841559038426615,
+            "lower_id": "company:siemens_energy",
+            "lower_sev": 0.315115946960595,
+            "size": 0.0032996434236711725,
+            "midpoint": 0.31676576867243056,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:siemens_energy",
+            "upper_sev": 0.315115946960595,
+            "lower_id": "product:hbm",
+            "lower_sev": 0.30075399000310415,
+            "size": 0.014361956957490818,
+            "midpoint": 0.30793496848184954,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:hbm",
+            "upper_sev": 0.30075399000310415,
+            "lower_id": "mineral:neodymium",
+            "lower_sev": 0.295079573540301,
+            "size": 0.005674416462803145,
+            "midpoint": 0.29791678177170255,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:neodymium",
+            "upper_sev": 0.295079573540301,
+            "lower_id": "product:rf_power_semis",
+            "lower_sev": 0.28720717229704024,
+            "size": 0.007872401243260774,
+            "midpoint": 0.29114337291867065,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:rf_power_semis",
+            "upper_sev": 0.28720717229704024,
+            "lower_id": "company:samsung",
+            "lower_sev": 0.28354347250879774,
+            "size": 0.0036636997882424915,
+            "midpoint": 0.28537532240291896,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:samsung",
+            "upper_sev": 0.28354347250879774,
+            "lower_id": "company:sk_hynix",
+            "lower_sev": 0.26274137613840354,
+            "size": 0.020802096370394207,
+            "midpoint": 0.27314242432360064,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:sk_hynix",
+            "upper_sev": 0.26274137613840354,
+            "lower_id": "company:micron",
+            "lower_sev": 0.24253050105083396,
+            "size": 0.02021087508756958,
+            "midpoint": 0.25263593859461875,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:micron",
+            "upper_sev": 0.24253050105083396,
+            "lower_id": "company:lam_research",
+            "lower_sev": 0.2219984287788592,
+            "size": 0.02053207227197476,
+            "midpoint": 0.2322644649148466,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:lam_research",
+            "upper_sev": 0.2219984287788592,
+            "lower_id": "company:kla",
+            "lower_sev": 0.21841598159904535,
+            "size": 0.003582447179813847,
+            "midpoint": 0.22020720518895226,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:kla",
+            "upper_sev": 0.21841598159904535,
+            "lower_id": "company:arm",
+            "lower_sev": 0.2106185930178295,
+            "size": 0.007797388581215842,
+            "midpoint": 0.21451728730843744,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:arm",
+            "upper_sev": 0.2106185930178295,
+            "lower_id": "company:applied_materials",
+            "lower_sev": 0.16472147065255058,
+            "size": 0.04589712236527893,
+            "midpoint": 0.18767003183519004,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:applied_materials",
+            "upper_sev": 0.16472147065255058,
+            "lower_id": "company:synopsys",
+            "lower_sev": 0.1247776023264372,
+            "size": 0.03994386832611338,
+            "midpoint": 0.1447495364894939,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:synopsys",
+            "upper_sev": 0.1247776023264372,
+            "lower_id": "mineral:indium",
+            "lower_sev": 0.11984398928034516,
+            "size": 0.004933613046092036,
+            "midpoint": 0.12231079580339119,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:indium",
+            "upper_sev": 0.11984398928034516,
+            "lower_id": "company:cadence",
+            "lower_sev": 0.09982208186114974,
+            "size": 0.02002190741919542,
+            "midpoint": 0.10983303557074744,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:cadence",
+            "upper_sev": 0.09982208186114974,
+            "lower_id": "company:quanta_services",
+            "lower_sev": 0.07658857927921074,
+            "size": 0.023233502581939,
+            "midpoint": 0.08820533057018023,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:quanta_services",
+            "upper_sev": 0.07658857927921074,
+            "lower_id": "company:tokyo_electron",
+            "lower_sev": 0.07592123244385854,
+            "size": 0.0006673468353522033,
+            "midpoint": 0.07625490586153463,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:tokyo_electron",
+            "upper_sev": 0.07592123244385854,
+            "lower_id": "company:vertiv",
+            "lower_sev": 0.06867640728930377,
+            "size": 0.007244825154554768,
+            "midpoint": 0.07229881986658115,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:vertiv",
+            "upper_sev": 0.06867640728930377,
+            "lower_id": "company:siemens_eda",
+            "lower_sev": 0.0299401820498489,
+            "size": 0.03873622523945487,
+            "midpoint": 0.049308294669576334,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:siemens_eda",
+            "upper_sev": 0.0299401820498489,
+            "lower_id": "company:nikon",
+            "lower_sev": 0.016984075123957366,
+            "size": 0.012956106925891532,
+            "midpoint": 0.023462128586903132,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:nikon",
+            "upper_sev": 0.016984075123957366,
+            "lower_id": "company:hitachi_high_tech",
+            "lower_sev": 0.007237638291466645,
+            "size": 0.009746436832490721,
+            "midpoint": 0.012110856707712007,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:hitachi_high_tech",
+            "upper_sev": 0.007237638291466645,
+            "lower_id": "company:canon",
+            "lower_sev": 0.0029189442287809544,
+            "size": 0.004318694062685691,
+            "midpoint": 0.0050782912601238,
+            "is_separating": false
+          }
+        ]
+      },
+      "moved_under_frozen": [
+        {
+          "id": "company:asml",
+          "severity_committed": 0.5389417591996215,
+          "severity_candidate": 0.4667813528278457,
+          "tier_committed": "critical",
+          "tier_candidate": "high"
+        },
+        {
+          "id": "company:applied_materials",
+          "severity_committed": 0.20154812477767337,
+          "severity_candidate": 0.16472147065255058,
+          "tier_committed": "moderate",
+          "tier_candidate": "none"
+        }
+      ],
+      "moved_under_derived": [
+        {
+          "id": "mineral:gallium",
+          "severity_committed": 0.48763330760307644,
+          "severity_candidate": 0.4876333076030765,
+          "tier_committed": "high",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "mineral:dysprosium",
+          "severity_committed": 0.5618299974044941,
+          "severity_candidate": 0.5618299974044941,
+          "tier_committed": "critical",
+          "tier_candidate": "high"
+        },
+        {
+          "id": "company:tsmc",
+          "severity_committed": 0.46928198688086703,
+          "severity_candidate": 0.4646359778902497,
+          "tier_committed": "high",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "company:asml",
+          "severity_committed": 0.5389417591996215,
+          "severity_candidate": 0.4667813528278457,
+          "tier_committed": "critical",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "company:applied_materials",
+          "severity_committed": 0.20154812477767337,
+          "severity_candidate": 0.16472147065255058,
+          "tier_committed": "moderate",
+          "tier_candidate": "none"
+        }
+      ],
+      "cluster_cut_derived": [
+        {
+          "boundary": "critical",
+          "value": 0.6357690337703887,
+          "nearest_below": 0.5618299974044941,
+          "distance_below": 0.0739390363658946,
+          "nearest_above": 0.7097080701362833,
+          "distance_above": 0.0739390363658946,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.012079839909976093
+        },
+        {
+          "boundary": "high",
+          "value": 0.5247316525037853,
+          "nearest_below": 0.4876333076030765,
+          "distance_below": 0.03709834490070879,
+          "nearest_above": 0.5618299974044941,
+          "distance_above": 0.037098344900708846,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.012079839909976093
+        },
+        {
+          "boundary": "moderate",
+          "value": 0.18767003183519004,
+          "nearest_below": 0.16472147065255058,
+          "distance_below": 0.022948561182639465,
+          "nearest_above": 0.2106185930178295,
+          "distance_above": 0.022948561182639465,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.012079839909976093
+        }
+      ],
+      "separation_factor_sweep": [
+        {
+          "separation_factor": 2.0,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5247316525037853,
+            "moderate": 0.18767003183519004
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 11,
+            "high": 1,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 6,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 2.5,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5247316525037853,
+            "moderate": 0.18767003183519004
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 11,
+            "high": 1,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 6,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.0,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5247316525037853,
+            "moderate": 0.18767003183519004
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 11,
+            "high": 1,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 6,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.5,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5247316525037853,
+            "moderate": 0.18767003183519004
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 11,
+            "high": 1,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 4.0,
+          "boundaries": {
+            "critical": 0.6357690337703887,
+            "high": 0.5247316525037853,
+            "moderate": 0.0
+          },
+          "tier_histogram": {
+            "moderate": 29,
+            "high": 1,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 3,
+          "n_unresolved_bands": 1,
+          "unresolved_bands": [
+            {
+              "lower": 0.0,
+              "upper": 0.5247316525037853,
+              "tiers": [
+                "moderate",
+                "none"
+              ],
+              "reason": "moderate/none boundary 0.41136 sits above the median scored severity 0.26274 and no unused separating gap has a midpoint at or below the median. Every candidate exhausted; rerouted to unresolved band."
+            }
+          ]
+        }
+      ],
+      "node_matrix": [
+        {
+          "id": "company:applied_materials",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.1308419667019443,
+          "outbound_normalized": 0.5530452450613293,
+          "clamped": false,
+          "outbound_criticality": 0.5530452450613293,
+          "concentration": 0.5530452450613293,
+          "dominant_axis": "outbound",
+          "severity": 0.16472147065255058,
+          "severity_delta_vs_committed": -0.03682665412512279,
+          "tier_under_frozen": "none",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:arm",
+          "inbound_hhi": 0.99,
+          "outbound_raw": 0.7487464579340258,
+          "outbound_normalized": 0.3661790776341673,
+          "clamped": false,
+          "outbound_criticality": 0.3661790776341673,
+          "concentration": 0.99,
+          "dominant_axis": "inbound",
+          "severity": 0.2106185930178295,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:asml",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.770976984672585,
+          "outbound_normalized": 0.8661072274693641,
+          "clamped": false,
+          "outbound_criticality": 0.8661072274693641,
+          "concentration": 0.8661072274693641,
+          "dominant_axis": "outbound",
+          "severity": 0.4667813528278457,
+          "severity_delta_vs_committed": -0.07216040637177579,
+          "tier_under_frozen": "high",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "company:cadence",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.590282025069373,
+          "outbound_normalized": 0.2886810684625327,
+          "clamped": false,
+          "outbound_criticality": 0.2886810684625327,
+          "concentration": 0.2886810684625327,
+          "dominant_axis": "outbound",
+          "severity": 0.09982208186114974,
+          "severity_delta_vs_committed": -0.022317147049423433,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:canon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.029500902150674982,
+          "outbound_normalized": 0.014427598320420816,
+          "clamped": false,
+          "outbound_criticality": 0.014427598320420816,
+          "concentration": 0.014427598320420816,
+          "dominant_axis": "outbound",
+          "severity": 0.0029189442287809544,
+          "severity_delta_vs_committed": -0.0006525861449511948,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:ge_vernova",
+          "inbound_hhi": 0.965,
+          "outbound_raw": 0.30402511820571665,
+          "outbound_normalized": 0.14868536095565396,
+          "clamped": false,
+          "outbound_criticality": 0.14868536095565396,
+          "concentration": 0.965,
+          "dominant_axis": "inbound",
+          "severity": 0.31841559038426615,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:hitachi_high_tech",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.07314866003031087,
+          "outbound_normalized": 0.03577380377061451,
+          "clamped": false,
+          "outbound_criticality": 0.03577380377061451,
+          "concentration": 0.03577380377061451,
+          "dominant_axis": "outbound",
+          "severity": 0.007237638291466645,
+          "severity_delta_vs_committed": -0.0016181132974753439,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:kla",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.614807665219884,
+          "outbound_normalized": 0.7897316576807127,
+          "clamped": false,
+          "outbound_criticality": 0.7897316576807127,
+          "concentration": 0.7897316576807127,
+          "dominant_axis": "outbound",
+          "severity": 0.21841598159904535,
+          "severity_delta_vs_committed": -0.04883109516860468,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:lam_research",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.5240583926946587,
+          "outbound_normalized": 0.7453501657121903,
+          "clamped": false,
+          "outbound_criticality": 0.7453501657121903,
+          "concentration": 0.7453501657121903,
+          "dominant_axis": "outbound",
+          "severity": 0.2219984287788592,
+          "severity_delta_vs_committed": -0.049632020164538077,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:micron",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.15760542199758293,
+          "outbound_normalized": 0.07707790460399583,
+          "clamped": false,
+          "outbound_criticality": 0.07707790460399583,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.24253050105083396,
+          "severity_delta_vs_committed": -2.7755575615628914e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:nikon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.13895201248057726,
+          "outbound_normalized": 0.06795533952299829,
+          "clamped": false,
+          "outbound_criticality": 0.06795533952299829,
+          "concentration": 0.06795533952299829,
+          "dominant_axis": "outbound",
+          "severity": 0.016984075123957366,
+          "severity_delta_vs_committed": -0.0037971167799028815,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:nvidia",
+          "inbound_hhi": 0.9901,
+          "outbound_raw": 0.9026200751146629,
+          "outbound_normalized": 0.44143192005416226,
+          "clamped": false,
+          "outbound_criticality": 0.44143192005416226,
+          "concentration": 0.9901,
+          "dominant_axis": "inbound",
+          "severity": 0.35808777495941424,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:quanta_services",
+          "inbound_hhi": 0.30000000000000004,
+          "outbound_raw": 0.25462614260912014,
+          "outbound_normalized": 0.12452648697587439,
+          "clamped": false,
+          "outbound_criticality": 0.12452648697587439,
+          "concentration": 0.30000000000000004,
+          "dominant_axis": "inbound",
+          "severity": 0.07658857927921074,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:samsung",
+          "inbound_hhi": 0.951985,
+          "outbound_raw": 0.14682793641804068,
+          "outbound_normalized": 0.07180710874658149,
+          "clamped": false,
+          "outbound_criticality": 0.07180710874658149,
+          "concentration": 0.951985,
+          "dominant_axis": "inbound",
+          "severity": 0.28354347250879774,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:siemens_eda",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.22135575940101487,
+          "outbound_normalized": 0.10825540067344978,
+          "clamped": false,
+          "outbound_criticality": 0.10825540067344978,
+          "concentration": 0.10825540067344978,
+          "dominant_axis": "outbound",
+          "severity": 0.0299401820498489,
+          "severity_delta_vs_committed": -0.006693703768094188,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:siemens_energy",
+          "inbound_hhi": 0.955,
+          "outbound_raw": 0.28531784469254634,
+          "outbound_normalized": 0.13953645335480305,
+          "clamped": false,
+          "outbound_criticality": 0.13953645335480305,
+          "concentration": 0.955,
+          "dominant_axis": "inbound",
+          "severity": 0.315115946960595,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:sk_hynix",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.7105945730161467,
+          "outbound_normalized": 0.34752066278465776,
+          "clamped": false,
+          "outbound_criticality": 0.34752066278465776,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.26274137613840354,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:synopsys",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.7378525313367162,
+          "outbound_normalized": 0.36085133557816595,
+          "clamped": false,
+          "outbound_criticality": 0.36085133557816595,
+          "concentration": 0.36085133557816595,
+          "dominant_axis": "outbound",
+          "severity": 0.1247776023264372,
+          "severity_delta_vs_committed": -0.02789643381177928,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tokyo_electron",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.5613059411025222,
+          "outbound_normalized": 0.27451013571487287,
+          "clamped": false,
+          "outbound_criticality": 0.27451013571487287,
+          "concentration": 0.27451013571487287,
+          "dominant_axis": "outbound",
+          "severity": 0.07592123244385854,
+          "severity_delta_vs_committed": -0.016973652292484168,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tsmc",
+          "inbound_hhi": 0.99009975,
+          "outbound_raw": 1.7523935656701093,
+          "outbound_normalized": 0.8570188916815834,
+          "clamped": false,
+          "outbound_criticality": 0.8570188916815834,
+          "concentration": 0.99009975,
+          "dominant_axis": "inbound",
+          "severity": 0.4646359778902497,
+          "severity_delta_vs_committed": -0.004646008990617345,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "company:vertiv",
+          "inbound_hhi": 0.4526,
+          "outbound_raw": 0.34471002306286364,
+          "outbound_normalized": 0.16858256484404502,
+          "clamped": false,
+          "outbound_criticality": 0.16858256484404502,
+          "concentration": 0.4526,
+          "dominant_axis": "inbound",
+          "severity": 0.06867640728930377,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:copper",
+          "inbound_hhi": 0.699934564,
+          "outbound_raw": 2.0447548854281186,
+          "outbound_normalized": 1.0,
+          "clamped": false,
+          "outbound_criticality": 1.0,
+          "concentration": 1.0,
+          "dominant_axis": "outbound",
+          "severity": 0.7097080701362833,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:dysprosium",
+          "inbound_hhi": 0.9901989999999999,
+          "outbound_raw": 0.6475970997464396,
+          "outbound_normalized": 0.31671135956760393,
+          "clamped": false,
+          "outbound_criticality": 0.31671135956760393,
+          "concentration": 0.9901989999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.5618299974044941,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:gallium",
+          "inbound_hhi": 0.98522425,
+          "outbound_raw": 0.6490107854064419,
+          "outbound_normalized": 0.3174027312670075,
+          "clamped": false,
+          "outbound_criticality": 0.3174027312670075,
+          "concentration": 0.98522425,
+          "dominant_axis": "inbound",
+          "severity": 0.4876333076030765,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "mineral:indium",
+          "inbound_hhi": 0.71083,
+          "outbound_raw": 0.021225156614841173,
+          "outbound_normalized": 0.010380293875858463,
+          "clamped": false,
+          "outbound_criticality": 0.010380293875858463,
+          "concentration": 0.71083,
+          "dominant_axis": "inbound",
+          "severity": 0.11984398928034516,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:neodymium",
+          "inbound_hhi": 0.919,
+          "outbound_raw": 0.7195523330515995,
+          "outbound_normalized": 0.351901510630671,
+          "clamped": false,
+          "outbound_criticality": 0.351901510630671,
+          "concentration": 0.919,
+          "dominant_axis": "inbound",
+          "severity": 0.295079573540301,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:arm_core_ip",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.7657349521048389,
+          "outbound_normalized": 0.3744874055867649,
+          "clamped": false,
+          "outbound_criticality": 0.3744874055867649,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3299643423671152,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:cowos_packaging",
+          "inbound_hhi": 0.9524999999999999,
+          "outbound_raw": 0.869623337255849,
+          "outbound_normalized": 0.42529466169915636,
+          "clamped": false,
+          "outbound_criticality": 0.42529466169915636,
+          "concentration": 0.9524999999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.3296191632783268,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:hbm",
+          "inbound_hhi": 0.7440399999999999,
+          "outbound_raw": 0.3866477231279139,
+          "outbound_normalized": 0.1890924559629845,
+          "clamped": false,
+          "outbound_criticality": 0.1890924559629845,
+          "concentration": 0.7440399999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.30075399000310415,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:ndfeb_magnets",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.238,
+          "outbound_normalized": 0.11639536929149773,
+          "clamped": false,
+          "outbound_criticality": 0.11639536929149773,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3403936856853811,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:rf_power_semis",
+          "inbound_hhi": 0.9,
+          "outbound_raw": 0.24751218478541614,
+          "outbound_normalized": 0.12104736198421823,
+          "clamped": false,
+          "outbound_criticality": 0.12104736198421823,
+          "concentration": 0.9,
+          "dominant_axis": "inbound",
+          "severity": 0.28720717229704024,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        }
+      ]
+    },
+    {
+      "id": "FR-C",
+      "label": "Headroom constant 2.5",
+      "fixed_reference": 2.5,
+      "clamp_enabled": true,
+      "n_clamped": 0,
+      "n_flipped_dominant_axis": 1,
+      "n_tier_changes_under_frozen": 2,
+      "n_tier_changes_under_derived": 2,
+      "severity_min": 0.0023874101888368272,
+      "severity_max": 0.5804716174555709,
+      "severity_median": 0.26274137613840354,
+      "tier_histogram_frozen": {
+        "high": 2,
+        "none": 11,
+        "moderate": 16,
+        "critical": 2,
+        "unscored": 41
+      },
+      "tier_histogram_derived": {
+        "high": 2,
+        "none": 11,
+        "moderate": 16,
+        "critical": 2,
+        "unscored": 41
+      },
+      "derivation_at_3.0": {
+        "boundaries": {
+          "critical": 0.5247316525037853,
+          "high": 0.42320867926942163,
+          "moderate": 0.15668443545638666
+        },
+        "median_gap": 0.014621990208914283,
+        "separating_threshold": 0.04386597062674285,
+        "n_separating_gaps": 3,
+        "unresolved_bands": [],
+        "scored_sorted": [
+          {
+            "id": "mineral:copper",
+            "severity": 0.5804716174555709
+          },
+          {
+            "id": "mineral:dysprosium",
+            "severity": 0.5618299974044941
+          },
+          {
+            "id": "mineral:gallium",
+            "severity": 0.4876333076030765
+          },
+          {
+            "id": "company:tsmc",
+            "severity": 0.4646359778902497
+          },
+          {
+            "id": "company:asml",
+            "severity": 0.3817813806485935
+          },
+          {
+            "id": "company:nvidia",
+            "severity": 0.35808777495941424
+          },
+          {
+            "id": "product:ndfeb_magnets",
+            "severity": 0.3403936856853811
+          },
+          {
+            "id": "product:arm_core_ip",
+            "severity": 0.3299643423671152
+          },
+          {
+            "id": "product:cowos_packaging",
+            "severity": 0.3296191632783268
+          },
+          {
+            "id": "company:ge_vernova",
+            "severity": 0.31841559038426615
+          },
+          {
+            "id": "company:siemens_energy",
+            "severity": 0.315115946960595
+          },
+          {
+            "id": "product:hbm",
+            "severity": 0.30075399000310415
+          },
+          {
+            "id": "mineral:neodymium",
+            "severity": 0.295079573540301
+          },
+          {
+            "id": "product:rf_power_semis",
+            "severity": 0.28720717229704024
+          },
+          {
+            "id": "company:samsung",
+            "severity": 0.28354347250879774
+          },
+          {
+            "id": "company:sk_hynix",
+            "severity": 0.26274137613840354
+          },
+          {
+            "id": "company:micron",
+            "severity": 0.24253050105083396
+          },
+          {
+            "id": "company:arm",
+            "severity": 0.2106185930178295
+          },
+          {
+            "id": "company:lam_research",
+            "severity": 0.18157294872117544
+          },
+          {
+            "id": "company:kla",
+            "severity": 0.1786428581720904
+          },
+          {
+            "id": "company:applied_materials",
+            "severity": 0.1347260127406829
+          },
+          {
+            "id": "mineral:indium",
+            "severity": 0.11984398928034516
+          },
+          {
+            "id": "company:synopsys",
+            "severity": 0.10205584477959577
+          },
+          {
+            "id": "company:cadence",
+            "severity": 0.08164467582367661
+          },
+          {
+            "id": "company:quanta_services",
+            "severity": 0.07658857927921074
+          },
+          {
+            "id": "company:vertiv",
+            "severity": 0.06867640728930377
+          },
+          {
+            "id": "company:tokyo_electron",
+            "severity": 0.06209612437892141
+          },
+          {
+            "id": "company:siemens_eda",
+            "severity": 0.024488133406814317
+          },
+          {
+            "id": "company:nikon",
+            "severity": 0.013891308233676
+          },
+          {
+            "id": "company:hitachi_high_tech",
+            "severity": 0.005919678502175218
+          },
+          {
+            "id": "company:canon",
+            "severity": 0.0023874101888368272
+          }
+        ],
+        "gaps": [
+          {
+            "upper_id": "mineral:copper",
+            "upper_sev": 0.5804716174555709,
+            "lower_id": "mineral:dysprosium",
+            "lower_sev": 0.5618299974044941,
+            "size": 0.018641620051076724,
+            "midpoint": 0.5711508074300324,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:dysprosium",
+            "upper_sev": 0.5618299974044941,
+            "lower_id": "mineral:gallium",
+            "lower_sev": 0.4876333076030765,
+            "size": 0.07419668980141764,
+            "midpoint": 0.5247316525037853,
+            "is_separating": true
+          },
+          {
+            "upper_id": "mineral:gallium",
+            "upper_sev": 0.4876333076030765,
+            "lower_id": "company:tsmc",
+            "lower_sev": 0.4646359778902497,
+            "size": 0.02299732971282681,
+            "midpoint": 0.47613464274666306,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:tsmc",
+            "upper_sev": 0.4646359778902497,
+            "lower_id": "company:asml",
+            "lower_sev": 0.3817813806485935,
+            "size": 0.08285459724165617,
+            "midpoint": 0.42320867926942163,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:asml",
+            "upper_sev": 0.3817813806485935,
+            "lower_id": "company:nvidia",
+            "lower_sev": 0.35808777495941424,
+            "size": 0.023693605689179276,
+            "midpoint": 0.36993457780400385,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:nvidia",
+            "upper_sev": 0.35808777495941424,
+            "lower_id": "product:ndfeb_magnets",
+            "lower_sev": 0.3403936856853811,
+            "size": 0.017694089274033153,
+            "midpoint": 0.34924073032239766,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:ndfeb_magnets",
+            "upper_sev": 0.3403936856853811,
+            "lower_id": "product:arm_core_ip",
+            "lower_sev": 0.3299643423671152,
+            "size": 0.010429343318265893,
+            "midpoint": 0.33517901402624817,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:arm_core_ip",
+            "upper_sev": 0.3299643423671152,
+            "lower_id": "product:cowos_packaging",
+            "lower_sev": 0.3296191632783268,
+            "size": 0.0003451790887883943,
+            "midpoint": 0.329791752822721,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:cowos_packaging",
+            "upper_sev": 0.3296191632783268,
+            "lower_id": "company:ge_vernova",
+            "lower_sev": 0.31841559038426615,
+            "size": 0.011203572894060654,
+            "midpoint": 0.3240173768312965,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:ge_vernova",
+            "upper_sev": 0.31841559038426615,
+            "lower_id": "company:siemens_energy",
+            "lower_sev": 0.315115946960595,
+            "size": 0.0032996434236711725,
+            "midpoint": 0.31676576867243056,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:siemens_energy",
+            "upper_sev": 0.315115946960595,
+            "lower_id": "product:hbm",
+            "lower_sev": 0.30075399000310415,
+            "size": 0.014361956957490818,
+            "midpoint": 0.30793496848184954,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:hbm",
+            "upper_sev": 0.30075399000310415,
+            "lower_id": "mineral:neodymium",
+            "lower_sev": 0.295079573540301,
+            "size": 0.005674416462803145,
+            "midpoint": 0.29791678177170255,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:neodymium",
+            "upper_sev": 0.295079573540301,
+            "lower_id": "product:rf_power_semis",
+            "lower_sev": 0.28720717229704024,
+            "size": 0.007872401243260774,
+            "midpoint": 0.29114337291867065,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:rf_power_semis",
+            "upper_sev": 0.28720717229704024,
+            "lower_id": "company:samsung",
+            "lower_sev": 0.28354347250879774,
+            "size": 0.0036636997882424915,
+            "midpoint": 0.28537532240291896,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:samsung",
+            "upper_sev": 0.28354347250879774,
+            "lower_id": "company:sk_hynix",
+            "lower_sev": 0.26274137613840354,
+            "size": 0.020802096370394207,
+            "midpoint": 0.27314242432360064,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:sk_hynix",
+            "upper_sev": 0.26274137613840354,
+            "lower_id": "company:micron",
+            "lower_sev": 0.24253050105083396,
+            "size": 0.02021087508756958,
+            "midpoint": 0.25263593859461875,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:micron",
+            "upper_sev": 0.24253050105083396,
+            "lower_id": "company:arm",
+            "lower_sev": 0.2106185930178295,
+            "size": 0.03191190803300445,
+            "midpoint": 0.22657454703433172,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:arm",
+            "upper_sev": 0.2106185930178295,
+            "lower_id": "company:lam_research",
+            "lower_sev": 0.18157294872117544,
+            "size": 0.029045644296654072,
+            "midpoint": 0.19609577086950247,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:lam_research",
+            "upper_sev": 0.18157294872117544,
+            "lower_id": "company:kla",
+            "lower_sev": 0.1786428581720904,
+            "size": 0.0029300905490850238,
+            "midpoint": 0.1801079034466329,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:kla",
+            "upper_sev": 0.1786428581720904,
+            "lower_id": "company:applied_materials",
+            "lower_sev": 0.1347260127406829,
+            "size": 0.0439168454314075,
+            "midpoint": 0.15668443545638666,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:applied_materials",
+            "upper_sev": 0.1347260127406829,
+            "lower_id": "mineral:indium",
+            "lower_sev": 0.11984398928034516,
+            "size": 0.014882023460337748,
+            "midpoint": 0.12728500101051404,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:indium",
+            "upper_sev": 0.11984398928034516,
+            "lower_id": "company:synopsys",
+            "lower_sev": 0.10205584477959577,
+            "size": 0.017788144500749392,
+            "midpoint": 0.11094991702997047,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:synopsys",
+            "upper_sev": 0.10205584477959577,
+            "lower_id": "company:cadence",
+            "lower_sev": 0.08164467582367661,
+            "size": 0.020411168955919157,
+            "midpoint": 0.09185026030163619,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:cadence",
+            "upper_sev": 0.08164467582367661,
+            "lower_id": "company:quanta_services",
+            "lower_sev": 0.07658857927921074,
+            "size": 0.005056096544465871,
+            "midpoint": 0.07911662755144368,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:quanta_services",
+            "upper_sev": 0.07658857927921074,
+            "lower_id": "company:vertiv",
+            "lower_sev": 0.06867640728930377,
+            "size": 0.007912171989906971,
+            "midpoint": 0.07263249328425725,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:vertiv",
+            "upper_sev": 0.06867640728930377,
+            "lower_id": "company:tokyo_electron",
+            "lower_sev": 0.06209612437892141,
+            "size": 0.00658028291038236,
+            "midpoint": 0.06538626583411258,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:tokyo_electron",
+            "upper_sev": 0.06209612437892141,
+            "lower_id": "company:siemens_eda",
+            "lower_sev": 0.024488133406814317,
+            "size": 0.0376079909721071,
+            "midpoint": 0.04329212889286786,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:siemens_eda",
+            "upper_sev": 0.024488133406814317,
+            "lower_id": "company:nikon",
+            "lower_sev": 0.013891308233676,
+            "size": 0.010596825173138317,
+            "midpoint": 0.019189720820245157,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:nikon",
+            "upper_sev": 0.013891308233676,
+            "lower_id": "company:hitachi_high_tech",
+            "lower_sev": 0.005919678502175218,
+            "size": 0.007971629731500781,
+            "midpoint": 0.00990549336792561,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:hitachi_high_tech",
+            "upper_sev": 0.005919678502175218,
+            "lower_id": "company:canon",
+            "lower_sev": 0.0023874101888368272,
+            "size": 0.003532268313338391,
+            "midpoint": 0.0041535443455060226,
+            "is_separating": false
+          }
+        ]
+      },
+      "moved_under_frozen": [
+        {
+          "id": "company:asml",
+          "severity_committed": 0.5389417591996215,
+          "severity_candidate": 0.3817813806485935,
+          "tier_committed": "critical",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "company:applied_materials",
+          "severity_committed": 0.20154812477767337,
+          "severity_candidate": 0.1347260127406829,
+          "tier_committed": "moderate",
+          "tier_candidate": "none"
+        }
+      ],
+      "moved_under_derived": [
+        {
+          "id": "company:asml",
+          "severity_committed": 0.5389417591996215,
+          "severity_candidate": 0.3817813806485935,
+          "tier_committed": "critical",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "company:applied_materials",
+          "severity_committed": 0.20154812477767337,
+          "severity_candidate": 0.1347260127406829,
+          "tier_committed": "moderate",
+          "tier_candidate": "none"
+        }
+      ],
+      "cluster_cut_derived": [
+        {
+          "boundary": "critical",
+          "value": 0.5247316525037853,
+          "nearest_below": 0.4876333076030765,
+          "distance_below": 0.03709834490070879,
+          "nearest_above": 0.5618299974044941,
+          "distance_above": 0.037098344900708846,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.014621990208914283
+        },
+        {
+          "boundary": "high",
+          "value": 0.42320867926942163,
+          "nearest_below": 0.3817813806485935,
+          "distance_below": 0.04142729862082811,
+          "nearest_above": 0.4646359778902497,
+          "distance_above": 0.04142729862082806,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.014621990208914283
+        },
+        {
+          "boundary": "moderate",
+          "value": 0.15668443545638666,
+          "nearest_below": 0.1347260127406829,
+          "distance_below": 0.02195842271570375,
+          "nearest_above": 0.1786428581720904,
+          "distance_above": 0.02195842271570375,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.014621990208914283
+        }
+      ],
+      "separation_factor_sweep": [
+        {
+          "separation_factor": 2.0,
+          "boundaries": {
+            "critical": 0.5247316525037853,
+            "high": 0.42320867926942163,
+            "moderate": 0.15668443545638666
+          },
+          "tier_histogram": {
+            "high": 2,
+            "none": 11,
+            "moderate": 16,
+            "critical": 2,
+            "unscored": 41
+          },
+          "n_separating_gaps": 5,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 2.5,
+          "boundaries": {
+            "critical": 0.5247316525037853,
+            "high": 0.42320867926942163,
+            "moderate": 0.15668443545638666
+          },
+          "tier_histogram": {
+            "high": 2,
+            "none": 11,
+            "moderate": 16,
+            "critical": 2,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.0,
+          "boundaries": {
+            "critical": 0.5247316525037853,
+            "high": 0.42320867926942163,
+            "moderate": 0.15668443545638666
+          },
+          "tier_histogram": {
+            "high": 2,
+            "none": 11,
+            "moderate": 16,
+            "critical": 2,
+            "unscored": 41
+          },
+          "n_separating_gaps": 3,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.5,
+          "boundaries": {
+            "critical": 0.5247316525037853,
+            "high": 0.42320867926942163,
+            "moderate": 0.0
+          },
+          "tier_histogram": {
+            "high": 2,
+            "moderate": 27,
+            "critical": 2,
+            "unscored": 41
+          },
+          "n_separating_gaps": 2,
+          "n_unresolved_bands": 1,
+          "unresolved_bands": [
+            {
+              "lower": 0.0,
+              "upper": 0.42320867926942163,
+              "tiers": [
+                "moderate",
+                "none"
+              ],
+              "reason": "no separating gap \u2265 0.05118 for the moderate/none boundary"
+            }
+          ]
+        },
+        {
+          "separation_factor": 4.0,
+          "boundaries": {
+            "critical": 0.5247316525037853,
+            "high": 0.42320867926942163,
+            "moderate": 0.0
+          },
+          "tier_histogram": {
+            "high": 2,
+            "moderate": 27,
+            "critical": 2,
+            "unscored": 41
+          },
+          "n_separating_gaps": 2,
+          "n_unresolved_bands": 1,
+          "unresolved_bands": [
+            {
+              "lower": 0.0,
+              "upper": 0.42320867926942163,
+              "tiers": [
+                "moderate",
+                "none"
+              ],
+              "reason": "no separating gap \u2265 0.05849 for the moderate/none boundary"
+            }
+          ]
+        }
+      ],
+      "node_matrix": [
+        {
+          "id": "company:applied_materials",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.1308419667019443,
+          "outbound_normalized": 0.4523367866807777,
+          "clamped": false,
+          "outbound_criticality": 0.4523367866807777,
+          "concentration": 0.4523367866807777,
+          "dominant_axis": "outbound",
+          "severity": 0.1347260127406829,
+          "severity_delta_vs_committed": -0.06682211203699046,
+          "tier_under_frozen": "none",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:arm",
+          "inbound_hhi": 0.99,
+          "outbound_raw": 0.7487464579340258,
+          "outbound_normalized": 0.29949858317361033,
+          "clamped": false,
+          "outbound_criticality": 0.29949858317361033,
+          "concentration": 0.99,
+          "dominant_axis": "inbound",
+          "severity": 0.2106185930178295,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:asml",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.770976984672585,
+          "outbound_normalized": 0.7083907938690339,
+          "clamped": false,
+          "outbound_criticality": 0.7083907938690339,
+          "concentration": 0.7083907938690339,
+          "dominant_axis": "outbound",
+          "severity": 0.3817813806485935,
+          "severity_delta_vs_committed": -0.157160378551028,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "company:cadence",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.590282025069373,
+          "outbound_normalized": 0.2361128100277492,
+          "clamped": false,
+          "outbound_criticality": 0.2361128100277492,
+          "concentration": 0.2361128100277492,
+          "dominant_axis": "outbound",
+          "severity": 0.08164467582367661,
+          "severity_delta_vs_committed": -0.04049455308689656,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:canon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.029500902150674982,
+          "outbound_normalized": 0.011800360860269993,
+          "clamped": false,
+          "outbound_criticality": 0.011800360860269993,
+          "concentration": 0.011800360860269993,
+          "dominant_axis": "outbound",
+          "severity": 0.0023874101888368272,
+          "severity_delta_vs_committed": -0.001184120184895322,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:ge_vernova",
+          "inbound_hhi": 0.965,
+          "outbound_raw": 0.30402511820571665,
+          "outbound_normalized": 0.12161004728228667,
+          "clamped": false,
+          "outbound_criticality": 0.12161004728228667,
+          "concentration": 0.965,
+          "dominant_axis": "inbound",
+          "severity": 0.31841559038426615,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:hitachi_high_tech",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.07314866003031087,
+          "outbound_normalized": 0.02925946401212435,
+          "clamped": false,
+          "outbound_criticality": 0.02925946401212435,
+          "concentration": 0.02925946401212435,
+          "dominant_axis": "outbound",
+          "severity": 0.005919678502175218,
+          "severity_delta_vs_committed": -0.002936073086766771,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:kla",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.614807665219884,
+          "outbound_normalized": 0.6459230660879536,
+          "clamped": false,
+          "outbound_criticality": 0.6459230660879536,
+          "concentration": 0.6459230660879536,
+          "dominant_axis": "outbound",
+          "severity": 0.1786428581720904,
+          "severity_delta_vs_committed": -0.08860421859555961,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:lam_research",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.5240583926946587,
+          "outbound_normalized": 0.6096233570778635,
+          "clamped": false,
+          "outbound_criticality": 0.6096233570778635,
+          "concentration": 0.6096233570778635,
+          "dominant_axis": "outbound",
+          "severity": 0.18157294872117544,
+          "severity_delta_vs_committed": -0.09005750022222184,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:micron",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.15760542199758293,
+          "outbound_normalized": 0.06304216879903317,
+          "clamped": false,
+          "outbound_criticality": 0.06304216879903317,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.24253050105083396,
+          "severity_delta_vs_committed": -2.7755575615628914e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:nikon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.13895201248057726,
+          "outbound_normalized": 0.055580804992230906,
+          "clamped": false,
+          "outbound_criticality": 0.055580804992230906,
+          "concentration": 0.055580804992230906,
+          "dominant_axis": "outbound",
+          "severity": 0.013891308233676,
+          "severity_delta_vs_committed": -0.006889883670184248,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:nvidia",
+          "inbound_hhi": 0.9901,
+          "outbound_raw": 0.9026200751146629,
+          "outbound_normalized": 0.36104803004586516,
+          "clamped": false,
+          "outbound_criticality": 0.36104803004586516,
+          "concentration": 0.9901,
+          "dominant_axis": "inbound",
+          "severity": 0.35808777495941424,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:quanta_services",
+          "inbound_hhi": 0.30000000000000004,
+          "outbound_raw": 0.25462614260912014,
+          "outbound_normalized": 0.10185045704364806,
+          "clamped": false,
+          "outbound_criticality": 0.10185045704364806,
+          "concentration": 0.30000000000000004,
+          "dominant_axis": "inbound",
+          "severity": 0.07658857927921074,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:samsung",
+          "inbound_hhi": 0.951985,
+          "outbound_raw": 0.14682793641804068,
+          "outbound_normalized": 0.05873117456721627,
+          "clamped": false,
+          "outbound_criticality": 0.05873117456721627,
+          "concentration": 0.951985,
+          "dominant_axis": "inbound",
+          "severity": 0.28354347250879774,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:siemens_eda",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.22135575940101487,
+          "outbound_normalized": 0.08854230376040595,
+          "clamped": false,
+          "outbound_criticality": 0.08854230376040595,
+          "concentration": 0.08854230376040595,
+          "dominant_axis": "outbound",
+          "severity": 0.024488133406814317,
+          "severity_delta_vs_committed": -0.01214575241112877,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:siemens_energy",
+          "inbound_hhi": 0.955,
+          "outbound_raw": 0.28531784469254634,
+          "outbound_normalized": 0.11412713787701853,
+          "clamped": false,
+          "outbound_criticality": 0.11412713787701853,
+          "concentration": 0.955,
+          "dominant_axis": "inbound",
+          "severity": 0.315115946960595,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:sk_hynix",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.7105945730161467,
+          "outbound_normalized": 0.2842378292064587,
+          "clamped": false,
+          "outbound_criticality": 0.2842378292064587,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.26274137613840354,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:synopsys",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.7378525313367162,
+          "outbound_normalized": 0.2951410125346865,
+          "clamped": false,
+          "outbound_criticality": 0.2951410125346865,
+          "concentration": 0.2951410125346865,
+          "dominant_axis": "outbound",
+          "severity": 0.10205584477959577,
+          "severity_delta_vs_committed": -0.05061819135862071,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tokyo_electron",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.5613059411025222,
+          "outbound_normalized": 0.22452237644100886,
+          "clamped": false,
+          "outbound_criticality": 0.22452237644100886,
+          "concentration": 0.22452237644100886,
+          "dominant_axis": "outbound",
+          "severity": 0.06209612437892141,
+          "severity_delta_vs_committed": -0.030798760357421295,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tsmc",
+          "inbound_hhi": 0.99009975,
+          "outbound_raw": 1.7523935656701093,
+          "outbound_normalized": 0.7009574262680437,
+          "clamped": false,
+          "outbound_criticality": 0.7009574262680437,
+          "concentration": 0.99009975,
+          "dominant_axis": "inbound",
+          "severity": 0.4646359778902497,
+          "severity_delta_vs_committed": -0.004646008990617345,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "company:vertiv",
+          "inbound_hhi": 0.4526,
+          "outbound_raw": 0.34471002306286364,
+          "outbound_normalized": 0.13788400922514546,
+          "clamped": false,
+          "outbound_criticality": 0.13788400922514546,
+          "concentration": 0.4526,
+          "dominant_axis": "inbound",
+          "severity": 0.06867640728930377,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:copper",
+          "inbound_hhi": 0.699934564,
+          "outbound_raw": 2.0447548854281186,
+          "outbound_normalized": 0.8179019541712474,
+          "clamped": false,
+          "outbound_criticality": 0.8179019541712474,
+          "concentration": 0.8179019541712474,
+          "dominant_axis": "outbound",
+          "severity": 0.5804716174555709,
+          "severity_delta_vs_committed": -0.1292364526807125,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:dysprosium",
+          "inbound_hhi": 0.9901989999999999,
+          "outbound_raw": 0.6475970997464396,
+          "outbound_normalized": 0.25903883989857585,
+          "clamped": false,
+          "outbound_criticality": 0.25903883989857585,
+          "concentration": 0.9901989999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.5618299974044941,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:gallium",
+          "inbound_hhi": 0.98522425,
+          "outbound_raw": 0.6490107854064419,
+          "outbound_normalized": 0.25960431416257673,
+          "clamped": false,
+          "outbound_criticality": 0.25960431416257673,
+          "concentration": 0.98522425,
+          "dominant_axis": "inbound",
+          "severity": 0.4876333076030765,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "mineral:indium",
+          "inbound_hhi": 0.71083,
+          "outbound_raw": 0.021225156614841173,
+          "outbound_normalized": 0.008490062645936469,
+          "clamped": false,
+          "outbound_criticality": 0.008490062645936469,
+          "concentration": 0.71083,
+          "dominant_axis": "inbound",
+          "severity": 0.11984398928034516,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:neodymium",
+          "inbound_hhi": 0.919,
+          "outbound_raw": 0.7195523330515995,
+          "outbound_normalized": 0.2878209332206398,
+          "clamped": false,
+          "outbound_criticality": 0.2878209332206398,
+          "concentration": 0.919,
+          "dominant_axis": "inbound",
+          "severity": 0.295079573540301,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:arm_core_ip",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.7657349521048389,
+          "outbound_normalized": 0.30629398084193554,
+          "clamped": false,
+          "outbound_criticality": 0.30629398084193554,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3299643423671152,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:cowos_packaging",
+          "inbound_hhi": 0.9524999999999999,
+          "outbound_raw": 0.869623337255849,
+          "outbound_normalized": 0.3478493349023396,
+          "clamped": false,
+          "outbound_criticality": 0.3478493349023396,
+          "concentration": 0.9524999999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.3296191632783268,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:hbm",
+          "inbound_hhi": 0.7440399999999999,
+          "outbound_raw": 0.3866477231279139,
+          "outbound_normalized": 0.15465908925116556,
+          "clamped": false,
+          "outbound_criticality": 0.15465908925116556,
+          "concentration": 0.7440399999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.30075399000310415,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:ndfeb_magnets",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.238,
+          "outbound_normalized": 0.09519999999999999,
+          "clamped": false,
+          "outbound_criticality": 0.09519999999999999,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3403936856853811,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:rf_power_semis",
+          "inbound_hhi": 0.9,
+          "outbound_raw": 0.24751218478541614,
+          "outbound_normalized": 0.09900487391416646,
+          "clamped": false,
+          "outbound_criticality": 0.09900487391416646,
+          "concentration": 0.9,
+          "dominant_axis": "inbound",
+          "severity": 0.28720717229704024,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        }
+      ]
+    },
+    {
+      "id": "FR-D",
+      "label": "Frozen value, clamp DISABLED",
+      "fixed_reference": 1.6711394969476698,
+      "clamp_enabled": false,
+      "n_clamped": 3,
+      "n_flipped_dominant_axis": 0,
+      "n_tier_changes_under_frozen": 0,
+      "n_tier_changes_under_derived": 4,
+      "severity_min": 0.0035715303737321497,
+      "severity_max": 0.8683769645140339,
+      "severity_median": 0.2716304489433972,
+      "tier_histogram_frozen": {
+        "high": 2,
+        "none": 10,
+        "moderate": 16,
+        "critical": 3,
+        "unscored": 41
+      },
+      "tier_histogram_derived": {
+        "moderate": 18,
+        "none": 10,
+        "high": 2,
+        "critical": 1,
+        "unscored": 41
+      },
+      "derivation_at_3.0": {
+        "boundaries": {
+          "critical": 0.7197581349894159,
+          "high": 0.5269646958690503,
+          "moderate": 0.17711108045794494
+        },
+        "median_gap": 0.01155829822973059,
+        "separating_threshold": 0.03467489468919177,
+        "n_separating_gaps": 4,
+        "unresolved_bands": [],
+        "scored_sorted": [
+          {
+            "id": "mineral:copper",
+            "severity": 0.8683769645140339
+          },
+          {
+            "id": "company:asml",
+            "severity": 0.5711393054647979
+          },
+          {
+            "id": "mineral:dysprosium",
+            "severity": 0.5618299974044941
+          },
+          {
+            "id": "company:tsmc",
+            "severity": 0.4920993943336064
+          },
+          {
+            "id": "mineral:gallium",
+            "severity": 0.4876333076030765
+          },
+          {
+            "id": "company:nvidia",
+            "severity": 0.35808777495941424
+          },
+          {
+            "id": "product:ndfeb_magnets",
+            "severity": 0.3403936856853811
+          },
+          {
+            "id": "product:arm_core_ip",
+            "severity": 0.3299643423671152
+          },
+          {
+            "id": "product:cowos_packaging",
+            "severity": 0.3296191632783268
+          },
+          {
+            "id": "company:ge_vernova",
+            "severity": 0.31841559038426615
+          },
+          {
+            "id": "company:siemens_energy",
+            "severity": 0.315115946960595
+          },
+          {
+            "id": "product:hbm",
+            "severity": 0.30075399000310415
+          },
+          {
+            "id": "mineral:neodymium",
+            "severity": 0.295079573540301
+          },
+          {
+            "id": "product:rf_power_semis",
+            "severity": 0.28720717229704024
+          },
+          {
+            "id": "company:samsung",
+            "severity": 0.28354347250879774
+          },
+          {
+            "id": "company:lam_research",
+            "severity": 0.2716304489433972
+          },
+          {
+            "id": "company:kla",
+            "severity": 0.2672470767676501
+          },
+          {
+            "id": "company:sk_hynix",
+            "severity": 0.26274137613840354
+          },
+          {
+            "id": "company:micron",
+            "severity": 0.24253050105083396
+          },
+          {
+            "id": "company:arm",
+            "severity": 0.2106185930178295
+          },
+          {
+            "id": "company:applied_materials",
+            "severity": 0.20154812477767337
+          },
+          {
+            "id": "company:synopsys",
+            "severity": 0.15267403613821648
+          },
+          {
+            "id": "company:cadence",
+            "severity": 0.12213922891057317
+          },
+          {
+            "id": "mineral:indium",
+            "severity": 0.11984398928034516
+          },
+          {
+            "id": "company:tokyo_electron",
+            "severity": 0.09289488473634272
+          },
+          {
+            "id": "company:quanta_services",
+            "severity": 0.07658857927921074
+          },
+          {
+            "id": "company:vertiv",
+            "severity": 0.06867640728930377
+          },
+          {
+            "id": "company:siemens_eda",
+            "severity": 0.03663388581794309
+          },
+          {
+            "id": "company:nikon",
+            "severity": 0.020781191903860248
+          },
+          {
+            "id": "company:hitachi_high_tech",
+            "severity": 0.00885575158894199
+          },
+          {
+            "id": "company:canon",
+            "severity": 0.0035715303737321497
+          }
+        ],
+        "gaps": [
+          {
+            "upper_id": "mineral:copper",
+            "upper_sev": 0.8683769645140339,
+            "lower_id": "company:asml",
+            "lower_sev": 0.5711393054647979,
+            "size": 0.29723765904923605,
+            "midpoint": 0.7197581349894159,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:asml",
+            "upper_sev": 0.5711393054647979,
+            "lower_id": "mineral:dysprosium",
+            "lower_sev": 0.5618299974044941,
+            "size": 0.009309308060303723,
+            "midpoint": 0.566484651434646,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:dysprosium",
+            "upper_sev": 0.5618299974044941,
+            "lower_id": "company:tsmc",
+            "lower_sev": 0.4920993943336064,
+            "size": 0.06973060307088774,
+            "midpoint": 0.5269646958690503,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:tsmc",
+            "upper_sev": 0.4920993943336064,
+            "lower_id": "mineral:gallium",
+            "lower_sev": 0.4876333076030765,
+            "size": 0.004466086730529895,
+            "midpoint": 0.4898663509683414,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:gallium",
+            "upper_sev": 0.4876333076030765,
+            "lower_id": "company:nvidia",
+            "lower_sev": 0.35808777495941424,
+            "size": 0.12954553264366225,
+            "midpoint": 0.4228605412812454,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:nvidia",
+            "upper_sev": 0.35808777495941424,
+            "lower_id": "product:ndfeb_magnets",
+            "lower_sev": 0.3403936856853811,
+            "size": 0.017694089274033153,
+            "midpoint": 0.34924073032239766,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:ndfeb_magnets",
+            "upper_sev": 0.3403936856853811,
+            "lower_id": "product:arm_core_ip",
+            "lower_sev": 0.3299643423671152,
+            "size": 0.010429343318265893,
+            "midpoint": 0.33517901402624817,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:arm_core_ip",
+            "upper_sev": 0.3299643423671152,
+            "lower_id": "product:cowos_packaging",
+            "lower_sev": 0.3296191632783268,
+            "size": 0.0003451790887883943,
+            "midpoint": 0.329791752822721,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:cowos_packaging",
+            "upper_sev": 0.3296191632783268,
+            "lower_id": "company:ge_vernova",
+            "lower_sev": 0.31841559038426615,
+            "size": 0.011203572894060654,
+            "midpoint": 0.3240173768312965,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:ge_vernova",
+            "upper_sev": 0.31841559038426615,
+            "lower_id": "company:siemens_energy",
+            "lower_sev": 0.315115946960595,
+            "size": 0.0032996434236711725,
+            "midpoint": 0.31676576867243056,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:siemens_energy",
+            "upper_sev": 0.315115946960595,
+            "lower_id": "product:hbm",
+            "lower_sev": 0.30075399000310415,
+            "size": 0.014361956957490818,
+            "midpoint": 0.30793496848184954,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:hbm",
+            "upper_sev": 0.30075399000310415,
+            "lower_id": "mineral:neodymium",
+            "lower_sev": 0.295079573540301,
+            "size": 0.005674416462803145,
+            "midpoint": 0.29791678177170255,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:neodymium",
+            "upper_sev": 0.295079573540301,
+            "lower_id": "product:rf_power_semis",
+            "lower_sev": 0.28720717229704024,
+            "size": 0.007872401243260774,
+            "midpoint": 0.29114337291867065,
+            "is_separating": false
+          },
+          {
+            "upper_id": "product:rf_power_semis",
+            "upper_sev": 0.28720717229704024,
+            "lower_id": "company:samsung",
+            "lower_sev": 0.28354347250879774,
+            "size": 0.0036636997882424915,
+            "midpoint": 0.28537532240291896,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:samsung",
+            "upper_sev": 0.28354347250879774,
+            "lower_id": "company:lam_research",
+            "lower_sev": 0.2716304489433972,
+            "size": 0.011913023565400527,
+            "midpoint": 0.27758696072609745,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:lam_research",
+            "upper_sev": 0.2716304489433972,
+            "lower_id": "company:kla",
+            "lower_sev": 0.2672470767676501,
+            "size": 0.0043833721757471356,
+            "midpoint": 0.26943876285552365,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:kla",
+            "upper_sev": 0.2672470767676501,
+            "lower_id": "company:sk_hynix",
+            "lower_sev": 0.26274137613840354,
+            "size": 0.004505700629246545,
+            "midpoint": 0.26499422645302684,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:sk_hynix",
+            "upper_sev": 0.26274137613840354,
+            "lower_id": "company:micron",
+            "lower_sev": 0.24253050105083396,
+            "size": 0.02021087508756958,
+            "midpoint": 0.25263593859461875,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:micron",
+            "upper_sev": 0.24253050105083396,
+            "lower_id": "company:arm",
+            "lower_sev": 0.2106185930178295,
+            "size": 0.03191190803300445,
+            "midpoint": 0.22657454703433172,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:arm",
+            "upper_sev": 0.2106185930178295,
+            "lower_id": "company:applied_materials",
+            "lower_sev": 0.20154812477767337,
+            "size": 0.009070468240156143,
+            "midpoint": 0.20608335889775142,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:applied_materials",
+            "upper_sev": 0.20154812477767337,
+            "lower_id": "company:synopsys",
+            "lower_sev": 0.15267403613821648,
+            "size": 0.048874088639456886,
+            "midpoint": 0.17711108045794494,
+            "is_separating": true
+          },
+          {
+            "upper_id": "company:synopsys",
+            "upper_sev": 0.15267403613821648,
+            "lower_id": "company:cadence",
+            "lower_sev": 0.12213922891057317,
+            "size": 0.030534807227643304,
+            "midpoint": 0.13740663252439483,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:cadence",
+            "upper_sev": 0.12213922891057317,
+            "lower_id": "mineral:indium",
+            "lower_sev": 0.11984398928034516,
+            "size": 0.002295239630228013,
+            "midpoint": 0.12099160909545917,
+            "is_separating": false
+          },
+          {
+            "upper_id": "mineral:indium",
+            "upper_sev": 0.11984398928034516,
+            "lower_id": "company:tokyo_electron",
+            "lower_sev": 0.09289488473634272,
+            "size": 0.026949104544002442,
+            "midpoint": 0.10636943700834395,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:tokyo_electron",
+            "upper_sev": 0.09289488473634272,
+            "lower_id": "company:quanta_services",
+            "lower_sev": 0.07658857927921074,
+            "size": 0.016306305457131978,
+            "midpoint": 0.08474173200777674,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:quanta_services",
+            "upper_sev": 0.07658857927921074,
+            "lower_id": "company:vertiv",
+            "lower_sev": 0.06867640728930377,
+            "size": 0.007912171989906971,
+            "midpoint": 0.07263249328425725,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:vertiv",
+            "upper_sev": 0.06867640728930377,
+            "lower_id": "company:siemens_eda",
+            "lower_sev": 0.03663388581794309,
+            "size": 0.03204252147136068,
+            "midpoint": 0.05265514655362343,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:siemens_eda",
+            "upper_sev": 0.03663388581794309,
+            "lower_id": "company:nikon",
+            "lower_sev": 0.020781191903860248,
+            "size": 0.015852693914082845,
+            "midpoint": 0.02870753886090167,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:nikon",
+            "upper_sev": 0.020781191903860248,
+            "lower_id": "company:hitachi_high_tech",
+            "lower_sev": 0.00885575158894199,
+            "size": 0.011925440314918259,
+            "midpoint": 0.014818471746401118,
+            "is_separating": false
+          },
+          {
+            "upper_id": "company:hitachi_high_tech",
+            "upper_sev": 0.00885575158894199,
+            "lower_id": "company:canon",
+            "lower_sev": 0.0035715303737321497,
+            "size": 0.00528422121520984,
+            "midpoint": 0.006213640981337069,
+            "is_separating": false
+          }
+        ]
+      },
+      "moved_under_frozen": [],
+      "moved_under_derived": [
+        {
+          "id": "mineral:gallium",
+          "severity_committed": 0.48763330760307644,
+          "severity_candidate": 0.4876333076030765,
+          "tier_committed": "high",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "mineral:dysprosium",
+          "severity_committed": 0.5618299974044941,
+          "severity_candidate": 0.5618299974044941,
+          "tier_committed": "critical",
+          "tier_candidate": "high"
+        },
+        {
+          "id": "company:tsmc",
+          "severity_committed": 0.46928198688086703,
+          "severity_candidate": 0.4920993943336064,
+          "tier_committed": "high",
+          "tier_candidate": "moderate"
+        },
+        {
+          "id": "company:asml",
+          "severity_committed": 0.5389417591996215,
+          "severity_candidate": 0.5711393054647979,
+          "tier_committed": "critical",
+          "tier_candidate": "high"
+        }
+      ],
+      "cluster_cut_derived": [
+        {
+          "boundary": "critical",
+          "value": 0.7197581349894159,
+          "nearest_below": 0.5711393054647979,
+          "distance_below": 0.14861882952461802,
+          "nearest_above": 0.8683769645140339,
+          "distance_above": 0.14861882952461802,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.01155829822973059
+        },
+        {
+          "boundary": "high",
+          "value": 0.5269646958690503,
+          "nearest_below": 0.4920993943336064,
+          "distance_below": 0.03486530153544387,
+          "nearest_above": 0.5618299974044941,
+          "distance_above": 0.03486530153544387,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.01155829822973059
+        },
+        {
+          "boundary": "moderate",
+          "value": 0.17711108045794494,
+          "nearest_below": 0.15267403613821648,
+          "distance_below": 0.024437044319728457,
+          "nearest_above": 0.20154812477767337,
+          "distance_above": 0.02443704431972843,
+          "inside_cluster": false,
+          "median_adjacent_gap": 0.01155829822973059
+        }
+      ],
+      "separation_factor_sweep": [
+        {
+          "separation_factor": 2.0,
+          "boundaries": {
+            "critical": 0.7197581349894159,
+            "high": 0.5269646958690503,
+            "moderate": 0.22657454703433172
+          },
+          "tier_histogram": {
+            "moderate": 16,
+            "none": 12,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 8,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 2.5,
+          "boundaries": {
+            "critical": 0.7197581349894159,
+            "high": 0.5269646958690503,
+            "moderate": 0.22657454703433172
+          },
+          "tier_histogram": {
+            "moderate": 16,
+            "none": 12,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 7,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.0,
+          "boundaries": {
+            "critical": 0.7197581349894159,
+            "high": 0.5269646958690503,
+            "moderate": 0.17711108045794494
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 10,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 3.5,
+          "boundaries": {
+            "critical": 0.7197581349894159,
+            "high": 0.5269646958690503,
+            "moderate": 0.17711108045794494
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 10,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        },
+        {
+          "separation_factor": 4.0,
+          "boundaries": {
+            "critical": 0.7197581349894159,
+            "high": 0.5269646958690503,
+            "moderate": 0.17711108045794494
+          },
+          "tier_histogram": {
+            "moderate": 18,
+            "none": 10,
+            "high": 2,
+            "critical": 1,
+            "unscored": 41
+          },
+          "n_separating_gaps": 4,
+          "n_unresolved_bands": 0,
+          "unresolved_bands": []
+        }
+      ],
+      "node_matrix": [
+        {
+          "id": "company:applied_materials",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.1308419667019443,
+          "outbound_normalized": 0.6766891505870234,
+          "clamped": false,
+          "outbound_criticality": 0.6766891505870234,
+          "concentration": 0.6766891505870234,
+          "dominant_axis": "outbound",
+          "severity": 0.20154812477767337,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:arm",
+          "inbound_hhi": 0.99,
+          "outbound_raw": 0.7487464579340258,
+          "outbound_normalized": 0.4480454559907228,
+          "clamped": false,
+          "outbound_criticality": 0.4480454559907228,
+          "concentration": 0.99,
+          "dominant_axis": "inbound",
+          "severity": 0.2106185930178295,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:asml",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.770976984672585,
+          "outbound_normalized": 1.0597421627023165,
+          "clamped": true,
+          "outbound_criticality": 1.0597421627023165,
+          "concentration": 1.0597421627023165,
+          "dominant_axis": "outbound",
+          "severity": 0.5711393054647979,
+          "severity_delta_vs_committed": 0.03219754626517635,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "company:cadence",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.590282025069373,
+          "outbound_normalized": 0.3532212757507802,
+          "clamped": false,
+          "outbound_criticality": 0.3532212757507802,
+          "concentration": 0.3532212757507802,
+          "dominant_axis": "outbound",
+          "severity": 0.12213922891057317,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:canon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.029500902150674982,
+          "outbound_normalized": 0.017653165522422437,
+          "clamped": false,
+          "outbound_criticality": 0.017653165522422437,
+          "concentration": 0.017653165522422437,
+          "dominant_axis": "outbound",
+          "severity": 0.0035715303737321497,
+          "severity_delta_vs_committed": 4.336808689942018e-19,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:ge_vernova",
+          "inbound_hhi": 0.965,
+          "outbound_raw": 0.30402511820571665,
+          "outbound_normalized": 0.1819268342116367,
+          "clamped": false,
+          "outbound_criticality": 0.1819268342116367,
+          "concentration": 0.965,
+          "dominant_axis": "inbound",
+          "severity": 0.31841559038426615,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:hitachi_high_tech",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.07314866003031087,
+          "outbound_normalized": 0.043771725917505167,
+          "clamped": false,
+          "outbound_criticality": 0.043771725917505167,
+          "concentration": 0.043771725917505167,
+          "dominant_axis": "outbound",
+          "severity": 0.00885575158894199,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:kla",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.614807665219884,
+          "outbound_normalized": 0.9662913647659721,
+          "clamped": false,
+          "outbound_criticality": 0.9662913647659721,
+          "concentration": 0.9662913647659721,
+          "dominant_axis": "outbound",
+          "severity": 0.2672470767676501,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:lam_research",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 1.5240583926946587,
+          "outbound_normalized": 0.9119875363357433,
+          "clamped": false,
+          "outbound_criticality": 0.9119875363357433,
+          "concentration": 0.9119875363357433,
+          "dominant_axis": "outbound",
+          "severity": 0.2716304489433972,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:micron",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.15760542199758293,
+          "outbound_normalized": 0.09431015321309122,
+          "clamped": false,
+          "outbound_criticality": 0.09431015321309122,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.24253050105083396,
+          "severity_delta_vs_committed": -2.7755575615628914e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:nikon",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.13895201248057726,
+          "outbound_normalized": 0.08314806318345812,
+          "clamped": false,
+          "outbound_criticality": 0.08314806318345812,
+          "concentration": 0.08314806318345812,
+          "dominant_axis": "outbound",
+          "severity": 0.020781191903860248,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:nvidia",
+          "inbound_hhi": 0.9901,
+          "outbound_raw": 0.9026200751146629,
+          "outbound_normalized": 0.5401225192530577,
+          "clamped": false,
+          "outbound_criticality": 0.5401225192530577,
+          "concentration": 0.9901,
+          "dominant_axis": "inbound",
+          "severity": 0.35808777495941424,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:quanta_services",
+          "inbound_hhi": 0.30000000000000004,
+          "outbound_raw": 0.25462614260912014,
+          "outbound_normalized": 0.15236677911939359,
+          "clamped": false,
+          "outbound_criticality": 0.15236677911939359,
+          "concentration": 0.30000000000000004,
+          "dominant_axis": "inbound",
+          "severity": 0.07658857927921074,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:samsung",
+          "inbound_hhi": 0.951985,
+          "outbound_raw": 0.14682793641804068,
+          "outbound_normalized": 0.08786096952781103,
+          "clamped": false,
+          "outbound_criticality": 0.08786096952781103,
+          "concentration": 0.951985,
+          "dominant_axis": "inbound",
+          "severity": 0.28354347250879774,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:siemens_eda",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.22135575940101487,
+          "outbound_normalized": 0.13245797840654258,
+          "clamped": false,
+          "outbound_criticality": 0.13245797840654258,
+          "concentration": 0.13245797840654258,
+          "dominant_axis": "outbound",
+          "severity": 0.03663388581794309,
+          "severity_delta_vs_committed": 6.938893903907228e-18,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:siemens_energy",
+          "inbound_hhi": 0.955,
+          "outbound_raw": 0.28531784469254634,
+          "outbound_normalized": 0.1707325122849878,
+          "clamped": false,
+          "outbound_criticality": 0.1707325122849878,
+          "concentration": 0.955,
+          "dominant_axis": "inbound",
+          "severity": 0.315115946960595,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:sk_hynix",
+          "inbound_hhi": 0.95,
+          "outbound_raw": 0.7105945730161467,
+          "outbound_normalized": 0.4252155935001507,
+          "clamped": false,
+          "outbound_criticality": 0.4252155935001507,
+          "concentration": 0.95,
+          "dominant_axis": "inbound",
+          "severity": 0.26274137613840354,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "company:synopsys",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.7378525313367162,
+          "outbound_normalized": 0.44152659468847527,
+          "clamped": false,
+          "outbound_criticality": 0.44152659468847527,
+          "concentration": 0.44152659468847527,
+          "dominant_axis": "outbound",
+          "severity": 0.15267403613821648,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tokyo_electron",
+          "inbound_hhi": 0.0,
+          "outbound_raw": 0.5613059411025222,
+          "outbound_normalized": 0.3358821583283415,
+          "clamped": false,
+          "outbound_criticality": 0.3358821583283415,
+          "concentration": 0.3358821583283415,
+          "dominant_axis": "outbound",
+          "severity": 0.09289488473634272,
+          "severity_delta_vs_committed": 1.3877787807814457e-17,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "company:tsmc",
+          "inbound_hhi": 0.99009975,
+          "outbound_raw": 1.7523935656701093,
+          "outbound_normalized": 1.0486219545829953,
+          "clamped": true,
+          "outbound_criticality": 1.0486219545829953,
+          "concentration": 1.0486219545829953,
+          "dominant_axis": "outbound",
+          "severity": 0.4920993943336064,
+          "severity_delta_vs_committed": 0.022817407452739358,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "company:vertiv",
+          "inbound_hhi": 0.4526,
+          "outbound_raw": 0.34471002306286364,
+          "outbound_normalized": 0.20627244086593324,
+          "clamped": false,
+          "outbound_criticality": 0.20627244086593324,
+          "concentration": 0.4526,
+          "dominant_axis": "inbound",
+          "severity": 0.06867640728930377,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:copper",
+          "inbound_hhi": 0.699934564,
+          "outbound_raw": 2.0447548854281186,
+          "outbound_normalized": 1.223569240726376,
+          "clamped": true,
+          "outbound_criticality": 1.223569240726376,
+          "concentration": 1.223569240726376,
+          "dominant_axis": "outbound",
+          "severity": 0.8683769645140339,
+          "severity_delta_vs_committed": 0.15866889437775056,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:dysprosium",
+          "inbound_hhi": 0.9901989999999999,
+          "outbound_raw": 0.6475970997464396,
+          "outbound_normalized": 0.3875182777555515,
+          "clamped": false,
+          "outbound_criticality": 0.3875182777555515,
+          "concentration": 0.9901989999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.5618299974044941,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "critical",
+          "tier_committed": "critical"
+        },
+        {
+          "id": "mineral:gallium",
+          "inbound_hhi": 0.98522425,
+          "outbound_raw": 0.6490107854064419,
+          "outbound_normalized": 0.3883642189008504,
+          "clamped": false,
+          "outbound_criticality": 0.3883642189008504,
+          "concentration": 0.98522425,
+          "dominant_axis": "inbound",
+          "severity": 0.4876333076030765,
+          "severity_delta_vs_committed": 5.551115123125783e-17,
+          "tier_under_frozen": "high",
+          "tier_committed": "high"
+        },
+        {
+          "id": "mineral:indium",
+          "inbound_hhi": 0.71083,
+          "outbound_raw": 0.021225156614841173,
+          "outbound_normalized": 0.012701008296200793,
+          "clamped": false,
+          "outbound_criticality": 0.012701008296200793,
+          "concentration": 0.71083,
+          "dominant_axis": "inbound",
+          "severity": 0.11984398928034516,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "none",
+          "tier_committed": "none"
+        },
+        {
+          "id": "mineral:neodymium",
+          "inbound_hhi": 0.919,
+          "outbound_raw": 0.7195523330515995,
+          "outbound_normalized": 0.4305758641728349,
+          "clamped": false,
+          "outbound_criticality": 0.4305758641728349,
+          "concentration": 0.919,
+          "dominant_axis": "inbound",
+          "severity": 0.295079573540301,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:arm_core_ip",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.7657349521048389,
+          "outbound_normalized": 0.45821127051538846,
+          "clamped": false,
+          "outbound_criticality": 0.45821127051538846,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3299643423671152,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:cowos_packaging",
+          "inbound_hhi": 0.9524999999999999,
+          "outbound_raw": 0.869623337255849,
+          "outbound_normalized": 0.5203774663002178,
+          "clamped": false,
+          "outbound_criticality": 0.5203774663002178,
+          "concentration": 0.9524999999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.3296191632783268,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:hbm",
+          "inbound_hhi": 0.7440399999999999,
+          "outbound_raw": 0.3866477231279139,
+          "outbound_normalized": 0.23136771276971466,
+          "clamped": false,
+          "outbound_criticality": 0.23136771276971466,
+          "concentration": 0.7440399999999999,
+          "dominant_axis": "inbound",
+          "severity": 0.30075399000310415,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:ndfeb_magnets",
+          "inbound_hhi": 1.0,
+          "outbound_raw": 0.238,
+          "outbound_normalized": 0.14241779362806403,
+          "clamped": false,
+          "outbound_criticality": 0.14241779362806403,
+          "concentration": 1.0,
+          "dominant_axis": "inbound",
+          "severity": 0.3403936856853811,
+          "severity_delta_vs_committed": 0.0,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        },
+        {
+          "id": "product:rf_power_semis",
+          "inbound_hhi": 0.9,
+          "outbound_raw": 0.24751218478541614,
+          "outbound_normalized": 0.1481098287949607,
+          "clamped": false,
+          "outbound_criticality": 0.1481098287949607,
+          "concentration": 0.9,
+          "dominant_axis": "inbound",
+          "severity": 0.28720717229704024,
+          "severity_delta_vs_committed": -5.551115123125783e-17,
+          "tier_under_frozen": "moderate",
+          "tier_committed": "moderate"
+        }
+      ]
+    }
+  ],
+  "reproducibility_check": {
+    "FR-A": {
+      "mismatches": 0
+    },
+    "FR-B": {
+      "mismatches": 0
+    },
+    "FR-C": {
+      "mismatches": 0
+    },
+    "FR-D": {
+      "mismatches": 0
+    }
+  },
+  "max_path_experiment": {
+    "null_hypothesis": "max-of-paths: A's raw contribution to D holds at sqrt(direct_influence\u00b2 + (w_ab\u00d7decay)\u00b2) while indirect_influence < direct_influence, then rises when the indirect (decay-adjusted) influence exceeds the direct.",
+    "w_bd_critical": 0.3174603174603175,
+    "params_fixed": {
+      "w_direct": 0.2,
+      "w_ab": 0.9,
+      "decay": 0.7
+    },
+    "sweep": [
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.05,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.02205,
+        "indirect_beats_direct": false,
+        "A_raw_outbound": 0.6453681120105021
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.1,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.0441,
+        "indirect_beats_direct": false,
+        "A_raw_outbound": 0.6453681120105021
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.2,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.0882,
+        "indirect_beats_direct": false,
+        "A_raw_outbound": 0.6453681120105021
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.3,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.1323,
+        "indirect_beats_direct": false,
+        "A_raw_outbound": 0.6453681120105021
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.32,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.14112,
+        "indirect_beats_direct": true,
+        "A_raw_outbound": 0.645611999888478
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.35,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.15435,
+        "indirect_beats_direct": true,
+        "A_raw_outbound": 0.6486323477132481
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.4,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.1764,
+        "indirect_beats_direct": true,
+        "A_raw_outbound": 0.6542300512816573
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.5,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.22049999999999997,
+        "indirect_beats_direct": true,
+        "A_raw_outbound": 0.6674730331631383
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.7,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.3087,
+        "indirect_beats_direct": true,
+        "A_raw_outbound": 0.7015665969813557
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.9,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.3969,
+        "indirect_beats_direct": true,
+        "A_raw_outbound": 0.7446003021756035
+      },
+      {
+        "w_direct": 0.2,
+        "w_ab": 0.9,
+        "w_bd": 0.95,
+        "decay": 0.7,
+        "direct_influence": 0.13999999999999999,
+        "indirect_influence": 0.41894999999999993,
+        "indirect_beats_direct": true,
+        "A_raw_outbound": 0.7565838370597141
+      }
+    ],
+    "verdict": "max_of_paths_confirmed"
+  }
+}

@@ -2475,3 +2475,38 @@ Cross-checked against the diff output. Nothing under "Not changed" appears in `g
 - **`caveat_check.branch` mechanical logic hasn't been updated to per-pass semantics.** `pass_facts.py` reports the Pass Q form (any inbound movement → C) even when Pass R §6's revised semantics apply (movement caused by the pass's own edge is expected, not a stop). Reports have been resolving this manually since Pass R. Recorded as an open item for a future correction pass.
 
 - **What the re-baseline pass (P.5.2) inherits.** Frozen boundaries derived from a distribution that has since moved (Pass R's copper crossing; drift shows 4 would-change-tier). Three clamped nodes at the top of the concentration axis, indistinguishable on concentration alone. `fixed_reference` anchored to ASML (Pass K) while copper is now rank-1 by raw. The max-path-dominance hypothesis to test experimentally per S.5.1. The K.1 §4.4 queue closed-as-declared, with the audit-classifier caveat above. The K.2.1 §2.3 collide prediction remains unfired on real data (Q, R, S all left it unfired).
+
+## Pass T — Re-baseline Phase A: measurement only
+
+**Type:** Measurement pass. No committed scoring change. Every committed severity, tier, and constant byte-identical at close. Full report is a PDF; this section is a pointer + scorecard + recommendation + ledger.
+
+**PDF report:** `docs/generated/replay/pass_t_report.pdf` (Q1–Q12 numbered answers per spec §8).
+**Human-readable per-candidate detail:** `docs/generated/rebaseline_candidates.md`.
+**Machine artifact:** `docs/generated/pass_t_facts.json`.
+**Suite at close:** 117 pass + 1 skipped + 0 xfail, both invocations. Pass R.1 baseline was 114; T adds 3 walk-semantics tests.
+
+### T.7 pre-registration scorecard
+
+| # | expectation | HIT/MISS |
+|---|---|---|
+| 1 | Committed state byte-identical at close | HIT |
+| 2 | FR-B TSMC dominant-axis flip + severity ≈ prediction | HIT |
+| 3 | FR-B ASML severity ≈ prediction, drops out of critical | HIT |
+| 4 | FR-B nothing clamps, copper at exactly 1.0 | HIT |
+| 5 | FR-A derived boundaries exactly match drift-section values | HIT |
+| 6 | At least one candidate → unresolved band at some SF | HIT |
+| 7 | Max-path returns a definite yes or no | HIT (`max_of_paths_confirmed`) |
+| 8 | Four candidates do NOT all produce the same tier histogram | HIT |
+
+**8 HIT, 0 MISS.**
+
+### Recommendation
+
+**FR-B (`fixed_reference` = copper's current raw = `2.0447548854281186`) + boundaries derived at SF=3.0 (critical 0.6357…, high 0.5247…, moderate 0.1877…).** Case against: the K.1 warning applies syntactically to `graph_max`-mode re-anchoring, and FR-B is exactly `max(raw_outbound)` at commit time. Argued on the pattern-not-syntax reading in the PDF Q6; the ship pass must record that any future re-anchor needs the same authorizing shape, not "copper moved again."
+
+### T.ledger
+
+- **Max-path outbound walk semantic proven, not asserted.** `test_outbound_walk_semantics.py` pins the max-of-paths rule with a synthetic sub-graph exercise; Pass S retraction is now backed by measurement. Pattern K.1 §6.2 / K.2 §6.3 / K.2.1 §6.2 / S — the lineage is n=4, but S's retraction closed the gap with T's proof.
+- **FR-B is the recommendation; ship decision belongs to Weston.** The evidence that would flip to FR-C (headroom constant 2.5): if a future pass's drift diagnostic still reports would-change-tier movement under FR-B derived boundaries, FR-B is behaving like `graph_max` and FR-C's declared-arbitrariness becomes the safer commit.
+- **Audit-classifier re-run queue ≈ 6 edges** (S.0.1's 5 plus `vertiv→colossus`). Left for its own pass per spec §5.2.
+- **`caveat_check.branch_semantics` field added to `pass_facts.py`.** `original_stop` vs `revised_movement_expected` computed from the pass-tag's edge set. Q through S resolved this by hand; T resolves it in code.
