@@ -2562,3 +2562,13 @@ Report: `docs/generated/replay/pass_u_report.pdf` (also `.md` in the same direct
 - **FR-B flip test retired** (FR-B not shipped). Replaced by the FR-C watch condition: *does any future pass push a node's raw outbound above `2.5`, re-introducing a clamp?* Current headroom `2.5 − 2.0448 = 0.4553`.
 - **Next-at-risk map (U9):** KLA (`+0.0219584227`) and Lam Research (`+0.0248885133`) hold `moderate` by the thinnest margins above the boundary; AMAT sits the same `0.0219584227` below it in `none`.
 - **Suite:** 120 passed, 1 skipped, 0 xfail — both invocations. Was 117 + 3 new §4 guard tests. The 1 skip is `test_config_boundaries_equal_derivation` (asserted only under `mode: derived`).
+
+---
+
+## Replay artifact re-baseline (staleness refresh, pre-Pass-V)
+
+**Finding, surfaced while opening Pass V.** The generated replay artifacts — `summary.md` and the per-event pages under `docs/generated/replay/` — had not been regenerated since **Pass J.1 (`47ae0f4`)**. Every scoring change since (Pass N's noisy-OR aggregator switch, Pass R's copper re-author, Pass S's semis re-author, and the Pass T/U re-baselines) drifted the true replay output away from the committed files. The committed `summary.md` still lacked the provenance line introduced in Pass K §6 — direct evidence it predated Pass K. Example drift: `J-2024-12-china-gallium` showed gallium baseline `0.480` / top-affected `rf_power_semis`; current scoring gives `0.488` / top-affected `gallium`.
+
+**Why this is its own commit, ahead of Pass V.** Pass V (the unresolved-entity register) must run the replay runner to generate the register; that run recomputes these files. Regenerating ~15 passes of accumulated drift inside Pass V would trip Pass V's own stop-condition §8 (replay output must not change) and bundle a scoring-drift refresh into a schema-addition pass. Per the §2.1 precedent — *discovered drift needs its own scope* — the refresh is separated out here so Pass V opens on artifacts that are already current and its byte-identical expectation (exp 8) holds honestly.
+
+**What changed.** Only generated files: `summary.md` + 6 per-event pages (`J-2025-10-nexperia` is byte-identical — it reaches 0 nodes, so nothing to drift). No scoring code, config literal, node, edge, or `outcomes.json` change. Constants byte-identical (`fixed_reference 2.5`, FR-C boundaries). Regeneration is idempotent. Suite 120 pass / 1 skip, both invocations. This is a pure output refresh, not a scoring change.

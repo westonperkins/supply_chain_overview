@@ -5,7 +5,7 @@
 **Timestamp.** 2024-09-06T00:00:00Z
 
 **Origin(s).**
-- `company:asml` (company, ASML) — SCORED origin; baseline_severity=0.539, baseline_tier=critical
+- `company:asml` (company, ASML) — SCORED origin; baseline_severity=0.382, baseline_tier=moderate
 - `country_region:netherlands` (country_region, Netherlands) — UNSCORED origin; baseline_severity=∅, baseline_tier=unscored
 
 **Origin scale** (event severity attributed to strongest origin): `0.000`
@@ -22,7 +22,7 @@ Every node touched by this event's walk, in order (hop, then severity descending
 
 | node_id | hop | contrib | before | after | Δ | tier |
 |---|---|---|---|---|---|---|
-| company:asml | 0 | 0.000 | 0.539 | 0.539 | +0.000 | — |
+| company:asml | 0 | 0.000 | 0.382 | 0.382 | +0.000 | — |
 | country_region:netherlands | 0 | 0.000 | ∅ | ∅ | +0.000 | — |
 
 ## Top-10 most-affected nodes by delta

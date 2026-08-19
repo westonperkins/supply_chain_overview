@@ -5,10 +5,10 @@
 **Timestamp.** 2024-11-04T00:00:00Z
 
 **Origin(s).**
-- `company:sk_hynix` (company, SK Hynix) — SCORED origin; baseline_severity=0.211, baseline_tier=moderate
-- `product:hbm` (product, High Bandwidth Memory (HBM)) — SCORED origin; baseline_severity=0.178, baseline_tier=moderate
+- `company:sk_hynix` (company, SK Hynix) — SCORED origin; baseline_severity=0.263, baseline_tier=moderate
+- `product:hbm` (product, High Bandwidth Memory (HBM)) — SCORED origin; baseline_severity=0.301, baseline_tier=moderate
 
-**Origin scale** (event severity attributed to strongest origin): `0.011`
+**Origin scale** (event severity attributed to strongest origin): `0.015`
 
 **Origin scored?** `True` — walk seeded from baseline_severity × magnitude × confidence
 
@@ -22,9 +22,9 @@ Every node touched by this event's walk, in order (hop, then severity descending
 
 | node_id | hop | contrib | before | after | Δ | tier |
 |---|---|---|---|---|---|---|
-| company:sk_hynix | 0 | 0.011 | 0.211 | 0.220 | +0.008 | — |
-| product:hbm | 0 | 0.009 | 0.178 | 0.185 | +0.007 | — |
-| company:nvidia | 1 | 0.001 | 0.355 | 0.355 | +0.001 | — |
+| product:hbm | 0 | 0.015 | 0.301 | 0.311 | +0.011 | — |
+| company:sk_hynix | 0 | 0.013 | 0.263 | 0.272 | +0.010 | — |
+| company:nvidia | 1 | 0.001 | 0.358 | 0.359 | +0.001 | — |
 | company:amd | 1 | 0.001 | ∅ | 0.001 | +0.001 | — |
 | company:broadcom | 1 | 0.000 | ∅ | 0.000 | +0.000 | — |
 | company:meta | 1 | 0.000 | ∅ | 0.000 | +0.000 | — |
@@ -40,20 +40,20 @@ Every node touched by this event's walk, in order (hop, then severity descending
 
 | node_id | type | before | after | Δ | tier |
 |---|---|---|---|---|---|
-| company:sk_hynix | company | 0.211 | 0.220 | +0.008 | — |
-| product:hbm | product | 0.178 | 0.185 | +0.007 | — |
-| company:nvidia | company | 0.355 | 0.355 | +0.001 | — |
+| product:hbm | product | 0.301 | 0.311 | +0.011 | — |
+| company:sk_hynix | company | 0.263 | 0.272 | +0.010 | — |
 | company:amd | company | ∅ | 0.001 | +0.001 | — |
+| company:nvidia | company | 0.358 | 0.359 | +0.001 | — |
 | company:broadcom | company | ∅ | 0.000 | +0.000 | — |
 | company:xai | company | ∅ | 0.000 | +0.000 | — |
 | company:openai | company | ∅ | 0.000 | +0.000 | — |
 | company:meta | company | ∅ | 0.000 | +0.000 | — |
+| company:google | company | ∅ | 0.000 | +0.000 | — |
 | facility:colossus | facility | ∅ | 0.000 | +0.000 | — |
-| facility:stargate_abilene | facility | ∅ | 0.000 | +0.000 | — |
 
 ## Propagation path for top-3
 
-- **`company:sk_hynix`** — edges: `(origin)`
 - **`product:hbm`** — edges: `(origin)`
-- **`company:nvidia`** — edges: `e:sk_hynix-supplies-nvidia`
+- **`company:sk_hynix`** — edges: `(origin)`
+- **`company:amd`** — edges: `e:hbm-input-amd`
 
