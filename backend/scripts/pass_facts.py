@@ -19,7 +19,9 @@ Full float precision throughout; rounding belongs in the report.
 """
 from __future__ import annotations
 
+import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -27,8 +29,18 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "backend"))
 
+import yaml
+
 from app.graph import SupplyChainGraph
 from app.scoring import ScoringConfig, refresh_all_derived, propagate_event
+
+
+# Pass Q.1 §2 — regex used by the caveat-number audit. Same one as the
+# guard test test_modeling_caveat_numbers_are_current.
+_CAVEAT_DECIMAL_RE = re.compile(
+    r"(?<![\d.])(\d+\.\d+)(?!\s*[%xX])(?![\d.])"
+)
+_CAVEAT_TOLERANCE = 0.05
 
 
 PASS_Q_EDGE_IDS = [
@@ -131,6 +143,17 @@ def _commit_shape() -> tuple[str, dict]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument(
+        "--output-name", default="pass_q_facts.json",
+        help=(
+            "Filename under docs/generated/ for the artifact "
+            "(default: pass_q_facts.json). Use `pass_q1_facts.json` for "
+            "Pass Q.1 and so on for subsequent correction passes."
+        ),
+    )
+    args = parser.parse_args()
+
     head_sha = _git("rev-parse", "HEAD").strip()
     shape, shape_shas = _commit_shape()
 
@@ -294,24 +317,94 @@ def main() -> None:
             "outbound_after": out_a,
         })
 
-    # -------- suite --------
-    try:
-        r = subprocess.run(
+    # -------- caveat number audit (Pass Q.1 §2) --------
+    # Runs the same branch-D check as
+    # `test_modeling_caveat_numbers_are_current`, but produces a per-
+    # node record in the artifact instead of an assertion. The test is
+    # authoritative for pass/fail; this block gives the artifact a
+    # readable summary.
+    narr_raw = yaml.safe_load(
+        (REPO / "config" / "narration.yaml").read_text()
+    ) or {}
+    caveats_cfg = narr_raw.get("modeling_caveats", {})
+    caveat_audit = []
+    for nid, node in g.nodes.items():
+        raw_cav = node.static.modeling_caveat
+        if not raw_cav:
+            continue
+        if raw_cav.startswith("caveat:"):
+            text = " ".join(
+                (caveats_cfg.get(raw_cav[len('caveat:'):], "")).split()
+            )
+            shape = "key"
+        else:
+            text = raw_cav
+            shape = "literal"
+        numbers = [
+            float(m) for m in _CAVEAT_DECIMAL_RE.findall(text)
+            if 0.0 <= float(m) <= 1.0
+        ]
+        candidate_values = [
+            node.dynamic.inbound_hhi,
+            node.dynamic.outbound_criticality,
+            node.dynamic.concentration,
+        ]
+        candidate_values = [v for v in candidate_values if v is not None]
+        stale = [
+            n for n in numbers
+            if not any(abs(n - v) <= _CAVEAT_TOLERANCE for v in candidate_values)
+        ]
+        caveat_audit.append({
+            "id": nid,
+            "caveat_shape": shape,
+            "asserted_numbers": numbers,
+            "current_inbound_hhi": node.dynamic.inbound_hhi,
+            "current_outbound_criticality": node.dynamic.outbound_criticality,
+            "current_concentration": node.dynamic.concentration,
+            "stale_numbers": stale,
+            "verdict": "accurate" if not stale else "stale",
+        })
+
+    # -------- suite (Pass Q.1 §6 — dual invocations) --------
+    # Pass Q.1 §4 pinned pytest.ini so `pytest`, `pytest backend/tests`,
+    # and `python -m pytest` all agree. Record both the module and bare
+    # invocations so the artifact carries direct evidence the pin holds.
+    #
+    # Pass Q.1 §6 — scraper widened. Pass Q's regex `^(\d+)\s+passed`
+    # required the pytest summary line to begin with the passed count;
+    # when there were failing tests the tail begins `N failed, M passed
+    # in ...` and the numeric fields silently reported 0. Now search
+    # anywhere in the line for `\d+ passed`, `\d+ failed`, `\d+ xfailed`.
+    # The exit code is also captured so a caller can gate on it directly
+    # without re-parsing prose.
+    def _run_suite(argv: list[str]) -> dict:
+        try:
+            r = subprocess.run(
+                argv, cwd=REPO, capture_output=True, text=True, timeout=180,
+            )
+            tail = r.stdout.strip().splitlines()[-1] if r.stdout else ""
+            passed_m = re.search(r"(\d+)\s+passed", tail)
+            failed_m = re.search(r"(\d+)\s+failed", tail)
+            xfail_m = re.search(r"(\d+)\s+xfailed?", tail)
+            return {
+                "invocation": " ".join(argv),
+                "passed": int(passed_m.group(1)) if passed_m else 0,
+                "failed": int(failed_m.group(1)) if failed_m else 0,
+                "xfail": int(xfail_m.group(1)) if xfail_m else 0,
+                "exit_code": r.returncode,
+                "tail": tail,
+            }
+        except Exception as exc:
+            return {"invocation": " ".join(argv), "error": str(exc)}
+
+    suite = {
+        "python_m_pytest": _run_suite(
             ["python", "-m", "pytest", "backend/tests/", "-q", "--tb=no"],
-            cwd=REPO, capture_output=True, text=True, timeout=180,
-        )
-        tail = r.stdout.strip().splitlines()[-1] if r.stdout else ""
-        # e.g. "110 passed in 0.66s"
-        import re
-        m = re.match(r"^(\d+)\s+passed", tail)
-        passed = int(m.group(1)) if m else 0
-        failed_m = re.search(r"(\d+)\s+failed", tail)
-        failed = int(failed_m.group(1)) if failed_m else 0
-        xfail_m = re.search(r"(\d+)\s+xfailed?", tail)
-        xfail = int(xfail_m.group(1)) if xfail_m else 0
-        suite = {"passed": passed, "failed": failed, "xfail": xfail, "tail": tail}
-    except Exception as exc:
-        suite = {"error": str(exc)}
+        ),
+        "bare_pytest": _run_suite(
+            ["pytest", "backend/tests/", "-q", "--tb=no"],
+        ),
+    }
 
     # -------- output --------
     out = {
@@ -331,14 +424,30 @@ def main() -> None:
         "fixed_reference": c.outbound_fixed_reference,
         "aggregator": {
             "method": c.inbound_per_stage_method,
-            "eps": c.inbound_per_stage_eps,
+            # Pass Q.1 §6 — split `eps` into configured vs applied.
+            # `noisy_or` (Pass N) takes no eps argument; the config
+            # carries an eps value only because `noisy_or_eps` was
+            # evaluated in Pass M and the key remained. Emitting a
+            # single `eps` field misled the Pass Q artifact into
+            # asserting `eps: 0.01` under a `method: noisy_or` run
+            # where the value is dormant. `eps_applied` is None when
+            # the method does not consume eps; `eps_configured` records
+            # what the file carries regardless (Pass O provenance
+            # principle: capture the config, don't infer applicability).
+            "eps_configured": c.inbound_per_stage_eps,
+            "eps_applied": (
+                c.inbound_per_stage_eps
+                if c.inbound_per_stage_method == "noisy_or_eps"
+                else None
+            ),
         },
         "edges": edges_facts,
         "nodes_touched": nodes_facts,
         "caveat_check": caveat_facts,
+        "caveat_number_audit": caveat_audit,
         "suite": suite,
     }
-    out_path = REPO / "docs" / "generated" / "pass_q_facts.json"
+    out_path = REPO / "docs" / "generated" / args.output_name
     out_path.write_text(json.dumps(out, indent=2, default=str) + "\n")
     print(f"wrote {out_path}")
 

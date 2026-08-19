@@ -30,9 +30,12 @@ company:meta	input_to	0.1200000000
 company:meta	supplies	0.7000000000
 company:micron	input_to	0.0800000000
 company:microsoft	input_to	0.1200000000
-# Pass Q closed nextera_energy/supplies — the GE Vernova → NextEra
-# input_share re-author (0.25 → 0.30) lifted the bucket sum to 0.80,
-# meeting the completeness threshold. Removed as stale.
+# Pass Q.1 §1 restored this entry — the Pass Q re-author that raised
+# the bucket sum to 0.80 was REVERTED under Pass Q.1 review (no sourced
+# document reference; the reasoning cited Hitachi Energy which is not a
+# graph node; landing on exactly 0.80 coincided with the completeness
+# threshold). NextEra `supplies` sum is 0.75 again — pinned shortfall.
+company:nextera_energy	supplies	0.7500000000
 company:nvidia	input_to	0.5000000000
 company:openai	supplies	0.8000000000
 company:quanta_services	input_to	0.3000000000

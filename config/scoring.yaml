@@ -54,20 +54,32 @@ concentration:
   #                     depended-upon" (ASML, TSMC, HBM, CoWoS).
   #
   # TODO — thin-graph artifacts on nodes with only one modeled input.
-  # Quanta Services HHI = 1.0 because copper is the only in-edge we model.
-  # xAI / OpenAI HHI = 0.78 because NVIDIA is the only in-edge we model.
-  # These read as "dangerously single-sourced" but reality is under-modeled:
-  # Quanta needs steel/transformers/labor, xAI/OpenAI need power/cooling/etc.
-  # Not fixable via config — it's a data-completeness issue. Fix later by
-  # adding the missing input edges (steel supply, power supply, cooling).
+  # Quanta Services, xAI, and OpenAI each have one modelled inbound edge
+  # in the current graph (Quanta ← copper; xAI ← NVIDIA; OpenAI ← NVIDIA).
+  # Under noisy-OR (Pass N §2) a single supplier at share s reads exactly
+  # s as the stage-level concentration; the resulting inbound_hhi reflects
+  # "the one edge we happen to model" rather than the node's true
+  # dependency structure. These read as more concentrated than reality:
+  # Quanta needs steel/transformers/labor/permits; xAI and OpenAI need
+  # power/cooling/land/skilled labour. Not fixable via config — it is a
+  # data-completeness issue. Fix later by adding the missing input edges.
+  # [Pass Q.1 §2: removed specific numeric assertions ("Quanta = 1.0",
+  # "xAI / OpenAI = 0.78") that were true under the pre-Pass-N HHI-
+  # normalize=true aggregator but silently stale under noisy-OR. See
+  # each node's `modeling_caveat` in data/ai/nodes.json for the current
+  # rendering. Post-Q.1 sweep: no numeric literal for these nodes is
+  # authoritatively pinned in this file.]
   #
   # NOTE — scale-axis gap (surfaced by per-stage HHI).
-  # Per-stage HHI correctly captures gallium's mining monopoly (~0.97) while
-  # leaving copper's refining concentration reading ~0.25. Copper's real
-  # paper story is volume + 17–25yr mine lead time, i.e. a scale/demand
-  # constraint the current model has no axis for. Concentration is
-  # absorbing risk it cannot represent. Adding a scale axis is out of scope
-  # for the per-stage fix and is left as an open item.
+  # Per-stage HHI captures gallium's mining monopoly as very high while
+  # copper's refining spreads across five paper-named countries. Copper's
+  # real paper story is volume + 17–25yr mine lead time, i.e. a scale/
+  # demand constraint the current model has no axis for. Concentration
+  # is absorbing risk it cannot represent. Adding a scale axis is out
+  # of scope for the per-stage fix and is left as an open item.
+  # [Pass Q.1 §2: removed specific numeric assertions ("~0.97", "~0.25")
+  # that were tied to a specific aggregator setting; the structural
+  # claims (gallium ~monopoly; copper distributed) stand regardless.]
   inbound:
     # Per-stage HHI: compute HHI for every edge type with edges present on
     # the node (mines, refines, supplies, input_to, component_of), then

@@ -183,7 +183,7 @@
       },
       "bottleneck_type": "volume_demand",
       "notes": "NOT a concentration problem per paper \u2014 a volume/demand story. Structural deficit potentially >6 Mt/yr by early 2030s. COMEX broke $6/lb for the first time in Jan 2026.",
-      "modeling_caveat": "Per-stage HHI split done and refiner edges now modelled across the paper's named copper countries (China ~47% from paper; Chile, DRC, Peru and US distributing the ex-China share proxied from mining prominence, since the paper does not detail ex-China refining). Refining HHI reads roughly 0.29 as a result. The remaining exposure the model does not represent is the scale axis \u2014 the paper's copper story is a ~23 Mt/yr volume against a 17\u201325 year mine lead time, i.e. a scale/demand constraint, not a concentration one. Concentration is no longer absorbing that risk."
+      "modeling_caveat": "Per-stage HHI split done and refiner edges now modelled across the paper's named copper countries (China ~47% from paper; Chile, DRC, Peru and US distributing the ex-China share proxied from mining prominence, since the paper does not detail ex-China refining). [Pass Q.1 \u00a72: removed a specific concentration numeral that was accurate under the pre-Pass-N HHI-normalize=false aggregator but stale under noisy-OR, where the same shares combine as independent-dependency probabilities rather than as squared market shares. The structural claim \u2014 that refining is distributed across the paper's five countries \u2014 stands regardless of aggregator choice.] The remaining exposure the model does not represent is the scale axis \u2014 the paper's copper story is a ~23 Mt/yr volume against a 17\u201325 year mine lead time, i.e. a scale/demand constraint, not a concentration one. Concentration is no longer absorbing that risk."
     }
   },
   {
@@ -1326,7 +1326,7 @@
         "value": 0.55,
         "confidence": "inference"
       },
-      "modeling_caveat": "Inbound HHI reads 1.0 because copper is the only modelled input. Real inputs include steel, transformers, labour and permits \u2014 Quanta is not single-sourced to the degree the number suggests.",
+      "modeling_caveat": "Inbound concentration is thin-graph-limited here \u2014 copper is Quanta's only modelled input. Real inputs also include steel, transformers, skilled labour, and permits; Quanta is not single-sourced to the degree the modelled bucket suggests. [Pass Q.1 \u00a72: removed a specific concentration numeral that was accurate under the pre-Pass-N HHI-normalize=true aggregator (where a single full-share input renormalized to the top of the scale) but stale under noisy-OR, where a single supplier at share s reads exactly s. The structural claim \u2014 copper is the only modelled input; real inputs are broader \u2014 stands regardless of aggregator choice.]",
       "substitutability": {
         "value": 0.4,
         "confidence": "estimate",

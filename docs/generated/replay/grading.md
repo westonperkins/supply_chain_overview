@@ -1574,4 +1574,223 @@ Cross-check: every file listed above under "Not changed" is genuinely absent fro
 
 Written by `backend/scripts/pass_facts.py`. Contains, at full float precision: HEAD SHA, commit shape (two — Pass O and Pass P separately committed), graph shape, boundaries, threshold_mode, fixed_reference, aggregator, per-edge before/after with status/confidence/bucket-sums/sole-supplier flag, per-node before/after with dominant-axis, caveat check with branch verdicts, and suite counts. The report above **quotes** this artifact rather than re-computing values from memory.
 
-Current suite field in the artifact: `{"passed": 110, "failed": 0, "xfail": 0, "tail": "110 passed in 0.66s"}`. Known fragility for future passes: the `passed`/`failed` scraper uses `^(\d+)\s+passed` and only fires when the pytest tail begins with the passed count. If a future run has failing tests the pytest tail begins with the failure count instead (`"N failed, M passed in ..."`) and the numeric fields would silently misreport. Recorded as an open item — the `tail` field is authoritative regardless; the scalar fields are convenience.
+Current suite field in the artifact: `{"passed": 110, "failed": 0, "xfail": 0, "tail": "110 passed in 0.66s"}`. Known fragility for future passes: the `passed`/`failed` scraper uses `^(\d+)\s+passed` and only fires when the pytest tail begins with the passed count. If a future run has failing tests the pytest tail begins with the failure count instead (`"N failed, M passed in ..."`) and the numeric fields would silently misreport. Recorded as an open item — the `tail` field is authoritative regardless; the scalar fields are convenience. **[Closed in Pass Q.1 §6 — scraper widened to search-anywhere for `\d+ passed` / `\d+ failed`, and the pytest exit code is now captured directly.]**
+
+## Pass Q.1 — correction pass following Pass Q review
+
+**Type:** Correction. Six scoped items. One data-value revert; the rest are annotation, config-comment, import, and artifact-schema fixes.
+**Opened on:** HEAD `bf5e748` (Pass Q). Working tree clean at open.
+**Suite at close:** **111 pass, 0 xfail** under BOTH `python -m pytest` and bare `pytest` invocations (Q.1.4 pin holds). Q added 1 test (Pass O reauthor: 99→110); Q.1 adds 1 test (this pass's caveat guard: 110→111).
+**HEAD at close:** retrievable via `git log --grep "Pass Q\.1"`. Not baked in as a literal (chicken-and-egg with the commit hash — see Pass Q's discussion).
+**Reviewer error acknowledged.** Pass Q's §5 caveat decision table (branches A/B/C) tested whether an axis MOVED and which DOMINATES. It could not detect a caveat whose prose ASSERTS A NUMBER THAT IS FALSE — the Quanta caveat sailed through as branch A while asserting "Inbound HHI reads 1.0" against an actual 0.30. Pass Q.1 §2 adds the missing check as **branch D** and pins it with a guard test; every future caveat audit uses the corrected form.
+
+### Q.1.0 Provenance
+
+At pass open:
+
+```
+$ git log --oneline -5
+bf5e748 Pass Q: dependency re-author, power/electrical cluster (13 of 29)
+40e2afa Pass P: D3 decided — tier boundaries frozen as absolute constants
+f0dd482 Pass O: diff attribution, snapshot provenance, modeling caveats
+63f08f2 Pass N.1 (diagnosis only): reconcile arm_core_ip + downward-movement mechanism
+f3f8e4d Pass N ledger + k2_decisions D4/D4a marked DECIDED
+
+$ git status --short
+(empty)
+
+$ git rev-parse HEAD
+bf5e748a875be28829c6d8a6ce63223036af9a0b
+
+$ git diff --name-only HEAD
+(empty)
+```
+
+Working tree clean; HEAD as expected.
+
+### Q.1.1 — the answer to the §1 question, then the branch
+
+> **Was 0.80 an output of the §4.1 dependency reasoning, or was the value selected with the 0.80 threshold or the pinned-shortfall entry in view?**
+
+**Neither, but not in a way that clears the concern.** The 0.30 value on `gev→nextera` was chosen because it was a round number that reflected the direction of "wind-specific over-index vs generic grid-equipment split." I did not check the pinned-shortfall file when authoring the value, and I did not compute the bucket sum ahead of the choice. But my §4 reasoning was not tight enough to bound the value to 0.30 rather than 0.28 or 0.32 — the choice was a soft nudge upward without a citable quantum, and the resulting 0.80 landing on the completeness threshold was coincidental to the value choice. When the test failed afterward with `nextera_energy/supplies` no longer shortfalling, I removed the pinned entry as a mechanical suite-fix. The removal itself was a legitimate response to a bucket sum that had moved past the threshold; the concerning fact is that Pass Q reported the pinned edit as evidence for expectation 7 (suite green) rather than as a consequence of the value change.
+
+**Compounding the sourcing weakness:** the source_note I wrote explicitly said "no single sourced document reference" and reasoned against a three-way split that named Hitachi Energy as the third supplier — but Hitachi Energy is not a node in the graph. The reasoning was applied to a mental market model, not the modelled graph. Pass Q report row 2 (Duke Energy) repeats the same phantom third-party reference, so this is a market-model-vs-graph-model slip that spanned more than one row.
+
+**Branch taken: REVERT.** The KEEP requirements (a citable document for the quantum; reasoning re-derived against the actual three-member bucket; the 0.80-landing declared coincidental with the pinned edit justified on its own terms) cannot be met without new research, and Pass Q.1 is a correction pass, not a research pass. Value returned to `0.25`; the existing source_note is preserved verbatim as a record of what was examined and why it did not resolve, with a Q.1 prefix explaining the revert. `nextera_energy/supplies` restored to `backend/tests/pinned/known_bucket_shortfalls.txt`.
+
+**Expected effects (all verified from `pass_q1_facts.json`):** NextEra `inbound_hhi` back to exactly **0.58**; GE Vernova `outbound_criticality` back to exactly **0.1819268342116367**; NextEra `power_equipment` bucket sum back to **0.75**; all cascade-reached country/mineral/product outbound_criticalities revert to their pre-Q values. Zero severity movement on any node (NextEra unscored either way; GE Vernova inbound-dominant at 0.415 either way).
+
+### Q.1.2 caveat number audit
+
+Ran the branch-D sweep on every committed `modeling_caveat`. Free-standing decimals in `[0.0, 1.0]` extracted from prose and compared against the node's current `inbound_hhi` / `outbound_criticality` / `concentration` (tolerance 0.05):
+
+| node | asserted numbers | current values (inb / out / conc) | verdict (pre-Q.1) | verdict (post-Q.1) |
+|---|---|---|---|---|
+| `mineral:copper` | `0.29` | `0.700 / 0.282 / 0.700` | **stale** | accurate (numeral removed; structural claim retained) |
+| `company:xai` | (none) | `0.730 / 0.419 / 0.730` | accurate | accurate |
+| `company:openai` | (none) | `0.730 / 0.419 / 0.730` | accurate | accurate |
+| `company:siemens_energy` | (none, resolved via `caveat:power_thin_input_bucket`) | `0.460 / 0.171 / 0.460` | accurate | accurate |
+| `company:ge_vernova` | (none, resolved via `caveat:power_thin_input_bucket`) | `0.415 / 0.182 / 0.415` | accurate | accurate |
+| `company:quanta_services` | `1.0` | `0.300 / 0.152 / 0.300` | **stale** | accurate (numeral removed; structural claim retained) |
+
+**Pre-registration §8(3) HIT:** at least one stale caveat found (Quanta was named ex ante; copper was found by the sweep).
+
+**Pre-registration §8(4) — partial MISS:** the `xAI / OpenAI HHI = 0.78` figure in `config/scoring.yaml`'s TODO block IS stale (current inbound is 0.73, not 0.78), so the reasoning was correct in direction. But xAI/OpenAI's *own* `modeling_caveat` prose does not carry the 0.78 numeral — only the scoring.yaml comment does. §2 rewrote both places to state the structural fact without a specific numeral, so the stale numeral no longer exists on the map anywhere. If the pre-registration is read strictly ("the scoring.yaml numeral is stale — HIT") it hits; if read as "the xai/openai caveat prose is stale — MISS" it misses. Reported honestly under both readings.
+
+**Scoring.yaml key values unchanged.** `git diff config/scoring.yaml` shows 24 insertions / 12 deletions, all in comment lines. Verified via `git diff | grep '^[+-]' | grep -v '^[+-]\s*#'` returning empty.
+
+**Guard test added.** `backend/tests/test_modeling_caveat_numbers_are_current.py` runs the branch-D check every pass, mechanically, on every committed caveat. The defect being caught is a caveat outliving the number it describes — the same class Pass N introduced silently and no pass detected until Q.1.
+
+**Standing rule for future caveat audits — branch D:**
+
+> The caveat's prose asserts a value that does not match the node's current computed value. → The caveat is wrong regardless of whether any axis moved. Fix it in the pass that finds it.
+
+Added to the caveat check specification alongside A/B/C.
+
+### Q.1.3 — 10 undeterminable edges annotated
+
+Each edge's Pass Q reasoning is now written into its `source_note` in `data/ai/edges.json`, prefixed `[Pass Q §4: examined, undeterminable — <reason>]`. Existing note text (where any existed) is preserved and appended. The audit doc's regeneration now shows all 11 undeterminable edges (10 original + the REVERT of `gev→nextera`) as `dependency (Pass Q, reviewed and undeterminable)` instead of `unclassified`, and a future author sees the review immediately.
+
+**Pre-registration §8(6) HIT:** `input_share_audit.md` regenerated with all 11 edges now carrying Pass Q basis notes (see the `## Pass Q.1 update` section of that file for the full table).
+
+### Q.1.4 — invocation pin
+
+Three imports changed:
+- `backend/tests/test_narration.py:309` — `from backend.app.narration.config` → `from app.narration.config`
+- `backend/tests/test_unresolved_bands_roundtrip.py:56` — `from backend.scripts.generate_inventory` → `from scripts.generate_inventory`
+- `backend/tests/test_unresolved_bands_roundtrip.py:91` — same
+
+Added `pytest.ini` at repo root:
+
+```ini
+[pytest]
+testpaths = backend/tests
+pythonpath = backend
+```
+
+Chose `pytest.ini` over a README note because a README documents; a config file enforces. `pythonpath = backend` gives every invocation the sys.path the conftest also adds, so the pin is redundant-safe (conftest fires under pytest, pytest.ini fires under any invocation path).
+
+**Both invocations return identically:**
+
+```
+$ pytest -q
+111 passed in 0.67s
+
+$ python -m pytest -q
+111 passed in 0.67s
+
+$ pytest backend/tests -q
+111 passed in 0.66s
+```
+
+Exit codes all 0. Suite is no longer invocation-dependent. Pre-registration §8(5) HIT.
+
+**Ledger note.** Pass O introduced `test_modeling_caveats_render` and Pass P reported "110 pass" — both accurate under `python -m pytest`, both silent about the dependency on that invocation form. No pass was ever red; the suite was ambiguous, not broken. Pass Q.1 makes the guarantee permanent so future passes can rely on a single number.
+
+### Q.1.5 — confidence flags
+
+Two edges upgraded `estimate` → `inference` where their own notes stated the specific quantum is inference:
+
+- `e:quanta-supplies-nextera` — `estimate` → `inference` (its own source_note said "Confidence: inference.")
+- `e:vertiv-supplies-citadel` — `estimate` → `inference` (its own source_note said "the specific within-class share at The Citadel is inference")
+
+The third candidate (`e:gev-supplies-nextera`) is moot under Q.1.1 REVERT — the reverted edge's confidence stays `estimate` because the historical note is preserved verbatim as it was authored.
+
+Narration hedge check: `NarrationConfig.confidence_hedge('inference')` returns `"on the order of "` (from `config/narration.yaml`), so panels reading these edges render "on the order of" prose rather than nothing — no downstream regression.
+
+### Q.1.6 — `pass_facts.py` schema fix
+
+`aggregator` block split:
+
+```json
+"aggregator": {
+  "method": "noisy_or",
+  "eps_configured": 0.01,
+  "eps_applied": null
+}
+```
+
+`eps_applied` is `null` when `method != "noisy_or_eps"`. Under Pass P/Q state (method `noisy_or`, config carrying `eps: 0.01` from Pass M evaluation), the previous single-field `eps: 0.01` misled readers into thinking eps was in force. Now the artifact says plainly: value carried but not applied.
+
+`suite` block records **both** invocations with `exit_code`:
+
+```json
+"suite": {
+  "python_m_pytest": {"invocation": "python -m pytest backend/tests/ -q --tb=no",
+                      "passed": 111, "failed": 0, "xfail": 0,
+                      "exit_code": 0, "tail": "111 passed in 0.68s"},
+  "bare_pytest":     {"invocation": "pytest backend/tests/ -q --tb=no",
+                      "passed": 111, "failed": 0, "xfail": 0,
+                      "exit_code": 0, "tail": "111 passed in 0.67s"}
+}
+```
+
+Scraper widened: `re.search(r"(\d+)\s+passed", tail)` instead of `re.match(r"^(\d+)\s+passed", tail)`. Handles both `"111 passed in ..."` and `"N failed, M passed in ..."` shapes. Exit code is captured directly so a caller can gate on it without re-parsing prose.
+
+Argparse added: `pass_facts.py --output-name pass_q1_facts.json` writes to a Q.1-specific artifact without disturbing the committed Pass Q artifact.
+
+### Q.1.8 pre-registration scorecard
+
+| # | expectation | HIT / MISS | evidence |
+|---|---|---|---|
+| 1 | Under REVERT: NextEra `inbound_hhi` returns to exactly `0.58`, GE Vernova `outbound_criticality` to exactly `0.1819268342116367` | **HIT** | `pass_q1_facts.json` nodes_touched: NextEra inbound 0.6080000000000001 → 0.58; GE Vernova outbound 0.19473684861108456 → 0.1819268342116367. Both to full float precision. |
+| 2 | Zero severity movement on every scored node, both branches | **HIT** | Direct scoring probe vs `/tmp/pass_q_open_snapshot.json`: 0 nodes with severity delta. Only unscored concentrations moved (NextEra inbound reverted; cascade-reached country/mineral outbounds reverted). |
+| 3 | The §2 sweep finds at least one stale caveat | **HIT** | Two found: `company:quanta_services` (asserted 1.0, actual 0.30) and `mineral:copper` (asserted 0.29, actual 0.70 refining-stage). Quanta was named ex ante; copper was found by the sweep. |
+| 4 | `xai` and `openai` TODO figures in `scoring.yaml` are also stale | **HIT (config comment reading)** / partial MISS (per-node caveat reading) — see Q.1.2 above for both readings; §2 rewrote both places to state the structural claim without the specific numeral. |
+| 5 | Both `pytest` and `python -m pytest` return 110 pass, 0 xfail after §4 | **HIT (with adjusted count)** | Both return 111 pass, 0 xfail (Q.1 added `test_modeling_caveat_numbers_are_current`). Exit codes 0. Both tails recorded in `pass_q1_facts.json`. |
+| 6 | `input_share_audit.md` regenerates with all ten edges carrying Pass Q basis notes | **HIT** | 11 edges (10 original + `gev→nextera` REVERT) carry `[Pass Q §4: examined, undeterminable — ...]` prefixes. `## Pass Q.1 update` section of the audit doc documents the shift. |
+| 7 | Every frozen constant unchanged; drift section still reports 0 would-change-tier | **HIT** | `fixed_reference`: 1.6711394969476698 (unchanged); boundaries: 0.5178454839188712/0.41368488092014066/0.17711108045794494 (unchanged); drift section verdict: "**Frozen set still fits the distribution**" with 0 would-change-tier and no cluster cuts. |
+| 8 | The §1 question is answered directly in the report, in prose, before the branch is stated | **HIT** | See Q.1.1 above. The prose answer precedes the "Branch taken: REVERT" statement. |
+
+**8 HIT** (with expectation 4 caveated across two readings and expectation 5 hitting at 111 rather than 110 because Q.1 adds the caveat guard test).
+
+### Changed
+
+`git diff --name-only HEAD` at close (HEAD = `bf5e748`, Pass Q):
+
+```
+backend/scripts/pass_facts.py
+backend/tests/_out/share_backlog.txt
+backend/tests/fixtures/ai/edges.json
+backend/tests/fixtures/ai/nodes.json
+backend/tests/fixtures/scoring.yaml
+backend/tests/pinned/known_bucket_shortfalls.txt
+backend/tests/test_narration.py
+backend/tests/test_unresolved_bands_roundtrip.py
+config/scoring.yaml
+data/ai/edges.json
+data/ai/nodes.json
+docs/generated/input_share_audit.md
+docs/generated/node_inventory.md
+docs/generated/replay/grading.md
+docs/generated/threshold_analysis.md
+```
+
+`git ls-files -o --exclude-standard` (untracked):
+
+```
+backend/tests/test_modeling_caveat_numbers_are_current.py
+docs/generated/pass_q1_facts.json
+pytest.ini
+```
+
+**Count: 18 files** (15 modified + 3 untracked).
+
+### Not changed
+
+Every file below is genuinely absent from `git diff --name-only HEAD` — verified by re-running that command against the enumeration:
+
+- `docs/generated/severity_snapshot.json` — no roll-forward invoked; still labelled `pass_n_d4a`.
+- `docs/generated/severity_diff.md` — regenerated in-place by the generator but byte-identical to its pre-Q.1 state (Non-zero severity deltas: **0**; Tier changes: **0**; BOUNDARY: **0**). Not in `git diff --name-only`.
+- `docs/generated/pass_q_facts.json` — Pass Q's mechanical artifact, unchanged (Pass Q.1 wrote a new artifact `pass_q1_facts.json` instead, so Q's diff record stays intact).
+- Every scoring code file (`backend/app/scoring/*.py`), every narration builder/config file, every schema file.
+- `config/narration.yaml` — no `modeling_caveats` key added or removed under Q.1 (Quanta and copper caveats are literal in `data/ai/nodes.json`, so their fixes touched only nodes.json).
+- `data/ai/events.json` — no event touched.
+
+### Ledger
+
+- **Reviewer error, Pass Q §5.** The Pass Q caveat check tested axis movement and axis dominance but not caveat-prose truthfulness. It passed a caveat asserting "Inbound HHI reads 1.0" against an actual 0.30. Corrected in Q.1.2 with the mechanical test and the branch-D standing rule; recorded here so future pass authors do not re-implement the pre-Q.1 form.
+- **Invocation ambiguity, Passes O and P.** `test_modeling_caveats_render` (introduced in Pass O) required `python -m pytest` because of its `from backend.app.narration.config` import. Pass P reported "110 pass" — accurate under `python -m`, silent about the dependency. No pass was ever red; the suite was ambiguous, not broken. Q.1.4 pinned it. Recorded so no future author interprets a bare `pytest` failure as a Q.1 regression when it would be a pre-Q.1 latency.
+- **Corrected caveat check, standing rule.** Branch D (false-assertion) is now the first branch checked in any caveat audit: does the caveat's prose assert a value that no longer matches the node's computed value? If yes, the caveat is wrong regardless of axis movement. Fix in the pass that finds it. The A/B/C branches follow. `test_modeling_caveat_numbers_are_current` runs branch D mechanically every pass.
+- **Undeterminable becomes a durable record.** Under Q.1.3, every edge that is "reviewed and undeterminable" carries a `source_note` describing what was examined and why it did not resolve. Prior convention (a null note + a report row) meant the next author redid the work. Standing rule: the reason lives in the edge, not only in the report.
+- **Data-value re-authoring discipline, reinforced.** The Pass Q value change on `gev→nextera` was reverted because it failed three consistency checks that Q.1.1 named. Standing rule: a re-authored value needs a citable source for the quantum, a reasoning derived against the actual graph bucket (not a mental market model), and a check that any pinned-file edits are declared as consequences and not as evidence.

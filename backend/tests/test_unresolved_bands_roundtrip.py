@@ -53,7 +53,7 @@ def test_writer_serializes_bands_to_yaml(tmp_path: Path):
     """The Phase B writer must render `unresolved_bands` from the
     derivation, not leave the config's stale `[]`. On a scratch config,
     the writer produces YAML that reloads with the band intact."""
-    from backend.scripts.generate_inventory import _serialize_unresolved_bands
+    from scripts.generate_inventory import _serialize_unresolved_bands
 
     dev = _dev_with_band()
     lines = _serialize_unresolved_bands(dev.unresolved_bands, indent_level=2)
@@ -88,7 +88,7 @@ def test_writer_serializes_bands_to_yaml(tmp_path: Path):
 def test_writer_empty_bands_renders_inline():
     """The empty case must render as `[]` inline so a config with no
     bands stays diff-clean pass-over-pass."""
-    from backend.scripts.generate_inventory import _serialize_unresolved_bands
+    from scripts.generate_inventory import _serialize_unresolved_bands
 
     lines = _serialize_unresolved_bands([], indent_level=2)
     assert lines == ["  unresolved_bands: []"]

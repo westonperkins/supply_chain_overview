@@ -306,7 +306,7 @@ def test_modeling_caveats_render(graph, narration_builder):
     # `caveat:<key>` reference that resolves via narration.yaml. Both
     # shapes must reach the narration payload; a key that resolves to
     # None is a config error and is asserted separately (below).
-    from backend.app.narration.config import NarrationConfig
+    from app.narration.config import NarrationConfig
     prefix = NarrationConfig.CAVEAT_KEY_PREFIX
     for node in graph.nodes.values():
         raw = node.static.modeling_caveat

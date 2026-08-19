@@ -1437,7 +1437,8 @@
     "target_id": "company:constellation_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Same reasoning as GE Vernova \u2192 Constellation: Constellation nuclear-heavy, Siemens Energy exposure on non-nuclear side not decomposable from public disclosures. Left at pre-Q value.]"
     },
     "input_share": 0.15,
     "output_share": null,
@@ -1449,7 +1450,8 @@
     "target_id": "company:nextera_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 K.2.1 \u00a72.3 collision candidate \u2014 a \u00a74-basis high author here (~0.30-0.35) would move NextEra's `power_equipment` bucket sum toward or past 1.0. Left undeterminable rather than authored to relieve or provoke the collision; noisy-OR permits the collision but the value should come from evidence, not from testing the aggregator. Left at pre-Q value.]"
     },
     "input_share": 0.2,
     "output_share": null,
@@ -1461,7 +1463,8 @@
     "target_id": "company:duke_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Same reasoning as GE Vernova \u2192 Duke: substitutable within class, Duke-specific mix not accessible. Left at pre-Q value.]"
     },
     "input_share": 0.2,
     "output_share": null,
@@ -1512,7 +1515,8 @@
     "target_id": "facility:the_citadel",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Facility-specific on-site power equipment mix not accessible. Same reasoning as GE Vernova \u2192 Citadel. Left at pre-Q value.]"
     },
     "input_share": 0.15,
     "output_share": null,
@@ -1524,7 +1528,8 @@
     "target_id": "company:constellation_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Constellation's fleet is nuclear-heavy (12 reactors); the non-nuclear side (gas peakers, transformers) uses GE and Siemens equipment. Cannot decompose Constellation's function attributable specifically to GE Vernova without published fleet composition + reactor-vs-peaker function share. Left at pre-Q value.]"
     },
     "input_share": 0.15,
     "output_share": null,
@@ -1537,9 +1542,9 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "[Pass Q §4 dependency-basis re-author.] GE Vernova is the #1 US onshore wind turbine OEM (GE Renewable Energy legacy). NextEra Energy Resources is the largest US wind operator (~30+ GW installed capacity, publicly disclosed). NextEra's wind fleet composition carries material GE exposure that exceeds a generic three-way grid-equipment split (Siemens Energy + GE Vernova + Hitachi Energy). Under §4.1: withdrawal of GE Vernova would impair NextEra's fleet growth AND service AND parts availability over a 3-5 year substitution horizon (turbine platform lock-in). Value 0.25 → 0.30 reflects the wind-specific over-index vs the generic grid-equipment dependency. Confidence: estimate on the direction, inference on the specific quantum; no single sourced document reference."
+      "source_note": "[Pass Q.1 \u00a71: examined in Pass Q, reverted to undeterminable \u2014 no sourced document reference; the three-way split it reasons against includes Hitachi Energy, which is not a node in the modelled graph. The Pass Q value of 0.30 also landed the NextEra `power_equipment` bucket sum on exactly 0.80 (the completeness-test threshold), so on top of the sourcing concern the value was too soft to distinguish from a threshold-adjacent choice. Reverted to 0.25; research below preserved as a record of what was examined and why it did not resolve.] [Pass Q \u00a74 dependency-basis re-author.] GE Vernova is the #1 US onshore wind turbine OEM (GE Renewable Energy legacy). NextEra Energy Resources is the largest US wind operator (~30+ GW installed capacity, publicly disclosed). NextEra's wind fleet composition carries material GE exposure that exceeds a generic three-way grid-equipment split (Siemens Energy + GE Vernova + Hitachi Energy). Under \u00a74.1: withdrawal of GE Vernova would impair NextEra's fleet growth AND service AND parts availability over a 3-5 year substitution horizon (turbine platform lock-in). Value 0.25 \u2192 0.30 reflects the wind-specific over-index vs the generic grid-equipment dependency. Confidence: estimate on the direction, inference on the specific quantum; no single sourced document reference."
     },
-    "input_share": 0.3,
+    "input_share": 0.25,
     "output_share": null,
     "supply_category": "power_equipment"
   },
@@ -1549,7 +1554,8 @@
     "target_id": "company:duke_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Duke's grid-equipment dependency spans transformers, generators, switchgear across fossil + nuclear + renewables. Substitutable among GE / Siemens Energy / Hitachi Energy (Hitachi Energy is NOT a graph node \u2014 noted for the record) but published Duke-specific mix not accessible. Left at pre-Q value.]"
     },
     "input_share": 0.2,
     "output_share": null,
@@ -1600,7 +1606,8 @@
     "target_id": "facility:the_citadel",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Facility-specific on-site power equipment mix (backup gensets, UPS, transformer sizing) not accessible. Left at pre-Q value.]"
     },
     "input_share": 0.15,
     "output_share": null,
@@ -1612,8 +1619,8 @@
     "target_id": "company:nextera_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate",
-      "source_note": "[Pass Q §4 dependency-basis re-author, value retained.] NextEra Energy is publicly identified as Quanta Services' largest single customer (Quanta 10-K customer-concentration disclosures over multiple years). Quanta is the leading specialty utility construction contractor in North America for high-voltage transmission line construction, substation build, and renewable interconnection — the specific work NextEra's wind + solar buildout depends on. Under §4.1: withdrawal of Quanta would materially delay NextEra's new-generation interconnection over a 1-3 year window; alternatives (MYR Group, Primoris) exist but at capacity constraints. Value 0.30 retained — consistent with named-largest-customer + leading-contractor position within a modest-competitor market. Confidence: inference. NOTE ON supply_category: this edge is labelled `power_equipment` in the schema; Quanta is a construction contractor rather than an equipment manufacturer, so the category is a semantic approximation. Pass Q §4 rule prohibits creating or subdividing supply_category to change tier or relieve a bucket sum; recorded here so a future authoring pass can consider whether a distinct `utility_construction` category is warranted (out of scope for Q)."
+      "confidence": "inference",
+      "source_note": "[Pass Q \u00a74 dependency-basis re-author, value retained.] NextEra Energy is publicly identified as Quanta Services' largest single customer (Quanta 10-K customer-concentration disclosures over multiple years). Quanta is the leading specialty utility construction contractor in North America for high-voltage transmission line construction, substation build, and renewable interconnection \u2014 the specific work NextEra's wind + solar buildout depends on. Under \u00a74.1: withdrawal of Quanta would materially delay NextEra's new-generation interconnection over a 1-3 year window; alternatives (MYR Group, Primoris) exist but at capacity constraints. Value 0.30 retained \u2014 consistent with named-largest-customer + leading-contractor position within a modest-competitor market. Confidence: inference. NOTE ON supply_category: this edge is labelled `power_equipment` in the schema; Quanta is a construction contractor rather than an equipment manufacturer, so the category is a semantic approximation. Pass Q \u00a74 rule prohibits creating or subdividing supply_category to change tier or relieve a bucket sum; recorded here so a future authoring pass can consider whether a distinct `utility_construction` category is warranted (out of scope for Q)."
     },
     "input_share": 0.3,
     "output_share": null,
@@ -1625,7 +1632,8 @@
     "target_id": "company:duke_energy",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Duke's construction-services dependency on Quanta specifically (vs MYR Group, Primoris, in-house) not published. Left at pre-Q value.]"
     },
     "input_share": 0.2,
     "output_share": null,
@@ -1715,7 +1723,8 @@
     "target_id": "facility:the_citadel",
     "type": "supplies",
     "static": {
-      "confidence": "estimate"
+      "confidence": "estimate",
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Whether the Citadel is Texas-served (ERCOT) or elsewhere, and NextEra's share of its grid supply, not published. SOLE-SUPPLIER BUCKET (`power_generation`, 1 modelled member) \u2014 under `min_suppliers=1` (Pass N D4a) this now contributes to inbound_hhi; pre-Pass-N it was stage-zeroed. Noted for the record. Left at pre-Q value.]"
     },
     "input_share": 0.1,
     "output_share": null,
@@ -1806,7 +1815,7 @@
     "type": "supplies",
     "static": {
       "confidence": "estimate",
-      "source_note": "Same rationale."
+      "source_note": "[Pass Q \u00a74: examined, undeterminable \u2014 Pre-existing note 'Same rationale.' referred to Vertiv's other facility edges. Facility-specific Vertiv share at Vantage Frontier not decomposable without published cooling BOM. SOLE-SUPPLIER BUCKET (`cooling`, 1 modelled member) under `min_suppliers=1`. Left at pre-Q value.] Same rationale."
     },
     "input_share": 0.2,
     "output_share": null,
@@ -1818,8 +1827,8 @@
     "target_id": "facility:the_citadel",
     "type": "supplies",
     "static": {
-      "confidence": "estimate",
-      "source_note": "[Pass Q §4 dependency-basis re-author, value retained.] Paper §4B names 'Vertiv (leader)' in data centre cooling equipment. Hyperscale AI training facilities like The Citadel are cooling-critical — thermal shutdown of the training cluster occurs within hours of adequate cooling loss, and the cooling equipment class (chillers, CDUs, rack-mount cooling) is not fungible with any non-cooling class. Under §4.1: withdrawal of Vertiv would cause partial function loss over the substitution window (~months for equipment procurement + install; alternatives include Schneider Electric, Johnson Controls, Trane, STULZ). Value 0.35 retained — consistent with paper-named class leader with active competitors. Confidence: estimate (paper-named class role); the specific within-class share at The Citadel is inference and would tighten with a facility-specific cooling BOM."
+      "confidence": "inference",
+      "source_note": "[Pass Q \u00a74 dependency-basis re-author, value retained.] Paper \u00a74B names 'Vertiv (leader)' in data centre cooling equipment. Hyperscale AI training facilities like The Citadel are cooling-critical \u2014 thermal shutdown of the training cluster occurs within hours of adequate cooling loss, and the cooling equipment class (chillers, CDUs, rack-mount cooling) is not fungible with any non-cooling class. Under \u00a74.1: withdrawal of Vertiv would cause partial function loss over the substitution window (~months for equipment procurement + install; alternatives include Schneider Electric, Johnson Controls, Trane, STULZ). Value 0.35 retained \u2014 consistent with paper-named class leader with active competitors. Confidence: estimate (paper-named class role); the specific within-class share at The Citadel is inference and would tighten with a facility-specific cooling BOM."
     },
     "input_share": 0.35,
     "output_share": null,
@@ -1831,7 +1840,8 @@
     "target_id": "facility:colossus",
     "type": "operates",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:openai-operates-stargate",
@@ -1839,7 +1849,8 @@
     "target_id": "facility:stargate_abilene",
     "type": "operates",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:mp-operates-mountain_pass",
@@ -1847,7 +1858,8 @@
     "target_id": "facility:mountain_pass",
     "type": "operates",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:lynas-operates-lynas_malaysia",
@@ -1855,7 +1867,8 @@
     "target_id": "facility:lynas_malaysia",
     "type": "operates",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:constellation-operates-tmi",
@@ -1863,7 +1876,8 @@
     "target_id": "facility:three_mile_island",
     "type": "operates",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:kachin-located-myanmar",
@@ -1871,7 +1885,8 @@
     "target_id": "country_region:myanmar",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:mountain_pass-located-usa",
@@ -1879,7 +1894,8 @@
     "target_id": "country_region:usa",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:serra_verde-located-brazil",
@@ -1887,7 +1903,8 @@
     "target_id": "country_region:brazil",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:lynas_malaysia-located-malaysia",
@@ -1895,7 +1912,8 @@
     "target_id": "country_region:malaysia",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:colossus-located-usa",
@@ -1903,7 +1921,8 @@
     "target_id": "country_region:usa",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:stargate-located-usa",
@@ -1911,7 +1930,8 @@
     "target_id": "country_region:usa",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:vantage-located-usa",
@@ -1919,7 +1939,8 @@
     "target_id": "country_region:usa",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:citadel-located-usa",
@@ -1927,7 +1948,8 @@
     "target_id": "country_region:usa",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:tmi-located-usa",
@@ -1935,7 +1957,8 @@
     "target_id": "country_region:usa",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:tsmc-located-taiwan",
@@ -1943,7 +1966,8 @@
     "target_id": "country_region:taiwan",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:asml-located-nl",
@@ -1951,7 +1975,8 @@
     "target_id": "country_region:netherlands",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:sk_hynix-located-korea",
@@ -1959,7 +1984,8 @@
     "target_id": "country_region:south_korea",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:samsung-located-korea",
@@ -1967,7 +1993,8 @@
     "target_id": "country_region:south_korea",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:tel-located-japan",
@@ -1975,7 +2002,8 @@
     "target_id": "country_region:japan",
     "type": "located_in",
     "input_share": 1.0,
-    "output_share": null
+    "output_share": null,
+    "static": {}
   },
   {
     "id": "e:sk_hynix-supplies-nvidia",
