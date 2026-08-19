@@ -1,6 +1,6 @@
 # Pass J replay — summary
 
-_Provenance: graph @ commit `62b02ee` — 72 nodes, 259 edges. Archived Pass J artifacts (67-node graph, commit `1bd6090`) live under `docs/generated/replay/archive/pass_j_67node/`._
+_Provenance: graph @ commit `a92c576` — 72 nodes, 259 edges. Archived Pass J artifacts (67-node graph, commit `1bd6090`) live under `docs/generated/replay/archive/pass_j_67node/`._
 
 One row per event. `nodes reached` counts nodes with |Δ| > 1e-6 (includes both scored-baseline nodes with `current_severity` moved and unscored nodes whose `current_severity` moved off None).
 

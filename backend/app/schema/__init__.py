@@ -10,7 +10,14 @@ from .enums import (
 from .common import Coordinates, Scale, SourcedValue
 from .node import Node, StaticFields, DynamicFields
 from .edge import Edge, EdgeStatic, EdgeDynamic
-from .event import Event, EntityMatch, AxesImpact, CascadeStep, EventSource
+from .event import (
+    Event,
+    EntityMatch,
+    UnresolvedEntity,
+    AxesImpact,
+    CascadeStep,
+    EventSource,
+)
 
 __all__ = [
     "NodeType",
@@ -31,6 +38,7 @@ __all__ = [
     "EdgeDynamic",
     "Event",
     "EntityMatch",
+    "UnresolvedEntity",
     "AxesImpact",
     "CascadeStep",
     "EventSource",

@@ -14,6 +14,20 @@ NOTHING to data/, NOTHING to config/, NOTHING to
 docs/generated/severity_*. It reads config + graph, snapshots per-node
 severities into local dicts, propagates a single event on a fresh
 graph instance per event, and writes only under docs/generated/replay/.
+Pass V makes the "writes nothing to data/" half of that claim
+executable via test_runner_writes_nothing_under_data — the register
+reads the human-authored disposition file under data/ but must never
+write it.
+
+Pass V — unresolved-entity register.
+--------------------------------------------------------------------- #
+Aggregates each authored event's `entities_unresolved` into
+docs/generated/replay/unresolved_register.md (regenerated every run,
+never hand-edited), plus a dangling-reference section for
+`entities_matched` node_ids that do not resolve. Probes are excluded
+by construction: only `main()` builds the register, from `events`;
+`_run_probes` never does. That is the same quarantine that keeps probes
+out of summary.md / ranking / outcomes.json, extended to the register.
 
 Pass J.1 — model_rank metric.
 --------------------------------------------------------------------- #
@@ -49,6 +63,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+import yaml
+
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "backend"))
 
@@ -62,8 +78,14 @@ from app.scoring import (
 
 REPLAY_EVENTS = REPO / "data" / "ai" / "replay" / "events.json"
 REPLAY_PROBES = REPO / "data" / "ai" / "replay" / "probes.json"
+# Pass V — the human-authored disposition file. The runner READS this and
+# never writes it (guarded by test_runner_writes_nothing_under_data).
+REPLAY_DISPOSITIONS = REPO / "data" / "ai" / "replay" / "unresolved_dispositions.json"
+NARRATION_YAML = REPO / "config" / "narration.yaml"
+INGESTION_YAML = REPO / "config" / "ingestion.yaml"
 REPLAY_OUT = REPO / "docs" / "generated" / "replay"
 REPLAY_PROBES_OUT = REPLAY_OUT / "probes"
+REPLAY_REGISTER = REPLAY_OUT / "unresolved_register.md"
 REPLAY_OUT.mkdir(parents=True, exist_ok=True)
 
 
@@ -418,6 +440,200 @@ def _write_summary(rows: list[dict], graph: SupplyChainGraph) -> None:
     path.write_text("\n".join(lines) + "\n")
 
 
+# --------------------------------------------------------------------------- #
+# Pass V — unresolved-entity register.                                          #
+#                                                                               #
+# The register aggregates each event's hand-authored `entities_unresolved`      #
+# entries (entities a source named that authoring could not resolve to a        #
+# graph node) into a corpus-growth worklist, plus a dangling-reference          #
+# section for `entities_matched` node_ids that don't resolve (a data defect).   #
+#                                                                               #
+# PROBE EXCLUSION (Pass V §4): the register is built ONLY from `events` in      #
+# `main()`. `_run_probes` never calls it. Probes are diagnostics, not           #
+# authorings, so they contribute no register rows — the same quarantine that    #
+# keeps probes out of summary.md / ranking / outcomes.json (Pass J.1 §6)        #
+# extends to the register. Guarded by test_probes_excluded_from_register.       #
+#                                                                               #
+# All prose is read from config/narration.yaml → `unresolved_register` (Pass    #
+# V §3.1); no English is composed here. The threshold is read from              #
+# config/ingestion.yaml (Pass V §3). Dispositions are read from the             #
+# human-authored data/ai/replay/unresolved_dispositions.json — the runner       #
+# never writes under data/.                                                     #
+# --------------------------------------------------------------------------- #
+
+
+def _load_register_prose() -> dict:
+    raw = yaml.safe_load(NARRATION_YAML.read_text()) or {}
+    return raw.get("unresolved_register", {})
+
+
+def _load_promotion_threshold() -> int:
+    raw = yaml.safe_load(INGESTION_YAML.read_text()) or {}
+    return int(raw["unresolved_register"]["promotion_threshold"])
+
+
+def _load_dispositions() -> dict[str, dict]:
+    if not REPLAY_DISPOSITIONS.exists():
+        return {}
+    raw = json.loads(REPLAY_DISPOSITIONS.read_text())
+    return {d["mention"]: d for d in raw.get("dispositions", [])}
+
+
+def _collect_unresolved(events: list[Event]) -> dict[str, dict]:
+    """Aggregate `entities_unresolved` across events, keyed by mention.
+
+    Count is the number of DISTINCT events a mention appears in (D-J-4:
+    recurrence across events, not raw occurrences, drives promotion)."""
+    agg: dict[str, dict] = {}
+    for ev in events:
+        for u in ev.entities_unresolved:
+            rec = agg.setdefault(u.mention, {
+                "reasons": set(),
+                "event_ids": set(),
+                "timestamps": [],
+                "candidates": set(),
+            })
+            rec["reasons"].add(u.reason)
+            rec["event_ids"].add(ev.id)
+            rec["timestamps"].append(ev.timestamp)
+            if u.candidate_node_id:
+                rec["candidates"].add(u.candidate_node_id)
+    return agg
+
+
+def _collect_dangling(
+    events: list[Event], graph: SupplyChainGraph,
+) -> list[tuple[str, str, str, float]]:
+    """Every `entities_matched` entry whose node_id is not in the graph —
+    a broken reference (data defect), NOT a corpus-growth candidate."""
+    node_ids = set(graph.nodes)
+    rows: list[tuple[str, str, str, float]] = []
+    for ev in events:
+        for m in ev.entities_matched:
+            if m.node_id not in node_ids:
+                rows.append((ev.id, m.node_id, m.match_type, m.confidence))
+    return sorted(rows)
+
+
+def _build_unresolved_register(
+    events: list[Event],
+    graph: SupplyChainGraph,
+    threshold: int,
+) -> str:
+    prose = _load_register_prose()  # all prose read from narration.yaml
+    cols = prose.get("columns", {})
+    dispositions = _load_dispositions()
+    node_ids = set(graph.nodes)
+    agg = _collect_unresolved(events)
+
+    lines: list[str] = []
+    lines.append(f"# {prose.get('title', 'Unresolved-entity register')}")
+    lines.append("")
+    lines.append(
+        f"_Provenance: generated from {len(events)} replay events. "
+        f"{prose.get('provenance_note', '')}_"
+    )
+    lines.append("")
+    lines.append(prose.get("intro", ""))
+    lines.append("")
+    lines.append(prose.get("threshold_line", "").replace("{threshold}", str(threshold)))
+    lines.append("")
+
+    # Main table.
+    if not agg:
+        lines.append(prose.get("none_row", "_No unresolved entities._"))
+    else:
+        header = [
+            cols.get("mention", "mention"),
+            cols.get("reasons", "reason(s)"),
+            cols.get("count", "events"),
+            cols.get("event_ids", "event ids"),
+            cols.get("first_seen", "first seen"),
+            cols.get("last_seen", "last seen"),
+            cols.get("candidate", "candidate node"),
+            cols.get("candidate_exists", "candidate in graph?"),
+            cols.get("disposition", "disposition"),
+            cols.get("at_threshold", "at threshold?"),
+        ]
+        lines.append("| " + " | ".join(header) + " |")
+        lines.append("|" + "|".join(["---"] * len(header)) + "|")
+        # Deterministic order: count desc, then mention asc.
+        for mention in sorted(agg, key=lambda m: (-len(agg[m]["event_ids"]), m)):
+            rec = agg[mention]
+            count = len(rec["event_ids"])
+            event_ids = ", ".join(sorted(rec["event_ids"]))
+            reasons = ", ".join(sorted(rec["reasons"]))
+            ts = sorted(rec["timestamps"])
+            first_seen, last_seen = ts[0], ts[-1]
+            candidates = sorted(rec["candidates"])
+            candidate = ", ".join(candidates) if candidates else "—"
+            if not candidates:
+                candidate_exists = "—"
+            else:
+                candidate_exists = ", ".join(
+                    ("yes" if c in node_ids else "no") for c in candidates
+                )
+            disp = dispositions.get(mention, {}).get("disposition", "undisposed")
+            at_threshold = "yes" if count >= threshold else "no"
+            lines.append(
+                f"| {mention} | {reasons} | {count} | {event_ids} | "
+                f"{first_seen} | {last_seen} | {candidate} | "
+                f"{candidate_exists} | {disp} | {at_threshold} |"
+            )
+
+    # Frozen-vocabulary legends (rendered from narration).
+    reason_labels = prose.get("reason_labels", {})
+    if reason_labels:
+        lines.append("")
+        lines.append("**Reason vocabulary (frozen).**")
+        for key in ("no_node", "alias_unknown", "ambiguous", "out_of_domain"):
+            if key in reason_labels:
+                lines.append(f"- `{key}` — {reason_labels[key]}")
+    disp_labels = prose.get("disposition_labels", {})
+    if disp_labels:
+        lines.append("")
+        lines.append("**Disposition vocabulary (frozen).**")
+        for key in ("alias", "new_node", "noise", "defer", "undisposed"):
+            if key in disp_labels:
+                lines.append(f"- `{key}` — {disp_labels[key]}")
+
+    # Dangling-reference section.
+    dangling_prose = prose.get("dangling", {})
+    dcols = dangling_prose.get("columns", {})
+    dangling = _collect_dangling(events, graph)
+    lines.append("")
+    lines.append(f"## {dangling_prose.get('title', 'Dangling references')}")
+    lines.append("")
+    lines.append(dangling_prose.get("intro", ""))
+    lines.append("")
+    if not dangling:
+        lines.append(dangling_prose.get("none_row", "_No dangling references._"))
+    else:
+        dheader = [
+            dcols.get("event_id", "event id"),
+            dcols.get("node_id", "missing node_id"),
+            dcols.get("match_type", "match_type"),
+            dcols.get("confidence", "confidence"),
+        ]
+        lines.append("| " + " | ".join(dheader) + " |")
+        lines.append("|" + "|".join(["---"] * len(dheader)) + "|")
+        for eid, nid, mt, conf in dangling:
+            lines.append(f"| {eid} | {nid} | {mt} | {conf} |")
+
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _write_unresolved_register(
+    events: list[Event],
+    graph: SupplyChainGraph,
+) -> None:
+    threshold = _load_promotion_threshold()
+    REPLAY_REGISTER.write_text(
+        _build_unresolved_register(events, graph, threshold)
+    )
+
+
 def _rank_disagreements(rows: list[dict]) -> list[tuple[str, int, int, int]]:
     """Return events whose two ranks differ by ≥ 2 slots. Consumed by
     grading.md for F-J-5 (rank-metric instability)."""
@@ -611,6 +827,13 @@ def main() -> None:
 
     _rank_events(summary_rows)
     _write_summary(summary_rows, reference)
+
+    # Pass V — unresolved-entity register, built from the authored events
+    # only (probes are excluded by construction — see _run_probes, which
+    # never calls this). Reads narration prose + the config threshold +
+    # the human-authored dispositions; writes only under
+    # docs/generated/replay/.
+    _write_unresolved_register(events, reference)
 
     disagreements = _rank_disagreements(summary_rows)
     if disagreements:

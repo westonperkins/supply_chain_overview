@@ -1,0 +1,12 @@
+{
+  "_comment": "Pass V §3 — human-authored dispositions for entries in the unresolved-entity register. The register generator READS this file and NEVER writes it (guarded by test_runner_writes_nothing_under_data). Keyed by mention. Disposition vocabulary is FROZEN, four values: alias | new_node | noise | defer. A mention absent from this file reads as 'undisposed' in the register.",
+  "dispositions": [
+    {
+      "mention": "germanium",
+      "disposition": "defer",
+      "decided_in": "Pass V",
+      "rationale": "Germanium is a genuine promotion candidate — D-J-2 already records the case: 'If ingestion targets Dec 2024 material, needs a node.' It is deferred rather than promoted to new_node in Pass V because (a) it appears in only one event (count 1) and the promotion threshold is 3, so recurrence has not been demonstrated; and (b) Pass V's scope is the register's build half, not corpus growth — creating a node is a scoring-adjacent change with its own scope. Defer records the acknowledged case without acting on it on n=1 evidence.",
+      "decided_at": "2026-08-19"
+    }
+  ]
+}

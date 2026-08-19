@@ -2572,3 +2572,38 @@ Report: `docs/generated/replay/pass_u_report.pdf` (also `.md` in the same direct
 **Why this is its own commit, ahead of Pass V.** Pass V (the unresolved-entity register) must run the replay runner to generate the register; that run recomputes these files. Regenerating ~15 passes of accumulated drift inside Pass V would trip Pass V's own stop-condition §8 (replay output must not change) and bundle a scoring-drift refresh into a schema-addition pass. Per the §2.1 precedent — *discovered drift needs its own scope* — the refresh is separated out here so Pass V opens on artifacts that are already current and its byte-identical expectation (exp 8) holds honestly.
 
 **What changed.** Only generated files: `summary.md` + 6 per-event pages (`J-2025-10-nexperia` is byte-identical — it reaches 0 nodes, so nothing to drift). No scoring code, config literal, node, edge, or `outcomes.json` change. Constants byte-identical (`fixed_reference 2.5`, FR-C boundaries). Regeneration is idempotent. Suite 120 pass / 1 skip, both invocations. This is a pure output refresh, not a scoring change.
+
+---
+
+## Pass V — The unresolved-entity register (schema + tooling; no scoring change)
+
+Report: `docs/generated/replay/pass_v_report.pdf` (also `.md` in the same directory, and copied to `~/Downloads/`). Register: `docs/generated/replay/unresolved_register.md`. Facts: `data/ai/replay/events.json` (authored `entities_unresolved`) + `data/ai/replay/unresolved_dispositions.json`.
+
+**Decision, one sentence:** Build the unresolved-entity register — a schema field (`entities_unresolved`) with a frozen four-value `reason` vocabulary, an `extra="forbid"` freeze that ends the event schema's silent-drop hole, a collector + generated register with a dangling-reference section, a committed dispositions file the generator never writes, a promotion threshold of 3 in a new `config/ingestion.yaml`, and retroactive authoring of what the 7 replay events named but the graph doesn't model — all with zero scoring movement (every committed severity, tier, boundary, and constant byte-identical).
+
+### V.scorecard (§6 pre-registrations)
+
+| # | expectation | HIT/MISS |
+|---|---|---|
+| 1 | Zero scoring movement; all constants and tiers byte-identical | HIT |
+| 2 | Extra-key check clean on all 7 events + both probes | HIT |
+| 3 | `extra="forbid"` breaks no existing test/fixture | HIT |
+| 4 | Germanium in register at count 1, `no_node`, undisposed | HIT on substance; disposition `defer` (authored per §8/V8, D-J-2 rationale) |
+| 5 | No mention reaches the promotion threshold of 3 | HIT |
+| 6 | At least one event has an empty `entities_unresolved` | HIT (four empty) |
+| 7 | Dangling-reference section empty | HIT |
+| 8 | `summary.md` + 7 per-event artifacts byte-identical to pre-V | HIT on content; `summary.md` provenance SHA line advances by design |
+| 9 | Probes produce no register rows | HIT |
+| 10 | The runner-writes-nothing-to-`data/` test fails when made to write | HIT |
+
+**10 HIT (8 clean, 2 with documented notes), 0 MISS.**
+
+### V.ledger
+
+- **Ledger correction (V0): there is no entity matcher.** `entities_matched` is hand-authored; D-J-4's framing assumed a matcher that does not exist. The register records authoring's non-resolutions and settles shape/threshold/review-gate before a live matcher arrives — the better build order.
+- **Build half of D-J-4 closed; validation half open.** Schema field + collector + register + config threshold + dispositions + probe exclusion + the `extra="forbid"` silent-drop freeze exist and are tested (14 new tests). The mechanism cannot be *shown to work* until a live feed produces a recurring unmatched mention crossing the threshold.
+- **`extra="forbid"` added after a clean §2.1 sweep** of all 7 events + 2 probes + the reference fixture. Nothing was being dropped; the freeze now makes an unknown event key raise.
+- **Register seeded honestly.** 10 unresolved mentions across 3 of 7 events — 8 `no_node` minerals (germanium, antimony, terbium, yttrium, samarium, gadolinium, lutetium, scandium) and 2 `out_of_domain` companies (Nexperia, Wingtech). Four events correctly empty. No `alias_unknown` case existed and none was invented (KIA/Chipwi/Pangwa and HBM3e/HBM4 resolve via existing alias lists). Dangling section empty.
+- **Threshold = 3 in a new `config/ingestion.yaml`** — first ingestion-side parameter file, chosen over a `scoring.yaml` block so ingestion and scoring config diffs stay separate. Nothing promotes on the 7-event corpus (max count 1); germanium disposed `defer` (recurrence undemonstrated; corpus growth out of scope), the rest `undisposed`.
+- **Pre-Pass-V finding: replay artifacts stale since Pass J.1** (~15 passes of scoring drift). Refreshed in a separate commit (`a92c576`) ahead of Pass V per the §2.1 "drift needs its own scope" discipline.
+- **Suite:** 134 passed (120 + 14 new), 1 skipped, 0 xfail — both invocations. Served graph byte-identical.

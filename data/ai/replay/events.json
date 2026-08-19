@@ -12,6 +12,7 @@
       {"node_id": "company:tsmc", "confidence": 1.0, "match_type": "name"},
       {"node_id": "country_region:taiwan", "confidence": 1.0, "match_type": "place"}
     ],
+    "entities_unresolved": [],
     "axes_impact": {
       "concentration_delta": 0.05,
       "substitutability_delta": 0.0,
@@ -33,6 +34,7 @@
       {"node_id": "company:asml", "confidence": 1.0, "match_type": "name"},
       {"node_id": "country_region:netherlands", "confidence": 1.0, "match_type": "place"}
     ],
+    "entities_unresolved": [],
     "axes_impact": {
       "concentration_delta": 0.0,
       "substitutability_delta": 0.0,
@@ -54,6 +56,7 @@
       {"node_id": "country_region:kachin", "confidence": 1.0, "match_type": "place"},
       {"node_id": "country_region:myanmar", "confidence": 0.7, "match_type": "place"}
     ],
+    "entities_unresolved": [],
     "axes_impact": {
       "concentration_delta": 0.20,
       "substitutability_delta": 0.0,
@@ -75,6 +78,7 @@
       {"node_id": "company:sk_hynix", "confidence": 1.0, "match_type": "name"},
       {"node_id": "product:hbm", "confidence": 1.0, "match_type": "name"}
     ],
+    "entities_unresolved": [],
     "axes_impact": {
       "concentration_delta": 0.05,
       "substitutability_delta": 0.15,
@@ -97,6 +101,10 @@
       {"node_id": "mineral:gallium", "confidence": 1.0, "match_type": "name"},
       {"node_id": "country_region:usa", "confidence": 0.7, "match_type": "place"}
     ],
+    "entities_unresolved": [
+      {"mention": "germanium", "reason": "no_node", "candidate_node_id": null, "notes": "Named in the ban list ('gallium, germanium, antimony'). The graph models no germanium node. Recorded in D-J-2: 'germanium is not modelled and was dropped from entities_matched in Phase A.' If ingestion targets Dec-2024 material, germanium warrants a node."},
+      {"mention": "antimony", "reason": "no_node", "candidate_node_id": null, "notes": "Named alongside gallium and germanium in the ban list. The graph models no antimony node. Same class as germanium — an unmodelled restricted mineral the ban text names explicitly."}
+    ],
     "axes_impact": {
       "concentration_delta": 0.30,
       "substitutability_delta": 0.05,
@@ -118,6 +126,14 @@
       {"node_id": "country_region:china", "confidence": 1.0, "match_type": "place"},
       {"node_id": "mineral:dysprosium", "confidence": 1.0, "match_type": "name"}
     ],
+    "entities_unresolved": [
+      {"mention": "terbium", "reason": "no_node", "candidate_node_id": null, "notes": "Named in the seven-element licence list; dysprosium is the only one of the seven with a node. Terbium is a distinct heavy REE (grouped with Dy in dysprosium's 'Dy-Tb' alias, but not the same element) and has no node of its own."},
+      {"mention": "yttrium", "reason": "no_node", "candidate_node_id": null, "notes": "Named in the seven-element heavy-REE licence list. No node."},
+      {"mention": "samarium", "reason": "no_node", "candidate_node_id": null, "notes": "Named in the seven-element heavy-REE licence list. No node."},
+      {"mention": "gadolinium", "reason": "no_node", "candidate_node_id": null, "notes": "Named in the seven-element heavy-REE licence list. No node."},
+      {"mention": "lutetium", "reason": "no_node", "candidate_node_id": null, "notes": "Named in the seven-element heavy-REE licence list. No node."},
+      {"mention": "scandium", "reason": "no_node", "candidate_node_id": null, "notes": "Named in the seven-element heavy-REE licence list. No node."}
+    ],
     "axes_impact": {
       "concentration_delta": 0.35,
       "substitutability_delta": 0.10,
@@ -137,6 +153,10 @@
     "summary": "The Dutch government invokes the Goods Availability Act to take administrative control of Nexperia BV, the Chinese-owned Dutch semiconductor company producing discrete and analog automotive chips. The action is justified by concerns about knowledge and IP transfer to Nexperia's parent, Wingtech Technology. Nexperia's Chinese parent contests the action.",
     "entities_matched": [
       {"node_id": "country_region:netherlands", "confidence": 0.7, "match_type": "place"}
+    ],
+    "entities_unresolved": [
+      {"mention": "Nexperia", "reason": "out_of_domain", "candidate_node_id": null, "notes": "Named subject of the action ('Nexperia BV'). A real semiconductor company but it produces discrete and analog automotive chips — outside the AI-compute scope the graph models. The event's own notes: 'entity resolution has no target for Nexperia.' Event is tagged out_of_domain."},
+      {"mention": "Wingtech", "reason": "out_of_domain", "candidate_node_id": null, "notes": "Named as Nexperia's Chinese parent ('Wingtech Technology'). A real company outside the AI-compute graph's scope."}
     ],
     "axes_impact": {
       "concentration_delta": 0.0,

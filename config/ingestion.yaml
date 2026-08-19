@@ -1,0 +1,26 @@
+# Ingestion-side configuration.
+#
+# Pass V §3 — the first ingestion-side parameter file. Created as a
+# separate file (rather than an `ingestion:` block inside scoring.yaml)
+# on purpose: the ingestion pipeline and the scoring pipeline are
+# distinct subsystems with distinct config lifecycles, and the four
+# ingestion blockers (unresolved-entity register, multi-axis intake,
+# country-origin fanout, time decay) will each add keys here. Keeping
+# them out of scoring.yaml prevents an ingestion parameter change from
+# showing up in a scoring-config diff and vice versa. This was a
+# structural decision, not a default — see pass_v_report.pdf §V4.
+
+unresolved_register:
+  # Promotion threshold — the number of DISTINCT events in which a
+  # single unresolved mention must appear before the register flags it
+  # as a promotion candidate (a candidate for a new node / alias, not an
+  # auto-created one). D-J-4's reframe: recurrence, not first appearance,
+  # promotes. Three independent events is the committed bar.
+  #
+  # On the current 7-event corpus no mention reaches 3 (germanium and
+  # every other unresolved mention appears once). That is expected and
+  # correct — the register's job in Pass V is to exist, be tested, and
+  # start counting. Do NOT lower this to make it fire; a register that
+  # promotes on n=1 is the corpus-noise problem the rule prevents.
+  # Guarded at >= 3 by test_promotion_threshold_is_at_least_three.
+  promotion_threshold: 3
