@@ -2642,3 +2642,39 @@ Report: `docs/generated/replay/pass_w_report.pdf` (also `.md`, and copied to `~/
 - **A-J-2 partially addressed, not closed.** MA-1 moves HBM 4→3; making it rank 1 requires a rejected design. Whether the model ranking the Chinese mineral export-controls above HBM is an error is unsettleable on n=7 — validation needs a larger, independently-authored, ideally held-out corpus.
 - **Blast-radius forecast (if MA-1 ships later):** `cascade.py` origin seeding + `engine.py` sign fix + docstring repair; `events.magnitude_source` repurposed; no axis re-authoring (corpus already risk-positive); replay artifacts regenerate; A-J-2 re-graded; guard upgrades (real delta-handling identity test, sign-convention regression).
 - **Suite:** 134 pass, 1 skip, 0 xfail — both invocations. Measurement reproducible; committed scoring byte-identical; no candidate committed.
+
+---
+
+## Pass X — Country-origin fanout, Phase A: measurement only (no scoring change)
+
+Report: `docs/generated/replay/pass_x_report.pdf` (also `.md`, and copied to `~/Downloads/`). Harness: `backend/scripts/pass_x_measure.py`. Comparison: `docs/generated/fanout_candidates.md`. Facts: `docs/generated/pass_x_facts.json`.
+
+**Recommendation, one sentence:** On semantic grounds, **FO-1b (subject scoping, strict fallback) under MA-1 seeding** — route a country origin's walk only to the subject named in `entities_matched` (china-rees → dysprosium, not the four other minerals China sources), and when a country is named with no subject, produce an honest recorded null (P-J-2 probe 36→0) rather than lighting 36 unrelated nodes; ship it **with or before** MA-1, never after, since MA-1 without scoping mis-attributes china-rees to gallium. No candidate committed; ρ is a check, not a selector; nothing tuned.
+
+### X.scorecard (§6 pre-registrations, graded strictly 2–10)
+
+| # | expectation | HIT/MISS |
+|---|---|---|
+| 1 | Committed state byte-identical at close | HIT |
+| 2 | Every country's outbound supply edges are mines/refines only | HIT |
+| 3 | china has exactly 10 outbound supply edges matching the §0 table | HIT |
+| 4 | FO-1a/1b + MA-0: china-rees reaches < 15 (from 36) | HIT (7) |
+| 5 | FO-1a leaves P-J-2 ≈34; FO-1b takes it to 0 | HIT (FO-1a 36, FO-1b 0) |
+| 6 | FO-0 + MA-1: china-rees max-Δ node is gallium (reproduces W4) | HIT |
+| 7 | ≥1 candidate + MA-1: china-rees max-Δ node is dysprosium/downstream | HIT (FO-1a/1b/2/3) |
+| 8 | Every unscored origin under MA-1 seeds conc′−conc, not a severity difference | HIT (china 0.35) |
+| 9 | FO-2 changes china-rees origin Δ from China's seed to dysprosium's | HIT (0.350→0.044) |
+| 10 | ≥1 candidate leaves ρ unchanged vs FO-0 while changing attribution | HIT (FO-1a) |
+
+**10 HIT, 0 MISS.** (Expectations were derived by quotation from the spec body per §6; all reproduced against the engine. Not tuning — candidates run once.)
+
+### X.ledger
+
+- **Fanout surface enumerated, small, mineral-only.** Every `country_region` outbound supply edge is `mines`/`refines` into a mineral; china carries exactly 10; taiwan/netherlands carry none (no fanout). An event matching a country lights every mineral it sources: china-rees, china-gallium, and the P-J-2 probe each reach 36.
+- **MA-1 amplifies the defect — traced.** An unscored country origin seeds a **concentration difference** under MA-1 (china `(conc′−conc)×conf = 0.35`), ~8× the scored subject's severity difference (dysprosium `0.044`); it floods the fanout so china-rees's largest modelled effect mis-lands on **gallium** — a dysprosium licence attributed to a different element. Under MA-0 the top node is already dysprosium, so ρ (which ranks events, not nodes) is blind to the fanout — all candidates share ρ=+0.7143 while attribution changes 36→7.
+- **Five candidates measured; FO-0+MA-0 validated node-for-node (0 mismatches).** Subject scoping (FO-1a/1b/3) collapses china-rees 36→7 and repairs the MA-1 attribution (gallium→dysprosium, with NdFeB magnets — the observed chain — as #2). FO-2 does likewise by dropping the country origin (origin Δ 0.350→0.044).
+- **Recommendation FO-1b + MA-1**, case against: it nulls the under-authored `kachin-kia` (a real event whose author matched kachin/myanmar but not dysprosium), lowering ρ to 0.857 — a corpus-authoring gap surfaced as an honest reviewable null, not a scoping error; **FO-1a** is the fallback if corpus discipline can't be assured (never false-nulls, but leaves country-only events over-firing). **FO-3 rejected** (mechanically identical to FO-1b; adds authoring burden + an inherent encode-the-answer hazard). **FO-2 not chosen despite the best ρ (0.964)** — coarse; discards the country signal.
+- **§1 posed for the ship spec:** a concentration difference and a severity difference share the noisy-OR channel; fanout scoping mitigates but does not resolve it.
+- **Sequencing (load-bearing):** fanout scoping ships **with or before MA-1** (Pass W). Shipping MA-1 alone is the one order ruled out.
+- **Country/region semantics:** worked around (scope the walk), not resolved (China is still one node aggregating five independent supply chains). The kachin-kia null marks the seam.
+- **Suite:** 134 pass, 1 skip, 0 xfail — both invocations. Reproducible; committed scoring byte-identical; probes quarantined; no candidate committed.

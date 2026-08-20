@@ -1,0 +1,3233 @@
+{
+  "candidates": [
+    "FO-0",
+    "FO-1a",
+    "FO-1b",
+    "FO-2",
+    "FO-3"
+  ],
+  "seedings": [
+    "MA-0",
+    "MA-1"
+  ],
+  "fo0_ma0_validation_mismatches": [],
+  "observed_ordinal": {
+    "J-2024-04-taiwan-quake": 5,
+    "J-2024-09-asml-export": 6,
+    "J-2024-10-kachin-kia": 4,
+    "J-2024-11-hynix-hbm": 1,
+    "J-2024-12-china-gallium": 3,
+    "J-2025-04-china-rees": 2,
+    "J-2025-10-nexperia": 7
+  },
+  "matrix": {
+    "FO-0|MA-0": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-0",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.012437469297011117,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.012437469297011117
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.008877267085428076
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.006147133987488007
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0038126261453902133
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0033105313424680594
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.02323179889451249,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-0",
+        "candidate": "FO-0",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-0",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:kachin-mines-dysprosium",
+          "e:myanmar-mines-neodymium"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 8,
+        "max_delta": 0.0021486597849091904,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.0021486597849091904
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.0017466407071323742
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.00020425764902876065
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.00019975809922137544
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.00012710423190753772
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.023351012622646064,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-0",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.010515051375015905,
+        "max_delta_node": "product:hbm",
+        "top5": [
+          {
+            "node": "product:hbm",
+            "delta": 0.010515051375015905
+          },
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.009685417270165086
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0010150447162604603
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.0007589560561525044
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00033834823875344977
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.015037699500155209,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-0",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:china-mines-dysprosium",
+          "e:china-mines-neodymium",
+          "e:china-mines-indium",
+          "e:china-mines-copper",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium",
+          "e:usa-mines-neodymium",
+          "e:usa-mines-copper"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 36,
+        "max_delta": 0.07495411947574793,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.07495411947574793
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.056308206921784176
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.0478522693917488
+          },
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.03222309058053752
+          },
+          {
+            "node": "mineral:indium",
+            "delta": 0.029873912679228967
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.18856450394012628,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-0",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:china-mines-dysprosium",
+          "e:china-mines-neodymium",
+          "e:china-mines-indium",
+          "e:china-mines-copper",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 6,
+        "nodes_reached": 36,
+        "max_delta": 0.08616196799733611,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.08616196799733611
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.07004087001942105
+          },
+          {
+            "node": "mineral:gallium",
+            "delta": 0.06661547103362209
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.055827647623706844
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.05004391691062393
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.21999192126348063,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-0",
+        "candidate": "FO-0",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 7
+      }
+    ],
+    "FO-1a|MA-0": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-0",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.012437469297011117,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.012437469297011117
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.008877267085428076
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.006147133987488007
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0038126261453902133
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0033105313424680594
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.02323179889451249,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-0",
+        "candidate": "FO-1a",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-0",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:kachin-mines-dysprosium",
+          "e:myanmar-mines-neodymium"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 8,
+        "max_delta": 0.0021486597849091904,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.0021486597849091904
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.0017466407071323742
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.00020425764902876065
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.00019975809922137544
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.00012710423190753772
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.023351012622646064,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-0",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.010515051375015905,
+        "max_delta_node": "product:hbm",
+        "top5": [
+          {
+            "node": "product:hbm",
+            "delta": 0.010515051375015905
+          },
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.009685417270165086
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0010150447162604603
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.0007589560561525044
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00033834823875344977
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.015037699500155209,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-0",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium"
+        ],
+        "n_hop0_edges": 3,
+        "nodes_reached": 16,
+        "max_delta": 0.07495411947574793,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.07495411947574793
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.056308206921784176
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.003392099432290907
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.001589142098344959
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0011849489374754496
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.18856450394012628,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-0",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:china-mines-dysprosium",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 7,
+        "max_delta": 0.08616196799733611,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.08616196799733611
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.07004087001942105
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.008010365844418638
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.005096921736453597
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.005096921736453597
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.21999192126348063,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-0",
+        "candidate": "FO-1a",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 7
+      }
+    ],
+    "FO-1b|MA-0": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-0",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.012437469297011117,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.012437469297011117
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.008877267085428076
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.006147133987488007
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0038126261453902133
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0033105313424680594
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.02323179889451249,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:taiwan"
+        ],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-0",
+        "candidate": "FO-1b",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-0",
+        "candidate": "FO-1b",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.023351012622646064,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:kachin",
+          "country_region:myanmar"
+        ],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-0",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.010515051375015905,
+        "max_delta_node": "product:hbm",
+        "top5": [
+          {
+            "node": "product:hbm",
+            "delta": 0.010515051375015905
+          },
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.009685417270165086
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0010150447162604603
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.0007589560561525044
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00033834823875344977
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.015037699500155209,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-0",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium"
+        ],
+        "n_hop0_edges": 3,
+        "nodes_reached": 16,
+        "max_delta": 0.07495411947574793,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.07495411947574793
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.056308206921784176
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.003392099432290907
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.001589142098344959
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0011849489374754496
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.18856450394012628,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-0",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:china-mines-dysprosium",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 7,
+        "max_delta": 0.08616196799733611,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.08616196799733611
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.07004087001942105
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.008010365844418638
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.005096921736453597
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.005096921736453597
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.21999192126348063,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-0",
+        "candidate": "FO-1b",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 7
+      }
+    ],
+    "FO-2|MA-0": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-0",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.012437469297011117,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.012437469297011117
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.008877267085428076
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.006147133987488007
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0038126261453902133
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0033105313424680594
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.02323179889451249,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-0",
+        "candidate": "FO-2",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-0",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:kachin-mines-dysprosium",
+          "e:myanmar-mines-neodymium"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 8,
+        "max_delta": 0.0021486597849091904,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.0021486597849091904
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.0017466407071323742
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.00020425764902876065
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.00019975809922137544
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.00012710423190753772
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.023351012622646064,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-0",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.010515051375015905,
+        "max_delta_node": "product:hbm",
+        "top5": [
+          {
+            "node": "product:hbm",
+            "delta": 0.010515051375015905
+          },
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.009685417270165086
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0010150447162604603
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.0007589560561525044
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00033834823875344977
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.015037699500155209,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-0",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:gallium-input-rf"
+        ],
+        "n_hop0_edges": 1,
+        "nodes_reached": 16,
+        "max_delta": 0.07495411947574793,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.07495411947574793
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.056308206921784176
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.003392099432290907
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.001589142098344959
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0011849489374754496
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.14628999228092293,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-0",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 1,
+        "nodes_reached": 7,
+        "max_delta": 0.08616196799733611,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.08616196799733611
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.07004087001942105
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.008010365844418638
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.005096921736453597
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.005096921736453597
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.19664049909157294,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-0",
+        "candidate": "FO-2",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 7
+      }
+    ],
+    "FO-3|MA-0": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-0",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.012437469297011117,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.012437469297011117
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.008877267085428076
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.006147133987488007
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0038126261453902133
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0033105313424680594
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.02323179889451249,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:taiwan"
+        ],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-0",
+        "candidate": "FO-3",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-0",
+        "candidate": "FO-3",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.023351012622646064,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:kachin",
+          "country_region:myanmar"
+        ],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-0",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.010515051375015905,
+        "max_delta_node": "product:hbm",
+        "top5": [
+          {
+            "node": "product:hbm",
+            "delta": 0.010515051375015905
+          },
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.009685417270165086
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0010150447162604603
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.0007589560561525044
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00033834823875344977
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.015037699500155209,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-0",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium"
+        ],
+        "n_hop0_edges": 3,
+        "nodes_reached": 16,
+        "max_delta": 0.07495411947574793,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.07495411947574793
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.056308206921784176
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.003392099432290907
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.001589142098344959
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0011849489374754496
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.18856450394012628,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-0",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:china-mines-dysprosium",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 7,
+        "max_delta": 0.08616196799733611,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.08616196799733611
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.07004087001942105
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.008010365844418638
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.005096921736453597
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.005096921736453597
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.21999192126348063,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-0",
+        "candidate": "FO-3",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 7
+      }
+    ],
+    "FO-0|MA-1": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-1",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.0031104690974581017,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.0031104690974581017
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.002220103164052911
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.001537328040730146
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0009534942778308408
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0008279260990327053
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.05,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-1",
+        "candidate": "FO-0",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-1",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:kachin-mines-dysprosium",
+          "e:myanmar-mines-neodymium"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 8,
+        "max_delta": 0.01840314010901134,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.01840314010901134
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.014959871208655606
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.005921331582261491
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0017109159456970835
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.001088639999999974
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.2,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-1",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.06822459261741282,
+        "max_delta_node": "company:sk_hynix",
+        "top5": [
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.06822459261741282
+          },
+          {
+            "node": "product:hbm",
+            "delta": 0.03627601748584347
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.005346126687285402
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0035018164498432647
+          },
+          {
+            "node": "company:xai",
+            "delta": 0.001399177719986766
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.09253820899383675,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-1",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:china-mines-dysprosium",
+          "e:china-mines-neodymium",
+          "e:china-mines-indium",
+          "e:china-mines-copper",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium",
+          "e:usa-mines-neodymium",
+          "e:usa-mines-copper"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 36,
+        "max_delta": 0.09084261456197462,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.09084261456197462
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.07613140605764745
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.06824421090993671
+          },
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.05126589030367412
+          },
+          {
+            "node": "mineral:indium",
+            "delta": 0.047528424578861375
+          }
+        ],
+        "tier_changes": 2,
+        "origin_scale": 0.30000000000000004,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-1",
+        "candidate": "FO-0",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:china-mines-dysprosium",
+          "e:china-mines-neodymium",
+          "e:china-mines-indium",
+          "e:china-mines-copper",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 6,
+        "nodes_reached": 36,
+        "max_delta": 0.1059830503223037,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.1059830503223037
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.08881997373392203
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.07961824606159285
+          },
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.059810205354286494
+          },
+          {
+            "node": "mineral:indium",
+            "delta": 0.05544982867533817
+          }
+        ],
+        "tier_changes": 2,
+        "origin_scale": 0.35,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": false,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-1",
+        "candidate": "FO-0",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 7
+      }
+    ],
+    "FO-1a|MA-1": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-1",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.0031104690974581017,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.0031104690974581017
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.002220103164052911
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.001537328040730146
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0009534942778308408
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0008279260990327053
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.05,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-1",
+        "candidate": "FO-1a",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-1",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:kachin-mines-dysprosium",
+          "e:myanmar-mines-neodymium"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 8,
+        "max_delta": 0.01840314010901134,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.01840314010901134
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.014959871208655606
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.005921331582261491
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0017109159456970835
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.001088639999999974
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.2,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-1",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.06822459261741282,
+        "max_delta_node": "company:sk_hynix",
+        "top5": [
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.06822459261741282
+          },
+          {
+            "node": "product:hbm",
+            "delta": 0.03627601748584347
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.005346126687285402
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0035018164498432647
+          },
+          {
+            "node": "company:xai",
+            "delta": 0.001399177719986766
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.09253820899383675,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-1",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium"
+        ],
+        "n_hop0_edges": 3,
+        "nodes_reached": 16,
+        "max_delta": 0.09084261456197462,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.09084261456197462
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.06824421090993671
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.0041111440363620355
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0019260025217275045
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00143612999999998
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.30000000000000004,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-1",
+        "candidate": "FO-1a",
+        "hop0_edges": [
+          "e:china-mines-dysprosium",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 7,
+        "max_delta": 0.059810205354286494,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.059810205354286494
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.0486195814281305
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.005560476823515154
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.003538079999999999
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.003538079999999999
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.35,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-1",
+        "candidate": "FO-1a",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 7
+      }
+    ],
+    "FO-1b|MA-1": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-1",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.0031104690974581017,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.0031104690974581017
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.002220103164052911
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.001537328040730146
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0009534942778308408
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0008279260990327053
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.05,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:taiwan"
+        ],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-1",
+        "candidate": "FO-1b",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-1",
+        "candidate": "FO-1b",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.2,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:kachin",
+          "country_region:myanmar"
+        ],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-1",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.06822459261741282,
+        "max_delta_node": "company:sk_hynix",
+        "top5": [
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.06822459261741282
+          },
+          {
+            "node": "product:hbm",
+            "delta": 0.03627601748584347
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.005346126687285402
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0035018164498432647
+          },
+          {
+            "node": "company:xai",
+            "delta": 0.001399177719986766
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.09253820899383675,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-1",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium"
+        ],
+        "n_hop0_edges": 3,
+        "nodes_reached": 16,
+        "max_delta": 0.09084261456197462,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.09084261456197462
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.06824421090993671
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.0041111440363620355
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0019260025217275045
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00143612999999998
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.30000000000000004,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-1",
+        "candidate": "FO-1b",
+        "hop0_edges": [
+          "e:china-mines-dysprosium",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 7,
+        "max_delta": 0.059810205354286494,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.059810205354286494
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.0486195814281305
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.005560476823515154
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.003538079999999999
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.003538079999999999
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.35,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-1",
+        "candidate": "FO-1b",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 7
+      }
+    ],
+    "FO-2|MA-1": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-1",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.0031104690974581017,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.0031104690974581017
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.002220103164052911
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.001537328040730146
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0009534942778308408
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0008279260990327053
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.005810007712510112,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-1",
+        "candidate": "FO-2",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-1",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:kachin-mines-dysprosium",
+          "e:myanmar-mines-neodymium"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 8,
+        "max_delta": 0.01840314010901134,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.01840314010901134
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.014959871208655606
+          },
+          {
+            "node": "mineral:neodymium",
+            "delta": 0.005921331582261491
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0017109159456970835
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.001088639999999974
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.2,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-1",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.06822459261741282,
+        "max_delta_node": "company:sk_hynix",
+        "top5": [
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.06822459261741282
+          },
+          {
+            "node": "product:hbm",
+            "delta": 0.03627601748584347
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.005346126687285402
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0035018164498432647
+          },
+          {
+            "node": "company:xai",
+            "delta": 0.001399177719986766
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.09253820899383675,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-1",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:gallium-input-rf"
+        ],
+        "n_hop0_edges": 1,
+        "nodes_reached": 16,
+        "max_delta": 0.021524595646424838,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.021524595646424838
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.016170043675301726
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.0009741101514260109
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0004563543849335494
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0003402821208389195
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.04201013837517387,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-1",
+        "candidate": "FO-2",
+        "hop0_edges": [
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 1,
+        "nodes_reached": 7,
+        "max_delta": 0.019310198021032732,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.019310198021032732
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.015697216545497827
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0017952439373416784
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.0011422971215289124
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.0011422971215289124
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.04407010499725794,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-1",
+        "candidate": "FO-2",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 7
+      }
+    ],
+    "FO-3|MA-1": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "seeding": "MA-1",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:tsmc-supplies-cowos",
+          "e:tsmc-supplies-nvidia",
+          "e:tsmc-supplies-broadcom",
+          "e:tsmc-supplies-amd",
+          "e:tsmc-supplies-google",
+          "e:tsmc-supplies-amazon",
+          "e:tsmc-supplies-microsoft",
+          "e:tsmc-supplies-meta",
+          "e:tsmc-supplies-arm"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 15,
+        "max_delta": 0.0031104690974581017,
+        "max_delta_node": "company:tsmc",
+        "top5": [
+          {
+            "node": "company:tsmc",
+            "delta": 0.0031104690974581017
+          },
+          {
+            "node": "product:cowos_packaging",
+            "delta": 0.002220103164052911
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.001537328040730146
+          },
+          {
+            "node": "company:arm",
+            "delta": 0.0009534942778308408
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.0008279260990327053
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.05,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:taiwan"
+        ],
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "seeding": "MA-1",
+        "candidate": "FO-3",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "seeding": "MA-1",
+        "candidate": "FO-3",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.2,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:kachin",
+          "country_region:myanmar"
+        ],
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "seeding": "MA-1",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:sk_hynix-supplies-hbm",
+          "e:sk_hynix-supplies-nvidia",
+          "e:hbm-input-nvidia",
+          "e:hbm-input-amd",
+          "e:hbm-input-broadcom",
+          "e:hbm-input-google",
+          "e:hbm-input-amazon",
+          "e:hbm-input-microsoft",
+          "e:hbm-input-meta"
+        ],
+        "n_hop0_edges": 9,
+        "nodes_reached": 13,
+        "max_delta": 0.06822459261741282,
+        "max_delta_node": "company:sk_hynix",
+        "top5": [
+          {
+            "node": "company:sk_hynix",
+            "delta": 0.06822459261741282
+          },
+          {
+            "node": "product:hbm",
+            "delta": 0.03627601748584347
+          },
+          {
+            "node": "company:nvidia",
+            "delta": 0.005346126687285402
+          },
+          {
+            "node": "company:amd",
+            "delta": 0.0035018164498432647
+          },
+          {
+            "node": "company:xai",
+            "delta": 0.001399177719986766
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.09253820899383675,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [],
+        "model_rank": 2
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "seeding": "MA-1",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:china-mines-gallium",
+          "e:gallium-input-rf",
+          "e:usa-refines-gallium"
+        ],
+        "n_hop0_edges": 3,
+        "nodes_reached": 16,
+        "max_delta": 0.09084261456197462,
+        "max_delta_node": "mineral:gallium",
+        "top5": [
+          {
+            "node": "mineral:gallium",
+            "delta": 0.09084261456197462
+          },
+          {
+            "node": "product:rf_power_semis",
+            "delta": 0.06824421090993671
+          },
+          {
+            "node": "company:ge_vernova",
+            "delta": 0.0041111440363620355
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.0019260025217275045
+          },
+          {
+            "node": "company:broadcom",
+            "delta": 0.00143612999999998
+          }
+        ],
+        "tier_changes": 1,
+        "origin_scale": 0.30000000000000004,
+        "subject": "mineral:gallium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "seeding": "MA-1",
+        "candidate": "FO-3",
+        "hop0_edges": [
+          "e:china-mines-dysprosium",
+          "e:dy-input-ndfeb"
+        ],
+        "n_hop0_edges": 2,
+        "nodes_reached": 7,
+        "max_delta": 0.059810205354286494,
+        "max_delta_node": "mineral:dysprosium",
+        "top5": [
+          {
+            "node": "mineral:dysprosium",
+            "delta": 0.059810205354286494
+          },
+          {
+            "node": "product:ndfeb_magnets",
+            "delta": 0.0486195814281305
+          },
+          {
+            "node": "company:vertiv",
+            "delta": 0.005560476823515154
+          },
+          {
+            "node": "facility:colossus",
+            "delta": 0.003538079999999999
+          },
+          {
+            "node": "facility:stargate_abilene",
+            "delta": 0.003538079999999999
+          }
+        ],
+        "tier_changes": 0,
+        "origin_scale": 0.35,
+        "subject": "mineral:dysprosium",
+        "subject_binary_is_subject_or_downstream": true,
+        "unscoped_country_nulls": [],
+        "model_rank": 3
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "seeding": "MA-1",
+        "candidate": "FO-3",
+        "hop0_edges": [],
+        "n_hop0_edges": 0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "top5": [],
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "subject": null,
+        "subject_binary_is_subject_or_downstream": null,
+        "unscoped_country_nulls": [
+          "country_region:netherlands"
+        ],
+        "model_rank": 7
+      }
+    ]
+  },
+  "spearman": {
+    "FO-0|MA-0": 0.7142857142857143,
+    "FO-1a|MA-0": 0.7142857142857143,
+    "FO-1b|MA-0": 0.7142857142857143,
+    "FO-2|MA-0": 0.7142857142857143,
+    "FO-3|MA-0": 0.7142857142857143,
+    "FO-0|MA-1": 0.8928571428571429,
+    "FO-1a|MA-1": 0.8928571428571429,
+    "FO-1b|MA-1": 0.8571428571428572,
+    "FO-2|MA-1": 0.9642857142857143,
+    "FO-3|MA-1": 0.8571428571428572
+  },
+  "rank_displacement": {
+    "FO-0|MA-0": {
+      "J-2024-04-taiwan-quake": -2,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 3,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-1a|MA-0": {
+      "J-2024-04-taiwan-quake": -2,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 3,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-1b|MA-0": {
+      "J-2024-04-taiwan-quake": -2,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 3,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-2|MA-0": {
+      "J-2024-04-taiwan-quake": -2,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 3,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-3|MA-0": {
+      "J-2024-04-taiwan-quake": -2,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 3,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-0|MA-1": {
+      "J-2024-04-taiwan-quake": 0,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 0,
+      "J-2024-11-hynix-hbm": 2,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-1a|MA-1": {
+      "J-2024-04-taiwan-quake": 0,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 0,
+      "J-2024-11-hynix-hbm": 1,
+      "J-2024-12-china-gallium": -2,
+      "J-2025-04-china-rees": 1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-1b|MA-1": {
+      "J-2024-04-taiwan-quake": -1,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 1,
+      "J-2024-12-china-gallium": -2,
+      "J-2025-04-china-rees": 1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-2|MA-1": {
+      "J-2024-04-taiwan-quake": 0,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 0,
+      "J-2024-11-hynix-hbm": 0,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": 1,
+      "J-2025-10-nexperia": 0
+    },
+    "FO-3|MA-1": {
+      "J-2024-04-taiwan-quake": -1,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 1,
+      "J-2024-12-china-gallium": -2,
+      "J-2025-04-china-rees": 1,
+      "J-2025-10-nexperia": 0
+    }
+  },
+  "probe_matrix": {
+    "P-J-2|FO-0|MA-0": {
+      "id": "P-J-2",
+      "seeding": "MA-0",
+      "candidate": "FO-0",
+      "hop0_edges": [
+        "e:china-mines-gallium",
+        "e:china-mines-dysprosium",
+        "e:china-mines-neodymium",
+        "e:china-mines-indium",
+        "e:china-mines-copper"
+      ],
+      "n_hop0_edges": 5,
+      "nodes_reached": 36,
+      "max_delta": 0.02664618841344879,
+      "max_delta_node": "mineral:gallium",
+      "top5": [
+        {
+          "node": "mineral:gallium",
+          "delta": 0.02664618841344879
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta": 0.022331059049482738
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta": 0.020017566764249595
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta": 0.015037442270917523
+        },
+        {
+          "node": "mineral:indium",
+          "delta": 0.01394115925030677
+        }
+      ],
+      "tier_changes": 0,
+      "origin_scale": 0.08799676850539224,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-1|FO-0|MA-0": {
+      "id": "P-J-1",
+      "seeding": "MA-0",
+      "candidate": "FO-0",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.0,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-2|FO-1a|MA-0": {
+      "id": "P-J-2",
+      "seeding": "MA-0",
+      "candidate": "FO-1a",
+      "hop0_edges": [
+        "e:china-mines-gallium",
+        "e:china-mines-dysprosium",
+        "e:china-mines-neodymium",
+        "e:china-mines-indium",
+        "e:china-mines-copper"
+      ],
+      "n_hop0_edges": 5,
+      "nodes_reached": 36,
+      "max_delta": 0.02664618841344879,
+      "max_delta_node": "mineral:gallium",
+      "top5": [
+        {
+          "node": "mineral:gallium",
+          "delta": 0.02664618841344879
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta": 0.022331059049482738
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta": 0.020017566764249595
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta": 0.015037442270917523
+        },
+        {
+          "node": "mineral:indium",
+          "delta": 0.01394115925030677
+        }
+      ],
+      "tier_changes": 0,
+      "origin_scale": 0.08799676850539224,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-1|FO-1a|MA-0": {
+      "id": "P-J-1",
+      "seeding": "MA-0",
+      "candidate": "FO-1a",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.0,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-2|FO-1b|MA-0": {
+      "id": "P-J-2",
+      "seeding": "MA-0",
+      "candidate": "FO-1b",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.08799676850539224,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:china"
+      ]
+    },
+    "P-J-1|FO-1b|MA-0": {
+      "id": "P-J-1",
+      "seeding": "MA-0",
+      "candidate": "FO-1b",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.0,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:netherlands"
+      ]
+    },
+    "P-J-2|FO-2|MA-0": {
+      "id": "P-J-2",
+      "seeding": "MA-0",
+      "candidate": "FO-2",
+      "hop0_edges": [
+        "e:china-mines-gallium",
+        "e:china-mines-dysprosium",
+        "e:china-mines-neodymium",
+        "e:china-mines-indium",
+        "e:china-mines-copper"
+      ],
+      "n_hop0_edges": 5,
+      "nodes_reached": 36,
+      "max_delta": 0.02664618841344879,
+      "max_delta_node": "mineral:gallium",
+      "top5": [
+        {
+          "node": "mineral:gallium",
+          "delta": 0.02664618841344879
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta": 0.022331059049482738
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta": 0.020017566764249595
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta": 0.015037442270917523
+        },
+        {
+          "node": "mineral:indium",
+          "delta": 0.01394115925030677
+        }
+      ],
+      "tier_changes": 0,
+      "origin_scale": 0.08799676850539224,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-1|FO-2|MA-0": {
+      "id": "P-J-1",
+      "seeding": "MA-0",
+      "candidate": "FO-2",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.0,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-2|FO-3|MA-0": {
+      "id": "P-J-2",
+      "seeding": "MA-0",
+      "candidate": "FO-3",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.08799676850539224,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:china"
+      ]
+    },
+    "P-J-1|FO-3|MA-0": {
+      "id": "P-J-1",
+      "seeding": "MA-0",
+      "candidate": "FO-3",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.0,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:netherlands"
+      ]
+    },
+    "P-J-2|FO-0|MA-1": {
+      "id": "P-J-2",
+      "seeding": "MA-1",
+      "candidate": "FO-0",
+      "hop0_edges": [
+        "e:china-mines-gallium",
+        "e:china-mines-dysprosium",
+        "e:china-mines-neodymium",
+        "e:china-mines-indium",
+        "e:china-mines-copper"
+      ],
+      "n_hop0_edges": 5,
+      "nodes_reached": 36,
+      "max_delta": 0.04239322012892144,
+      "max_delta_node": "mineral:gallium",
+      "top5": [
+        {
+          "node": "mineral:gallium",
+          "delta": 0.04239322012892144
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta": 0.035527989493568835
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta": 0.03184729842463718
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta": 0.023924082141714598
+        },
+        {
+          "node": "mineral:indium",
+          "delta": 0.022179931470135264
+        }
+      ],
+      "tier_changes": 1,
+      "origin_scale": 0.13999999999999996,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-1|FO-0|MA-1": {
+      "id": "P-J-1",
+      "seeding": "MA-1",
+      "candidate": "FO-0",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.13999999999999999,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-2|FO-1a|MA-1": {
+      "id": "P-J-2",
+      "seeding": "MA-1",
+      "candidate": "FO-1a",
+      "hop0_edges": [
+        "e:china-mines-gallium",
+        "e:china-mines-dysprosium",
+        "e:china-mines-neodymium",
+        "e:china-mines-indium",
+        "e:china-mines-copper"
+      ],
+      "n_hop0_edges": 5,
+      "nodes_reached": 36,
+      "max_delta": 0.04239322012892144,
+      "max_delta_node": "mineral:gallium",
+      "top5": [
+        {
+          "node": "mineral:gallium",
+          "delta": 0.04239322012892144
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta": 0.035527989493568835
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta": 0.03184729842463718
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta": 0.023924082141714598
+        },
+        {
+          "node": "mineral:indium",
+          "delta": 0.022179931470135264
+        }
+      ],
+      "tier_changes": 1,
+      "origin_scale": 0.13999999999999996,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-1|FO-1a|MA-1": {
+      "id": "P-J-1",
+      "seeding": "MA-1",
+      "candidate": "FO-1a",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.13999999999999999,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-2|FO-1b|MA-1": {
+      "id": "P-J-2",
+      "seeding": "MA-1",
+      "candidate": "FO-1b",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.13999999999999996,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:china"
+      ]
+    },
+    "P-J-1|FO-1b|MA-1": {
+      "id": "P-J-1",
+      "seeding": "MA-1",
+      "candidate": "FO-1b",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.13999999999999999,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:netherlands"
+      ]
+    },
+    "P-J-2|FO-2|MA-1": {
+      "id": "P-J-2",
+      "seeding": "MA-1",
+      "candidate": "FO-2",
+      "hop0_edges": [
+        "e:china-mines-gallium",
+        "e:china-mines-dysprosium",
+        "e:china-mines-neodymium",
+        "e:china-mines-indium",
+        "e:china-mines-copper"
+      ],
+      "n_hop0_edges": 5,
+      "nodes_reached": 36,
+      "max_delta": 0.04239322012892144,
+      "max_delta_node": "mineral:gallium",
+      "top5": [
+        {
+          "node": "mineral:gallium",
+          "delta": 0.04239322012892144
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta": 0.035527989493568835
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta": 0.03184729842463718
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta": 0.023924082141714598
+        },
+        {
+          "node": "mineral:indium",
+          "delta": 0.022179931470135264
+        }
+      ],
+      "tier_changes": 1,
+      "origin_scale": 0.13999999999999996,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-1|FO-2|MA-1": {
+      "id": "P-J-1",
+      "seeding": "MA-1",
+      "candidate": "FO-2",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.13999999999999999,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": []
+    },
+    "P-J-2|FO-3|MA-1": {
+      "id": "P-J-2",
+      "seeding": "MA-1",
+      "candidate": "FO-3",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.13999999999999996,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:china"
+      ]
+    },
+    "P-J-1|FO-3|MA-1": {
+      "id": "P-J-1",
+      "seeding": "MA-1",
+      "candidate": "FO-3",
+      "hop0_edges": [],
+      "n_hop0_edges": 0,
+      "nodes_reached": 0,
+      "max_delta": 0.0,
+      "max_delta_node": null,
+      "top5": [],
+      "tier_changes": 0,
+      "origin_scale": 0.13999999999999999,
+      "subject": null,
+      "subject_binary_is_subject_or_downstream": null,
+      "unscoped_country_nulls": [
+        "country_region:netherlands"
+      ]
+    }
+  },
+  "unscored_origin_seeding": [
+    {
+      "event": "J-2024-04-taiwan-quake",
+      "origin": "country_region:taiwan",
+      "concentration": 0.0,
+      "confidence": 1.0,
+      "concentration_delta": 0.05,
+      "ma0_seed": 0.0,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.05,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    },
+    {
+      "event": "J-2024-09-asml-export",
+      "origin": "country_region:netherlands",
+      "concentration": 0.0,
+      "confidence": 1.0,
+      "concentration_delta": 0.0,
+      "ma0_seed": 0.0,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.0,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    },
+    {
+      "event": "J-2024-10-kachin-kia",
+      "origin": "country_region:kachin",
+      "concentration": 0.11675506311323032,
+      "confidence": 1.0,
+      "concentration_delta": 0.2,
+      "ma0_seed": 0.023351012622646064,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.2,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    },
+    {
+      "event": "J-2024-10-kachin-kia",
+      "origin": "country_region:myanmar",
+      "concentration": 0.03449522226395997,
+      "confidence": 0.7,
+      "concentration_delta": 0.2,
+      "ma0_seed": 0.004829331116954396,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.13999999999999999,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    },
+    {
+      "event": "J-2024-12-china-gallium",
+      "origin": "country_region:china",
+      "concentration": 0.6285483464670876,
+      "confidence": 1.0,
+      "concentration_delta": 0.3,
+      "ma0_seed": 0.18856450394012628,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.30000000000000004,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    },
+    {
+      "event": "J-2024-12-china-gallium",
+      "origin": "country_region:usa",
+      "concentration": 0.09368700756852731,
+      "confidence": 0.7,
+      "concentration_delta": 0.3,
+      "ma0_seed": 0.019674271589390734,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.21,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    },
+    {
+      "event": "J-2025-04-china-rees",
+      "origin": "country_region:china",
+      "concentration": 0.6285483464670876,
+      "confidence": 1.0,
+      "concentration_delta": 0.35,
+      "ma0_seed": 0.21999192126348063,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.35,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    },
+    {
+      "event": "J-2025-10-nexperia",
+      "origin": "country_region:netherlands",
+      "concentration": 0.0,
+      "confidence": 0.7,
+      "concentration_delta": 0.0,
+      "ma0_seed": 0.0,
+      "ma0_formula": "concentration x concentration_delta x confidence",
+      "ma1_seed": 0.0,
+      "ma1_formula": "(conc' - conc) x confidence  [a concentration difference]"
+    }
+  ]
+}
