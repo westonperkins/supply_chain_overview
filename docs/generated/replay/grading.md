@@ -2678,3 +2678,44 @@ Report: `docs/generated/replay/pass_x_report.pdf` (also `.md`, and copied to `~/
 - **Sequencing (load-bearing):** fanout scoping ships **with or before MA-1** (Pass W). Shipping MA-1 alone is the one order ruled out.
 - **Country/region semantics:** worked around (scope the walk), not resolved (China is still one node aggregating five independent supply chains). The kachin-kia null marks the seam.
 - **Suite:** 134 pass, 1 skip, 0 xfail — both invocations. Reproducible; committed scoring byte-identical; probes quarantined; no candidate committed.
+
+---
+
+## Pass Y — Cascade walk semantics (CW-0/CW-2/CW-1) and FO-1c (measurement only)
+
+Report: `docs/generated/replay/pass_y_report.pdf` (also `.md`, and copied to `~/Downloads/`). Harness: `backend/scripts/pass_y_measure.py`. Comparison: `docs/generated/cascade_fanout_candidates.md`. Facts: `docs/generated/pass_y_facts.json`.
+
+**Recommendation, one sentence:** In the forthcoming ship pass, adopt **FO-1c (subject scoping, >1-distinct-target predicate) + CW-2 (parallel-edge collapse) + MA-1 as one coupled change** — the cascade fix and fanout scoping are coupled (cascade-alone moves china-rees's MA-1 max from gallium to neodymium, still wrong; fanout-alone lands dysprosium at the wrong magnitude via the 0.65 mines edge; both together give dysprosium at 0.091 via the 0.99 refining edge), and FO-1c beats FO-1b by keeping single-target kachin's real signal (ρ 0.857→0.893) at the cost of a graph-shape conditional that a guard test mitigates. Ships nothing; Weston decides.
+
+### Y.scorecard (§7 pre-registrations, citation-derived)
+
+| # | expectation | HIT/MISS |
+|---|---|---|
+| 1 | Committed byte-identical; suite 134/1/0 both invocations | HIT |
+| 2 | CW-0 reproduces real propagate_event, 0 mismatches, 7 events | HIT |
+| 3 | downstream_supply_edges returns edges.json order (empirical) | HIT |
+| 4 | China gallium/dysprosium/neodymium/indium ordered mines-before-refines | HIT |
+| 5 | China–gallium is the only China pair where CW-0's choice = max | HIT |
+| 6 | Dysprosium hop-1 contribution rises exactly 1.523077× under CW-2 | HIT |
+| 7a | Dysprosium china-rees Δ 0.059810→0.091096, below gallium 0.105983 | HIT |
+| 7b | Max-Δ flips to neodymium 0.133230; indium 0.107203 overtakes gallium; dysprosium 4th | HIT |
+| 8 | Dysprosium Δ identical FO-0 and FO-1b at CW-0 (0.059810) | HIT |
+| 9 | product:ndfeb_magnets rises under CW-2 | HIT |
+| 10 | pass_w_measure and pass_x_measure mark visited unconditionally | HIT |
+| 11 | CW-1 vs CW-2 differ on ndfeb_magnets: CW-1 neodymium 0.113400 vs CW-2 dysprosium 0.112266, 1.01% | HIT |
+| 12 | FO-1c leaves P-J-2 at 0 | HIT |
+| 13 | FO-1c leaves kachin-kia at 8, no unscoped null | HIT |
+| 14 | FO-1c ρ under MA-1 ≥ FO-1b's +0.8571 | HIT (+0.8929) |
+
+**14 HIT, 0 MISS.** Both refutable rows (7b, 11) — reviewer arithmetic against published Pass X numbers — reproduced to full precision.
+
+### Y.ledger
+
+- **The cascade walk is first-encounter-wins, broader than parallel edges.** `visited_on_this_origin` (never cleared, checked before the max comparison) discards, within one origin's walk, every arrival after the first — weaker parallel edges (9 lossy pairs across china/japan/peru/usa/hitachi, 18 edges) AND stronger longer paths (hbm 135×, cowos 325× on china-rees). The function docstring claims "BEST (max) path"; the code does not deliver it. **Verdict (Y8): a termination guard (one supply-edge cycle, arm↔arm_core_ip) via the wrong mechanism, with an unintended attribution defect — not intentional-and-correct.**
+- **CW-2 fixes parallel edges; CW-1 additionally fixes longer paths; CW-1 is not more expensive** (42.6 vs 43.8 ms — the "expensive" concern refuted). With fanout scoping, CW-1↔CW-2 divergence collapses 46→9 low-magnitude nodes, none affecting attribution — **so CW-2 suffices once scoping ships.**
+- **Cascade fix and fanout are coupled** (Y14): the ship pass must take FO-1c + CW-2 + MA-1 as one change; no subset is correct on both node and magnitude.
+- **FO-1c dominates FO-1b on this corpus** (Y13): the >1-distinct-target predicate scopes only where fanout is structurally possible — keeps single-target kachin's signal (8 nodes, rank held), drops FO-1b's spurious nulls on zero-target taiwan/netherlands, still nulls P-J-2 (China multi-target). Cost: walk semantics conditional on graph shape (a future kachin edge would silently flip it) — real but guardable, and outweighed by FO-1b's present false null on a real event.
+- **Harness note (Y10):** all Pass W and Pass X numbers were measured under CW-0 (both harnesses mark visited unconditionally). Neither recommendation changes; numbers now labelled.
+- **Guards forecast:** a permanent test pinning cascade's max-of-paths semantics (the engine walk is pinned by test_outbound_walk_semantics.py; the cascade walk is not — that asymmetry should close when CW-2 ships); a graph-shape guard for FO-1c's target-count classes.
+- **Open:** n=7 binds every conclusion; cascade semantics unpinned; whether CW-1's longer-path fidelity ever changes a real event's attribution once scoping is applied.
+- **Suite:** 134 pass, 1 skip, 0 xfail — both invocations. CW-0 validated node-for-node (0 mismatches). Reproducible; nothing shipped.
