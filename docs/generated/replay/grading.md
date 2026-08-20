@@ -2719,3 +2719,39 @@ Report: `docs/generated/replay/pass_y_report.pdf` (also `.md`, and copied to `~/
 - **Guards forecast:** a permanent test pinning cascade's max-of-paths semantics (the engine walk is pinned by test_outbound_walk_semantics.py; the cascade walk is not — that asymmetry should close when CW-2 ships); a graph-shape guard for FO-1c's target-count classes.
 - **Open:** n=7 binds every conclusion; cascade semantics unpinned; whether CW-1's longer-path fidelity ever changes a real event's attribution once scoping is applied.
 - **Suite:** 134 pass, 1 skip, 0 xfail — both invocations. CW-0 validated node-for-node (0 mismatches). Reproducible; nothing shipped.
+
+---
+
+## Pass Z — SHIP: FO-1a + MA-1 + CW-1 (first non-measurement pass since Pass U)
+
+Report: `docs/generated/replay/pass_z_report.pdf` (also `.md`, and copied to `~/Downloads/`). Facts: `docs/generated/pass_z_facts.json`. Guards: `backend/tests/test_cascade_walk_semantics.py` (8 tests). Opened on `b673852` (Pass Y), clean tree.
+
+**Decision, one sentence:** Shipped the three coupled cascade changes as one — **CW-1** (max-of-paths: drop the per-origin `visited` set, record/re-enqueue only on strict improvement), **FO-1a** (permissive hop-0 subject scoping of country origins), and **MA-1** (perturbed-axis seeding, risk-positive `−substitutability_delta`) — all in `backend/app/scoring/cascade.py`; committed baseline severities byte-identical, replay current-severities regenerated.
+
+### Z.scorecard (§5 pre-registration, full precision)
+
+| # | expectation | HIT/MISS |
+|---|---|---|
+| 1 | FO-1a ≡ FO-1c on all 7 events at CW-1/MA-1 | HIT (node-for-node, max diff 0.0) |
+| 2 | FO-1a/FO-1c diverge on P-J-2 (36 vs null) | HIT |
+| 3 | china-rees reach 7, dysprosium max-Δ 0.09109554353960558 | HIT |
+| 4 | dysprosium via e:china-refines-dysprosium, contribution 0.2079 | HIT |
+| 5 | ndfeb_magnets 0.11226599999999999, Δ 0.07405136248284494, hop 2 | HIT |
+| 6 | china-gallium reach 17 (CW-0 16) | HIT |
+| 7 | +node company:microsoft hop 5, exact path, 1.4657142779999993e-06 | HIT |
+| 8 | constellation_energy reroute → 0.0002442857129999999 | HIT |
+| 9 | rank order china-rees 1, china-gallium 2, hbm 3, kachin 4, taiwan 5, asml 6, nexperia 7 | HIT |
+| 10 | ρ = +0.8929 unchanged despite ranks 1↔2 swap | HIT (0.8928571428571429) |
+| 11 | arm↔arm_core_ip cycle terminates, no node exceeds max_hops | HIT (max hop 5 ≤ 6) |
+| 12 | every matched origin retains hop 0 | **MISS** |
+
+**11 HIT, 1 MISS.** Row 12 MISS is a spec-arithmetic error the pass surfaces: two *scored* origins (gallium on china-gallium, dysprosium on china-rees) are correctly recorded at hop 1 because they are reached more strongly from China than from their own seed — correct max-of-paths across origins, which the spec's self-return-only reasoning overlooked. The load-bearing invariant (unscored origins stay `current None` + hop 0 — countries have no inbound supply edges) holds and is now guarded.
+
+### Z.ledger
+
+- **CW-1 replaces first-encounter-wins.** `visited_on_this_origin` removed; record/re-enqueue only on strict improvement. The one supply-edge cycle (arm↔arm_core_ip) terminates (max hop 5). CW-2 not implemented — max-of-paths subsumes the parallel-edge collapse (the 0.99 refines edge is a strictly-improving second arrival over the 0.65 mines edge).
+- **FO-1a permissive subject scoping.** china-rees collapses to reach 7 with dysprosium correctly on top (0.09109554353960558 via the 0.99 refining edge). The one shipped tier change — gallium critical→high on china-rees — is the *removal* of a spurious cross-mineral escalation (a dysprosium licence no longer pushing gallium into critical), not a new one. Accepted cost: P-J-2 reaches 36 (permissive fallback by design).
+- **MA-1 perturbed-axis seeding**, risk-positive `−substitutability_delta`. The `axes_for_severity` sign inversion is **compensated at the call site and is not live** in shipped scoring — the spec's §4.3 premise that it becomes live is incorrect for this implementation (reported per §3/§4); `axes_for_severity` untouched. Shipped run is node-for-node identical (max diff 0.0) to Pass Y's `FO-1c|CW-1|MA-1` block the pre-registration derives from.
+- **Guards:** `test_cascade_walk_semantics.py` (8 tests) closes the asymmetry Pass Y found — the cascade walk is now pinned (max-of-paths parallel + longer-path, termination, origin invariants) the way `test_outbound_walk_semantics.py` pins the engine walk. That test untouched and passing.
+- **Scope:** committed baseline severities + `config/scoring.yaml` + `severity_snapshot.json` + all `data/` byte-identical; only `cascade.py` (source) and the regenerated replay artifacts changed. Suite **142 pass / 1 skip / 0 xfail**, both invocations.
+- **Open:** the sign inversion in `axes_for_severity` itself (fix at source, remove the `−` compensation); scored-vs-unscored seeding scale mismatch; retiring the now-unread `events.magnitude_source`; time decay; n=7.

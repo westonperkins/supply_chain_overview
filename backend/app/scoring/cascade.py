@@ -53,7 +53,13 @@ def _event_magnitude(axes: AxesImpact, config: ScoringConfig) -> float:
     `events.magnitude_source`. Default source is `axes.concentration_delta`
     clipped to [0,1] — the primary quantity events convey today. When a
     future Event schema adds an explicit `magnitude` field, change the
-    config path, not the code."""
+    config path, not the code.
+
+    Pass Z — SUPERSEDED by MA-1 perturbed-axis seeding (see
+    `_event_source_scale`). This helper and `events.magnitude_source` are
+    no longer read by `propagate_event`. Retained (not removed) so Pass Z
+    does not edit `config/scoring.yaml`; retiring the config key is a
+    separate change with its own scope."""
     src = config.events_magnitude_source
     if src == "axes.concentration_delta":
         return max(0.0, min(1.0, axes.concentration_delta))
@@ -77,48 +83,119 @@ def _combine(current: float, contribution: float, method: str) -> float:
     raise ValueError(f"unknown events.combine method: {method}")
 
 
+def _is_country(node_id: str) -> bool:
+    return node_id.startswith("country_region:")
+
+
+def _hop0_edges(origin: Node, graph: SupplyChainGraph, matched_ids: set) -> list:
+    """FO-1a (Pass Z §4.2) — permissive subject scoping at hop 0.
+
+    For a `country_region` origin, follow only outbound supply edges whose
+    target is in `entities_matched`; if NONE qualifies, fall back to the
+    full unscoped edge set (permissive — an unscoped country still fans
+    out rather than recording a null). Non-country origins are never
+    scoped. A country is an aggregation of independent supply chains (five
+    minerals for China); scoping to the named subject stops a dysprosium
+    licence from lighting gallium/neodymium/indium/copper. See Pass X.
+    """
+    all_edges = graph.downstream_supply_edges(origin.id)
+    if not _is_country(origin.id):
+        return all_edges
+    scoped = [e for e in all_edges if e.target_id in matched_ids]
+    return scoped if scoped else all_edges
+
+
+def _perturbed_severity(node: Node, config: ScoringConfig,
+                        cd: float, sd: float, ld: float):
+    """(perturbed_severity | None, conc_prime) for MA-1 seeding.
+
+    Risk-positive substitutability convention (Pass W §0.2): a positive
+    `substitutability_delta` raises risk (makes substitution harder), so
+    it is applied as `sub_base − sd`. Because `axes_for_severity` computes
+    `sub_base + sub_delta`, risk-positive is obtained by passing `−sd`.
+    `lead_time_delta` is in years and is risk-positive as-is (longer lead
+    time = more risk), so it is passed unchanged.
+    """
+    conc = node.dynamic.concentration or 0.0
+    cp = max(0.0, min(1.0, conc + cd))
+    sub, lt_norm, _missing = axes_for_severity(
+        node, config, sub_delta=-sd, lt_delta=ld,
+    )
+    if sub is None or lt_norm is None:
+        return None, cp
+    return compute_severity(cp, sub, lt_norm, config), cp
+
+
 def _event_source_scale(
     origin: Node,
-    magnitude: float,
+    axes: AxesImpact,
     confidence: float,
+    config: ScoringConfig,
 ) -> tuple[float, bool]:
-    """Return (source_scale, origin_scored). Pass D §4:
+    """Return (source_scale, origin_scored) under MA-1 perturbed-axis
+    seeding (Pass Z §4.3). Supersedes the Pass D scalar
+    `baseline × magnitude × confidence`.
 
-      - SCORED origin (baseline_severity is not None): source_scale =
-        baseline_severity × magnitude × confidence. Event effect at the
-        origin is derived from a real structural severity.
-      - UNSCORED origin (baseline_severity is None): source_scale =
-        concentration × magnitude × confidence. The origin's own
-        current_severity stays None (caller enforces); downstream
-        propagation is seeded by concentration — a real number, unlike
-        the fabricated severity the old code emitted.
+      - SCORED origin (baseline_severity is not None): recompute severity
+        under the event's perturbed axes and take the DIFFERENCE from
+        baseline: `(severity' − baseline_severity) × confidence`. This is
+        what the orphaned `axes_for_severity(sub_delta, lt_delta)`
+        parameters were built for (Pass W §0.1).
+      - UNSCORED origin (baseline_severity is None): no severity to
+        perturb, so seed the concentration DIFFERENCE:
+        `(conc' − concentration) × confidence`. The origin's own
+        current_severity stays None (caller enforces); downstream is
+        seeded by a real concentration move.
+
+    NB (Pass W §1 / Pass X §7, unresolved): the scored branch seeds a
+    severity difference and the unscored branch a concentration
+    difference into the same combine channel. That scale mismatch is a
+    known open item, not addressed here.
     """
-    baseline = origin.dynamic.baseline_severity
-    if baseline is not None:
-        return baseline * magnitude * confidence, True
     conc = origin.dynamic.concentration or 0.0
-    return conc * magnitude * confidence, False
+    base = origin.dynamic.baseline_severity
+    sevp, cp = _perturbed_severity(
+        origin, config,
+        axes.concentration_delta, axes.substitutability_delta,
+        axes.lead_time_delta,
+    )
+    if base is not None and sevp is not None:
+        return (sevp - base) * confidence, True
+    return (cp - conc) * confidence, False
 
 
 def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig) -> Event:
     """Walk supply edges downstream from each matched entity. Updates
     node.dynamic.current_severity + current_tier for every touched node.
 
-    Multi-path handling: per event, each downstream node's contribution
-    is the BEST (max) path from any origin (existing behaviour). That
-    single per-event contribution is then combined into the node's
-    current_severity via `events.combine` (default noisy_or). Multiple
-    events applied in sequence each combine into current the same way.
+    Multi-path handling (Pass Z — CW-1, max-of-paths): each downstream
+    node keeps the BEST (max) contribution over every path from every
+    origin. Unlike the pre-Pass-Z walk, there is NO per-origin `visited`
+    set — a node is recorded and re-enqueued ONLY when a new arrival
+    strictly improves its best. First-encounter-wins (the pre-Z defect,
+    Pass Y §4) discarded stronger parallel edges and stronger longer
+    paths before their value was computed; strict-improvement recovers
+    both without a separate parallel-edge collapse (the 0.99 `refines`
+    edge is simply a second arrival that beats the 0.65 `mines` edge).
 
-    Returns the passed-in event with cascade and severity populated (the
-    UI reads these; not equivalent to node.dynamic writes).
+    Origin seeding is MA-1 perturbed-axis (Pass Z §4.3); country origins
+    are hop-0 subject-scoped, permissive fallback (FO-1a, Pass Z §4.2).
+
+    Termination: the supply-edge subgraph has one cycle
+    (arm ↔ arm_core_ip). Each hop multiplies by decay·share·(1−cushion) < 1,
+    so contributions strictly decrease; the strict-improvement gate, the
+    `max_hops` bound, and the 1e-6 floor each independently drain the queue.
+
+    That single per-event contribution is combined into current_severity
+    via `events.combine` (default noisy_or). Returns the event with
+    cascade + severity populated.
     """
     decay = config.cascade_decay
     max_hops = config.cascade_max_hops
     share_field = config.cascade_share_field
     fallback = config.cascade_fallback_to_input_share
     combine_method = config.events_combine
-    magnitude = _event_magnitude(event.axes_impact, config)
+    matched_ids = {m.node_id for m in event.entities_matched}
 
     # Best (per-event) contribution per node, with origin_scored flag.
     best_contribution: dict[str, tuple[float, bool, list[str], int]] = {}
@@ -129,7 +206,7 @@ def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig
             continue
 
         source_scale, origin_scored = _event_source_scale(
-            origin, magnitude, match.confidence,
+            origin, event.axes_impact, match.confidence, config,
         )
         # Origin's own contribution — recorded whether scored or not so
         # cascade metadata is complete. Actual write to current_severity
@@ -138,18 +215,23 @@ def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig
         if prev is None or source_scale > prev[0]:
             best_contribution[origin.id] = (source_scale, origin_scored, [], 0)
 
-        # BFS downstream, tracking max-path contribution per node.
-        queue: deque[tuple[str, float, list[str], int]] = deque()
-        queue.append((origin.id, source_scale, [], 0))
-        visited_on_this_origin: set[str] = {origin.id}
+        # FO-1a: a country origin's hop-0 edges are scoped to matched
+        # subjects (permissive fallback). Deeper hops expand in full.
+        start_edges = _hop0_edges(origin, graph, matched_ids)
+
+        # CW-1 max-of-paths: NO visited set; record + re-enqueue only on
+        # strict improvement. Each queue item carries the edges to expand
+        # (scoped at the origin, full downstream).
+        queue: deque[tuple[str, float, list[str], int, list]] = deque()
+        queue.append((origin.id, source_scale, [], 0, start_edges))
 
         while queue:
-            node_id, sev, path, hop = queue.popleft()
+            node_id, sev, path, hop, edges = queue.popleft()
             if hop >= max_hops:
                 continue
-            for edge in graph.downstream_supply_edges(node_id):
+            for edge in edges:
                 target = graph.nodes.get(edge.target_id)
-                if target is None or edge.target_id in visited_on_this_origin:
+                if target is None:
                     continue
                 share = _outbound_share_for(edge, share_field, fallback)
                 if share is None:
@@ -164,8 +246,10 @@ def propagate_event(event: Event, graph: SupplyChainGraph, config: ScoringConfig
                     best_contribution[target.id] = (
                         downstream, origin_scored, new_path, hop + 1,
                     )
-                visited_on_this_origin.add(target.id)
-                queue.append((target.id, downstream, new_path, hop + 1))
+                    queue.append((
+                        target.id, downstream, new_path, hop + 1,
+                        graph.downstream_supply_edges(target.id),
+                    ))
 
     # Apply contributions to each touched node's current_severity.
     # Pass H (Q1-Q3 fix) — distinguish:

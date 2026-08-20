@@ -1,0 +1,1706 @@
+{
+  "provenance": {
+    "note": "SHAs filled by the report from git; harness emits engine numbers only"
+  },
+  "shipped_per_event": {
+    "J-2024-04-taiwan-quake": {
+      "reached": 15,
+      "max_delta_node": "company:tsmc",
+      "max_delta": 0.0031104690974581017,
+      "max_hop": 3,
+      "steps": {
+        "country_region:taiwan": {
+          "contribution": 0.05,
+          "hop": 0,
+          "path": []
+        },
+        "company:tsmc": {
+          "contribution": 0.005810007712510112,
+          "hop": 0,
+          "path": []
+        },
+        "product:cowos_packaging": {
+          "contribution": 0.003311704396130764,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-cowos"
+          ]
+        },
+        "company:amd": {
+          "contribution": 0.0015373280407301757,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-amd"
+          ]
+        },
+        "company:arm": {
+          "contribution": 0.0012079006034308522,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-arm"
+          ]
+        },
+        "company:nvidia": {
+          "contribution": 0.0008627861453077517,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-nvidia"
+          ]
+        },
+        "company:broadcom": {
+          "contribution": 0.000827926099032691,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-broadcom"
+          ]
+        },
+        "company:meta": {
+          "contribution": 0.00015687020823777306,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-meta"
+          ]
+        },
+        "company:google": {
+          "contribution": 0.000104580138825182,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-google"
+          ]
+        },
+        "company:amazon": {
+          "contribution": 0.000104580138825182,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-amazon"
+          ]
+        },
+        "company:microsoft": {
+          "contribution": 0.000104580138825182,
+          "hop": 1,
+          "path": [
+            "e:tsmc-supplies-microsoft"
+          ]
+        },
+        "product:arm_core_ip": {
+          "contribution": 0.0007247403620585113,
+          "hop": 2,
+          "path": [
+            "e:tsmc-supplies-arm",
+            "e:arm-supplies-arm_core_ip"
+          ]
+        },
+        "company:xai": {
+          "contribution": 0.00014494807241170228,
+          "hop": 2,
+          "path": [
+            "e:tsmc-supplies-nvidia",
+            "e:nvidia-supplies-xai"
+          ]
+        },
+        "company:openai": {
+          "contribution": 0.00014494807241170228,
+          "hop": 2,
+          "path": [
+            "e:tsmc-supplies-nvidia",
+            "e:nvidia-supplies-openai"
+          ]
+        },
+        "facility:colossus": {
+          "contribution": 8.696884344702137e-05,
+          "hop": 3,
+          "path": [
+            "e:tsmc-supplies-nvidia",
+            "e:nvidia-supplies-xai",
+            "e:xai-operates-colossus"
+          ]
+        },
+        "facility:stargate_abilene": {
+          "contribution": 8.696884344702137e-05,
+          "hop": 3,
+          "path": [
+            "e:tsmc-supplies-nvidia",
+            "e:nvidia-supplies-openai",
+            "e:openai-operates-stargate"
+          ]
+        }
+      }
+    },
+    "J-2024-09-asml-export": {
+      "reached": 0,
+      "max_delta_node": null,
+      "max_delta": 0.0,
+      "max_hop": 0,
+      "steps": {
+        "company:asml": {
+          "contribution": 0.0,
+          "hop": 0,
+          "path": []
+        },
+        "country_region:netherlands": {
+          "contribution": 0.0,
+          "hop": 0,
+          "path": []
+        }
+      }
+    },
+    "J-2024-10-kachin-kia": {
+      "reached": 8,
+      "max_delta_node": "mineral:dysprosium",
+      "max_delta": 0.01840314010901134,
+      "max_hop": 3,
+      "steps": {
+        "country_region:kachin": {
+          "contribution": 0.2,
+          "hop": 0,
+          "path": []
+        },
+        "country_region:myanmar": {
+          "contribution": 0.13999999999999999,
+          "hop": 0,
+          "path": []
+        },
+        "mineral:dysprosium": {
+          "contribution": 0.041999999999999996,
+          "hop": 1,
+          "path": [
+            "e:kachin-mines-dysprosium"
+          ]
+        },
+        "mineral:neodymium": {
+          "contribution": 0.0084,
+          "hop": 1,
+          "path": [
+            "e:myanmar-mines-neodymium"
+          ]
+        },
+        "product:ndfeb_magnets": {
+          "contribution": 0.02268,
+          "hop": 2,
+          "path": [
+            "e:kachin-mines-dysprosium",
+            "e:dy-input-ndfeb"
+          ]
+        },
+        "company:vertiv": {
+          "contribution": 0.0018370799999999994,
+          "hop": 3,
+          "path": [
+            "e:kachin-mines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-vertiv"
+          ]
+        },
+        "facility:colossus": {
+          "contribution": 0.0010886399999999999,
+          "hop": 3,
+          "path": [
+            "e:kachin-mines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-colossus"
+          ]
+        },
+        "facility:stargate_abilene": {
+          "contribution": 0.0010886399999999999,
+          "hop": 3,
+          "path": [
+            "e:kachin-mines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-stargate"
+          ]
+        },
+        "facility:vantage_frontier": {
+          "contribution": 0.0010886399999999999,
+          "hop": 3,
+          "path": [
+            "e:kachin-mines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-vantage"
+          ]
+        },
+        "facility:the_citadel": {
+          "contribution": 0.0010886399999999999,
+          "hop": 3,
+          "path": [
+            "e:kachin-mines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-citadel"
+          ]
+        }
+      }
+    },
+    "J-2024-11-hynix-hbm": {
+      "reached": 13,
+      "max_delta_node": "company:sk_hynix",
+      "max_delta": 0.06822459261741282,
+      "max_hop": 3,
+      "steps": {
+        "company:sk_hynix": {
+          "contribution": 0.09253820899383675,
+          "hop": 0,
+          "path": []
+        },
+        "product:hbm": {
+          "contribution": 0.05187876221990084,
+          "hop": 0,
+          "path": []
+        },
+        "company:nvidia": {
+          "contribution": 0.008328438809445306,
+          "hop": 1,
+          "path": [
+            "e:sk_hynix-supplies-nvidia"
+          ]
+        },
+        "company:amd": {
+          "contribution": 0.0035018164498433063,
+          "hop": 1,
+          "path": [
+            "e:hbm-input-amd"
+          ]
+        },
+        "company:broadcom": {
+          "contribution": 0.0011672721499477688,
+          "hop": 1,
+          "path": [
+            "e:hbm-input-broadcom"
+          ]
+        },
+        "company:meta": {
+          "contribution": 0.0005602906319749292,
+          "hop": 1,
+          "path": [
+            "e:hbm-input-meta"
+          ]
+        },
+        "company:google": {
+          "contribution": 0.00046690885997910744,
+          "hop": 1,
+          "path": [
+            "e:hbm-input-google"
+          ]
+        },
+        "company:amazon": {
+          "contribution": 0.00037352708798328593,
+          "hop": 1,
+          "path": [
+            "e:hbm-input-amazon"
+          ]
+        },
+        "company:microsoft": {
+          "contribution": 0.00037352708798328593,
+          "hop": 1,
+          "path": [
+            "e:hbm-input-microsoft"
+          ]
+        },
+        "company:xai": {
+          "contribution": 0.0013991777199868114,
+          "hop": 2,
+          "path": [
+            "e:sk_hynix-supplies-nvidia",
+            "e:nvidia-supplies-xai"
+          ]
+        },
+        "company:openai": {
+          "contribution": 0.0013991777199868114,
+          "hop": 2,
+          "path": [
+            "e:sk_hynix-supplies-nvidia",
+            "e:nvidia-supplies-openai"
+          ]
+        },
+        "facility:colossus": {
+          "contribution": 0.0008395066319920869,
+          "hop": 3,
+          "path": [
+            "e:sk_hynix-supplies-nvidia",
+            "e:nvidia-supplies-xai",
+            "e:xai-operates-colossus"
+          ]
+        },
+        "facility:stargate_abilene": {
+          "contribution": 0.0008395066319920869,
+          "hop": 3,
+          "path": [
+            "e:sk_hynix-supplies-nvidia",
+            "e:nvidia-supplies-openai",
+            "e:openai-operates-stargate"
+          ]
+        }
+      }
+    },
+    "J-2024-12-china-gallium": {
+      "reached": 17,
+      "max_delta_node": "mineral:gallium",
+      "max_delta": 0.09084261456197462,
+      "max_hop": 5,
+      "steps": {
+        "country_region:china": {
+          "contribution": 0.30000000000000004,
+          "hop": 0,
+          "path": []
+        },
+        "country_region:usa": {
+          "contribution": 0.21,
+          "hop": 0,
+          "path": []
+        },
+        "mineral:gallium": {
+          "contribution": 0.1773,
+          "hop": 1,
+          "path": [
+            "e:china-mines-gallium"
+          ]
+        },
+        "product:rf_power_semis": {
+          "contribution": 0.09574200000000001,
+          "hop": 2,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf"
+          ]
+        },
+        "company:ge_vernova": {
+          "contribution": 0.006031745999999999,
+          "hop": 3,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova"
+          ]
+        },
+        "company:vertiv": {
+          "contribution": 0.0020680272,
+          "hop": 3,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-vertiv"
+          ]
+        },
+        "company:siemens_energy": {
+          "contribution": 0.002010582,
+          "hop": 3,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-siemens"
+          ]
+        },
+        "company:broadcom": {
+          "contribution": 0.00143613,
+          "hop": 3,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-broadcom"
+          ]
+        },
+        "facility:the_citadel": {
+          "contribution": 0.0005428571399999999,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-citadel"
+          ]
+        },
+        "facility:colossus": {
+          "contribution": 0.00036190475999999997,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-colossus"
+          ]
+        },
+        "facility:stargate_abilene": {
+          "contribution": 0.00036190475999999997,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-stargate"
+          ]
+        },
+        "facility:vantage_frontier": {
+          "contribution": 0.00036190475999999997,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-vantage"
+          ]
+        },
+        "company:nextera_energy": {
+          "contribution": 0.00027142857,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-nextera"
+          ]
+        },
+        "company:duke_energy": {
+          "contribution": 0.000253333332,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-duke"
+          ]
+        },
+        "company:constellation_energy": {
+          "contribution": 0.0002442857129999999,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-constellation"
+          ]
+        },
+        "company:meta": {
+          "contribution": 1.9387755000000005e-05,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-broadcom",
+            "e:broadcom-supplies-meta"
+          ]
+        },
+        "company:google": {
+          "contribution": 1.7233559999999998e-05,
+          "hop": 4,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-broadcom",
+            "e:broadcom-supplies-google"
+          ]
+        },
+        "facility:three_mile_island": {
+          "contribution": 0.00014657142779999995,
+          "hop": 5,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-constellation",
+            "e:constellation-operates-tmi"
+          ]
+        },
+        "company:microsoft": {
+          "contribution": 1.4657142779999993e-06,
+          "hop": 5,
+          "path": [
+            "e:china-mines-gallium",
+            "e:gallium-input-rf",
+            "e:rf-input-ge_vernova",
+            "e:gev-supplies-constellation",
+            "e:constellation-supplies-microsoft"
+          ]
+        }
+      }
+    },
+    "J-2025-04-china-rees": {
+      "reached": 7,
+      "max_delta_node": "mineral:dysprosium",
+      "max_delta": 0.09109554353960558,
+      "max_hop": 3,
+      "steps": {
+        "country_region:china": {
+          "contribution": 0.35,
+          "hop": 0,
+          "path": []
+        },
+        "mineral:dysprosium": {
+          "contribution": 0.2079,
+          "hop": 1,
+          "path": [
+            "e:china-refines-dysprosium"
+          ]
+        },
+        "product:ndfeb_magnets": {
+          "contribution": 0.11226599999999999,
+          "hop": 2,
+          "path": [
+            "e:china-refines-dysprosium",
+            "e:dy-input-ndfeb"
+          ]
+        },
+        "company:vertiv": {
+          "contribution": 0.009093545999999997,
+          "hop": 3,
+          "path": [
+            "e:china-refines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-vertiv"
+          ]
+        },
+        "facility:colossus": {
+          "contribution": 0.0053887679999999995,
+          "hop": 3,
+          "path": [
+            "e:china-refines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-colossus"
+          ]
+        },
+        "facility:stargate_abilene": {
+          "contribution": 0.0053887679999999995,
+          "hop": 3,
+          "path": [
+            "e:china-refines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-stargate"
+          ]
+        },
+        "facility:vantage_frontier": {
+          "contribution": 0.0053887679999999995,
+          "hop": 3,
+          "path": [
+            "e:china-refines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-vantage"
+          ]
+        },
+        "facility:the_citadel": {
+          "contribution": 0.0053887679999999995,
+          "hop": 3,
+          "path": [
+            "e:china-refines-dysprosium",
+            "e:dy-input-ndfeb",
+            "e:ndfeb-input-citadel"
+          ]
+        }
+      }
+    },
+    "J-2025-10-nexperia": {
+      "reached": 0,
+      "max_delta_node": null,
+      "max_delta": 0.0,
+      "max_hop": 0,
+      "steps": {
+        "country_region:netherlands": {
+          "contribution": 0.0,
+          "hop": 0,
+          "path": []
+        }
+      }
+    }
+  },
+  "rank_order": {
+    "J-2025-04-china-rees": 1,
+    "J-2024-12-china-gallium": 2,
+    "J-2024-11-hynix-hbm": 3,
+    "J-2024-10-kachin-kia": 4,
+    "J-2024-04-taiwan-quake": 5,
+    "J-2024-09-asml-export": 6,
+    "J-2025-10-nexperia": 7
+  },
+  "rho": 0.8928571428571429,
+  "prereg": {
+    "row1_fo1a_eq_fo1c": {
+      "per_event": [
+        {
+          "id": "J-2024-04-taiwan-quake",
+          "shipped_reached": 15,
+          "fo1c_reached": 15,
+          "shipped_maxnode": "company:tsmc",
+          "fo1c_maxnode": "company:tsmc",
+          "shipped_maxdelta": 0.0031104690974581017,
+          "fo1c_maxdelta": 0.0031104690974581017,
+          "identical": true
+        },
+        {
+          "id": "J-2024-09-asml-export",
+          "shipped_reached": 0,
+          "fo1c_reached": 0,
+          "shipped_maxnode": null,
+          "fo1c_maxnode": null,
+          "shipped_maxdelta": 0.0,
+          "fo1c_maxdelta": 0.0,
+          "identical": true
+        },
+        {
+          "id": "J-2024-10-kachin-kia",
+          "shipped_reached": 8,
+          "fo1c_reached": 8,
+          "shipped_maxnode": "mineral:dysprosium",
+          "fo1c_maxnode": "mineral:dysprosium",
+          "shipped_maxdelta": 0.01840314010901134,
+          "fo1c_maxdelta": 0.01840314010901134,
+          "identical": true
+        },
+        {
+          "id": "J-2024-11-hynix-hbm",
+          "shipped_reached": 13,
+          "fo1c_reached": 13,
+          "shipped_maxnode": "company:sk_hynix",
+          "fo1c_maxnode": "company:sk_hynix",
+          "shipped_maxdelta": 0.06822459261741282,
+          "fo1c_maxdelta": 0.06822459261741282,
+          "identical": true
+        },
+        {
+          "id": "J-2024-12-china-gallium",
+          "shipped_reached": 17,
+          "fo1c_reached": 17,
+          "shipped_maxnode": "mineral:gallium",
+          "fo1c_maxnode": "mineral:gallium",
+          "shipped_maxdelta": 0.09084261456197462,
+          "fo1c_maxdelta": 0.09084261456197462,
+          "identical": true
+        },
+        {
+          "id": "J-2025-04-china-rees",
+          "shipped_reached": 7,
+          "fo1c_reached": 7,
+          "shipped_maxnode": "mineral:dysprosium",
+          "fo1c_maxnode": "mineral:dysprosium",
+          "shipped_maxdelta": 0.09109554353960558,
+          "fo1c_maxdelta": 0.09109554353960558,
+          "identical": true
+        },
+        {
+          "id": "J-2025-10-nexperia",
+          "shipped_reached": 0,
+          "fo1c_reached": 0,
+          "shipped_maxnode": null,
+          "fo1c_maxnode": null,
+          "shipped_maxdelta": 0.0,
+          "fo1c_maxdelta": 0.0,
+          "identical": true
+        }
+      ],
+      "all_identical": true
+    },
+    "row2_pj2": {
+      "shipped_fo1a_reached": 36,
+      "fo1c_reached": 0,
+      "fo1c_nulls": [
+        "country_region:china"
+      ]
+    },
+    "row3_china_rees": {
+      "reached": 7,
+      "max_delta_node": "mineral:dysprosium",
+      "max_delta": 0.09109554353960558
+    },
+    "row4_dysprosium": {
+      "contribution": 0.2079,
+      "hop": 1,
+      "path": [
+        "e:china-refines-dysprosium"
+      ]
+    },
+    "row5_ndfeb": {
+      "contribution": 0.11226599999999999,
+      "hop": 2,
+      "path": [
+        "e:china-refines-dysprosium",
+        "e:dy-input-ndfeb"
+      ],
+      "delta": 0.07405136248284494
+    },
+    "row6_china_gallium_reach": {
+      "cw1_reached": 17,
+      "cw0_reached": 16
+    },
+    "row7_microsoft": {
+      "contribution": 1.4657142779999993e-06,
+      "hop": 5,
+      "path": [
+        "e:china-mines-gallium",
+        "e:gallium-input-rf",
+        "e:rf-input-ge_vernova",
+        "e:gev-supplies-constellation",
+        "e:constellation-supplies-microsoft"
+      ]
+    },
+    "row8_constellation": {
+      "contribution": 0.0002442857129999999,
+      "hop": 4,
+      "path": [
+        "e:china-mines-gallium",
+        "e:gallium-input-rf",
+        "e:rf-input-ge_vernova",
+        "e:gev-supplies-constellation"
+      ]
+    },
+    "row9_rank_order": {
+      "J-2024-04-taiwan-quake": 5,
+      "J-2024-09-asml-export": 6,
+      "J-2024-10-kachin-kia": 4,
+      "J-2024-11-hynix-hbm": 3,
+      "J-2024-12-china-gallium": 2,
+      "J-2025-04-china-rees": 1,
+      "J-2025-10-nexperia": 7
+    },
+    "row10_rho": 0.8928571428571429,
+    "row11_termination": {
+      "max_hop_over_all_events": 5,
+      "max_hops_config": 6,
+      "all_within_bound": true
+    },
+    "row12_origin_hops": {
+      "all_hop_zero": false,
+      "non_zero": [
+        {
+          "event": "J-2024-12-china-gallium",
+          "origin": "mineral:gallium",
+          "hop": 1,
+          "scored": true
+        },
+        {
+          "event": "J-2025-04-china-rees",
+          "origin": "mineral:dysprosium",
+          "hop": 1,
+          "scored": true
+        }
+      ],
+      "unscored_origins_all_hop_zero_and_none": true
+    }
+  },
+  "z2_substitutability_sign_origins": [
+    {
+      "event": "J-2024-11-hynix-hbm",
+      "origin": "company:sk_hynix",
+      "substitutability_delta": 0.15,
+      "note": "shipped path passes -sub_delta (risk-positive); axes_for_severity's +sub_delta inversion is compensated at the call site, NOT live"
+    },
+    {
+      "event": "J-2024-11-hynix-hbm",
+      "origin": "product:hbm",
+      "substitutability_delta": 0.15,
+      "note": "shipped path passes -sub_delta (risk-positive); axes_for_severity's +sub_delta inversion is compensated at the call site, NOT live"
+    },
+    {
+      "event": "J-2024-12-china-gallium",
+      "origin": "mineral:gallium",
+      "substitutability_delta": 0.05,
+      "note": "shipped path passes -sub_delta (risk-positive); axes_for_severity's +sub_delta inversion is compensated at the call site, NOT live"
+    },
+    {
+      "event": "J-2025-04-china-rees",
+      "origin": "mineral:dysprosium",
+      "substitutability_delta": 0.1,
+      "note": "shipped path passes -sub_delta (risk-positive); axes_for_severity's +sub_delta inversion is compensated at the call site, NOT live"
+    }
+  ],
+  "z5_severity_diff": {
+    "J-2024-04-taiwan-quake": {
+      "n_nodes_changed": 15,
+      "n_tier_changed": 0,
+      "nodes": [
+        {
+          "node": "company:tsmc",
+          "delta_before": 0.012437469297011117,
+          "delta_after": 0.0031104690974581017,
+          "tier_before": "high",
+          "tier_after": "high",
+          "tier_changed": false
+        },
+        {
+          "node": "product:cowos_packaging",
+          "delta_before": 0.008877267085428076,
+          "delta_after": 0.002220103164052911,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amd",
+          "delta_before": 0.006147133987488007,
+          "delta_after": 0.001537328040730146,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:arm",
+          "delta_before": 0.0038126261453902133,
+          "delta_after": 0.0009534942778308408,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:broadcom",
+          "delta_before": 0.0033105313424680594,
+          "delta_after": 0.0008279260990327053,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:nvidia",
+          "delta_before": 0.002214547194430705,
+          "delta_after": 0.0005538329742686976,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "product:arm_core_ip",
+          "delta_before": 0.0019417195115359331,
+          "delta_after": 0.00048560188510499147,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:meta",
+          "delta_before": 0.0006272585701518896,
+          "delta_after": 0.000156870208237736,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:xai",
+          "delta_before": 0.0005795869188203184,
+          "delta_after": 0.00014494807241172136,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:openai",
+          "delta_before": 0.0005795869188203184,
+          "delta_after": 0.00014494807241172136,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amazon",
+          "delta_before": 0.0004181723801012227,
+          "delta_after": 0.00010458013882519435,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:google",
+          "delta_before": 0.0004181723801012227,
+          "delta_after": 0.00010458013882519435,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:microsoft",
+          "delta_before": 0.0004181723801012227,
+          "delta_after": 0.00010458013882519435,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:colossus",
+          "delta_before": 0.00034775215129212445,
+          "delta_after": 8.696884344705502e-05,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:stargate_abilene",
+          "delta_before": 0.00034775215129212445,
+          "delta_after": 8.696884344705502e-05,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        }
+      ]
+    },
+    "J-2024-09-asml-export": {
+      "n_nodes_changed": 0,
+      "n_tier_changed": 0,
+      "nodes": []
+    },
+    "J-2024-10-kachin-kia": {
+      "n_nodes_changed": 8,
+      "n_tier_changed": 0,
+      "nodes": [
+        {
+          "node": "mineral:dysprosium",
+          "delta_before": 0.0021486597849091904,
+          "delta_after": 0.01840314010901134,
+          "tier_before": "critical",
+          "tier_after": "critical",
+          "tier_changed": false
+        },
+        {
+          "node": "product:ndfeb_magnets",
+          "delta_before": 0.0017466407071323742,
+          "delta_after": 0.014959871208655606,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta_before": 0.00020425764902876065,
+          "delta_after": 0.005921331582261491,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:vertiv",
+          "delta_before": 0.00019975809922137544,
+          "delta_after": 0.0017109159456970835,
+          "tier_before": "none",
+          "tier_after": "none",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:colossus",
+          "delta_before": 0.00012710423190753772,
+          "delta_after": 0.001088639999999974,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:vantage_frontier",
+          "delta_before": 0.00012710423190753772,
+          "delta_after": 0.001088639999999974,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:stargate_abilene",
+          "delta_before": 0.00012710423190753772,
+          "delta_after": 0.001088639999999974,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:the_citadel",
+          "delta_before": 0.00012710423190753772,
+          "delta_after": 0.001088639999999974,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        }
+      ]
+    },
+    "J-2024-11-hynix-hbm": {
+      "n_nodes_changed": 13,
+      "n_tier_changed": 0,
+      "nodes": [
+        {
+          "node": "company:sk_hynix",
+          "delta_before": 0.009685417270165086,
+          "delta_after": 0.06822459261741282,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "product:hbm",
+          "delta_before": 0.010515051375015905,
+          "delta_after": 0.03627601748584347,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:nvidia",
+          "delta_before": 0.0007589560561525044,
+          "delta_after": 0.005346126687285402,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amd",
+          "delta_before": 0.0010150447162604603,
+          "delta_after": 0.0035018164498432647,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:xai",
+          "delta_before": 0.00019863248036067205,
+          "delta_after": 0.001399177719986766,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:openai",
+          "delta_before": 0.00019863248036067205,
+          "delta_after": 0.001399177719986766,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:broadcom",
+          "delta_before": 0.00033834823875344977,
+          "delta_after": 0.0011672721499477179,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:colossus",
+          "delta_before": 0.00011917948821638102,
+          "delta_after": 0.0008395066319920597,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:stargate_abilene",
+          "delta_before": 0.00011917948821638102,
+          "delta_after": 0.0008395066319920597,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:meta",
+          "delta_before": 0.00016240715460169586,
+          "delta_after": 0.0005602906319749357,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:google",
+          "delta_before": 0.0001353392955013577,
+          "delta_after": 0.00046690885997913156,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amazon",
+          "delta_before": 0.00010827143640113057,
+          "delta_after": 0.00037352708798332745,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:microsoft",
+          "delta_before": 0.00010827143640113057,
+          "delta_after": 0.00037352708798332745,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        }
+      ]
+    },
+    "J-2024-12-china-gallium": {
+      "n_nodes_changed": 36,
+      "n_tier_changed": 0,
+      "nodes": [
+        {
+          "node": "mineral:neodymium",
+          "delta_before": 0.0478522693917488,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta_before": 0.03222309058053752,
+          "delta_after": 0.0,
+          "tier_before": "critical",
+          "tier_after": "critical",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:indium",
+          "delta_before": 0.029873912679228967,
+          "delta_after": 0.0,
+          "tier_before": "none",
+          "tier_after": "none",
+          "tier_changed": false
+        },
+        {
+          "node": "product:ndfeb_magnets",
+          "delta_before": 0.02619407786792005,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:gallium",
+          "delta_before": 0.07495411947574793,
+          "delta_after": 0.09084261456197462,
+          "tier_before": "critical",
+          "tier_after": "critical",
+          "tier_changed": false
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta_before": 0.056308206921784176,
+          "delta_after": 0.06824421090993671,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:copper",
+          "delta_before": 0.004746489680597654,
+          "delta_after": 0.0,
+          "tier_before": "critical",
+          "tier_after": "critical",
+          "tier_changed": false
+        },
+        {
+          "node": "company:sk_hynix",
+          "delta_before": 0.002377255794297095,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:micron",
+          "delta_before": 0.002198182330311299,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:colossus",
+          "delta_before": 0.001906160857429895,
+          "delta_after": 0.00036190475999997584,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:vantage_frontier",
+          "delta_before": 0.001906160857429895,
+          "delta_after": 0.00036190475999997584,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:stargate_abilene",
+          "delta_before": 0.001906160857429895,
+          "delta_after": 0.00036190475999997584,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:the_citadel",
+          "delta_before": 0.001906160857429895,
+          "delta_after": 0.0005428571400000193,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:quanta_services",
+          "delta_before": 0.0008462359160969629,
+          "delta_after": 0.0,
+          "tier_before": "none",
+          "tier_after": "none",
+          "tier_changed": false
+        },
+        {
+          "node": "company:ge_vernova",
+          "delta_before": 0.003392099432290907,
+          "delta_after": 0.0041111440363620355,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:tsmc",
+          "delta_before": 0.0006905024545946215,
+          "delta_after": 0.0,
+          "tier_before": "high",
+          "tier_after": "high",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amd",
+          "delta_before": 0.00034127610735912306,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:vertiv",
+          "delta_before": 0.001589142098344959,
+          "delta_after": 0.0019260025217275045,
+          "tier_before": "none",
+          "tier_after": "none",
+          "tier_changed": false
+        },
+        {
+          "node": "company:broadcom",
+          "delta_before": 0.0011849489374754496,
+          "delta_after": 0.00143612999999998,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:arm",
+          "delta_before": 0.000211669082268634,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:nextera_energy",
+          "delta_before": 8.125621603782829e-05,
+          "delta_after": 0.00027142856999995413,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:siemens_energy",
+          "delta_before": 0.0015458635159630862,
+          "delta_after": 0.0013770155491280578,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:duke_energy",
+          "delta_before": 9.479891871089219e-05,
+          "delta_after": 0.0002533333319999498,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:constellation_energy",
+          "delta_before": 9.141324304262621e-05,
+          "delta_after": 0.0002442857129999476,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:samsung",
+          "delta_before": 0.00013131551814932196,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:nvidia",
+          "delta_before": 0.00012294705916882087,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "product:arm_core_ip",
+          "delta_before": 0.00010780023305639874,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:three_mile_island",
+          "delta_before": 5.4847945825553523e-05,
+          "delta_after": 0.00014657142779994636,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "product:hbm",
+          "delta_before": 5.081343106366765e-05,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:xai",
+          "delta_before": 3.217746155104173e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:openai",
+          "delta_before": 3.217746155104173e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "product:cowos_packaging",
+          "delta_before": 3.085335961755531e-05,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amazon",
+          "delta_before": 2.3216061725062076e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:microsoft",
+          "delta_before": 2.3216061725062076e-05,
+          "delta_after": 1.4657142779483934e-06,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:meta",
+          "delta_before": 3.4824092587704136e-05,
+          "delta_after": 1.9387754999988793e-05,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:google",
+          "delta_before": 2.3216061725062076e-05,
+          "delta_after": 1.7233560000051718e-05,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        }
+      ]
+    },
+    "J-2025-04-china-rees": {
+      "n_nodes_changed": 36,
+      "n_tier_changed": 1,
+      "nodes": [
+        {
+          "node": "mineral:gallium",
+          "delta_before": 0.06661547103362209,
+          "delta_after": 0.0,
+          "tier_before": "critical",
+          "tier_after": "high",
+          "tier_changed": true
+        },
+        {
+          "node": "mineral:neodymium",
+          "delta_before": 0.055827647623706844,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "product:rf_power_semis",
+          "delta_before": 0.05004391691062393,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:indium",
+          "delta_before": 0.034852898125767154,
+          "delta_after": 0.0,
+          "tier_before": "none",
+          "tier_after": "none",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:copper",
+          "delta_before": 0.005537571294030652,
+          "delta_after": 0.0,
+          "tier_before": "critical",
+          "tier_after": "critical",
+          "tier_changed": false
+        },
+        {
+          "node": "mineral:dysprosium",
+          "delta_before": 0.08616196799733611,
+          "delta_after": 0.09109554353960558,
+          "tier_before": "critical",
+          "tier_after": "critical",
+          "tier_changed": false
+        },
+        {
+          "node": "product:ndfeb_magnets",
+          "delta_before": 0.07004087001942105,
+          "delta_after": 0.07405136248284494,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:sk_hynix",
+          "delta_before": 0.002773465093346583,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:micron",
+          "delta_before": 0.002564546052029909,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:siemens_energy",
+          "delta_before": 0.0018035074352902303,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:ge_vernova",
+          "delta_before": 0.0017948184733819206,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:broadcom",
+          "delta_before": 0.0010531233262803807,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:quanta_services",
+          "delta_before": 0.0009872752354464637,
+          "delta_after": 0.0,
+          "tier_before": "none",
+          "tier_after": "none",
+          "tier_changed": false
+        },
+        {
+          "node": "company:tsmc",
+          "delta_before": 0.0008055861970270306,
+          "delta_after": 0.0,
+          "tier_before": "high",
+          "tier_after": "high",
+          "tier_changed": false
+        },
+        {
+          "node": "company:vertiv",
+          "delta_before": 0.008010365844418638,
+          "delta_after": 0.008469033931200048,
+          "tier_before": "none",
+          "tier_after": "none",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amd",
+          "delta_before": 0.00039815545858556955,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:colossus",
+          "delta_before": 0.005096921736453597,
+          "delta_after": 0.005388767999999988,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:vantage_frontier",
+          "delta_before": 0.005096921736453597,
+          "delta_after": 0.005388767999999988,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:stargate_abilene",
+          "delta_before": 0.005096921736453597,
+          "delta_after": 0.005388767999999988,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:the_citadel",
+          "delta_before": 0.005096921736453597,
+          "delta_after": 0.005388767999999988,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:arm",
+          "delta_before": 0.0002469472626468183,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:samsung",
+          "delta_before": 0.00015320143784086637,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:nvidia",
+          "delta_before": 0.00014343823569695768,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "product:arm_core_ip",
+          "delta_before": 0.0001257669385658633,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "company:duke_energy",
+          "delta_before": 0.00011059873849594837,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:constellation_energy",
+          "delta_before": 0.00010664878354971208,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:nextera_energy",
+          "delta_before": 9.479891871089219e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "facility:three_mile_island",
+          "delta_before": 6.398927012984945e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:meta",
+          "delta_before": 4.0628108018969655e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:xai",
+          "delta_before": 3.754037180947467e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:openai",
+          "delta_before": 3.754037180947467e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:amazon",
+          "delta_before": 2.7085405345905755e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:google",
+          "delta_before": 2.7085405345905755e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "company:microsoft",
+          "delta_before": 2.7085405345905755e-05,
+          "delta_after": 0.0,
+          "tier_before": "unscored",
+          "tier_after": "unscored",
+          "tier_changed": false
+        },
+        {
+          "node": "product:hbm",
+          "delta_before": 1.70454254556085e-05,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        },
+        {
+          "node": "product:cowos_packaging",
+          "delta_before": 4.3004692180104165e-06,
+          "delta_after": 0.0,
+          "tier_before": "moderate",
+          "tier_after": "moderate",
+          "tier_changed": false
+        }
+      ]
+    },
+    "J-2025-10-nexperia": {
+      "n_nodes_changed": 0,
+      "n_tier_changed": 0,
+      "nodes": []
+    }
+  }
+}

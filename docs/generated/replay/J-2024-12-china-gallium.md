@@ -9,7 +9,7 @@
 - `mineral:gallium` (mineral, Gallium) — SCORED origin; baseline_severity=0.488, baseline_tier=high
 - `country_region:usa` (country_region, United States) — UNSCORED origin; baseline_severity=∅, baseline_tier=unscored
 
-**Origin scale** (event severity attributed to strongest origin): `0.189`
+**Origin scale** (event severity attributed to strongest origin): `0.300`
 
 **Origin scored?** `True` — walk seeded from baseline_severity × magnitude × confidence
 
@@ -23,63 +23,44 @@ Every node touched by this event's walk, in order (hop, then severity descending
 
 | node_id | hop | contrib | before | after | Δ | tier |
 |---|---|---|---|---|---|---|
-| country_region:china | 0 | 0.189 | ∅ | ∅ | +0.000 | — |
-| mineral:gallium | 0 | 0.146 | 0.488 | 0.563 | +0.075 | high → critical |
-| country_region:usa | 0 | 0.020 | ∅ | ∅ | +0.000 | — |
-| product:rf_power_semis | 1 | 0.079 | 0.287 | 0.344 | +0.056 | — |
-| mineral:dysprosium | 1 | 0.074 | 0.562 | 0.594 | +0.032 | — |
-| mineral:neodymium | 1 | 0.068 | 0.295 | 0.343 | +0.048 | — |
-| mineral:indium | 1 | 0.034 | 0.120 | 0.150 | +0.030 | — |
-| mineral:copper | 1 | 0.011 | 0.580 | 0.585 | +0.005 | — |
-| product:ndfeb_magnets | 2 | 0.040 | 0.340 | 0.367 | +0.026 | — |
-| company:ge_vernova | 2 | 0.005 | 0.318 | 0.322 | +0.003 | — |
-| company:sk_hynix | 2 | 0.003 | 0.263 | 0.265 | +0.002 | — |
-| company:micron | 2 | 0.003 | 0.243 | 0.245 | +0.002 | — |
-| company:siemens_energy | 2 | 0.002 | 0.315 | 0.317 | +0.002 | — |
-| company:vertiv | 2 | 0.002 | 0.069 | 0.070 | +0.002 | — |
-| company:tsmc | 2 | 0.001 | 0.465 | 0.465 | +0.001 | — |
-| company:broadcom | 2 | 0.001 | ∅ | 0.001 | +0.001 | — |
-| company:quanta_services | 2 | 0.001 | 0.077 | 0.077 | +0.001 | — |
-| company:samsung | 2 | 0.000 | 0.284 | 0.284 | +0.000 | — |
-| facility:colossus | 3 | 0.002 | ∅ | 0.002 | +0.002 | — |
-| facility:stargate_abilene | 3 | 0.002 | ∅ | 0.002 | +0.002 | — |
-| facility:vantage_frontier | 3 | 0.002 | ∅ | 0.002 | +0.002 | — |
-| facility:the_citadel | 3 | 0.002 | ∅ | 0.002 | +0.002 | — |
-| company:amd | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:arm | 3 | 0.000 | 0.211 | 0.211 | +0.000 | — |
-| company:nvidia | 3 | 0.000 | 0.358 | 0.358 | +0.000 | — |
-| company:duke_energy | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:constellation_energy | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:nextera_energy | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| product:hbm | 3 | 0.000 | 0.301 | 0.301 | +0.000 | — |
-| product:cowos_packaging | 3 | 0.000 | 0.330 | 0.330 | +0.000 | — |
-| company:meta | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:google | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:amazon | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:microsoft | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| product:arm_core_ip | 4 | 0.000 | 0.330 | 0.330 | +0.000 | — |
-| facility:three_mile_island | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:xai | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| company:openai | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| country_region:china | 0 | 0.300 | ∅ | ∅ | +0.000 | — |
+| country_region:usa | 0 | 0.210 | ∅ | ∅ | +0.000 | — |
+| mineral:gallium | 1 | 0.177 | 0.488 | 0.578 | +0.091 | high → critical |
+| product:rf_power_semis | 2 | 0.096 | 0.287 | 0.355 | +0.068 | — |
+| company:ge_vernova | 3 | 0.006 | 0.318 | 0.323 | +0.004 | — |
+| company:vertiv | 3 | 0.002 | 0.069 | 0.071 | +0.002 | — |
+| company:siemens_energy | 3 | 0.002 | 0.315 | 0.316 | +0.001 | — |
+| company:broadcom | 3 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| facility:the_citadel | 4 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| facility:colossus | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| facility:stargate_abilene | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| facility:vantage_frontier | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| company:nextera_energy | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| company:duke_energy | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| company:constellation_energy | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| company:meta | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| company:google | 4 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| facility:three_mile_island | 5 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| company:microsoft | 5 | 0.000 | ∅ | 0.000 | +0.000 | — |
 
 ## Top-10 most-affected nodes by delta
 
 | node_id | type | before | after | Δ | tier |
 |---|---|---|---|---|---|
-| mineral:gallium | mineral | 0.488 | 0.563 | +0.075 | high → critical |
-| product:rf_power_semis | product | 0.287 | 0.344 | +0.056 | — |
-| mineral:neodymium | mineral | 0.295 | 0.343 | +0.048 | — |
-| mineral:dysprosium | mineral | 0.562 | 0.594 | +0.032 | — |
-| mineral:indium | mineral | 0.120 | 0.150 | +0.030 | — |
-| product:ndfeb_magnets | product | 0.340 | 0.367 | +0.026 | — |
-| mineral:copper | mineral | 0.580 | 0.585 | +0.005 | — |
-| company:ge_vernova | company | 0.318 | 0.322 | +0.003 | — |
-| company:sk_hynix | company | 0.263 | 0.265 | +0.002 | — |
-| company:micron | company | 0.243 | 0.245 | +0.002 | — |
+| mineral:gallium | mineral | 0.488 | 0.578 | +0.091 | high → critical |
+| product:rf_power_semis | product | 0.287 | 0.355 | +0.068 | — |
+| company:ge_vernova | company | 0.318 | 0.323 | +0.004 | — |
+| company:vertiv | company | 0.069 | 0.071 | +0.002 | — |
+| company:broadcom | company | ∅ | 0.001 | +0.001 | — |
+| company:siemens_energy | company | 0.315 | 0.316 | +0.001 | — |
+| facility:the_citadel | facility | ∅ | 0.001 | +0.001 | — |
+| facility:colossus | facility | ∅ | 0.000 | +0.000 | — |
+| facility:stargate_abilene | facility | ∅ | 0.000 | +0.000 | — |
+| facility:vantage_frontier | facility | ∅ | 0.000 | +0.000 | — |
 
 ## Propagation path for top-3
 
-- **`mineral:gallium`** — edges: `(origin)`
-- **`product:rf_power_semis`** — edges: `e:gallium-input-rf`
-- **`mineral:neodymium`** — edges: `e:china-mines-neodymium`
+- **`mineral:gallium`** — edges: `e:china-mines-gallium`
+- **`product:rf_power_semis`** — edges: `e:china-mines-gallium → e:gallium-input-rf`
+- **`company:ge_vernova`** — edges: `e:china-mines-gallium → e:gallium-input-rf → e:rf-input-ge_vernova`
 

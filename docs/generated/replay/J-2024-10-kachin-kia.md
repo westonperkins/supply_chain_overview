@@ -8,7 +8,7 @@
 - `country_region:kachin` (country_region, Kachin State) — UNSCORED origin; baseline_severity=∅, baseline_tier=unscored
 - `country_region:myanmar` (country_region, Myanmar) — UNSCORED origin; baseline_severity=∅, baseline_tier=unscored
 
-**Origin scale** (event severity attributed to strongest origin): `0.023`
+**Origin scale** (event severity attributed to strongest origin): `0.200`
 
 **Origin scored?** `False` — walk seeded from concentration × magnitude × confidence (see Pass D §4)
 
@@ -22,29 +22,29 @@ Every node touched by this event's walk, in order (hop, then severity descending
 
 | node_id | hop | contrib | before | after | Δ | tier |
 |---|---|---|---|---|---|---|
-| country_region:kachin | 0 | 0.023 | ∅ | ∅ | +0.000 | — |
-| country_region:myanmar | 0 | 0.005 | ∅ | ∅ | +0.000 | — |
-| mineral:dysprosium | 1 | 0.005 | 0.562 | 0.564 | +0.002 | — |
-| mineral:neodymium | 1 | 0.000 | 0.295 | 0.295 | +0.000 | — |
-| product:ndfeb_magnets | 2 | 0.003 | 0.340 | 0.342 | +0.002 | — |
-| company:vertiv | 3 | 0.000 | 0.069 | 0.069 | +0.000 | — |
-| facility:colossus | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| facility:stargate_abilene | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| facility:vantage_frontier | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| facility:the_citadel | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| country_region:kachin | 0 | 0.200 | ∅ | ∅ | +0.000 | — |
+| country_region:myanmar | 0 | 0.140 | ∅ | ∅ | +0.000 | — |
+| mineral:dysprosium | 1 | 0.042 | 0.562 | 0.580 | +0.018 | — |
+| mineral:neodymium | 1 | 0.008 | 0.295 | 0.301 | +0.006 | — |
+| product:ndfeb_magnets | 2 | 0.023 | 0.340 | 0.355 | +0.015 | — |
+| company:vertiv | 3 | 0.002 | 0.069 | 0.070 | +0.002 | — |
+| facility:colossus | 3 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| facility:stargate_abilene | 3 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| facility:vantage_frontier | 3 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| facility:the_citadel | 3 | 0.001 | ∅ | 0.001 | +0.001 | — |
 
 ## Top-10 most-affected nodes by delta
 
 | node_id | type | before | after | Δ | tier |
 |---|---|---|---|---|---|
-| mineral:dysprosium | mineral | 0.562 | 0.564 | +0.002 | — |
-| product:ndfeb_magnets | product | 0.340 | 0.342 | +0.002 | — |
-| mineral:neodymium | mineral | 0.295 | 0.295 | +0.000 | — |
-| company:vertiv | company | 0.069 | 0.069 | +0.000 | — |
-| facility:colossus | facility | ∅ | 0.000 | +0.000 | — |
-| facility:stargate_abilene | facility | ∅ | 0.000 | +0.000 | — |
-| facility:vantage_frontier | facility | ∅ | 0.000 | +0.000 | — |
-| facility:the_citadel | facility | ∅ | 0.000 | +0.000 | — |
+| mineral:dysprosium | mineral | 0.562 | 0.580 | +0.018 | — |
+| product:ndfeb_magnets | product | 0.340 | 0.355 | +0.015 | — |
+| mineral:neodymium | mineral | 0.295 | 0.301 | +0.006 | — |
+| company:vertiv | company | 0.069 | 0.070 | +0.002 | — |
+| facility:colossus | facility | ∅ | 0.001 | +0.001 | — |
+| facility:stargate_abilene | facility | ∅ | 0.001 | +0.001 | — |
+| facility:vantage_frontier | facility | ∅ | 0.001 | +0.001 | — |
+| facility:the_citadel | facility | ∅ | 0.001 | +0.001 | — |
 
 ## Propagation path for top-3
 

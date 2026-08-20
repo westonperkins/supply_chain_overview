@@ -8,7 +8,7 @@
 - `company:tsmc` (company, TSMC) — SCORED origin; baseline_severity=0.465, baseline_tier=high
 - `country_region:taiwan` (country_region, Taiwan) — UNSCORED origin; baseline_severity=∅, baseline_tier=unscored
 
-**Origin scale** (event severity attributed to strongest origin): `0.023`
+**Origin scale** (event severity attributed to strongest origin): `0.050`
 
 **Origin scored?** `True` — walk seeded from baseline_severity × magnitude × confidence
 
@@ -22,20 +22,20 @@ Every node touched by this event's walk, in order (hop, then severity descending
 
 | node_id | hop | contrib | before | after | Δ | tier |
 |---|---|---|---|---|---|---|
-| company:tsmc | 0 | 0.023 | 0.465 | 0.477 | +0.012 | — |
-| country_region:taiwan | 0 | 0.000 | ∅ | ∅ | +0.000 | — |
-| product:cowos_packaging | 1 | 0.013 | 0.330 | 0.338 | +0.009 | — |
-| company:amd | 1 | 0.006 | ∅ | 0.006 | +0.006 | — |
-| company:arm | 1 | 0.005 | 0.211 | 0.214 | +0.004 | — |
-| company:nvidia | 1 | 0.003 | 0.358 | 0.360 | +0.002 | — |
-| company:broadcom | 1 | 0.003 | ∅ | 0.003 | +0.003 | — |
-| company:meta | 1 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| country_region:taiwan | 0 | 0.050 | ∅ | ∅ | +0.000 | — |
+| company:tsmc | 0 | 0.006 | 0.465 | 0.468 | +0.003 | — |
+| product:cowos_packaging | 1 | 0.003 | 0.330 | 0.332 | +0.002 | — |
+| company:amd | 1 | 0.002 | ∅ | 0.002 | +0.002 | — |
+| company:arm | 1 | 0.001 | 0.211 | 0.212 | +0.001 | — |
+| company:nvidia | 1 | 0.001 | 0.358 | 0.359 | +0.001 | — |
+| company:broadcom | 1 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| company:meta | 1 | 0.000 | ∅ | 0.000 | +0.000 | — |
 | company:google | 1 | 0.000 | ∅ | 0.000 | +0.000 | — |
 | company:amazon | 1 | 0.000 | ∅ | 0.000 | +0.000 | — |
 | company:microsoft | 1 | 0.000 | ∅ | 0.000 | +0.000 | — |
-| product:arm_core_ip | 2 | 0.003 | 0.330 | 0.332 | +0.002 | — |
-| company:xai | 2 | 0.001 | ∅ | 0.001 | +0.001 | — |
-| company:openai | 2 | 0.001 | ∅ | 0.001 | +0.001 | — |
+| product:arm_core_ip | 2 | 0.001 | 0.330 | 0.330 | +0.000 | — |
+| company:xai | 2 | 0.000 | ∅ | 0.000 | +0.000 | — |
+| company:openai | 2 | 0.000 | ∅ | 0.000 | +0.000 | — |
 | facility:colossus | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
 | facility:stargate_abilene | 3 | 0.000 | ∅ | 0.000 | +0.000 | — |
 
@@ -43,16 +43,16 @@ Every node touched by this event's walk, in order (hop, then severity descending
 
 | node_id | type | before | after | Δ | tier |
 |---|---|---|---|---|---|
-| company:tsmc | company | 0.465 | 0.477 | +0.012 | — |
-| product:cowos_packaging | product | 0.330 | 0.338 | +0.009 | — |
-| company:amd | company | ∅ | 0.006 | +0.006 | — |
-| company:arm | company | 0.211 | 0.214 | +0.004 | — |
-| company:broadcom | company | ∅ | 0.003 | +0.003 | — |
-| company:nvidia | company | 0.358 | 0.360 | +0.002 | — |
-| product:arm_core_ip | product | 0.330 | 0.332 | +0.002 | — |
-| company:meta | company | ∅ | 0.001 | +0.001 | — |
-| company:xai | company | ∅ | 0.001 | +0.001 | — |
-| company:openai | company | ∅ | 0.001 | +0.001 | — |
+| company:tsmc | company | 0.465 | 0.468 | +0.003 | — |
+| product:cowos_packaging | product | 0.330 | 0.332 | +0.002 | — |
+| company:amd | company | ∅ | 0.002 | +0.002 | — |
+| company:arm | company | 0.211 | 0.212 | +0.001 | — |
+| company:broadcom | company | ∅ | 0.001 | +0.001 | — |
+| company:nvidia | company | 0.358 | 0.359 | +0.001 | — |
+| product:arm_core_ip | product | 0.330 | 0.330 | +0.000 | — |
+| company:meta | company | ∅ | 0.000 | +0.000 | — |
+| company:xai | company | ∅ | 0.000 | +0.000 | — |
+| company:openai | company | ∅ | 0.000 | +0.000 | — |
 
 ## Propagation path for top-3
 
