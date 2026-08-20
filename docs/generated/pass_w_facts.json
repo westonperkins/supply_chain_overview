@@ -1,0 +1,650 @@
+{
+  "conventions": {
+    "substitutability_sign": "risk_positive",
+    "lead_time_delta_unit": "years"
+  },
+  "ma0_validation_mismatches": [],
+  "observed_ordinal": {
+    "J-2024-04-taiwan-quake": 5,
+    "J-2024-09-asml-export": 6,
+    "J-2024-10-kachin-kia": 4,
+    "J-2024-11-hynix-hbm": 1,
+    "J-2024-12-china-gallium": 3,
+    "J-2025-04-china-rees": 2,
+    "J-2025-10-nexperia": 7
+  },
+  "candidates": {
+    "MA-0": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "origin_contribution": 0.02323179889451249,
+        "nodes_reached": 15,
+        "max_delta": 0.012437469297011117,
+        "max_delta_node": "company:tsmc",
+        "tier_changes": 0,
+        "origin_scale": 0.02323179889451249,
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "origin_contribution": 0.023351012622646064,
+        "nodes_reached": 8,
+        "max_delta": 0.0021486597849091904,
+        "max_delta_node": "mineral:dysprosium",
+        "tier_changes": 0,
+        "origin_scale": 0.023351012622646064,
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "origin_contribution": 0.015037699500155209,
+        "nodes_reached": 13,
+        "max_delta": 0.010515051375015905,
+        "max_delta_node": "product:hbm",
+        "tier_changes": 0,
+        "origin_scale": 0.015037699500155209,
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "origin_contribution": 0.18856450394012628,
+        "nodes_reached": 36,
+        "max_delta": 0.07495411947574793,
+        "max_delta_node": "mineral:gallium",
+        "tier_changes": 1,
+        "origin_scale": 0.18856450394012628,
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "origin_contribution": 0.21999192126348063,
+        "nodes_reached": 36,
+        "max_delta": 0.08616196799733611,
+        "max_delta_node": "mineral:dysprosium",
+        "tier_changes": 1,
+        "origin_scale": 0.21999192126348063,
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 7
+      }
+    ],
+    "MA-1": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "origin_contribution": 0.05,
+        "nodes_reached": 15,
+        "max_delta": 0.0031104690974581017,
+        "max_delta_node": "company:tsmc",
+        "tier_changes": 0,
+        "origin_scale": 0.05,
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "origin_contribution": 0.2,
+        "nodes_reached": 8,
+        "max_delta": 0.01840314010901134,
+        "max_delta_node": "mineral:dysprosium",
+        "tier_changes": 0,
+        "origin_scale": 0.2,
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "origin_contribution": 0.09253820899383675,
+        "nodes_reached": 13,
+        "max_delta": 0.06822459261741282,
+        "max_delta_node": "company:sk_hynix",
+        "tier_changes": 0,
+        "origin_scale": 0.09253820899383675,
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "origin_contribution": 0.30000000000000004,
+        "nodes_reached": 36,
+        "max_delta": 0.09084261456197462,
+        "max_delta_node": "mineral:gallium",
+        "tier_changes": 2,
+        "origin_scale": 0.30000000000000004,
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "origin_contribution": 0.35,
+        "nodes_reached": 36,
+        "max_delta": 0.1059830503223037,
+        "max_delta_node": "mineral:gallium",
+        "tier_changes": 2,
+        "origin_scale": 0.35,
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 7
+      }
+    ],
+    "MA-1b": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "origin_contribution": 0.05,
+        "nodes_reached": 15,
+        "max_delta": 0.0007416673441132393,
+        "max_delta_node": "company:tsmc",
+        "tier_changes": 0,
+        "origin_scale": 0.05,
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "origin_contribution": 0.17664898737735396,
+        "nodes_reached": 8,
+        "max_delta": 0.016254480324101928,
+        "max_delta_node": "mineral:dysprosium",
+        "tier_changes": 0,
+        "origin_scale": 0.17664898737735396,
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "origin_contribution": 0.0756624287000553,
+        "nodes_reached": 13,
+        "max_delta": 0.055782778061428895,
+        "max_delta_node": "company:sk_hynix",
+        "tier_changes": 0,
+        "origin_scale": 0.0756624287000553,
+        "model_rank": 1
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "origin_contribution": 0.19032572841060924,
+        "nodes_reached": 36,
+        "max_delta": 0.03374363939029845,
+        "max_delta_node": "mineral:gallium",
+        "tier_changes": 0,
+        "origin_scale": 0.19032572841060924,
+        "model_rank": 3
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "origin_contribution": 0.13000807873651932,
+        "nodes_reached": 36,
+        "max_delta": 0.03936757928868151,
+        "max_delta_node": "mineral:gallium",
+        "tier_changes": 1,
+        "origin_scale": 0.13000807873651932,
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 7
+      }
+    ],
+    "MA-2": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "origin_contribution": 0.05,
+        "nodes_reached": 15,
+        "max_delta": 0.007125000000000048,
+        "max_delta_node": "company:broadcom",
+        "tier_changes": 0,
+        "origin_scale": 0.05,
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "origin_contribution": 0.2,
+        "nodes_reached": 8,
+        "max_delta": 0.001267113571726708,
+        "max_delta_node": "mineral:neodymium",
+        "tier_changes": 0,
+        "origin_scale": 0.2,
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "origin_contribution": 0.09253820899383675,
+        "nodes_reached": 13,
+        "max_delta": 0.06822459261741282,
+        "max_delta_node": "company:sk_hynix",
+        "tier_changes": 0,
+        "origin_scale": 0.09253820899383675,
+        "model_rank": 1
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "origin_contribution": 0.30000000000000004,
+        "nodes_reached": 36,
+        "max_delta": 0.023951252759390695,
+        "max_delta_node": "product:rf_power_semis",
+        "tier_changes": 0,
+        "origin_scale": 0.30000000000000004,
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "origin_contribution": 0.35,
+        "nodes_reached": 36,
+        "max_delta": 0.021914680700922284,
+        "max_delta_node": "mineral:gallium",
+        "tier_changes": 0,
+        "origin_scale": 0.35,
+        "model_rank": 3
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 7
+      }
+    ],
+    "MA-3": [
+      {
+        "id": "J-2024-04-taiwan-quake",
+        "origin_contribution": 0.02591464218709855,
+        "nodes_reached": 15,
+        "max_delta": 0.013873767072820231,
+        "max_delta_node": "company:tsmc",
+        "tier_changes": 0,
+        "origin_scale": 0.02591464218709855,
+        "model_rank": 4
+      },
+      {
+        "id": "J-2024-09-asml-export",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 6
+      },
+      {
+        "id": "J-2024-10-kachin-kia",
+        "origin_contribution": 0.026083392324358613,
+        "nodes_reached": 8,
+        "max_delta": 0.0024000816173174178,
+        "max_delta_node": "mineral:dysprosium",
+        "tier_changes": 0,
+        "origin_scale": 0.026083392324358613,
+        "model_rank": 5
+      },
+      {
+        "id": "J-2024-11-hynix-hbm",
+        "origin_contribution": 0.07452828605925722,
+        "nodes_reached": 13,
+        "max_delta": 0.05211360665884296,
+        "max_delta_node": "product:hbm",
+        "tier_changes": 0,
+        "origin_scale": 0.07452828605925722,
+        "model_rank": 3
+      },
+      {
+        "id": "J-2024-12-china-gallium",
+        "origin_contribution": 0.22849390345635928,
+        "nodes_reached": 36,
+        "max_delta": 0.09082599843174122,
+        "max_delta_node": "mineral:gallium",
+        "tier_changes": 1,
+        "origin_scale": 0.22849390345635928,
+        "model_rank": 2
+      },
+      {
+        "id": "J-2025-04-china-rees",
+        "origin_contribution": 0.28142392742157313,
+        "nodes_reached": 36,
+        "max_delta": 0.11022240857263454,
+        "max_delta_node": "mineral:dysprosium",
+        "tier_changes": 3,
+        "origin_scale": 0.28142392742157313,
+        "model_rank": 1
+      },
+      {
+        "id": "J-2025-10-nexperia",
+        "origin_contribution": 0.0,
+        "nodes_reached": 0,
+        "max_delta": 0.0,
+        "max_delta_node": null,
+        "tier_changes": 0,
+        "origin_scale": 0.0,
+        "model_rank": 7
+      }
+    ]
+  },
+  "spearman": {
+    "MA-0": 0.7142857142857143,
+    "MA-1": 0.8928571428571429,
+    "MA-1b": 1.0,
+    "MA-2": 0.9285714285714286,
+    "MA-3": 0.8571428571428572
+  },
+  "rank_displacement": {
+    "MA-0": {
+      "J-2024-04-taiwan-quake": -2,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 3,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "MA-1": {
+      "J-2024-04-taiwan-quake": 0,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 0,
+      "J-2024-11-hynix-hbm": 2,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    },
+    "MA-1b": {
+      "J-2024-04-taiwan-quake": 0,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 0,
+      "J-2024-11-hynix-hbm": 0,
+      "J-2024-12-china-gallium": 0,
+      "J-2025-04-china-rees": 0,
+      "J-2025-10-nexperia": 0
+    },
+    "MA-2": {
+      "J-2024-04-taiwan-quake": -1,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 0,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": 1,
+      "J-2025-10-nexperia": 0
+    },
+    "MA-3": {
+      "J-2024-04-taiwan-quake": -1,
+      "J-2024-09-asml-export": 0,
+      "J-2024-10-kachin-kia": 1,
+      "J-2024-11-hynix-hbm": 2,
+      "J-2024-12-china-gallium": -1,
+      "J-2025-04-china-rees": -1,
+      "J-2025-10-nexperia": 0
+    }
+  },
+  "saturation": [
+    {
+      "event": "J-2024-04-taiwan-quake",
+      "node": "company:tsmc",
+      "concentration": 0.99009975,
+      "concentration_delta": 0.05,
+      "conc_after_flat": 1.0,
+      "effective_move_flat": 0.009900250000000055,
+      "lost_to_clamp_flat": 0.04009974999999999,
+      "conc_after_headroom": 0.9905947625,
+      "effective_move_headroom": 0.0004950125000000583
+    },
+    {
+      "event": "J-2024-04-taiwan-quake",
+      "node": "country_region:taiwan",
+      "concentration": 0.0,
+      "concentration_delta": 0.05,
+      "conc_after_flat": 0.05,
+      "effective_move_flat": 0.05,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.05,
+      "effective_move_headroom": 0.05
+    },
+    {
+      "event": "J-2024-09-asml-export",
+      "node": "company:asml",
+      "concentration": 0.7083907938690339,
+      "concentration_delta": 0.0,
+      "conc_after_flat": 0.7083907938690339,
+      "effective_move_flat": 0.0,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.7083907938690339,
+      "effective_move_headroom": 0.0
+    },
+    {
+      "event": "J-2024-09-asml-export",
+      "node": "country_region:netherlands",
+      "concentration": 0.0,
+      "concentration_delta": 0.0,
+      "conc_after_flat": 0.0,
+      "effective_move_flat": 0.0,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.0,
+      "effective_move_headroom": 0.0
+    },
+    {
+      "event": "J-2024-10-kachin-kia",
+      "node": "country_region:kachin",
+      "concentration": 0.11675506311323032,
+      "concentration_delta": 0.2,
+      "conc_after_flat": 0.3167550631132303,
+      "effective_move_flat": 0.2,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.29340405049058427,
+      "effective_move_headroom": 0.17664898737735396
+    },
+    {
+      "event": "J-2024-10-kachin-kia",
+      "node": "country_region:myanmar",
+      "concentration": 0.03449522226395997,
+      "concentration_delta": 0.2,
+      "conc_after_flat": 0.23449522226395997,
+      "effective_move_flat": 0.2,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.22759617781116798,
+      "effective_move_headroom": 0.19310095554720802
+    },
+    {
+      "event": "J-2024-11-hynix-hbm",
+      "node": "company:sk_hynix",
+      "concentration": 0.95,
+      "concentration_delta": 0.05,
+      "conc_after_flat": 1.0,
+      "effective_move_flat": 0.050000000000000044,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.9524999999999999,
+      "effective_move_headroom": 0.0024999999999999467
+    },
+    {
+      "event": "J-2024-11-hynix-hbm",
+      "node": "product:hbm",
+      "concentration": 0.7440399999999999,
+      "concentration_delta": 0.05,
+      "conc_after_flat": 0.79404,
+      "effective_move_flat": 0.050000000000000044,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.7568379999999999,
+      "effective_move_headroom": 0.012797999999999976
+    },
+    {
+      "event": "J-2024-12-china-gallium",
+      "node": "country_region:china",
+      "concentration": 0.6285483464670876,
+      "concentration_delta": 0.3,
+      "conc_after_flat": 0.9285483464670876,
+      "effective_move_flat": 0.30000000000000004,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.7399838425269613,
+      "effective_move_headroom": 0.11143549605987368
+    },
+    {
+      "event": "J-2024-12-china-gallium",
+      "node": "mineral:gallium",
+      "concentration": 0.98522425,
+      "concentration_delta": 0.3,
+      "conc_after_flat": 1.0,
+      "effective_move_flat": 0.014775749999999976,
+      "lost_to_clamp_flat": 0.28522424999999996,
+      "conc_after_headroom": 0.989656975,
+      "effective_move_headroom": 0.004432725000000026
+    },
+    {
+      "event": "J-2024-12-china-gallium",
+      "node": "country_region:usa",
+      "concentration": 0.09368700756852731,
+      "concentration_delta": 0.3,
+      "conc_after_flat": 0.3936870075685273,
+      "effective_move_flat": 0.3,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.3655809052979691,
+      "effective_move_headroom": 0.2718938977294418
+    },
+    {
+      "event": "J-2025-04-china-rees",
+      "node": "country_region:china",
+      "concentration": 0.6285483464670876,
+      "concentration_delta": 0.35,
+      "conc_after_flat": 0.9785483464670875,
+      "effective_move_flat": 0.35,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.7585564252036069,
+      "effective_move_headroom": 0.13000807873651932
+    },
+    {
+      "event": "J-2025-04-china-rees",
+      "node": "mineral:dysprosium",
+      "concentration": 0.9901989999999999,
+      "concentration_delta": 0.35,
+      "conc_after_flat": 1.0,
+      "effective_move_flat": 0.00980100000000006,
+      "lost_to_clamp_flat": 0.3401989999999999,
+      "conc_after_headroom": 0.99362935,
+      "effective_move_headroom": 0.0034303500000000264
+    },
+    {
+      "event": "J-2025-10-nexperia",
+      "node": "country_region:netherlands",
+      "concentration": 0.0,
+      "concentration_delta": 0.0,
+      "conc_after_flat": 0.0,
+      "effective_move_flat": 0.0,
+      "lost_to_clamp_flat": 0.0,
+      "conc_after_headroom": 0.0,
+      "effective_move_headroom": 0.0
+    }
+  ],
+  "hbm_trace": {
+    "MA-0": {
+      "event": "J-2024-11-hynix-hbm",
+      "origin_contribution": 0.015037699500155209,
+      "max_delta": 0.010515051375015905,
+      "max_delta_node": "product:hbm",
+      "nodes_reached": 13,
+      "model_rank": 4,
+      "origins": {
+        "company:sk_hynix": 0.013137068806920175,
+        "product:hbm": 0.015037699500155209
+      }
+    },
+    "MA-1": {
+      "event": "J-2024-11-hynix-hbm",
+      "origin_contribution": 0.09253820899383675,
+      "max_delta": 0.06822459261741282,
+      "max_delta_node": "company:sk_hynix",
+      "nodes_reached": 13,
+      "model_rank": 3,
+      "origins": {
+        "company:sk_hynix": 0.09253820899383675,
+        "product:hbm": 0.05187876221990084
+      }
+    },
+    "MA-1b": {
+      "event": "J-2024-11-hynix-hbm",
+      "origin_contribution": 0.0756624287000553,
+      "max_delta": 0.055782778061428895,
+      "max_delta_node": "company:sk_hynix",
+      "nodes_reached": 13,
+      "model_rank": 1,
+      "origins": {
+        "company:sk_hynix": 0.0756624287000553,
+        "product:hbm": 0.03535737331228883
+      }
+    },
+    "MA-2": {
+      "event": "J-2024-11-hynix-hbm",
+      "origin_contribution": 0.09253820899383675,
+      "max_delta": 0.06822459261741282,
+      "max_delta_node": "company:sk_hynix",
+      "nodes_reached": 13,
+      "model_rank": 1,
+      "origins": {
+        "company:sk_hynix": 0.09253820899383675,
+        "product:hbm": 0.05187876221990084
+      }
+    },
+    "MA-3": {
+      "event": "J-2024-11-hynix-hbm",
+      "origin_contribution": 0.07452828605925722,
+      "max_delta": 0.05211360665884296,
+      "max_delta_node": "product:hbm",
+      "nodes_reached": 13,
+      "model_rank": 3,
+      "origins": {
+        "company:sk_hynix": 0.06510857741319984,
+        "product:hbm": 0.07452828605925722
+      }
+    }
+  }
+}

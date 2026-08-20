@@ -67,8 +67,34 @@ class UnresolvedEntity(BaseModel):
 class AxesImpact(BaseModel):
     """Event-specific perturbation of the three severity axes.
 
-    Interpreted as deltas layered on top of the affected node's static values.
-    Positive concentration_delta = the event increases concentration risk, etc.
+    Interpreted as deltas layered on top of the affected node's static
+    values. **Risk-positive convention** (Pass W §2, matching the schema's
+    original wording and all seven authored replay events): a positive
+    delta on any axis raises the event's risk.
+
+      - `concentration_delta` — positive = more concentration risk. Added
+        to the node's concentration on [0, 1] (a design that makes it
+        additive rather than the current scalar-magnitude reading is a
+        future decision; see Pass W).
+      - `substitutability_delta` — positive = substitution got HARDER
+        (more risk), e.g. HBM's `0.15` for "sold-out capacity removes the
+        ability to substitute." Because severity is
+        `concentration × (1 − substitutability) × lead_time`, a
+        risk-positive substitutability delta must LOWER the substitutability
+        value used in the formula (apply as `sub − delta`).
+      - `lead_time_delta` — **unit: YEARS** (Pass W §0.3, checked coherent
+        against all seven events; e.g. `0.25` ≈ 3 months for HBM's
+        "multi-quarter waits"). Positive = longer lead time = more risk.
+
+    Caveat (Pass W §0.1–§0.2, measured not shipped): the engine helper
+    `engine.axes_for_severity(sub_delta, lt_delta)` is currently orphaned
+    — no caller passes a non-zero delta, and it applies `sub_base +
+    sub_delta`, which under this risk-positive convention has the wrong
+    sign for substitutability (a positive delta would *lower* risk). This
+    is latent until a multi-axis intake ships; that pass must apply the
+    risk-positive sign here (subtract) or re-sign the corpus. Pass W
+    measured candidate designs in-process and committed no behaviour
+    change; this docstring only declares the intended unit and sign.
     """
 
     model_config = _FORBID_EXTRA

@@ -2607,3 +2607,38 @@ Report: `docs/generated/replay/pass_v_report.pdf` (also `.md` in the same direct
 - **Threshold = 3 in a new `config/ingestion.yaml`** — first ingestion-side parameter file, chosen over a `scoring.yaml` block so ingestion and scoring config diffs stay separate. Nothing promotes on the 7-event corpus (max count 1); germanium disposed `defer` (recurrence undemonstrated; corpus growth out of scope), the rest `undisposed`.
 - **Pre-Pass-V finding: replay artifacts stale since Pass J.1** (~15 passes of scoring drift). Refreshed in a separate commit (`a92c576`) ahead of Pass V per the §2.1 "drift needs its own scope" discipline.
 - **Suite:** 134 passed (120 + 14 new), 1 skipped, 0 xfail — both invocations. Served graph byte-identical.
+
+---
+
+## Pass W — Multi-axis event intake, Phase A: measurement only (no scoring change)
+
+Report: `docs/generated/replay/pass_w_report.pdf` (also `.md`, and copied to `~/Downloads/`). Harness: `backend/scripts/pass_w_measure.py`. Comparison: `docs/generated/multi_axis_candidates.md`. Facts: `docs/generated/pass_w_facts.json`.
+
+**Recommendation, one sentence:** On semantic grounds, **MA-1** (axis perturbation at origin, scalar propagation) — recompute the origin's severity under the event's actual axis deltas through the real formula and take the difference from baseline; it resolves the HBM inversion's mechanism (HBM rank 4→3) without the overfitting of MA-1b (ρ=1.0 by under-firing the mineral events) or the semantic falseness of MA-2 (re-scoring unrelated downstream nodes). No candidate was committed; ρ is a check, not a selector, and nothing was tuned.
+
+### W.scorecard (§6 pre-registrations)
+
+| # | expectation | HIT/MISS |
+|---|---|---|
+| 1 | Committed state byte-identical at close | HIT |
+| 2 | `axes_for_severity` deltas have no non-zero caller anywhere | HIT |
+| 3 | `_event_severity_at_source` absent; the test naming it dead/vacuous | SPLIT — function absent (HIT); no test names it, the cited test asserts real import identity, stale reference is in the engine docstring (MISS on the test claim) |
+| 4 | HBM's MA-1 origin contribution ≥ 3× MA-0's | HIT (6.15×) |
+| 5 | Gallium's MA-1 effective concentration move < 0.02 despite δ 0.30 | HIT (0.014776) |
+| 6 | MA-1b moves gallium more than MA-1 | MISS (0.004433 < 0.014776 — headroom moves a concentrated node less) |
+| 7 | HBM's model_rank improves under at least one candidate | HIT (all four; MA-1 4→3) |
+| 8 | No candidate achieves ρ = 1.0 | MISS (MA-1b = 1.0 — overfitting flag, not correctness) |
+| 9 | MA-2 yields an indefensible downstream re-score, nameable | HIT (mineral:gallium re-scored by a dysprosium licence) |
+| 10 | MA-0's ρ reported alongside the others | HIT (+0.7143) |
+
+**8 HIT, 2 MISS (6, 8), 1 split (3) — all reviewer-side, refuted by measurement as intended.**
+
+### W.ledger
+
+- **Four §0 code findings confirmed.** The multi-axis path (`engine.axes_for_severity`'s `sub_delta`/`lt_delta`) exists but is orphaned — no non-zero caller; cascade imports it and routes around it via a scalar `_event_magnitude`. The substitutability sign in the engine is inverted vs the corpus (`sub_base + sub_delta` lowers risk for a positive delta). `lead_time_delta` is years (coherent across all seven events). Additive concentration perturbation saturates on the most-concentrated origins (gallium moves 0.0148 from a 0.30 delta). The engine docstring's `cascade._event_severity_at_source` is a stale reference to a non-existent function; the guard it cites only asserts import identity.
+- **Conventions declared (docstring only in `event.py`):** risk-positive substitutability, lead-time delta in years. No behaviour shipped.
+- **Five candidates measured through the real engine**; MA-0 validated node-for-node against `propagate_event` (0 mismatches). ρ vs observed ordinal: MA-0 +0.714, MA-1 +0.893, MA-1b +1.000, MA-2 +0.929, MA-3 +0.857.
+- **The recommended design is not the highest-ρ candidate, and that is the finding** (§4.1). MA-1b's perfect ρ is bought by under-firing the two largest mineral events (§0.4 pathology); MA-2's high ρ + HBM=rank-1 is bought by fabricating axis movements on unrelated nodes (gallium re-scored by a dysprosium licence). Both rejected on semantic grounds.
+- **A-J-2 partially addressed, not closed.** MA-1 moves HBM 4→3; making it rank 1 requires a rejected design. Whether the model ranking the Chinese mineral export-controls above HBM is an error is unsettleable on n=7 — validation needs a larger, independently-authored, ideally held-out corpus.
+- **Blast-radius forecast (if MA-1 ships later):** `cascade.py` origin seeding + `engine.py` sign fix + docstring repair; `events.magnitude_source` repurposed; no axis re-authoring (corpus already risk-positive); replay artifacts regenerate; A-J-2 re-graded; guard upgrades (real delta-handling identity test, sign-convention regression).
+- **Suite:** 134 pass, 1 skip, 0 xfail — both invocations. Measurement reproducible; committed scoring byte-identical; no candidate committed.
